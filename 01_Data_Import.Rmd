@@ -1,0 +1,78 @@
+---
+title: "01_Data_Import"
+author: "Chiara Draxler"
+date: "22 12 2021"
+output: html_document
+---
+
+#1. Loading Data (sim Data)
+```{r}
+load("FAKE_cccu.RData")
+```
+
+#2. Loading Packages
+```{r}
+#loading package plyr
+library("plyr")
+#loading dplyr
+library("dplyr")
+```
+#3. Create column WAVE to indicate wave
+Because it is the simplest to just add WAVE and t1-t4 for the waves 
+
+```{r}
+#create column in each df
+FAKE_cccu_wave1_df$WAVE <- 't1'
+
+#check
+table(FAKE_cccu_wave1_df$WAVE)#correct
+
+FAKE_cccu_wave2_df$WAVE<- 't2'
+FAKE_cccu_wave3_df$WAVE <- 't3'
+FAKE_cccu_wave4_df$WAVE <- 't4'
+
+
+```
+
+#4. Connect datasets via rowbind (to get in longitudinal format)
+```{r}
+#check column names
+colnames(FAKE_cccu_wave1_df)
+colnames(FAKE_cccu_wave2_df)
+colnames(FAKE_cccu_wave3_df)
+colnames(FAKE_cccu_wave4_df)
+
+#we have different columns in every df --> we can use rbind.fill from plyr, which works as follows:  "If a column exists in both data frames, it is row binded as usual. However, if a column is missing in one of the two data frames, the empty cells are replaced by NA" (https://statisticsglobe.com/rbind-in-r-example-vector-data-frame-fill-columns/)
+
+#loading package plyr
+library("plyr")
+
+#binding rows of the df via rbind.fill from plyr
+Fake_cccu_complete <- rbind.fill(FAKE_cccu_wave1_df, FAKE_cccu_wave2_df)
+
+#check if function has worked:
+nrow(FAKE_cccu_wave1_df)+nrow(FAKE_cccu_wave2_df)
+nrow(Fake_cccu_complete) #true
+
+which(Fake_cccu_complete$CASEID == 81, arr.ind=TRUE)#CaseID exists twice
+#function seems to have worked
+
+#binding the all four df to complete dataframe:
+Fake_cccu_complete <- rbind.fill(FAKE_cccu_wave1_df, FAKE_cccu_wave2_df, FAKE_cccu_wave3_df, FAKE_cccu_wave4_df)
+
+#checking rows and CASEID again
+nrow(FAKE_cccu_wave1_df)+nrow(FAKE_cccu_wave2_df)+nrow(FAKE_cccu_wave3_df)+nrow(FAKE_cccu_wave4_df)
+nrow(Fake_cccu_complete)#true
+
+which(Fake_cccu_complete$CASEID == 81, arr.ind=TRUE)#CaseID exists four times!
+
+##we now have a complete df with up to 4 observations per particpant and binded columns (or new columns, if they did not exist before)
+```
+#5. Saving Data
+```{r}
+save(Fake_cccu_complete,file = "Fake_cccu_complete.RData")
+
+load("Fake_cccu_complete.RData")
+```
+
+
