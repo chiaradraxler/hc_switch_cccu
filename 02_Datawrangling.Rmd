@@ -5,12 +5,9 @@ date: "6 1 2022"
 output: html_document
 ---
 
-HI :)
 #1.Load Data
 ```{r}
 load("Fake_cccu_complete.RData")
-
-
 
 ```
 
@@ -20,6 +17,7 @@ load("Fake_cccu_complete.RData")
 #loading dplyr
 library("dplyr")
 library(formr)
+library("tidyverse")
 
 ```
 
@@ -146,7 +144,7 @@ table(Fake_cccu_complete1$WAVE) #happy :)
 ```{r}
 Fake_cccu_complete1$WAVE <- as.factor(Fake_cccu_complete1$WAVE)
 
-typeof(Fake_cccu_complete1$WAVE)
+class(Fake_cccu_complete1$WAVE)
 ```
 
 ##4.1 Degree
@@ -203,7 +201,6 @@ Fake_cccu_complete1$DEGREE_recode<-
 factor(Fake_cccu_complete1$DEGREE_recode, levels = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14), labels = c("No formal education", "1. to 4. grade", "5th/6th grade", "7th/8th grade", "9th grade", "10th grade", "11th grade", "12th grade / no diploma", "High school diploma or equivalent", "some college, no degree", "associate degree", "bachelors degree", "masters degree", "professional or doctoral degree"))
 
 
-                    
 ```
 ## 4.2 Age
 ```{r}
@@ -214,7 +211,7 @@ table(Fake_cccu_complete1$AGE)
 #as.numeric
 Fake_cccu_complete1$AGE <- as.numeric(Fake_cccu_complete1$AGE)
 
-typeof(Fake_cccu_complete1$AGE)
+class(Fake_cccu_complete1$AGE)
 ```
 
 
@@ -225,7 +222,7 @@ table(Fake_cccu_complete1$POVRATE)
 
 Fake_cccu_complete1$POVRATE <- as.numeric(Fake_cccu_complete1$POVRATE)
 
-typeof(Fake_cccu_complete1$POVRATE)
+class(Fake_cccu_complete1$POVRATE)
 ```
 
 
@@ -240,7 +237,7 @@ I recode variable with 2 Levels: yes (1), no (2), NA
 ```{r}
 Fake_cccu_complete1<- Fake_cccu_complete1 %>%
   mutate(TYPEINS_recode = recode(TYPEINS,
-                                "(-1) Refused"="NA",
+                                "(-1) Refused"= "NA",
                                 "(1) Private health insurance I get through my job or school, a family member or that I pay for myself." ="1",
                                 "(2) (Medicaid Program - BASED ON PPSTATEN) or some other government-sponsored health insurance." = "1",
                                 "(3) Some other type of health insurance" = "1",
@@ -252,6 +249,7 @@ Fake_cccu_complete1<- Fake_cccu_complete1 %>%
                                 "(5) Insurance obtained through a health insurance marketplace or exchange, such as www.healthcare.gov{#POV_PROGNAME_Q" = "1"))
 
 table(Fake_cccu_complete1$TYPEINS_recode)
+sum(is.na(Fake_cccu_complete1$TYPEINS))
 
 #Factorize
 Fake_cccu_complete1$TYPEINS_recode<- factor(Fake_cccu_complete1$TYPEINS_recode, levels = c(0,1), labels = c("No", "Yes"))
@@ -315,7 +313,7 @@ table(Fake_cccu_complete1$HLTHPROB_recode)
 #factorize
 Fake_cccu_complete1$HLTHPROB_recode<-factor(Fake_cccu_complete1$HLTHPROB_recode, levels = c(0,1), labels = c("No", "Yes"))
 
-sum(is.na(Fake_cccu_complete1$HLTHPROB))
+sum(is.na(Fake_cccu_complete1$HLTHPROB_recode))
 
 ```
 
@@ -330,13 +328,13 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
   mutate(Avoid_recode = ifelse(AVOID == "(1) Not at all important to avoid pregnancy 1", 1, ifelse(AVOID == "(2) 2", 2,
                                                                                                    ifelse(AVOID == "(3) 3", 3, 
                                                                                                           ifelse(AVOID == "(4) 4", 4, 
-                                                                                                                 ifelse(AVOID == "(5)", 5, ifelse(AVOID == "(6) Very important to avoid pregnancy 6",6, NA))))))) 
+                                                                                                                 ifelse(AVOID == "(5) 5", 5, ifelse(AVOID == "(6) Very important to avoid pregnancy 6",6, NA))))))) 
 table(Fake_cccu_complete1$Avoid_recode)             
     
 sum(is.na(Fake_cccu_complete1$AVOID))   
 sum(is.na(Fake_cccu_complete1$Avoid_recode))
 Fake_cccu_complete1$Avoid_recode <- as.numeric(Fake_cccu_complete1$Avoid_recode)
-typeof(Fake_cccu_complete1$Avoid_recode)
+class(Fake_cccu_complete1$Avoid_recode)
 
 ```
 
@@ -356,98 +354,91 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
 
 
 table(Fake_cccu_complete1$FEELPG_recode)
-sum(is.na(Fake_cccu_complete1$FEELPG))
+sum(is.na(Fake_cccu_complete1$FEELPG_recode))
 
 Fake_cccu_complete1$FEELPG_recode <- as.numeric(Fake_cccu_complete1$FEELPG_recode)
 
 ```
 
-##4.10 NUMBER of BIRTHS
+##4.10 NUMBER of Kids at t1
 ```{r}
 table(Fake_cccu_complete1$NBIRTHS)
 Fake_cccu_complete1<- Fake_cccu_complete1 %>%
-  mutate(NBIRTHS_recode = recode(NBIRTHS,
+  mutate(NKIDS = recode(NBIRTHS,
                                     "(0) 0"="0",
                                   "(1) 1"="1",
                                  "(2) 2" = "2",
                                  "(3) 3" = "3",
                                  "(4) 4 or more" = "4"))
-table(Fake_cccu_complete1$NBIRTHS_recode)
+table(Fake_cccu_complete1$NKIDS)
 #factorize
-Fake_cccu_complete1$NBIRTHS_recode<-factor(Fake_cccu_complete1$NBIRTHS_recode, levels = c(0,1,2,3,4), labels = c("0", "1", "2", "3", "4 or more"))
+Fake_cccu_complete1$NKIDS<-factor(Fake_cccu_complete1$NKIDS, levels = c(0,1,2,3,4), labels = c("0", "1", "2", "3", "4 or more"))
+
+
+#fill for each wave after t1 (for t2,t3,t4)
+Fake_cccu_complete1 = Fake_cccu_complete1 %>%
+group_by(CASEID) %>%
+fill(NKIDS)
 
 ```
 
-##4.11 Gave birth in between two waves? 
 
-overview
-```{r}
-table(Fake_cccu_complete1$BIRTH3MO)
-```
-
-recode
-```{r}
-Fake_cccu_complete1<- Fake_cccu_complete1 %>%
-  mutate(Gave_birth_last_three_months_recode = recode(BIRTH3MO,
-                                    "(-1) Refused"="NA",
-                                  "(0) No"="0",
-                                 "(1) Yes" = "1",
-                                 "(3) Dont Know" = "NA",
-                                 "(4) Didnt care" = "NA"))
-table(Fake_cccu_complete1$Gave_birth_last_three_months_recode)
-
-#factorize
-Fake_cccu_complete1$Gave_birth_last_three_months_recode<-factor(Fake_cccu_complete1$Gave_birth_last_three_months_recode, levels = c(0,1), labels = c("No", "Yes"))
-```
-
-
-##4.12 Pregnant between two waves? ITem PReg
+##4.11 Pregnant between two waves?
 Since September 2012, did you experience any of the following?
 
 ```{r}
 #overview
 table(Fake_cccu_complete1$PREG)
 
-#recoding in 0 = had no baby, 1 = had baby
 #recode
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
-  mutate(had_baby_between_wave = ifelse(PREG == "(3) I had a baby", 1, ifelse(FEELPG == "(-1) Refused", NA,0)))
+  mutate(pregnant_between_waves = ifelse(PREG == "(3) I had a baby" | 
+                                          PREG == "(1) I had a miscarriage" |
+                                          PREG== "(2) I had an abortion" |
+                                          PREG == "(4) I", 1, ifelse(FEELPG == "(-1) Refused", NA, 0)))
 
 
-table(Fake_cccu_complete1$had_baby_between_wave)
+table(Fake_cccu_complete1$pregnant_between_waves)
 sum(is.na(Fake_cccu_complete1$had_baby_between_wave))
 
+#factorize
+Fake_cccu_complete1$pregnant_between_waves<-factor(Fake_cccu_complete1$pregnant_between_waves, levels = c(0,1), labels = c("No", "Yes"))
 ```
 
 
-##4.13 Abortion? Item: PREG
-Since September 2012, did you experience any of the following?: I had an abortion 
+##4.12 had_baby_between_waves
+Since September 2012, did you experience any of the following?: I had a baby
 ```{r}
 #overview
 table(Fake_cccu_complete1$PREG)
 
-#recoding in 0 = no abortion and 1 = abortion
+#recoding in 0 = no baby and 1 = baby
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
-  mutate(abortion = ifelse(PREG== "(1) I had a miscarriage" |PREG=="(3) I had a baby"|PREG=="(4) I"#means I'm currentrly pregnant 
-                           |PREG=="(5) I might be pregnant"|PREG=="(6) None of the above", 0, ifelse(PREG == "(2) I had an abortion", 1,NA)))
+  mutate(had_baby_between_waves = ifelse(PREG=="(3) I had a baby", 1, ifelse(PREG == "(-1) Refused", NA, 0)))
 
-table(Fake_cccu_complete1$abortion)#happy!
+table(Fake_cccu_complete1$had_baby_between_waves)#happy!
 #factorize
 
-Fake_cccu_complete1$abortion<-factor(Fake_cccu_complete1$abortion, levels = c(0,1), labels = c("No", "Yes"))
+Fake_cccu_complete1$abortion<-factor(Fake_cccu_complete1$had_baby_between_waves, levels = c(0,1), labels = c("No", "Yes"))
 ```
 
 
-##4.14 Relationship Duration
+##4.13 Relationship Duration
 
-single und dann in Monaten auf Basis von Quantilen: mit ifelse
+Q3bA usw --> immer wenn Missing oder Refused Missing in Jahren 
+wenn jemand A angegebene hat-> A Hauptpartner = verehiratet
+wenn jemand B angegeben hat aber nicht A -> B Hauptpartner (nicht verheiratet)
+C = Dating
+D1 = 2. Dating Partner (sollte es nur geben, wenn es C auch gibt), wenn C angegeben und D1 nutzen wir C (immer auf Partner davor)
+--> sind keine Singeles sonder kürzere Beziehung 
+--> die die in Q3BAAbC Missing/Refsued haben sind single --> sollte missing haben in Years und Months (anders wissen wir es nicht) 
+--> eine Spalte; wir nehmen A oder B oder C je nachdem was sie angeben 
 
 
 
-
-##4.15 SEXUAL SATISFACTION: How satisfied is R in his / her sexual relationship?
+##4.14 SEXUAL SATISFACTION: How satisfied is R in his / her sexual relationship?
 
 ```{r}
 #overview
@@ -470,7 +461,7 @@ table(Fake_cccu_complete1$sexual_satisfaction)
 ```
 
 
-## 4.16 SEX In LAST 30 days? SEXMO
+## 4.15 SEX In LAST 30 days? SEXMO
 ```{r}
 #overview
 table(Fake_cccu_complete1$SEXMO)
@@ -493,7 +484,7 @@ sum(is.na(Fake_cccu_complete1$sex_inlast30days))
 ```
 
 
-##4.17 Sexual Frequency: NSEXMO: how many times sex in last 30 days
+##4.16 Sexual Frequency: NSEXMO: how many times sex in last 30 days
 
 ```{r}
 #overview:
@@ -519,7 +510,7 @@ Fake_cccu_complete1$sexual_frequency<-factor(Fake_cccu_complete1$sexual_frequenc
 ```
 
 
-##4.18 Contraceptive Satisfaction 
+##4.17 Contraceptive Satisfaction 
 Wenn ich - 1x hormonell + 1x nicht-hormonell vorliegen habe (betrifft auch 1 mal nur hormonell) dann nehme ich die Zufriedenheit mit der spezifischen hormonellen Methode 
 
 Wenn ich 2x hormonell vorliegen habe, dann nehme ich den höherer Zufriedenheitswert bei den jeweiligen beiden hormonellen Methoden
@@ -558,10 +549,10 @@ table(Fake_cccu_complete1$RSAT5)
 
 
 
-#4.19 Contraceptive Duration
+#4.18 Contraceptive Duration
 
 
-#4.20 hc use:grouping
+#4.19 hc use:grouping
 
 ```{r}
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
@@ -580,7 +571,7 @@ crosstabs(~IUD + hc, data = Fake_cccu_complete1)
 Fake_cccu_complete1$hc<-factor(Fake_cccu_complete1$hc, levels = c(0,1), labels = c("non_hc", "hc")) 
 ```
 
-#4.21 switch 
+#4.20 switch 
 
 
 
