@@ -5,6 +5,7 @@ date: "6 1 2022"
 output: html_document
 ---
 
+HI :)
 #1.Load Data
 ```{r}
 load("Fake_cccu_complete.RData")
