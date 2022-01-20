@@ -36,6 +36,6 @@ vignettes/*.pdf
 rsconnect/
 
 #Personal GitIgnore
-*.rda
-BA___Code for Analysis.r 
+*.RData
+BA___Code for Analysis.R
 RSAT1.docx
