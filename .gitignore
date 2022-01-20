@@ -34,3 +34,8 @@ vignettes/*.pdf
 
 # Shiny token, see https://shiny.rstudio.com/articles/shinyapps.html
 rsconnect/
+
+#Personal GitIgnore
+*.rda
+BA___Code for Analysis.r 
+RSAT1.docx
