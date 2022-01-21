@@ -198,10 +198,12 @@ table(Fake_cccu_complete1$DEGREE_recode)
 
 #Factorizing it with levels
 Fake_cccu_complete1$DEGREE_recode<-
-factor(Fake_cccu_complete1$DEGREE_recode, levels = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14), labels = c("No formal education", "1. to 4. grade", "5th/6th grade", "7th/8th grade", "9th grade", "10th grade", "11th grade", "12th grade / no diploma", "High school diploma or equivalent", "some college, no degree", "associate degree", "bachelors degree", "masters degree", "professional or doctoral degree"))
+factor(Fake_cccu_complete1$DEGREE_recode, levels = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14), labels = c("no formal education", "1st to 4th grade", "5th/6th grade", "7th/8th grade", "9th grade", "10th grade", "11th grade", "12th grade / no diploma", "high school diploma or equivalent", "some college, no degree", "associate degree", "bachelors degree", "masters degree", "professional or doctoral degree"))
 
 
 ```
+
+
 ## 4.2 Age
 ```{r}
 #overview
@@ -299,7 +301,6 @@ table(Fake_cccu_complete1$HLTHPROB)
 ```
 Recoding values
 
-  
 ```{r}
 #Recoding
 Fake_cccu_complete1<- Fake_cccu_complete1 %>%
@@ -364,15 +365,15 @@ Fake_cccu_complete1$FEELPG_recode <- as.numeric(Fake_cccu_complete1$FEELPG_recod
 ```{r}
 table(Fake_cccu_complete1$NBIRTHS)
 Fake_cccu_complete1<- Fake_cccu_complete1 %>%
-  mutate(NKIDS = recode(NBIRTHS,
+  mutate(NKIDS_t1 = recode(NBIRTHS,
                                     "(0) 0"="0",
                                   "(1) 1"="1",
                                  "(2) 2" = "2",
                                  "(3) 3" = "3",
                                  "(4) 4 or more" = "4"))
-table(Fake_cccu_complete1$NKIDS)
+table(Fake_cccu_complete1$NKIDS_t1)
 #factorize
-Fake_cccu_complete1$NKIDS<-factor(Fake_cccu_complete1$NKIDS, levels = c(0,1,2,3,4), labels = c("0", "1", "2", "3", "4 or more"))
+Fake_cccu_complete1$NKIDS_t1<-factor(Fake_cccu_complete1$NKIDS_t1, levels = c(0,1,2,3,4), labels = c("0", "1", "2", "3", "4 or more"))
 
 
 #fill for each wave after t1 (for t2,t3,t4)
@@ -400,7 +401,7 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
 
 
 table(Fake_cccu_complete1$pregnant_between_waves)
-sum(is.na(Fake_cccu_complete1$had_baby_between_wave))
+sum(is.na(Fake_cccu_complete1$pregnant_between_wave))
 
 #factorize
 Fake_cccu_complete1$pregnant_between_waves<-factor(Fake_cccu_complete1$pregnant_between_waves, levels = c(0,1), labels = c("No", "Yes"))
@@ -418,7 +419,7 @@ table(Fake_cccu_complete1$PREG)
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
   mutate(had_baby_between_waves = ifelse(PREG=="(3) I had a baby", 1, ifelse(PREG == "(-1) Refused", NA, 0)))
 
-table(Fake_cccu_complete1$had_baby_between_waves)#happy!
+table(Fake_cccu_complete1$had_baby_between_waves)
 #factorize
 
 Fake_cccu_complete1$abortion<-factor(Fake_cccu_complete1$had_baby_between_waves, levels = c(0,1), labels = c("No", "Yes"))
@@ -573,7 +574,12 @@ Fake_cccu_complete1$hc<-factor(Fake_cccu_complete1$hc, levels = c(0,1), labels =
 
 #4.20 switch 
 
+#5. Saving Data
+```{r}
+save(Fake_cccu_complete1,file = "Fake_cccu_complete1.RData")
 
+load("Fake_cccu_complete1.RData")
+```
 
 
 
