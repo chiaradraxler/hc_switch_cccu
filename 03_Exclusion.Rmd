@@ -1,0 +1,25 @@
+---
+title: "03_Exclusion"
+author: "Chiara Draxler"
+date: "21 1 2022"
+output: html_document
+---
+
+#1. Load Data
+```{r}
+
+load("Fake_cccu_complete1.RData")
+```
+
+#2. Load Packages
+
+```{r}
+library(dplyr)
+```
+
+#3. Create Columns that indicate if person has to be excluded for every exclusion criteria 
+
+#4 Exclude
+
+
+#5. Save data 
