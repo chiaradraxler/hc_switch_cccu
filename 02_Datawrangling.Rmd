@@ -201,6 +201,7 @@ Fake_cccu_complete1$DEGREE_recode<-
 factor(Fake_cccu_complete1$DEGREE_recode, levels = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14), labels = c("no formal education", "1st to 4th grade", "5th/6th grade", "7th/8th grade", "9th grade", "10th grade", "11th grade", "12th grade / no diploma", "high school diploma or equivalent", "some college, no degree", "associate degree", "bachelors degree", "masters degree", "professional or doctoral degree"))
 
 
+plot(Fake_cccu_complete1$DEGREE_recode)
 ```
 
 
@@ -214,6 +215,8 @@ table(Fake_cccu_complete1$AGE)
 Fake_cccu_complete1$AGE <- as.numeric(Fake_cccu_complete1$AGE)
 
 class(Fake_cccu_complete1$AGE)
+
+hist(Fake_cccu_complete1$AGE)
 ```
 
 
@@ -225,6 +228,8 @@ table(Fake_cccu_complete1$POVRATE)
 Fake_cccu_complete1$POVRATE <- as.numeric(Fake_cccu_complete1$POVRATE)
 
 class(Fake_cccu_complete1$POVRATE)
+
+hist(Fake_cccu_complete1$POVRATE)
 ```
 
 
@@ -257,6 +262,8 @@ sum(is.na(Fake_cccu_complete1$TYPEINS))
 Fake_cccu_complete1$TYPEINS_recode<- factor(Fake_cccu_complete1$TYPEINS_recode, levels = c(0,1), labels = c("No", "Yes"))
 table(Fake_cccu_complete1$TYPEINS_recode)
 
+plot(Fake_cccu_complete1$TYPEINS_recode)
+
 ```
 
 ##4.5 MEDICAL PROBLEMS
@@ -273,6 +280,8 @@ Fake_cccu_complete1<- Fake_cccu_complete1 %>%
 #factorize
 Fake_cccu_complete1$MEDPROB_recode<- factor(Fake_cccu_complete1$MEDPROB_recode, levels = c(0,1), labels = c("No", "Yes"))
 table(Fake_cccu_complete1$MEDPROB_recode)
+
+plot(Fake_cccu_complete1$MEDPROB_recode)
 ```
 
 ##4.6 GAPS in INSURANCE
@@ -290,7 +299,7 @@ table(Fake_cccu_complete1$GAPINS_recode)
 #factorize
 Fake_cccu_complete1$GAPINS_recode<-factor(Fake_cccu_complete1$GAPINS_recode, levels = c(0,1), labels = c("No", "Yes"))
 
-
+plot(Fake_cccu_complete1$GAPINS_recode)
 ```
 
 ##4.7 HEALTH PROBLEMS
@@ -316,6 +325,8 @@ Fake_cccu_complete1$HLTHPROB_recode<-factor(Fake_cccu_complete1$HLTHPROB_recode,
 
 sum(is.na(Fake_cccu_complete1$HLTHPROB_recode))
 
+
+plot(Fake_cccu_complete1$HLTHPROB_recode)
 ```
 
 
@@ -337,6 +348,8 @@ sum(is.na(Fake_cccu_complete1$Avoid_recode))
 Fake_cccu_complete1$Avoid_recode <- as.numeric(Fake_cccu_complete1$Avoid_recode)
 class(Fake_cccu_complete1$Avoid_recode)
 
+
+hist(Fake_cccu_complete1$Avoid_recode)
 ```
 
 
@@ -359,6 +372,9 @@ sum(is.na(Fake_cccu_complete1$FEELPG_recode))
 
 Fake_cccu_complete1$FEELPG_recode <- as.numeric(Fake_cccu_complete1$FEELPG_recode)
 
+
+hist(Fake_cccu_complete1$FEELPG_recode)
+
 ```
 
 ##4.10 NUMBER of Kids at t1
@@ -379,8 +395,10 @@ Fake_cccu_complete1$NKIDS_t1<-factor(Fake_cccu_complete1$NKIDS_t1, levels = c(0,
 #fill for each wave after t1 (for t2,t3,t4)
 Fake_cccu_complete1 = Fake_cccu_complete1 %>%
 group_by(CASEID) %>%
-fill(NKIDS)
+fill(NKIDS_t1)
 
+
+plot(Fake_cccu_complete1$NKIDS_t1)
 ```
 
 
