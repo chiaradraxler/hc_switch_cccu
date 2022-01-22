@@ -19,6 +19,27 @@ library(dplyr)
 
 #3. Create Columns that indicate if person has to be excluded for every exclusion criteria 
 
+##3.1 IUD in specific wave 
+
+Create column that indicates if Vpn had used IUD (yes / no) 
+```{r}
+#overview 
+table(Fake_cccu_complete1$IUD)
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(exclusion_had_IUD = ifelse(IUD == "(1) Yes",1,0)) 
+
+table(Fake_cccu_complete1$exclusion_had_IUD)
+
+#factorize
+Fake_cccu_complete1$exclusion_had_IUD<-factor(Fake_cccu_complete1$exclusion_had_IUD, levels = c(0,1), labels = c("No", "Yes"))
+
+
+plot(Fake_cccu_complete1$exclusion_had_IUD)
+
+```
+
+
 #4 Exclude
 
 
