@@ -131,7 +131,7 @@ Fake_cccu_complete1 <- Fake_cccu_complete %>%
         YDEPO, YIMPLANT, YIUD, MPILL, MPATCH,
         MRING, MDEPO, MIMPLANT, MIUD,
         starts_with("Q23A_"), TIMEUSE, WITHDRAW,VASECTOMY,CONDOM,
-        NFP,SPERM,NOBARRIER,XBARR, starts_with("DOV_Q26_"))
+        NFP,SPERM,NOBARRIER,XBARR, starts_with("DOV_Q26_"), SP1VAS, SP2VAS)
 
 #double check column WAVE
 table(Fake_cccu_complete1$WAVE) #happy :) 
@@ -423,6 +423,9 @@ sum(is.na(Fake_cccu_complete1$pregnant_between_wave))
 
 #factorize
 Fake_cccu_complete1$pregnant_between_waves<-factor(Fake_cccu_complete1$pregnant_between_waves, levels = c(0,1), labels = c("No", "Yes"))
+
+
+plot(Fake_cccu_complete1$pregnant_between_waves)
 ```
 
 
@@ -440,7 +443,10 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
 table(Fake_cccu_complete1$had_baby_between_waves)
 #factorize
 
-Fake_cccu_complete1$abortion<-factor(Fake_cccu_complete1$had_baby_between_waves, levels = c(0,1), labels = c("No", "Yes"))
+Fake_cccu_complete1$had_baby_between_waves<-factor(Fake_cccu_complete1$had_baby_between_waves, levels = c(0,1), labels = c("No", "Yes"))
+
+
+plot(Fake_cccu_complete1$had_baby_between_waves)
 ```
 
 
@@ -588,6 +594,9 @@ crosstabs(~IUD + hc, data = Fake_cccu_complete1)
 
 #factorizing
 Fake_cccu_complete1$hc<-factor(Fake_cccu_complete1$hc, levels = c(0,1), labels = c("non_hc", "hc")) 
+
+
+plot(Fake_cccu_complete1$hc)
 ```
 
 #4.20 switch 
