@@ -119,11 +119,12 @@ Fake_cccu_complete1 <- Fake_cccu_complete %>%
   select(CASEID, WAVE,AGE, DEGREE,
         POVRATE, TYPEINS,MEDPROB,
         GAPINS, HLTHPROB, AVOID, FEELPG,
-        NBIRTHS, BIRTH3MO, PREG, MONTHSA,
-        MONTHSB, MONTHSC, MONTHSD1, MONTHSD3,
-        MONTHSE1, MONTHSE3, YEARSA, YEARSB,
-        YEARSC, YEARSD1, YEARSD2, YEARSE1,
-        YEARSE2, SEXSAT,
+        NBIRTHS, BIRTH3MO, PREG,
+        Q3B_A, Q3B_B, Q3B_C, Q3B_D1,
+        Q4_C, Q4_D1,
+        MONTHSA, MONTHSB, MONTHSC, MONTHSD1, 
+        YEARSA, YEARSB, YEARSC, YEARSD1,
+        SEXSAT,
         SEXMO, NSEXMO, starts_with("RSAT"),#includes RSATIS as overall measure for satisfaciton with barrier methods
         SATISBC, starts_with("Q23D"),HORMONAL,
         PILL,PATCH,RING,DEPO,IUD,
@@ -451,7 +452,105 @@ plot(Fake_cccu_complete1$had_baby_between_waves)
 
 
 ##4.13 Relationship Duration
+Relationship information is stored seperately for (items refer to item about gender of partner):
+* Q3B_A: Married couples
+* Q3B_B: Non-married but living together couples
+* Q3B_C: Dating couples (one partner)
+* Q3B_D1: Dating couples (first of several partners)
+We exclude any further dating partners (Q3B_D2, Q3B_E1, Q3B_E2)
 
+For dating partners, we have further information, whether the relationship is classified as a "special romantic relationship with each other" (Q4_C and Q4_D1). We only want to count dating relationship as serious relationships, if participants indicated that they are in a romantic relationship.
+
+Therefore, we form a new variable "partnered", that indicates whether a person is in a relationship (non-missing Q3_A or Q3_B, non-missing Q3B_C and Q4_C == 1, non-missing Q3B_D1 and Q4_D1 == 1), or single (everybody else).
+```{r}
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(
+    partnered = case_when(
+    !is.na(Q3B_A) ~ 1,
+    !is.na(Q3B_B) ~ 1,
+    !is.na(Q3B_C) & Q4_C == 1 ~ 1,
+    !is.na(Q3B_D1) & Q4_D1 == 1 ~ 1,
+    TRUE ~ 0
+    )
+  )
+  
+table(Fake_cccu_complete1$partnered)  
+```
+
+This number (7018 timepoints with partnered values) is lower than in the original data because the missings in the simulated data are random (e.g. somebody can have no missings in Q3_A and Q3_B which will not be possible based on real data). Therefore, we cant check 100% if our code is correct here and have to compare results for the real data with the codebook.
+
+For relationship duration we need to combine items MONTHSA, MONTHSB, MONTHSC and MONTHSD1 (with a descending hierarchy). Same needs to be done for YEARSA, YEARSB, YEARSC and YEARSD1. We will first combine them in two columnes (rel_dur_months and rel_dur_years).
+```{r}
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(
+    rel_dur_months = case_when(
+      !is.na(Q3B_A) ~ MONTHSA,
+      !is.na(Q3B_B) ~ MONTHSB,
+      !is.na(Q3B_C) & Q4_C == 1 ~ MONTHSC,
+      !is.na(Q3B_D1) & Q4_D1 == 1 ~ MONTHSD1
+    ),
+    rel_dur_years = case_when(
+      !is.na(Q3B_A) ~ YEARSA,
+      !is.na(Q3B_B) ~ YEARSB,
+      !is.na(Q3B_C) & Q4_C == 1 ~ YEARSC,
+      !is.na(Q3B_D1) & Q4_D1 == 1 ~ YEARSD1
+    ),
+  )
+
+table(is.na(Fake_cccu_complete1$rel_dur_months))
+table(is.na(Fake_cccu_complete1$rel_dur_years))
+table(Fake_cccu_complete1$rel_dur_months)
+table(Fake_cccu_complete1$rel_dur_years)
+```
+Again, these numbers (especially the zeros) dont represent correct numbers so should not be interepreted here.
+
+Now we combine years and months to one variable rel_dur (in months).
+```{r}
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(rel_dur = rel_dur_years + rel_dur_months)
+
+library(ggplot2)
+qplot(Fake_cccu_complete1$rel_dur)
+```
+
+To incorporate relationship status and relationship duration in one variable we need a factor variable rel_dur_factor that includes five categories:
+*singles
+*partnered, relationship duration in <25%-quartile
+*partnered, relationship duration in 25 - 50%-quartile
+*partnered, relationship duration in 50 - 75%-quartile
+*partnered, relationship duration in >75%-quartile
+This way all partnered categories are the same size.
+
+```{r}
+quantile(Fake_cccu_complete1$rel_dur, na.rm = T)
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(
+    rel_dur_factor = case_when(
+      is.na(rel_dur) ~ "Single",
+      rel_dur <= quantile(Fake_cccu_complete1$rel_dur, na.rm = T)[[2]] ~ "0q-25q",
+      rel_dur <= quantile(Fake_cccu_complete1$rel_dur, na.rm = T)[[3]] ~ "26q-50q",
+      rel_dur <= quantile(Fake_cccu_complete1$rel_dur, na.rm = T)[[4]] ~ "51q-75q",
+      rel_dur > quantile(Fake_cccu_complete1$rel_dur, na.rm = T)[[4]] ~ "76q-100q",
+    )
+  )
+
+Fake_cccu_complete1$rel_dur_factor <- factor(Fake_cccu_complete1$rel_dur_factor,
+                                             levels = c("Single", "0q-25q", "26q-50q", "51q-75q",
+                                                        "76q-100q"),
+                                             labels = c("Single", "0q-25q", "26q-50q", "51q-75q",
+                                                        "76q-100q"))
+
+table(is.na(Fake_cccu_complete1$rel_dur_factor))
+
+crosstabs(~rel_dur + rel_dur_factor, data = Fake_cccu_complete1)
+
+ggplot(aes(rel_dur,  fill = rel_dur_factor), data = Fake_cccu_complete1) + geom_histogram(binwidth = 1)
+```
+
+
+
+---Old notes from Chiara---
 Q3bA usw --> immer wenn Missing oder Refused Missing in Jahren 
 wenn jemand A angegebene hat-> A Hauptpartner = verehiratet
 wenn jemand B angegeben hat aber nicht A -> B Hauptpartner (nicht verheiratet)
