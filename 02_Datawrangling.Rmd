@@ -550,18 +550,6 @@ ggplot(aes(rel_dur,  fill = rel_dur_factor), data = Fake_cccu_complete1) + geom_
 
 
 
----Old notes from Chiara---
-Q3bA usw --> immer wenn Missing oder Refused Missing in Jahren 
-wenn jemand A angegebene hat-> A Hauptpartner = verehiratet
-wenn jemand B angegeben hat aber nicht A -> B Hauptpartner (nicht verheiratet)
-C = Dating
-D1 = 2. Dating Partner (sollte es nur geben, wenn es C auch gibt), wenn C angegeben und D1 nutzen wir C (immer auf Partner davor)
---> sind keine Singeles sonder kürzere Beziehung 
---> die die in Q3BAAbC Missing/Refsued haben sind single --> sollte missing haben in Years und Months (anders wissen wir es nicht) 
---> eine Spalte; wir nehmen A oder B oder C je nachdem was sie angeben 
-
-
-
 ##4.14 SEXUAL SATISFACTION: How satisfied is R in his / her sexual relationship?
 
 ```{r}
