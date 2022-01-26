@@ -673,7 +673,14 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
                        RING %contains% "1" |
                        DEPO %contains% "1" |
                        IMPLANT %contains% "1", 1,
-                     ifelse(IUD %contains% "1", NA, 0)))
+                     ifelse(IUD %contains% "1" | 
+                              XBARR %contains% "1", NA,#refused as NA
+                            ifelse(CONDOM %contains% "1"| #actively include non_hc user as 0
+                                     VASECTOMY %contains% "1"|
+                                     WITHDRAW %contains% "1" |
+                                     NFP %contains% "1" |
+                                     SPERM %contains% "1" |
+                                     NOBARRIER %contains% "1",0, hc))))
 
 table(Fake_cccu_complete1$hc)
 
