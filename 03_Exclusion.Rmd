@@ -5,6 +5,20 @@ date: "21 1 2022"
 output: html_document
 ---
 
+- Ausschluss von Vpn
+•	-  Main Analyses:
+•	- No Morning after pill
+•	- No missingness in:
+•	- Switch
+•	- Method satisfaction
+•	- Sex satisfaction
+•	- Sex freq
+•	- selection variables
+•	sum(is.na()) > 0
+•	- Duration Analyses: 
+•	Hauptausschluss + only Hc-user + no missing duration
+•
+
 #1. Load Data
 ```{r}
 
@@ -17,30 +31,74 @@ load("Fake_cccu_complete1.RData")
 library(dplyr)
 ```
 
-#3. Create Columns that indicate if person has to be excluded for every exclusion criteria 
+#3. Main Analysis 
 
-##3.1 Exclusion: Had IUD
+Create Columns that indicate if person has to be excluded for every exclusion criteria 
 
-Create column that indicates if Vpn had used IUD (yes / no) 
+
+
+
+##3.1 No morning after pill
+
 ```{r}
-#overview 
-table(Fake_cccu_complete1$IUD)
+#overview
+
+table(Fake_cccu_complete1$EC_recode)
+
+#create column that indicates if used EC
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
-  mutate(exclusion_had_IUD = ifelse(IUD == "(1) Yes",1,0)) 
+  mutate(exclusion_used_EC = ifelse(EC_recode == "Yes",1,0))
 
-table(Fake_cccu_complete1$exclusion_had_IUD)
+#overview, factorize and plot
 
-#factorize
-Fake_cccu_complete1$exclusion_had_IUD<-factor(Fake_cccu_complete1$exclusion_had_IUD, levels = c(0,1), labels = c("No", "Yes"))
+table(Fake_cccu_complete1$exclusion_used_EC)
+
+Fake_cccu_complete1$exclusion_used_EC<-as.factor(Fake_cccu_complete1$exclusion_used_EC)
 
 
-plot(Fake_cccu_complete1$exclusion_had_IUD)
+plot(Fake_cccu_complete1$exclusion_used_EC)
+
+```
+
+##3.2 No missingness
+in:
+
+•	- No missingness in:
+•	- Switch
+•	- Method satisfaction
+•	- Sex satisfaction
+•	- Sex freq
+•	- selection variables
+•	sum(is.na()) > 0
+
+```{r}
+
+
+#create column that indicates missingness in relevant variables
+
+#Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+ # mutate(exclusion_missingness = ifelse())
+
+
 
 ```
 
 
-## 3.2 Used Vasectomy as contraceptive method
+#4. Subanalysis
+ no missingness in contraceptive duration 
+ 
+#5. Analysis of robustness
+
+
+	- Robustheitsanalyse 1: 
+•	Hauptausschluss + no contraception method in last 30 days + no sex in last 30 days
+•	- Robustheitsanalyse 2:
+•	Hauptausschluss + no contraception method in last 30 days + sex in last 30 days
+	
+
+##5.3 Analysis of robustness 3
+ Used Vasectomy as contraceptive method
 ```{r}
 #overview
 
@@ -54,14 +112,17 @@ table(Fake_cccu_complete1$SP2VAS)
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
   mutate(exclusion_used_vasectomy = ifelse(VASECTOMY == "(1) Yes" |
                                              SP1VAS == "(1) Yes"|
-                                             SP2VAS == "(1) Yes",1,0))
+                                             SP2VAS == "(1) Yes",1,
+                                           ifelse(VASECTOMY =="(0) No"|
+                                                    SP1VAS == "(0) No"|
+                                                    SP2VAS == "(0) No", 0, NA)))
 
 
 table(Fake_cccu_complete1$exclusion_used_vasectomy)
 
 #factorize and plot
 
-Fake_cccu_complete1$exclusion_used_vasectomy<-factor(Fake_cccu_complete1$exclusion_used_vasectomy, levels = c(0,1), labels = c("No", "Yes"))
+Fake_cccu_complete1$exclusion_used_vasectomy<-as.factor(Fake_cccu_complete1$exclusion_used_vasectomy)
 
 
 plot(Fake_cccu_complete1$exclusion_used_vasectomy)
@@ -69,7 +130,4 @@ plot(Fake_cccu_complete1$exclusion_used_vasectomy)
 ```
 
 
-#4 Exclude
 
-
-#5. Save data 
