@@ -116,7 +116,7 @@ Time
 #Select variables 
 
 Fake_cccu_complete1 <- Fake_cccu_complete %>% 
-  select(CASEID, WAVE,AGE, DEGREE,
+  select(CASEID, WAVE,EC,AGE, DEGREE,
         POVRATE, TYPEINS,MEDPROB,
         GAPINS, HLTHPROB, AVOID, FEELPG,
         NBIRTHS, BIRTH3MO, PREG,
@@ -140,6 +140,24 @@ table(Fake_cccu_complete1$WAVE) #happy :)
 
 
 #4. Variable Wrangling 
+
+##EC (for exclusion)
+```{r}
+table(Fake_cccu_complete1$EC)
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(EC_recode = ifelse(EC == "(0) No", 0, 
+                            ifelse(EC == "(1) Yes", 1,NA)))
+
+
+
+#factorize
+Fake_cccu_complete1$EC_recode<-factor(Fake_cccu_complete1$EC_recode, levels = c(0,1), labels = c("No", "Yes"))
+
+
+
+```
+
 
 ##4.0 Wave
 ```{r}
