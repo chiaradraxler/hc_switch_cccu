@@ -345,6 +345,11 @@ Fake_cccu_complete1$HLTHPROB_recode<-factor(Fake_cccu_complete1$HLTHPROB_recode,
 sum(is.na(Fake_cccu_complete1$HLTHPROB_recode))
 
 
+#fill for each wave after t1 (for t2,t3,t4)
+Fake_cccu_complete1 = Fake_cccu_complete1 %>%
+group_by(CASEID) %>%
+fill(HLTHPROB_recode)
+
 plot(Fake_cccu_complete1$HLTHPROB_recode)
 ```
 
@@ -607,7 +612,7 @@ Fake_cccu_complete1<- Fake_cccu_complete1 %>%
 table(Fake_cccu_complete1$sex_inlast30days)
 
 #factorize
-Fake_cccu_complete1$sexmo_recoded<-factor(Fake_cccu_complete1$sex_inlast30days, levels = c(0,1), labels = c("No", "Yes")) 
+Fake_cccu_complete1$sex_inlast30days<-factor(Fake_cccu_complete1$sex_inlast30days, levels = c(0,1), labels = c("No", "Yes")) 
 
 sum(is.na(Fake_cccu_complete1$sex_inlast30days))
 
@@ -621,26 +626,33 @@ sum(is.na(Fake_cccu_complete1$sex_inlast30days))
 table(Fake_cccu_complete1$NSEXMO)
 
 #overview
-table(Fake_cccu_complete1$SEXMO)
+table(Fake_cccu_complete1$sex_inlast30days)
 
 #building sexual frequency: if sex_inlast30days = 0 ("No") we want 0, if NSEXMO = 1 we want 1, if NSEXMO 2 = 2, 3 =3, 4 = 4, otherwise NA
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
-  mutate(sexual_frequency = ifelse(sex_inlast30days == "0", 0, 
+  mutate(sex_freq = ifelse(sex_inlast30days == "No", 0, 
                                       ifelse(NSEXMO == "(1) 1", 1, 
                                                                                                    ifelse(NSEXMO == "(2) 2-5", 2, 
                                                                                                           ifelse(NSEXMO == "(3) 6-10", 3, 
                                                                                                                  ifelse(NSEXMO == "(4) 11 or more", 4, NA))))))
-table(Fake_cccu_complete1$sexual_frequency)
+
+table(Fake_cccu_complete1$sex_freq)
+
+crosstabs(~sex_inlast30days + NSEXMO , data = Fake_cccu_complete1)
 
 
 #factorize
-Fake_cccu_complete1$sexual_frequency<-factor(Fake_cccu_complete1$sexual_frequency, levels = c(0,1,2,3,4), labels = c("No sex", "Once", "2-5 times", "6-10 times", "11 or more times")) 
+Fake_cccu_complete1$sex_freq<-factor(Fake_cccu_complete1$sex_freq, levels = c(0,1,2,3,4), labels = c("No sex", "Once", "2-5 times", "6-10 times", "11 or more times")) 
 
 ```
 
 
 ##4.17 Contraceptive Satisfaction 
+
+ACHTUNG: Item muss rekodiert werden: hier ist bisher 4 = dissatisfied, obwohl wir Hypothese (und Logik es auch eigentlich eher sagen würde) 4 = satisfied
+
+
 Wenn ich - 1x hormonell + 1x nicht-hormonell vorliegen habe (betrifft auch 1 mal nur hormonell) dann nehme ich die Zufriedenheit mit der spezifischen hormonellen Methode 
 
 Wenn ich 2x hormonell vorliegen habe, dann nehme ich den höherer Zufriedenheitswert bei den jeweiligen beiden hormonellen Methoden
@@ -691,14 +703,12 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
                        RING %contains% "1" |
                        DEPO %contains% "1" |
                        IMPLANT %contains% "1", 1,
-                     ifelse(IUD %contains% "1" | 
-                              XBARR %contains% "1", NA,#refused as NA
-                            ifelse(CONDOM %contains% "1"| #actively include non_hc user as 0
+                     ifelse(CONDOM %contains% "1"| #actively include non_hc user as 0
                                      VASECTOMY %contains% "1"|
                                      WITHDRAW %contains% "1" |
                                      NFP %contains% "1" |
                                      SPERM %contains% "1" |
-                                     NOBARRIER %contains% "1",0, hc))))
+                                     NOBARRIER %contains% "1",0,NA))) 
 
 table(Fake_cccu_complete1$hc)
 
