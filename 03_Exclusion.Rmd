@@ -73,12 +73,30 @@ in:
 •	sum(is.na()) > 0
 
 ```{r}
-
-
+table(Fake_cccu_complete1$switch)
+sum(is.na(Fake_cccu_complete1$switch))
 #create column that indicates missingness in relevant variables
 
-#Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
- # mutate(exclusion_missingness = ifelse())
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+ mutate(exclusion_missingness = ifelse(sum
+                                       (is.na(Fake_cccu_complete1$switch)+
+                                        is.na(Fake_cccu_complete1$sexual_satisfaction)+
+                                           is.na(Fake_cccu_complete1$sex_freq)+
+                                           is.na(Fake_cccu_complete1$AGE)+
+                                           is.na(Fake_cccu_complete1$DEGREE_recode)+
+                                           is.na(Fake_cccu_complete1$POVRATE)+
+                                           is.na(Fake_cccu_complete1$HLTHPROB_recode)+
+                                           is.na(Fake_cccu_complete1$MEDPROB_recode)+
+                                                                                      is.na(Fake_cccu_complete1$GAPINS_recode)+
+                                           is.na(Fake_cccu_complete1$TYPEINS_recode)+
+                                           is.na(Fake_cccu_complete1$NKIDS_t1)+
+                                           is.na(Fake_cccu_complete1$pregnant_between_waves)+
+                                                                                      is.na(Fake_cccu_complete1$had_baby_between_waves)+
+                                           is.na(Fake_cccu_complete1$FEELPG_recode)+
+                                                                                      is.na(Fake_cccu_complete1$Avoid_recode)+
+                                           is.na(Fake_cccu_complete1$rel_dur_factor))>0, 1, 0)) 
+
+table(Fake_cccu_complete1$exclusion_missingness)
 
 
 
@@ -86,7 +104,12 @@ in:
 
 
 #4. Subanalysis
- no missingness in contraceptive duration 
+ no missingness in contraceptive duration and df only for hc user
+ 
+```{r}
+
+```
+ 
  
 #5. Analysis of robustness
 
@@ -95,7 +118,40 @@ in:
 •	Hauptausschluss + no contraception method in last 30 days + no sex in last 30 days
 •	- Robustheitsanalyse 2:
 •	Hauptausschluss + no contraception method in last 30 days + sex in last 30 days
-	
+
+
+##5.1 Analysis of robustness 1
+```{r}
+#overview over relevant variables
+
+table(Fake_cccu_complete1$NOBARRIER)#no non-hormonal contraceptive method in last 30days
+table(Fake_cccu_complete1$hc)#no hormonal contracepive method 
+#joint = no contraceptive method 
+
+table(Fake_cccu_complete1$sex_inlast30days)#no sex in last 30 days
+
+#create column that indicates with 1 = no sex and no contraceptive method used in last 30 days
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(exclusion_R1 = ifelse(NOBARRIER == "(1) Yes" & 
+                                 hc == "non_hc" &
+                                 sex_inlast30days == "No",1,0))
+
+table(Fake_cccu_complete1$exclusion_R1)
+
+crosstabs(~exclusion_R1 + hc + NOBARRIER + sex_inlast30days, data = Fake_cccu_complete1) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = No)
+
+
+
+```
+
+
+
+
+##5.2 Analysis of robustness 2
+
+
+
 
 ##5.3 Analysis of robustness 3
  Used Vasectomy as contraceptive method
