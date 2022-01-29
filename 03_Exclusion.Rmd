@@ -33,11 +33,6 @@ library(dplyr)
 
 #3. Main Analysis 
 
-Create Columns that indicate if person has to be excluded for every exclusion criteria 
-
-
-
-
 ##3.1 No morning after pill
 
 ```{r}
@@ -142,6 +137,16 @@ Fake_cccu_complete1$exclusion_R1<-as.factor(Fake_cccu_complete1$exclusion_R1)
 plot(Fake_cccu_complete1$exclusion_R1)
 
 
+#create df: exclude women following exclusion_R1 from the maindf 
+
+Fake_cccu_R1 <-Fake_cccu_complete1 %>%
+  filter(exclusion_R1 != 1) 
+
+#check
+
+table(Fake_cccu_R1$exclusion_R1) # :)
+
+
 ```
 
 
@@ -178,6 +183,15 @@ Fake_cccu_complete1$exclusion_R2<-as.factor(Fake_cccu_complete1$exclusion_R2)
 
 plot(Fake_cccu_complete1$exclusion_R2)
 
+#create df: exclude women following exclusion_R2 from the maindf 
+
+Fake_cccu_R2 <-Fake_cccu_complete1 %>%
+  filter(exclusion_R2 != 1) 
+
+#check
+
+table(Fake_cccu_R2$exclusion_R2) # :)
+
 
 
 ```
@@ -201,10 +215,7 @@ table(Fake_cccu_complete1$SP2VAS)
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
   mutate(exclusion_used_vasectomy = ifelse(VASECTOMY == "(1) Yes" |
                                              SP1VAS == "(1) Yes"|
-                                             SP2VAS == "(1) Yes",1,
-                                           ifelse(VASECTOMY =="(0) No"|
-                                                    SP1VAS == "(0) No"|
-                                                    SP2VAS == "(0) No", 0, NA)))
+                                             SP2VAS == "(1) Yes",1,0))
 
 
 table(Fake_cccu_complete1$exclusion_used_vasectomy)
