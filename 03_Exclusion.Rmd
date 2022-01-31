@@ -117,6 +117,8 @@ table(Fake_cccu_main_analysis$exclusion_used_EC)
 ```
 
 
+working from now on with Fake_cccu_main_analysis as df
+
 #4. Subanalysis
  no missingness in contraceptive duration and df only for hc user
  
@@ -131,34 +133,34 @@ table(Fake_cccu_main_analysis$exclusion_used_EC)
 ```{r}
 #overview over relevant variables
 
-table(Fake_cccu_complete1$NOBARRIER)#no non-hormonal contraceptive method in last 30days
-table(Fake_cccu_complete1$hc)#no hormonal contracepive method 
+table(Fake_cccu_main_analysis$NOBARRIER)#no non-hormonal contraceptive method in last 30days
+table(Fake_cccu_main_analysis$hc)#no hormonal contracepive method 
 #joint = no contraceptive method 
 
-table(Fake_cccu_complete1$sex_inlast30days)#no sex in last 30 days
+table(Fake_cccu_main_analysis$sex_inlast30days)#no sex in last 30 days
 
 #create column that indicates with 1 = no sex and no contraceptive method used in last 30 days
 
-Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+Fake_cccu_main_analysis <- Fake_cccu_main_analysis %>%
   mutate(exclusion_R1 = ifelse(NOBARRIER == "(1) Yes" & 
                                  hc == "non_hc" &
                                  sex_inlast30days == "No",1,0))
 
-table(Fake_cccu_complete1$exclusion_R1)
+table(Fake_cccu_main_analysis$exclusion_R1)
 
-crosstabs(~exclusion_R1 + hc + NOBARRIER + sex_inlast30days, data = Fake_cccu_complete1) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = No)
+crosstabs(~exclusion_R1 + hc + NOBARRIER + sex_inlast30days, data = Fake_cccu_main_analysis) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = No)
 
 #factorise
-Fake_cccu_complete1$exclusion_R1<-as.factor(Fake_cccu_complete1$exclusion_R1)
+Fake_cccu_main_analysis$exclusion_R1<-as.factor(Fake_cccu_main_analysis$exclusion_R1)
 
 #plot
 
-plot(Fake_cccu_complete1$exclusion_R1)
+plot(Fake_cccu_main_analysis$exclusion_R1)
 
 
 #create df: exclude women following exclusion_R1 from the maindf 
 
-Fake_cccu_R1 <-Fake_cccu_complete1 %>%
+Fake_cccu_R1 <-Fake_cccu_main_analysis %>%
   filter(exclusion_R1 != 1) 
 
 #check
@@ -178,33 +180,33 @@ table(Fake_cccu_R1$exclusion_R1) # :)
 ```{r}
 #overview over relevant variables
 
-table(Fake_cccu_complete1$NOBARRIER)#no non-hormonal contraceptive method in last 30days
-table(Fake_cccu_complete1$hc)#no hormonal contracepive method 
+table(Fake_cccu_main_analysis$NOBARRIER)#no non-hormonal contraceptive method in last 30days
+table(Fake_cccu_main_analysis$hc)#no hormonal contracepive method 
 #joint = no contraceptive method 
 
-table(Fake_cccu_complete1$sex_inlast30days)# yes= sex in last 30 days
+table(Fake_cccu_main_analysis$sex_inlast30days)# yes= sex in last 30 days
 
 #create column that indicates with 1 = sex and no contraceptive method used in last 30 days
 
-Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+Fake_cccu_main_analysis <- Fake_cccu_main_analysis %>%
   mutate(exclusion_R2 = ifelse(NOBARRIER == "(1) Yes" & 
                                  hc == "non_hc" &
                                  sex_inlast30days == "Yes",1,0))
 
-table(Fake_cccu_complete1$exclusion_R2)
+table(Fake_cccu_main_analysis$exclusion_R2)
 
-crosstabs(~exclusion_R1 + hc + NOBARRIER + sex_inlast30days, data = Fake_cccu_complete1) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = Yes)
+crosstabs(~exclusion_R1 + hc + NOBARRIER + sex_inlast30days, data = Fake_cccu_main_analysis) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = Yes)
 
 #factorise
-Fake_cccu_complete1$exclusion_R2<-as.factor(Fake_cccu_complete1$exclusion_R2)
+Fake_cccu_main_analysis$exclusion_R2<-as.factor(Fake_cccu_main_analysis$exclusion_R2)
 
 #plot
 
-plot(Fake_cccu_complete1$exclusion_R2)
+plot(Fake_cccu_main_analysis$exclusion_R2)
 
 #create df: exclude women following exclusion_R2 from the maindf 
 
-Fake_cccu_R2 <-Fake_cccu_complete1 %>%
+Fake_cccu_R2 <-Fake_cccu_main_analysis %>%
   filter(exclusion_R2 != 1) 
 
 #check
@@ -220,34 +222,71 @@ table(Fake_cccu_R2$exclusion_R2) # :)
 
 
 ##5.3 Analysis of robustness 3
- Used Vasectomy as contraceptive method
+ Hauptausschluss + Used Vasectomy as contraceptive method
 ```{r}
 #overview
 
-table(Fake_cccu_complete1$VASECTOMY)
-table(Fake_cccu_complete1$SP1VAS)
-table(Fake_cccu_complete1$SP2VAS)
+table(Fake_cccu_main_analysis$VASECTOMY)
+table(Fake_cccu_main_analysis$SP1VAS)
+table(Fake_cccu_main_analysis$SP2VAS)
 
 
 #create column that indicates if used Vasectomy
 
-Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+Fake_cccu_main_analysis <- Fake_cccu_main_analysis %>%
   mutate(exclusion_used_vasectomy = ifelse(VASECTOMY == "(1) Yes" |
                                              SP1VAS == "(1) Yes"|
                                              SP2VAS == "(1) Yes",1,0))
 
 
-table(Fake_cccu_complete1$exclusion_used_vasectomy)
+table(Fake_cccu_main_analysis$exclusion_used_vasectomy)
 
 #factorize and plot
 
-Fake_cccu_complete1$exclusion_used_vasectomy<-as.factor(Fake_cccu_complete1$exclusion_used_vasectomy)
+Fake_cccu_main_analysis$exclusion_used_vasectomy<-as.factor(Fake_cccu_main_analysis$exclusion_used_vasectomy)
 
 
-plot(Fake_cccu_complete1$exclusion_used_vasectomy)
+plot(Fake_cccu_main_analysis$exclusion_used_vasectomy)
+
+#create df: exclude women following exclusion_R2 from the maindf 
+
+Fake_cccu_R3 <-Fake_cccu_main_analysis %>%
+  filter(exclusion_R3 != 1) 
+
+#check
+
+table(Fake_cccu_R3$exclusion_R3)
+
 
 ```
 
 #6 Save df
 
+```{r}
+
+#Main Analysis 
+
+save(Fake_cccu_main_analysis,file = "Fake_cccu_main_analysis")
+
+load("Fake_cccu_main_analysis.RData")
+
+
+#Sub Analysis
+
+
+#R1
+save(Fake_cccu_R1,file = "Fake_cccu_R1")
+
+load("Fake_cccu_R1.RData")
+
+#R2
+save(Fake_cccu_R2,file = "Fake_cccu_R2")
+
+load("Fake_cccu_R2.RData")
+
+#R3
+save(Fake_cccu_R3,file = "Fake_cccu_R3")
+
+load("Fake_cccu_R3.RData")
+```
 
