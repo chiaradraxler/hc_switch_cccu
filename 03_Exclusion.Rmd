@@ -54,6 +54,17 @@ Fake_cccu_complete1$exclusion_used_EC<-as.factor(Fake_cccu_complete1$exclusion_u
 
 plot(Fake_cccu_complete1$exclusion_used_EC)
 
+#exclude from df
+
+#create df: exclude women following exclusion_R1 from the maindf 
+
+Fake_cccu_main_analysis <-Fake_cccu_complete1 %>%
+  filter(exclusion_used_EC != 1) 
+
+#check
+
+table(Fake_cccu_main_analysis$exclusion_used_EC)
+
 ```
 
 ##3.2 No missingness
