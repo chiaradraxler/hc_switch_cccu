@@ -54,17 +54,6 @@ Fake_cccu_complete1$exclusion_used_EC<-as.factor(Fake_cccu_complete1$exclusion_u
 
 plot(Fake_cccu_complete1$exclusion_used_EC)
 
-#exclude from df
-
-#create df: exclude women following exclusion_R1 from the maindf 
-
-Fake_cccu_main_analysis <-Fake_cccu_complete1 %>%
-  filter(exclusion_used_EC != 1) 
-
-#check
-
-table(Fake_cccu_main_analysis$exclusion_used_EC)
-
 ```
 
 ##3.2 No missingness
@@ -103,6 +92,25 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
                                            is.na(Fake_cccu_complete1$rel_dur_factor))>0, 1, 0)) 
 
 table(Fake_cccu_complete1$exclusion_missingness)
+
+
+
+```
+
+##3.3 Create df for main analysis: Exclusion
+
+```{r}
+#exclude from df
+
+#create df: exclude women following exclusion_used_EC and exclusion_missingness from the maindf 
+ 
+Fake_cccu_main_analysis <-Fake_cccu_complete1 %>%
+  filter(exclusion_used_EC != 1 & exclusion_missingness !=1) 
+
+#check
+
+table(Fake_cccu_complete1$exclusion_used_EC)
+table(Fake_cccu_main_analysis$exclusion_used_EC)
 
 
 
@@ -240,5 +248,6 @@ plot(Fake_cccu_complete1$exclusion_used_vasectomy)
 
 ```
 
+#6 Save df
 
 
