@@ -708,7 +708,8 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
                                      WITHDRAW %contains% "1" |
                                      NFP %contains% "1" |
                                      SPERM %contains% "1" |
-                                     NOBARRIER %contains% "1",0,NA))) 
+                                     NOBARRIER %contains% "1",0,
+                            ifelse(IUD %contains% "1", NA, hc))))  
 
 table(Fake_cccu_complete1$hc)
 
