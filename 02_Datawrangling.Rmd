@@ -654,12 +654,44 @@ ACHTUNG: Item muss rekodiert werden: hier ist bisher 4 = dissatisfied, obwohl wi
 
 Wenn ich - 1x hormonell + 1x nicht-hormonell vorliegen habe (betrifft auch 1 mal nur hormonell) dann nehme ich die Zufriedenheit mit der spezifischen hormonellen Methode 
 
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(contra_satisfaction = ifelse(PILL == "1"|
+                                      PATCH == "1"|
+                                      DEPO == "1"|
+                                      RING == "1"|
+                                      IMPLANT == "1"&
+                                      VASECTOMY == "1" |
+                                      WITHDRAW == "1" |
+                                      NFP == "1" |
+                                      SPERM == "1"|
+                                      NOBARRIER == "1", pmax(), ifelse(VASECTOMY == "1" |
+                                      WITHDRAW == "1" |
+                                      NFP == "1" |
+                                      SPERM == "1"|
+                                      NOBARRIER == "1", pmax()))
+              
 Wenn ich 2x hormonell vorliegen habe, dann nehme ich den höherer Zufriedenheitswert bei den jeweiligen beiden hormonellen Methoden
 
 Wenn ich 1x oder 2x nicht-hormonell vorliegen habe, dann nehme ich den höherer Zufriedenheitswert bei den jeweiligen beiden nicht-hormonellen Methoden.
 
+
+
+
 Items: Q23D PILL PATCH IMPLANT IUD RING DEPO
        RSAT1 (withdrawl), 3(condoms), 4(natural/calendar), 5(spermicid/other, 2(vasectomy)
+       PILL %contains% "1"|
+                       PATCH %contains% "1" |
+                       RING %contains% "1" |
+                       DEPO %contains% "1" |
+                       IMPLANT %contains% "1", 1,
+                     ifelse(CONDOM %contains% "1"| #actively include non_hc user as 0
+                                     VASECTOMY %contains% "1"|
+                                     WITHDRAW %contains% "1" |
+                                     NFP %contains% "1" |
+                                     SPERM %contains% "1" |
+                                     NOBARRIER %contains%
+       
+       pmax() gives maximum value 
 
 ```{r}
 #overview over items: satisfation with hc method
