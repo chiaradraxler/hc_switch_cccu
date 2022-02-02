@@ -266,7 +266,7 @@ table(Fake_cccu_R3$exclusion_R3)
 
 #Main Analysis 
 
-save(Fake_cccu_main_analysis,file = "Fake_cccu_main_analysis")
+save(Fake_cccu_main_analysis,file = "Fake_cccu_main_analysis.RData")
 
 load("Fake_cccu_main_analysis.RData")
 
@@ -275,17 +275,17 @@ load("Fake_cccu_main_analysis.RData")
 
 
 #R1
-save(Fake_cccu_R1,file = "Fake_cccu_R1")
+save(Fake_cccu_R1,file = "Fake_cccu_R1.RData")
 
 load("Fake_cccu_R1.RData")
 
 #R2
-save(Fake_cccu_R2,file = "Fake_cccu_R2")
+save(Fake_cccu_R2,file = "Fake_cccu_R2.RData")
 
 load("Fake_cccu_R2.RData")
 
 #R3
-save(Fake_cccu_R3,file = "Fake_cccu_R3")
+save(Fake_cccu_R3,file = "Fake_cccu_R3.")
 
 load("Fake_cccu_R3.RData")
 ```
