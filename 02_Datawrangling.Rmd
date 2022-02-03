@@ -654,8 +654,14 @@ ACHTUNG: Item muss rekodiert werden: hier ist bisher 4 = dissatisfied, obwohl wi
 
 Wenn ich - 1x hormonell + 1x nicht-hormonell vorliegen habe (betrifft auch 1 mal nur hormonell) dann nehme ich die Zufriedenheit mit der spezifischen hormonellen Methode 
 
+Wenn ich 2x hormonell vorliegen habe, dann nehme ich den höherer Zufriedenheitswert bei den jeweiligen beiden hormonellen Methoden
+
+Wenn ich 1x oder 2x nicht-hormonell vorliegen habe, dann nehme ich den höherer Zufriedenheitswert bei den jeweiligen beiden nicht-hormonellen Methoden.
+
+
+gar#create variable that says if 1x hormonal 1x non hc or both (or more)
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
-  mutate(contra_satisfaction = ifelse(PILL == "1"|
+  mutate(contraceptive_method = ifelse(PILL == "1"|
                                       PATCH == "1"|
                                       DEPO == "1"|
                                       RING == "1"|
@@ -664,15 +670,33 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
                                       WITHDRAW == "1" |
                                       NFP == "1" |
                                       SPERM == "1"|
-                                      NOBARRIER == "1", pmax(), ifelse(VASECTOMY == "1" |
+                                      NOBARRIER == "1","both_non_and_hc", ifelse(PILL == "1"|
+                                      PATCH == "1"|
+                                      DEPO == "1"|
+                                      RING == "1"|
+                                      IMPLANT == "1"&
+                                      VASECTOMY == "0" |
+                                      WITHDRAW == "0" |
+                                      NFP == "0" |
+                                      SPERM == "0"|
+                                      NOBARRIER == "0", "hc",
+                                      ifelse(PILL == "0"|
+                                      PATCH == "0"|
+                                      DEPO == "0"|
+                                      RING == "0"|
+                                      IMPLANT == "0"&
+                                      VASECTOMY == "1" |
                                       WITHDRAW == "1" |
                                       NFP == "1" |
                                       SPERM == "1"|
-                                      NOBARRIER == "1", pmax()))
-              
-Wenn ich 2x hormonell vorliegen habe, dann nehme ich den höherer Zufriedenheitswert bei den jeweiligen beiden hormonellen Methoden
+                                      NOBARRIER == "1", "non_hc", NA))
+                                    
+gar#now tell what should be compared
+  
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(contra_satisfaction = ifelse(contraceptive_method = "both_non_and_hc"|contraceptive_method = "hc", pmax(Q23D_PILL, Q23D_PATCH, Q23D_DEPO, Q23D_IMPLANT, Q23D_RING, pmax(RSAT1, RSAT2, RSAT3, RSAT4, RSAT5)
 
-Wenn ich 1x oder 2x nicht-hormonell vorliegen habe, dann nehme ich den höherer Zufriedenheitswert bei den jeweiligen beiden nicht-hormonellen Methoden.
+            
 
 pmax() gives maximum value 
 
