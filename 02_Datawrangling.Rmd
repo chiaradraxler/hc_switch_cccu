@@ -442,7 +442,7 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
 
 
 table(Fake_cccu_complete1$pregnant_between_waves)
-sum(is.na(Fake_cccu_complete1$pregnant_between_wave))
+sum(is.na(Fake_cccu_complete1$pregnant_between_waves))
 
 #factorize
 Fake_cccu_complete1$pregnant_between_waves<-factor(Fake_cccu_complete1$pregnant_between_waves, levels = c(0,1), labels = c("No", "Yes"))
@@ -674,24 +674,7 @@ Wenn ich 2x hormonell vorliegen habe, dann nehme ich den höherer Zufriedenheits
 
 Wenn ich 1x oder 2x nicht-hormonell vorliegen habe, dann nehme ich den höherer Zufriedenheitswert bei den jeweiligen beiden nicht-hormonellen Methoden.
 
-
-
-
-Items: Q23D PILL PATCH IMPLANT IUD RING DEPO
-       RSAT1 (withdrawl), 3(condoms), 4(natural/calendar), 5(spermicid/other, 2(vasectomy)
-       PILL %contains% "1"|
-                       PATCH %contains% "1" |
-                       RING %contains% "1" |
-                       DEPO %contains% "1" |
-                       IMPLANT %contains% "1", 1,
-                     ifelse(CONDOM %contains% "1"| #actively include non_hc user as 0
-                                     VASECTOMY %contains% "1"|
-                                     WITHDRAW %contains% "1" |
-                                     NFP %contains% "1" |
-                                     SPERM %contains% "1" |
-                                     NOBARRIER %contains%
-       
-       pmax() gives maximum value 
+pmax() gives maximum value 
 
 ```{r}
 #overview over items: satisfation with hc method
