@@ -112,8 +112,6 @@ Fake_cccu_main_analysis <-Fake_cccu_complete1 %>%
 table(Fake_cccu_complete1$exclusion_used_EC)
 table(Fake_cccu_main_analysis$exclusion_used_EC)
 
-
-
 ```
 
 
@@ -123,6 +121,23 @@ working from now on with Fake_cccu_main_analysis as df
  no missingness in contraceptive duration and df only for hc user
  
 ```{r}
+#overview contraceptive duration 
+
+table(Fake_cccu_main_analysis$contra_duration)
+
+#create column that indicates missingness in contraceptive duration
+
+Fake_cccu_main_analysis <- Fake_cccu_main_analysis %>%
+  mutate(exclusion_missing_contraduration = ifelse(is.na(contra_duration) == TRUE,1,0))
+
+table(is.na(Fake_cccu_main_analysis$exclusion_missing_contraduration))
+
+
+#create df for subanalysis: no missingness in contra_duration and df only for hc user
+
+Fake_cccu_sub_analysis <-Fake_cccu_main_analysis %>%
+  filter(exclusion_missing_contraduration != 1 & 
+           hc == 1) 
 
 ```
  
