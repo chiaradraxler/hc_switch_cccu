@@ -12,4 +12,10 @@ load("Fake_cccu_main_analysis.RData")
 ```
 
 
-#2. Models
+#2. Load Packages
+```{r}
+library(lme4)
+```
+
+#3. Models
+
