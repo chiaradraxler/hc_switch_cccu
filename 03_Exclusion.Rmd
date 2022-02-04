@@ -54,68 +54,93 @@ Fake_cccu_complete1$exclusion_used_EC<-as.factor(Fake_cccu_complete1$exclusion_u
 
 plot(Fake_cccu_complete1$exclusion_used_EC)
 
+
+#exclude from df based on exclusion used EC
+Fake_cccu_complete1 <-Fake_cccu_complete1 %>%
+  filter(exclusion_used_EC !=1)
+
 ```
 
 ##3.2 No missingness
-in:
+##3.2.1 NO Missingness IUD and IUDnext
+```{r}
 
-•	- No missingness in:
-•	- Switch
-•	- Method satisfaction
-•	- Sex satisfaction
-•	- Sex freq
-•	- selection variables
-•	sum(is.na()) > 0
+#column that indicates missingness in IUD
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+ mutate(exclusion_IUD = ifelse(is.na(IUD) == TRUE, 1,0))
+
+table(is.na(Fake_cccu_complete1$IUD))
+table(Fake_cccu_complete1$exclusion_IUD)
+
+#exclude from df based on missingness in IUD
+Fake_cccu_main_analysis <-Fake_cccu_complete1 %>%
+  filter(exclusion_IUD != 1) 
+```
+Working from now on with Fake_cccu_main_analysis  (excluding missingness in IUD)
 
 ```{r}
-table(Fake_cccu_complete1$switch)
-sum(is.na(Fake_cccu_complete1$switch))
-#create column that indicates missingness in relevant variables
+#create column that indicates missingness in IUD_next
 
-Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
- mutate(exclusion_missingness = ifelse(sum
-                                       (is.na(Fake_cccu_complete1$switch)+
-                                        is.na(Fake_cccu_complete1$sexual_satisfaction)+
-                                           is.na(Fake_cccu_complete1$sex_freq)+
-                                           is.na(Fake_cccu_complete1$AGE)+
-                                           is.na(Fake_cccu_complete1$DEGREE_recode)+
-                                           is.na(Fake_cccu_complete1$POVRATE)+
-                                           is.na(Fake_cccu_complete1$HLTHPROB_recode)+
-                                           is.na(Fake_cccu_complete1$MEDPROB_recode)+
-                                                                                      is.na(Fake_cccu_complete1$GAPINS_recode)+
-                                           is.na(Fake_cccu_complete1$TYPEINS_recode)+
-                                           is.na(Fake_cccu_complete1$NKIDS_t1)+
-                                           is.na(Fake_cccu_complete1$pregnant_between_waves)+
-                                                                                      is.na(Fake_cccu_complete1$had_baby_between_waves)+
-                                           is.na(Fake_cccu_complete1$FEELPG_recode)+
-                                                                                      is.na(Fake_cccu_complete1$Avoid_recode)+
-                                           is.na(Fake_cccu_complete1$rel_dur_factor))>0, 1, 0)) 
-
-table(Fake_cccu_complete1$exclusion_missingness)
-
-
-
+Fake_cccu_main_analysis <- Fake_cccu_complete1 %>%
+  filter(WAVE != "t4") %>% #because we have no t5 for IUD_next
+ mutate(exclusion_IUD_next = ifelse(is.na(IUD_next) == TRUE, 1,0))
+    
+#exclude from df based on missingness IUD_next
+Fake_cccu_main_analysis1 <-Fake_cccu_main_analysis %>%
+  filter(exclusion_IUD_next != 1) 
 ```
 
-##3.3 Create df for main analysis: Exclusion
+Working from now on with 
+Fake_cccu_main_analysis1(excluding missingness in IUD_next) 
 
+##3.2.2 No Missingness: predictors, switch, outcome, selection variables
 ```{r}
+table(Fake_cccu_main_analysis1$switch)
+sum(is.na(Fake_cccu_main_analysis1$switch))
+#create column that indicates missingness in relevant variables
+
+Fake_cccu_main_analysis1 <- Fake_cccu_main_analysis1 %>%
+ mutate(exclusion_missingness = ifelse(sum
+                                       (is.na(Fake_cccu_main_analysis1$switch)+
+                                        is.na(Fake_cccu_main_analysis1$sexual_satisfaction)+
+                                           is.na(Fake_cccu_main_analysis1$sex_freq)+
+                                           is.na(Fake_cccu_main_analysis1$AGE)+
+                                           is.na(Fake_cccu_main_analysis1$DEGREE_recode)+
+                                           is.na(Fake_cccu_main_analysis1$POVRATE)+
+                                           is.na(Fake_cccu_main_analysis1$HLTHPROB_recode)+
+                                           is.na(Fake_cccu_main_analysis1$MEDPROB_recode)+
+                                                                                      is.na(Fake_cccu_main_analysis1$GAPINS_recode)+
+                                           is.na(Fake_cccu_main_analysis1$TYPEINS_recode)+
+                                           is.na(Fake_cccu_main_analysis1$NKIDS_t1)+
+                                           is.na(Fake_cccu_main_analysis1$pregnant_between_waves)+
+                                                                                      is.na(Fake_cccu_main_analysis1$had_baby_between_waves)+
+                                           is.na(Fake_cccu_main_analysis1$FEELPG_recode)+
+                                                                                      is.na(Fake_cccu_main_analysis1$Avoid_recode)+
+                                           is.na(Fake_cccu_main_analysis1$rel_dur_factor))>0, 1, 0)) 
+
+table(Fake_cccu_main_analysis1$exclusion_missingness)
+
+
 #exclude from df
 
 #create df: exclude women following exclusion_used_EC and exclusion_missingness from the maindf 
  
-Fake_cccu_main_analysis <-Fake_cccu_complete1 %>%
-  filter(exclusion_used_EC != 1 & exclusion_missingness !=1) 
+Fake_cccu_main_analysis2 <-Fake_cccu_main_analysis1 %>%
+  filter(exclusion_missingness !=1) 
 
+
+#renaming df for better handling
+
+Fake_cccu_MA <- Fake_cccu_main_analysis2
 #check
 
-table(Fake_cccu_complete1$exclusion_used_EC)
-table(Fake_cccu_main_analysis$exclusion_used_EC)
+table(Fake_cccu_main_analysis1$exclusion_used_EC)
+table(Fake_cccu_MA$exclusion_used_EC)
 
 ```
 
 
-working from now on with Fake_cccu_main_analysis as df
+working from now on with Fake_cccu_MA as df
 
 #4. Subanalysis
  no missingness in contraceptive duration and df only for hc user
@@ -123,21 +148,22 @@ working from now on with Fake_cccu_main_analysis as df
 ```{r}
 #overview contraceptive duration 
 
-table(Fake_cccu_main_analysis$contra_duration)
+table(Fake_cccu_MA$contra_duration)
 
 #create column that indicates missingness in contraceptive duration
 
-Fake_cccu_main_analysis <- Fake_cccu_main_analysis %>%
+Fake_cccu_MA <- Fake_cccu_MA %>%
   mutate(exclusion_missing_contraduration = ifelse(is.na(contra_duration) == TRUE,1,0))
 
-table(is.na(Fake_cccu_main_analysis$exclusion_missing_contraduration))
+table(is.na(Fake_cccu_MA$exclusion_missing_contraduration))
 
 
 #create df for subanalysis: no missingness in contra_duration and df only for hc user
 
-Fake_cccu_sub_analysis <-Fake_cccu_main_analysis %>%
-  filter(exclusion_missing_contraduration != 1 & 
-           hc == 1) 
+Fake_cccu_sub_analysis <-Fake_cccu_MA %>%
+  filter(hc == 1) 
+Fake_cccu_sub_analysis <-Fake_cccu_sub_analysis %>%
+  filter(exclusion_missing_contraduration != 1)
 
 ```
  
@@ -148,34 +174,34 @@ Fake_cccu_sub_analysis <-Fake_cccu_main_analysis %>%
 ```{r}
 #overview over relevant variables
 
-table(Fake_cccu_main_analysis$NOBARRIER)#no non-hormonal contraceptive method in last 30days
-table(Fake_cccu_main_analysis$hc)#no hormonal contracepive method 
+table(Fake_cccu_MA$NOBARRIER)#no non-hormonal contraceptive method in last 30days
+table(Fake_cccu_MA$hc)#no hormonal contracepive method 
 #joint = no contraceptive method 
 
-table(Fake_cccu_main_analysis$sex_inlast30days)#no sex in last 30 days
+table(Fake_cccu_MA$sex_inlast30days)#no sex in last 30 days
 
 #create column that indicates with 1 = no sex and no contraceptive method used in last 30 days
 
-Fake_cccu_main_analysis <- Fake_cccu_main_analysis %>%
+Fake_cccu_MA <- Fake_cccu_MA %>%
   mutate(exclusion_R1 = ifelse(NOBARRIER == "(1) Yes" & 
                                  hc == "non_hc" &
                                  sex_inlast30days == "No",1,0))
 
-table(Fake_cccu_main_analysis$exclusion_R1)
+table(Fake_cccu_MA$exclusion_R1)
 
-crosstabs(~exclusion_R1 + hc + NOBARRIER + sex_inlast30days, data = Fake_cccu_main_analysis) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = No)
+crosstabs(~exclusion_R1 + hc + NOBARRIER + sex_inlast30days, data = Fake_cccu_MA) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = No)
 
 #factorise
-Fake_cccu_main_analysis$exclusion_R1<-as.factor(Fake_cccu_main_analysis$exclusion_R1)
+Fake_cccu_MA$exclusion_R1<-as.factor(Fake_cccu_MA$exclusion_R1)
 
 #plot
 
-plot(Fake_cccu_main_analysis$exclusion_R1)
+plot(Fake_cccu_MA$exclusion_R1)
 
 
 #create df: exclude women following exclusion_R1 from the maindf 
 
-Fake_cccu_R1 <-Fake_cccu_main_analysis %>%
+Fake_cccu_R1 <-Fake_cccu_MA %>%
   filter(exclusion_R1 != 1) 
 
 #check
@@ -195,33 +221,33 @@ table(Fake_cccu_R1$exclusion_R1) # :)
 ```{r}
 #overview over relevant variables
 
-table(Fake_cccu_main_analysis$NOBARRIER)#no non-hormonal contraceptive method in last 30days
-table(Fake_cccu_main_analysis$hc)#no hormonal contracepive method 
+table(Fake_cccu_MA$NOBARRIER)#no non-hormonal contraceptive method in last 30days
+table(Fake_cccu_MA$hc)#no hormonal contracepive method 
 #joint = no contraceptive method 
 
-table(Fake_cccu_main_analysis$sex_inlast30days)# yes= sex in last 30 days
+table(Fake_cccu_MA$sex_inlast30days)# yes= sex in last 30 days
 
 #create column that indicates with 1 = sex and no contraceptive method used in last 30 days
 
-Fake_cccu_main_analysis <- Fake_cccu_main_analysis %>%
+Fake_cccu_MA <- Fake_cccu_MA %>%
   mutate(exclusion_R2 = ifelse(NOBARRIER == "(1) Yes" & 
                                  hc == "non_hc" &
                                  sex_inlast30days == "Yes",1,0))
 
-table(Fake_cccu_main_analysis$exclusion_R2)
+table(Fake_cccu_MA$exclusion_R2)
 
-crosstabs(~exclusion_R1 + hc + NOBARRIER + sex_inlast30days, data = Fake_cccu_main_analysis) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = Yes)
+crosstabs(~exclusion_R1 + hc + NOBARRIER + sex_inlast30days, data = Fake_cccu_MA) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = Yes)
 
 #factorise
-Fake_cccu_main_analysis$exclusion_R2<-as.factor(Fake_cccu_main_analysis$exclusion_R2)
+Fake_cccu_MA$exclusion_R2<-as.factor(Fake_cccu_MA$exclusion_R2)
 
 #plot
 
-plot(Fake_cccu_main_analysis$exclusion_R2)
+plot(Fake_cccu_MA$exclusion_R2)
 
 #create df: exclude women following exclusion_R2 from the maindf 
 
-Fake_cccu_R2 <-Fake_cccu_main_analysis %>%
+Fake_cccu_R2 <-Fake_cccu_MA %>%
   filter(exclusion_R2 != 1) 
 
 #check
@@ -241,31 +267,31 @@ table(Fake_cccu_R2$exclusion_R2) # :)
 ```{r}
 #overview
 
-table(Fake_cccu_main_analysis$VASECTOMY)
-table(Fake_cccu_main_analysis$SP1VAS)
-table(Fake_cccu_main_analysis$SP2VAS)
+table(Fake_cccu_MA$VASECTOMY)
+table(Fake_cccu_MA$SP1VAS)
+table(Fake_cccu_MA$SP2VAS)
 
 
 #create column that indicates if used Vasectomy
 
-Fake_cccu_main_analysis <- Fake_cccu_main_analysis %>%
-  mutate(exclusion_used_vasectomy = ifelse(VASECTOMY == "(1) Yes" |
+Fake_cccu_MA <- Fake_cccu_MA %>%
+  mutate(exclusion_R3 = ifelse(VASECTOMY == "(1) Yes" |
                                              SP1VAS == "(1) Yes"|
                                              SP2VAS == "(1) Yes",1,0))
 
 
-table(Fake_cccu_main_analysis$exclusion_used_vasectomy)
+table(Fake_cccu_MA$exclusion_R3)
 
 #factorize and plot
 
-Fake_cccu_main_analysis$exclusion_used_vasectomy<-as.factor(Fake_cccu_main_analysis$exclusion_used_vasectomy)
+Fake_cccu_MA$exclusion_R3<-as.factor(Fake_cccu_MA$exclusion_R3)
 
 
-plot(Fake_cccu_main_analysis$exclusion_used_vasectomy)
+plot(Fake_cccu_MA$exclusion_R3)
 
-#create df: exclude women following exclusion_R2 from the maindf 
+#create df: exclude women following exclusion_R3 from the maindf 
 
-Fake_cccu_R3 <-Fake_cccu_main_analysis %>%
+Fake_cccu_R3 <-Fake_cccu_MA %>%
   filter(exclusion_R3 != 1) 
 
 #check
@@ -281,9 +307,9 @@ table(Fake_cccu_R3$exclusion_R3)
 
 #Main Analysis 
 
-save(Fake_cccu_main_analysis,file = "Fake_cccu_main_analysis.RData")
+save(Fake_cccu_MA,file = "Fake_cccu_MA.RData")
 
-load("Fake_cccu_main_analysis.RData")
+load("Fake_cccu_MA.RData")
 
 
 #Sub Analysis
@@ -302,7 +328,7 @@ save(Fake_cccu_R2,file = "Fake_cccu_R2.RData")
 load("Fake_cccu_R2.RData")
 
 #R3
-save(Fake_cccu_R3,file = "Fake_cccu_R3.")
+save(Fake_cccu_R3,file = "Fake_cccu_R3.RData")
 
 load("Fake_cccu_R3.RData")
 ```
