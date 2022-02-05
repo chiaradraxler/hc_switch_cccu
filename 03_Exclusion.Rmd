@@ -5,19 +5,6 @@ date: "21 1 2022"
 output: html_document
 ---
 
-- Ausschluss von Vpn
-•	-  Main Analyses:
-•	- No Morning after pill
-•	- No missingness in:
-•	- Switch
-•	- Method satisfaction
-•	- Sex satisfaction
-•	- Sex freq
-•	- selection variables
-•	sum(is.na()) > 0
-•	- Duration Analyses: 
-•	Hauptausschluss + only Hc-user + no missing duration
-•
 
 #1. Load Data
 ```{r}
