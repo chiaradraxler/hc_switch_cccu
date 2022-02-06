@@ -131,8 +131,8 @@ Fake_cccu_complete1 <- Fake_cccu_complete %>%
         IMPLANT, YPILL, YPATCH, YRING,
         YDEPO, YIMPLANT, YIUD, MPILL, MPATCH,
         MRING, MDEPO, MIMPLANT, MIUD,
-        starts_with("Q23A_"), TIMEUSE, WITHDRAW,VASECTOMY,CONDOM,
-        NFP,SPERM,NOBARRIER,XBARR, starts_with("DOV_Q26_"), SP1VAS, SP2VAS)
+        starts_with("Q23A_"), TIMEUSE, WITHDRAWR,VASECTOMY,CONDOMR,
+        NFPR,SPERMR,NOBARRIER,XBARR, starts_with("DOV_Q26_"), SP1VAS, SP2VAS)
 
 #double check column WAVE
 table(Fake_cccu_complete1$WAVE) #happy :) 
@@ -438,6 +438,7 @@ table(Fake_cccu_complete1$PREG)
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
   mutate(pregnant_between_waves = ifelse(PREG == "(1) I had a miscarriage" |
                                           PREG== "(2) I had an abortion" |
+                                          PREG == "(3) I had a baby"|
                                           PREG == "(4) I", 1, ifelse(PREG == "(-1) Refused", NA, 0)))
 
 
@@ -741,12 +742,20 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
                        RING %contains% "1" |
                        DEPO %contains% "1" |
                        IMPLANT %contains% "1", 1,
-                     ifelse(CONDOM %contains% "1"| #actively include non_hc user as 0
+                      ifelse(IUD %contains% "1", NA,
+                             ifelse(CONDOMR %contains% "1"| #actively include non_hc user as 0
                                      VASECTOMY %contains% "1"|
-                                     WITHDRAW %contains% "1" |
-                                     NFP %contains% "1" |
-                                     SPERM %contains% "1" |
-                                     NOBARRIER %contains% "1",0,NA)))  
+                                     WITHDRAWR %contains% "1" |
+                                     NFPR %contains% "1" |
+                                     SPERMR %contains% "1" |
+                                     NOBARRIER %contains% "1", 0, NA))),
+         hc = ifelse(PILL %contains% "0" &
+                       PATCH %contains% "0" &
+                       RING %contains% "0" &
+                       DEPO %contains% "0" &
+                       IMPLANT %contains% "0" &
+                        IUD %contains% "0", 0, hc))
+
 
 table(Fake_cccu_complete1$hc)
 
@@ -758,6 +767,17 @@ Fake_cccu_complete1$hc<-factor(Fake_cccu_complete1$hc, levels = c(0,1), labels =
 
 plot(Fake_cccu_complete1$hc)
 ```
+
+##4.19.1 Building IUD next
+```{r}
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  group_by(CASEID) %>%
+  mutate(IUD_next = lead(IUD)) %>%
+  ungroup()
+
+Fake_cccu_complete1 %>% select(CASEID, WAVE, IUD, IUD_next) %>% View()
+```
+
 
 ##4.20 switch 
 ```{r}
