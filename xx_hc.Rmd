@@ -138,15 +138,34 @@ data = data %>%
 
 # Count
 ```{r}
+# Potential switch between wave 1 and wave 2
+crosstabs(~is.na(data$hc1) + is.na(data$hc2)) #2859 potential switches
+
+# Potential Switch between wave 2 and wave 3
+crosstabs(~is.na(data$hc2) + is.na(data$hc3)) #2148 potential switches
+
+# Potential Switch between wave 3 and wave 4
+crosstabs(~is.na(data$hc3) + is.na(data$hc4)) #1640 potential switches
+
+2859  + 2148   + 1640  #6647 potential switches
+```
+
+# Switch
+```{r}
+data = data %>%
+  mutate(switch_1to2 = ifelse(hc1 == hc2, 0, 1),
+         switch_2to3 = ifelse(hc2 == hc3, 0, 1),
+         switch_3to4 = ifelse(hc3 == hc4, 0, 1))
+
 # Switch between wave 1 and wave 2
-crosstabs(~is.na(data$hc1) + is.na(data$hc2)) #2859  switches
+sum(data$switch_1to2, na.rm = T) # 372 switches
 
 # Switch between wave 2 and wave 3
-crosstabs(~is.na(data$hc2) + is.na(data$hc3)) #2148   switches
+sum(data$switch_2to3, na.rm = T) # 236 switches
 
-# Switch between wave 3 and wave 4
-crosstabs(~is.na(data$hc3) + is.na(data$hc4)) #1640   switches
+# Switch between wave 2 and wave 3
+sum(data$switch_3to4, na.rm = T) # 184 switches
 
-2859  + 2148   + 1640  #6647
+sum(data$switch_1to2, data$switch_2to3, data$switch_3to4, na.rm = T) #792 switches
 ```
 
