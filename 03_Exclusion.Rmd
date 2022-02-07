@@ -43,24 +43,24 @@ plot(Fake_cccu_complete1$exclusion_used_EC)
 
 
 #exclude from df based on exclusion used EC
-Fake_cccu_complete1 <-Fake_cccu_complete1 %>%
+Fake_cccu_complete2 <-Fake_cccu_complete1 %>%
   filter(exclusion_used_EC !=1)
 
 ```
-
+working from now with Fake_cccu_complete2
 ##3.2 No missingness
 ##3.2.1 NO Missingness IUD and IUDnext
 ```{r}
 
 #column that indicates missingness in IUD
-Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+Fake_cccu_complete2 <- Fake_cccu_complete2 %>%
  mutate(exclusion_IUD = ifelse(is.na(IUD) == TRUE, 1,0))
 
-table(is.na(Fake_cccu_complete1$IUD))
-table(Fake_cccu_complete1$exclusion_IUD)
+table(is.na(Fake_cccu_complete2$IUD))
+table(Fake_cccu_complete2$exclusion_IUD)
 
 #exclude from df based on missingness in IUD
-Fake_cccu_main_analysis <-Fake_cccu_complete1 %>%
+Fake_cccu_main_analysis <-Fake_cccu_complete2 %>%
   filter(exclusion_IUD != 1) 
 ```
 Working from now on with Fake_cccu_main_analysis  (excluding missingness in IUD)
@@ -68,7 +68,7 @@ Working from now on with Fake_cccu_main_analysis  (excluding missingness in IUD)
 ```{r}
 #create column that indicates missingness in IUD_next
 
-Fake_cccu_main_analysis <- Fake_cccu_complete1 %>%
+Fake_cccu_main_analysis <- Fake_cccu_complete2 %>%
   filter(WAVE != "t4") %>% #because we have no t5 for IUD_next
  mutate(exclusion_IUD_next = ifelse(is.na(IUD_next) == TRUE, 1,0))
     
