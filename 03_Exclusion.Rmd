@@ -18,6 +18,13 @@ load("Fake_cccu_complete1.RData")
 library(dplyr)
 ```
 
+# Full Dataset
+```{r}
+nrow(Fake_cccu_complete1) #timepoints
+length(unique(Fake_cccu_complete1$CASEID)) #women
+
+```
+
 #3. Main Analysis 
 
 ##3.1 No morning after pill
@@ -30,11 +37,24 @@ table(Fake_cccu_complete1$EC_recode)
 #create column that indicates if used EC
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
-  mutate(exclusion_used_EC = ifelse(EC_recode == "Yes",1,0))
+  mutate(exclusion_used_EC = ifelse(is.na(EC_recode), 0,
+                                    ifelse(EC_recode == "No", 0,
+                                           ifelse(EC_recode == "Yes", 1, NA))))
 
 #overview, factorize and plot
 
 table(Fake_cccu_complete1$exclusion_used_EC)
+
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_used_EC == 0) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow() 
+
+
+table(is.na(Fake_cccu_complete1$exclusion_used_EC))
+
 
 Fake_cccu_complete1$exclusion_used_EC<-as.factor(Fake_cccu_complete1$exclusion_used_EC)
 
@@ -287,6 +307,25 @@ table(Fake_cccu_R3$exclusion_R3)
 
 
 ```
+
+# 6 Stepwise exclusion
+## 6.1 Missing Main Predictor: HC
+Dont exclude current IUD & non-hormonal
+## 6.2 Missing Main Predictor: Satisfaction with HC
+## 6.3 Missing Main Predictor: Sex Freq & Sex Sat
+## 6.4 Missing Selection Predictors
+## 6.5 Missing Outcome (switch)
+Dont exclude next IUD & non-hormonal
+## 6.6 Emergency contraception
+## 6.7 IUD & Non-Hormonal
+## 6.8 Subanalyses Duration
+### 6.8.1 non-hormonal contra
+### 6.8.2 unknow duration
+## 6.9 Robustness analyses
+### 6.9.1. No sex + no contra
+### 6.9.2. Sex + no contra
+### 6.9.3. Vasectomy
+
 
 #6 Save df
 
