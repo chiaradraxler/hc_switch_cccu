@@ -273,7 +273,7 @@ table(Fake_cccu_R2$exclusion_R2) # :)
  Hauptausschluss + Used Vasectomy as contraceptive method
 ```{r}
 #overview
-
+Fake_cccu_MA = Fake_cccu_complete1
 table(Fake_cccu_MA$VASECTOMY)
 table(Fake_cccu_MA$SP1VAS)
 table(Fake_cccu_MA$SP2VAS)
@@ -282,9 +282,10 @@ table(Fake_cccu_MA$SP2VAS)
 #create column that indicates if used Vasectomy
 
 Fake_cccu_MA <- Fake_cccu_MA %>%
-  mutate(exclusion_R3 = ifelse(VASECTOMY == "(1) Yes" |
-                                             SP1VAS == "(1) Yes"|
-                                             SP2VAS == "(1) Yes",1,0))
+  mutate(exclusion_R3 = ifelse(VASECTOMY == "(1) Yes", 1,
+                              ifelse(SP1VAS == "(1) Yes", 1,
+                                     ifelse(SP2VAS == "(1) Yes", 1, 0))),
+         exclusion_R3 = ifelse(is.na(exclusion_R3), 0, exclusion_R3))
 
 
 table(Fake_cccu_MA$exclusion_R3)
