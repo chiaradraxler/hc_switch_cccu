@@ -104,28 +104,50 @@ Fake_cccu_main_analysis1(excluding missingness in IUD_next)
 ```{r}
 table(Fake_cccu_main_analysis1$switch)
 sum(is.na(Fake_cccu_main_analysis1$switch))
+table(is.na(Fake_cccu_main_analysis1$switch))
 #create column that indicates missingness in relevant variables
 
 Fake_cccu_main_analysis1 <- Fake_cccu_main_analysis1 %>%
- mutate(exclusion_missingness = ifelse(sum
-                                       (is.na(Fake_cccu_main_analysis1$switch)+
-                                        is.na(Fake_cccu_main_analysis1$sexual_satisfaction)+
-                                           is.na(Fake_cccu_main_analysis1$sex_freq)+
-                                           is.na(Fake_cccu_main_analysis1$AGE)+
-                                           is.na(Fake_cccu_main_analysis1$DEGREE_recode)+
-                                           is.na(Fake_cccu_main_analysis1$POVRATE)+
-                                           is.na(Fake_cccu_main_analysis1$HLTHPROB_recode)+
-                                           is.na(Fake_cccu_main_analysis1$MEDPROB_recode)+
-                                                                                      is.na(Fake_cccu_main_analysis1$GAPINS_recode)+
-                                           is.na(Fake_cccu_main_analysis1$TYPEINS_recode)+
-                                           is.na(Fake_cccu_main_analysis1$NKIDS_t1)+
-                                           is.na(Fake_cccu_main_analysis1$pregnant_between_waves)+
-                                                                                      is.na(Fake_cccu_main_analysis1$had_baby_between_waves)+
-                                           is.na(Fake_cccu_main_analysis1$FEELPG_recode)+
-                                                                                      is.na(Fake_cccu_main_analysis1$Avoid_recode)+
-                                           is.na(Fake_cccu_main_analysis1$rel_dur_factor))>0, 1, 0)) 
+ mutate(exclusion_missing_predHC = ifelse(is.na(hc), 1, 0),
+        exclusion_missing_selection = ifelse(is.na(AGE) | is.na(DEGREE_recode), 1, 0))
+   
+   
+   # sum = sum(is.na(Fake_cccu_main_analysis1$switch)+
+   #                                      is.na(Fake_cccu_main_analysis1$sexual_satisfaction)+
+   #                                         is.na(Fake_cccu_main_analysis1$sex_freq)+
+   #                                         is.na(Fake_cccu_main_analysis1$AGE)+
+   #                                         is.na(Fake_cccu_main_analysis1$DEGREE_recode)+
+   #                                         is.na(Fake_cccu_main_analysis1$POVRATE)+
+   #                                         is.na(Fake_cccu_main_analysis1$HLTHPROB_recode)+
+   #                                         is.na(Fake_cccu_main_analysis1$MEDPROB_recode)+
+   #                                         is.na(Fake_cccu_main_analysis1$GAPINS_recode)+
+   #                                         is.na(Fake_cccu_main_analysis1$TYPEINS_recode)+
+   #                                         is.na(Fake_cccu_main_analysis1$NKIDS_t1)+
+   #                                         is.na(Fake_cccu_main_analysis1$pregnant_between_waves)+
+   #                                                                                    is.na(Fake_cccu_main_analysis1$had_baby_between_waves)+
+   #                                         is.na(Fake_cccu_main_analysis1$FEELPG_recode)+
+   #                                                                                    is.na(Fake_cccu_main_analysis1$Avoid_recode)+
+   #                                         is.na(Fake_cccu_main_analysis1$rel_dur_factor)),
+   # exclusion_missingness = ifelse(sum
+   #                                     (is.na(Fake_cccu_main_analysis1$switch)+
+   #                                      is.na(Fake_cccu_main_analysis1$sexual_satisfaction)+
+   #                                         is.na(Fake_cccu_main_analysis1$sex_freq)+
+   #                                         is.na(Fake_cccu_main_analysis1$AGE)+
+   #                                         is.na(Fake_cccu_main_analysis1$DEGREE_recode)+
+   #                                         is.na(Fake_cccu_main_analysis1$POVRATE)+
+   #                                         is.na(Fake_cccu_main_analysis1$HLTHPROB_recode)+
+   #                                         is.na(Fake_cccu_main_analysis1$MEDPROB_recode)+
+   #                                         is.na(Fake_cccu_main_analysis1$GAPINS_recode)+
+   #                                         is.na(Fake_cccu_main_analysis1$TYPEINS_recode)+
+   #                                         is.na(Fake_cccu_main_analysis1$NKIDS_t1)+
+   #                                         is.na(Fake_cccu_main_analysis1$pregnant_between_waves)+
+   #                                                                                    is.na(Fake_cccu_main_analysis1$had_baby_between_waves)+
+   #                                         is.na(Fake_cccu_main_analysis1$FEELPG_recode)+
+   #                                                                                    is.na(Fake_cccu_main_analysis1$Avoid_recode)+
+   #                                         is.na(Fake_cccu_main_analysis1$rel_dur_factor))>0, 1, 0))
 
 table(Fake_cccu_main_analysis1$exclusion_missingness)
+table(is.na(Fake_cccu_main_analysis1$exclusion_missingness))
 
 
 #exclude from df
