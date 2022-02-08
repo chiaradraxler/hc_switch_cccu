@@ -277,17 +277,18 @@ Fake_cccu_MA = Fake_cccu_complete1
 table(Fake_cccu_MA$VASECTOMY)
 table(Fake_cccu_MA$SP1VAS)
 table(Fake_cccu_MA$SP2VAS)
+crosstabs(~exclusion_R3+SP2VAS, data = Fake_cccu_MA)
 
 
 #create column that indicates if used Vasectomy
 
 Fake_cccu_MA <- Fake_cccu_MA %>%
   mutate(exclusion_R3 = ifelse(VASECTOMY == "(1) Yes", 1,
-                              ifelse(SP1VAS == "(1) Yes", 1,
-                                     ifelse(SP2VAS == "(1) Yes", 1, 0))),
+                              ifelse(SP1VAS == "(1) Yes", 1, NA)),
+         exclusion_R3 = ifelse(SP2VAS == "(1) Yes" & (is.na(VASECTOMY) | VASECTOMY == "(0) No") & is.na(SP1VAS), 1, exclusion_R3),
          exclusion_R3 = ifelse(is.na(exclusion_R3), 0, exclusion_R3))
 
-
+x = Fake_cccu_MA %>% filter(SP2VAS == "(1) Yes") %>% select(VASECTOMY, SP1VAS, SP2VAS, exclusion_R3)
 table(Fake_cccu_MA$exclusion_R3)
 
 #factorize and plot
