@@ -648,63 +648,6 @@ Fake_cccu_complete1$sex_freq<-factor(Fake_cccu_complete1$sex_freq, levels = c(0,
 ```
 
 
-##4.17 Contraceptive Satisfaction 
-
-ACHTUNG: Item muss rekodiert werden: hier ist bisher 4 = dissatisfied, obwohl wir Hypothese (und Logik es auch eigentlich eher sagen würde) 4 = satisfied
-
-
-Wenn ich - 1x hormonell + 1x nicht-hormonell vorliegen habe (betrifft auch 1 mal nur hormonell) dann nehme ich die Zufriedenheit mit der spezifischen hormonellen Methode 
-
-Wenn ich 2x hormonell vorliegen habe, dann nehme ich den höherer Zufriedenheitswert bei den jeweiligen beiden hormonellen Methoden
-
-Wenn ich 1x oder 2x nicht-hormonell vorliegen habe, dann nehme ich den höherer Zufriedenheitswert bei den jeweiligen beiden nicht-hormonellen Methoden.
-
-
--> we can use variable hc (contra_satis should follow it) because this variable classifies into hc or non hc and then values should be compared -> it does not matter if one is 1x or 2x hc user or 1x hc and 1x non hc and 2x non hc because hc classifies 
-hc = Wenn ich - 1x hormonell + 1x nicht-hormonell vorliegen habe (betrifft auch 1 mal nur hormonell) dann nehme ich die Zufriedenheit mit der spezifischen hormonellen Methode 
-
-Wenn ich 2x hormonell vorliegen habe, dann nehme ich den höherer Zufriedenheitswert bei den jeweiligen beiden hormonellen Methoden
-
-non_hc = Wenn ich 1x oder 2x nicht-hormonell vorliegen habe, dann nehme ich den höherer Zufriedenheitswert bei den jeweiligen beiden nicht-hormonellen Methoden.
-
-and we should then have satisfaction values based on all used variables. 
-if there is only 1 used pmax copies it, if there are 2 pmax compares 
-
-                                    
-gar#now tell what should be compared
-  
-Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
-  mutate(contra_satisfaction = ifelse(hc = "hc", pmax(Q23D_PILL, Q23D_PATCH, Q23D_DEPO, Q23D_IMPLANT, Q23D_RING, na.rm = TRUE), pmax(RSAT1, RSAT2, RSAT3, RSAT4, RSAT5, na.rm = TRUE)
-
-            
-
-pmax() gives maximum value 
-
-```{r}
-#overview over items: satisfation with hc method
-table(Fake_cccu_complete1$Q23D_PILL) 
-table(Fake_cccu_complete1$Q23D_PATCH)
-table(Fake_cccu_complete1$Q23D_IMPLANT)
-table(Fake_cccu_complete1$Q23D_DEPO)
-table(Fake_cccu_complete1$Q23D_IUD)
-table(Fake_cccu_complete1$Q23D_RING)
-
-#overview HORMONAL
-table(Fake_cccu_complete1$HORMONAL)
-
-#says if Vpn used Pill, patch etc or multiple or no hc method 
-
-#overview over items: satisfaction with non_hc method
-
-table(Fake_cccu_complete1$RSAT1)
-table(Fake_cccu_complete1$RSAT2)
-table(Fake_cccu_complete1$RSAT3)
-table(Fake_cccu_complete1$RSAT4)
-table(Fake_cccu_complete1$RSAT5)
-
-
-
-```
 
 
 
@@ -745,6 +688,83 @@ Fake_cccu_complete1$hc<-factor(Fake_cccu_complete1$hc, levels = c(0,1), labels =
 
 
 plot(Fake_cccu_complete1$hc)
+```
+
+##4.17 Contraceptive Satisfaction 
+
+ACHTUNG: Item muss rekodiert werden: hier ist bisher 4 = dissatisfied, obwohl wir Hypothese (und Logik es auch eigentlich eher sagen würde) 4 = satisfied
+
+
+Wenn ich - 1x hormonell + 1x nicht-hormonell vorliegen habe (betrifft auch 1 mal nur hormonell) dann nehme ich die Zufriedenheit mit der spezifischen hormonellen Methode 
+
+Wenn ich 2x hormonell vorliegen habe, dann nehme ich den höherer Zufriedenheitswert bei den jeweiligen beiden hormonellen Methoden
+
+Wenn ich 1x oder 2x nicht-hormonell vorliegen habe, dann nehme ich den höherer Zufriedenheitswert bei den jeweiligen beiden nicht-hormonellen Methoden.
+
+
+-> we can use variable hc (contra_satis should follow it) because this variable classifies into hc or non hc and then values should be compared -> it does not matter if one is 1x or 2x hc user or 1x hc and 1x non hc and 2x non hc because hc classifies 
+hc = Wenn ich - 1x hormonell + 1x nicht-hormonell vorliegen habe (betrifft auch 1 mal nur hormonell) dann nehme ich die Zufriedenheit mit der spezifischen hormonellen Methode 
+
+Wenn ich 2x hormonell vorliegen habe, dann nehme ich den höherer Zufriedenheitswert bei den jeweiligen beiden hormonellen Methoden
+
+non_hc = Wenn ich 1x oder 2x nicht-hormonell vorliegen habe, dann nehme ich den höherer Zufriedenheitswert bei den jeweiligen beiden nicht-hormonellen Methoden.
+
+and we should then have satisfaction values based on all used variables. 
+if there is only 1 used pmax copies it, if there are 2 pmax compares 
+
+                                    
+gar#now tell what should be compared
+
+```{r}
+table(Fake_cccu_complete1$hc)
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(contra_satisfaction = ifelse(hc == "hc",
+                                      pmax(Q23D_PILL, Q23D_PATCH, Q23D_DEPO,
+                                           Q23D_IMPLANT, Q23D_RING,
+                                           na.rm = TRUE),
+                                      pmax(RSAT1, RSAT2, RSAT3, RSAT4, RSAT5,
+                                           na.rm = TRUE)))
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(contra_satisfaction = contra_satisfaction - 1)
+table(Fake_cccu_complete1$contra_satisfaction)
+
+x = Fake_cccu_complete1 %>%
+  select(hc, Q23D_PILL, Q23D_PATCH, Q23D_DEPO,
+         Q23D_IMPLANT, Q23D_RING,RSAT1, RSAT2, RSAT3, RSAT4, RSAT5, contra_satisfaction)
+```
+  
+
+
+            
+
+pmax() gives maximum value 
+
+```{r}
+#overview over items: satisfation with hc method
+table(Fake_cccu_complete1$Q23D_PILL) 
+table(Fake_cccu_complete1$Q23D_PATCH)
+table(Fake_cccu_complete1$Q23D_IMPLANT)
+table(Fake_cccu_complete1$Q23D_DEPO)
+table(Fake_cccu_complete1$Q23D_IUD)
+table(Fake_cccu_complete1$Q23D_RING)
+
+#overview HORMONAL
+table(Fake_cccu_complete1$HORMONAL)
+
+#says if Vpn used Pill, patch etc or multiple or no hc method 
+
+#overview over items: satisfaction with non_hc method
+
+table(Fake_cccu_complete1$RSAT1)
+table(Fake_cccu_complete1$RSAT2)
+table(Fake_cccu_complete1$RSAT3)
+table(Fake_cccu_complete1$RSAT4)
+table(Fake_cccu_complete1$RSAT5)
+
+
+
 ```
 
 ##4.19.1 Building IUD next
