@@ -16,6 +16,7 @@ load("Fake_cccu_complete1.RData")
 
 ```{r}
 library(dplyr)
+library(formr)
 ```
 
 #3. Full Dataset
@@ -26,6 +27,12 @@ length(unique(Fake_cccu_complete1$CASEID)) #women
 ```
 
 ##3.1 Exclude t4 from df (bc. not necessary)
+
+```{r}
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  filter(WAVE != "t4")
+```
+
 
 
 # 4 Building columns that indicate exclusion from df
@@ -75,7 +82,7 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
 ## 4.4 Missing Selection Predictors
 ```{r}
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
- mutate( exclusion_missing_selection = ifelse(is.na(AGE) | is.na(DEGREE_recode) | is.na(POVRATE)| is.na(HLTHPROB_recode) | is.na(MEDPROB_recode)| is.na(GAPINS_recode) | is.na(TYPEINS_recode) | is.na(NKIDS_t1) |is.na(pregnant_between_waves) | is.na(had_baby_between_waves) | is.na(FEELPG_recode) | is.na(Avoid_recode) | is.na(rel_dur_factor), 1, 0))
+ mutate(exclusion_missing_selection = ifelse(is.na(AGE) | is.na(DEGREE_recode) | is.na(POVRATE)| is.na(HLTHPROB_recode) | is.na(MEDPROB_recode)| is.na(GAPINS_recode) | is.na(TYPEINS_recode) | is.na(NKIDS_t1) |is.na(pregnant_between_waves) | is.na(had_baby_between_waves) | is.na(FEELPG_recode) | is.na(Avoid_recode) | is.na(rel_dur_factor), 1, 0))
 
 ```
 
@@ -136,7 +143,7 @@ crosstabs(~exclusion_IUD_next + hc + IUD_next, data = Fake_cccu_complete1)
 table(Fake_cccu_complete1$hc)
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
- mutate(exclusion_missing_used_non_hc= ifelse(hc == "0", 1, 0))
+ mutate(exclusion_used_non_hc= ifelse(hc == "0", 1, 0))
 
 ```
 
@@ -223,23 +230,293 @@ table(Fake_cccu_complete1$exclusion_R3)
 
 
 
-# 6 Stepwise exclusion
-## 6.1 Missing Main Predictor: HC
+# 5 Stepwise exclusion
+## 5.1 Missing Main Predictor: HC
 Dont exclude current IUD & non-hormonal
-## 6.2 Missing Main Predictor: Satisfaction with HC
-## 6.3 Missing Main Predictor: Sex Freq & Sex Sat
-## 6.4 Missing Selection Predictors
-## 6.5 Missing Outcome (switch)
+```{r}
+
+#number of observations 
+table(Fake_cccu_complete1$exclusion_missing_predHC)
+
+#exclude from df
+
+Fake_cccu_complete2 <-Fake_cccu_complete1 %>%
+  filter(exclusion_missing_predHC !=1)
+
+#number of excluded women from Fake_cccu_complete1 bc of exclusion_missing_predHC = 1 (might be combination with other exclusion criteria)
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_predHC !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow() 
+
+
+```
+
+
+## 5.2 Missing Main Predictor: Satisfaction with HC
+```{r}
+#overview number of observations
+table(Fake_cccu_complete1$exclusion_missing_pred_contra_satis)
+
+#exclude from df
+Fake_cccu_complete3 <-Fake_cccu_complete2 %>%
+  filter(exclusion_missing_pred_contra_satis !=1)
+
+#number of excluded women from Fake_cccu_complete1 bc of exclusion_missing_pred_contra_satis = 1 (might be combination with other exclusion criteria)
+
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_pred_contra_satis !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+```
+
+
+## 5.3 Missing Main Predictor: Sex Freq & Sex Sat
+
+```{r}
+
+#sex freq
+
+#overview number of observations
+table(Fake_cccu_complete1$exclusion_missing_pred_sex_freq)
+
+#exclude from df
+Fake_cccu_complete4 <-Fake_cccu_complete3 %>%
+  filter(exclusion_missing_pred_sex_freq !=1)
+
+#number of excluded women from Fake_cccu_complete1 bc of exclusion_missing_pred_sex_freq = 1 (might be combination with other exclusion criteria)
+
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_pred_sex_freqs !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+#sex satis
+table(Fake_cccu_complete1$exclusion_missing_pred_sex_sat)
+
+
+#exclude from df
+Fake_cccu_complete5 <-Fake_cccu_complete4 %>%
+  filter(exclusion_missing_pred_sex_sat !=1)
+
+#number of excluded women from Fake_cccu_complete1 bc of exclusion_missing_pred_sex_sat = 1 (might be combination with other exclusion criteria)
+
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_pred_sex_sat !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+```
+
+## 5.4 Missing Selection Predictors
+```{r}
+
+#overview
+table(Fake_cccu_complete1$exclusion_missing_selection)
+
+#exclude from df
+Fake_cccu_complete6 <-Fake_cccu_complete5 %>%
+  filter(exclusion_missing_selection !=1)
+
+#number of excluded women from Fake_cccu_complete1 bc of exclusion_missing_selection = 1 (might be combination with other exclusion criteria)
+
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_selection !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+```
+
+
+## 5.5 Missing Outcome (switch)
 Dont exclude next IUD & non-hormonal
-## 6.6 Emergency contraception
-## 6.7 IUD & Non-Hormonal
-## 6.8 Subanalyses Duration
-### 6.8.1 non-hormonal contra
-### 6.8.2 unknow duration
-## 6.9 Robustness analyses
-### 6.9.1. No sex + no contra
-### 6.9.2. Sex + no contra
-### 6.9.3. Vasectomy
+```{r}
+table(Fake_cccu_complete1$exclusion_missing_outc_switch)
+
+#exclude from df
+Fake_cccu_complete7 <-Fake_cccu_complete6 %>%
+  filter(exclusion_missing_outc_switch !=1)
+
+#number of excluded women from Fake_cccu_complete1 bc of exclusion_missing_outc_switch = 1 (might be combination with other exclusion criteria)
+
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_outc_switch !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+
+
+```
+
+## 5.6 Emergency contraception
+```{r}
+table(Fake_cccu_complete1$exclusion_used_EC)
+
+#exclude from df
+Fake_cccu_complete8 <-Fake_cccu_complete7 %>%
+  filter(exclusion_used_EC !=1)
+
+#number of excluded women from Fake_cccu_complete1 bc of exclusion_used_EC = 1 (might be combination with other exclusion criteria)
+
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_used_EC !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+```
+
+
+## 5.7 IUD & Non-Hormonal
+```{r}
+#IUD 
+table(Fake_cccu_complete1$exclusion_IUD)
+
+#exclude from df
+Fake_cccu_complete9 <-Fake_cccu_complete8 %>%
+  filter(exclusion_IUD !=1)
+
+#number of excluded women from Fake_cccu_complete1 bc of exclusion_IUD = 1 (might be combination with other exclusion criteria)
+
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_IUD !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+#IUD next
+
+table(Fake_cccu_complete1$exclusion_IUD_next)
+
+#exclude from df
+Fake_cccu_complete10 <-Fake_cccu_complete9 %>%
+  filter(exclusion_IUD_next !=1)
+
+#number of excluded women from Fake_cccu_complete1 bc of exclusion_IUD_next = 1 (might be combination with other exclusion criteria)
+
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_IUD_next !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+
+```
+
+#rename df for Main Analysis 
+```{r}
+Fake_cccu_MA <- Fake_cccu_complete10
+```
+
+## 5.8 Subanalyses Duration
+### 5.8.1 non-hormonal contra
+```{r}
+table(Fake_cccu_complete1$exclusion_used_non_hc)
+
+
+#exclude from df
+Fake_cccu_SA1 <-Fake_cccu_MA %>%
+  filter(exclusion_used_non_hc !=1)
+
+#number of excluded women from Fake_cccu_complete1 bc of exclusion_used_non_hc = 1 (might be combination with other exclusion criteria)
+
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_used_non_hc !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+```
+
+### 5.8.2 unknow duration
+```{r}
+table(Fake_cccu_complete1$exclusion_missing_pred_contra_dura)
+
+#exclude from df
+Fake_cccu_SA <-Fake_cccu_SA1 %>%
+  filter(exclusion_missing_pred_contra_dura !=1)
+
+#number of excluded women from Fake_cccu_complete1 bc of exclusion_missing_pred_contra_dura = 1 (might be combination with other exclusion criteria)
+
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_pred_contra_dura !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+```
+
+## 5.9 Robustness analyses
+### 5.9.1. No sex + no contra
+```{r}
+table(Fake_cccu_complete1$exclusion_R1)
+#exclude from df
+Fake_cccu_R1<-Fake_cccu_MA %>%
+  filter(exclusion_R1 !=1)
+
+#number of excluded women from Fake_cccu_complete1 bc of exclusion_R1 = 1 (might be combination with other exclusion criteria)
+
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_R1 !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+```
+
+### 5.9.2. Sex + no contra
+
+```{r}
+table(Fake_cccu_complete1$exclusion_R2)
+#exclude from df
+Fake_cccu_R2<-Fake_cccu_MA %>%
+  filter(exclusion_R2 !=1)
+
+#number of excluded women from Fake_cccu_complete1 bc of exclusion_R2 = 1 (might be combination with other exclusion criteria)
+
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_R2 !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+```
+
+### 5.9.3. Vasectomy
+```{r}
+table(Fake_cccu_complete1$exclusion_R3)
+#exclude from df
+Fake_cccu_R3<-Fake_cccu_MA %>%
+  filter(exclusion_R3 !=1)
+
+#number of excluded women from Fake_cccu_complete1 bc of exclusion_R3 = 1 (might be combination with other exclusion criteria)
+
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_R3 !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+```
+
 
 
 #6 Save df
@@ -254,9 +531,9 @@ load("Fake_cccu_MA.RData")
 
 
 #Sub Analysis
-save(Fake_cccu_sub_analysis,file = "Fake_cccu_sub_analysis.RData")
+save(Fake_cccu_SA,file = "Fake_cccu_SA.RData")
 
-load("Fake_cccu_sub_analysis.RData")
+load("Fake_cccu_SA.RData")
 
 #R1
 save(Fake_cccu_R1,file = "Fake_cccu_R1.RData")
