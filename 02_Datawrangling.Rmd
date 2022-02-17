@@ -652,7 +652,7 @@ Fake_cccu_complete1$sex_freq<-factor(Fake_cccu_complete1$sex_freq, levels = c(0,
 
 
 
-##4.18 Contraceptive Duration
+
 
 
 ##4.19 hc use:grouping
@@ -847,9 +847,45 @@ x = Fake_cccu_complete1 %>%
 ```
   
 
+##4.21 Contraceptive Duration
+-> only duration values for hc users are needed for subanalysis 
+-> we have t1: years & month duration
+            t2-4: last 6 month 
+            --> we need to pmax() -> get higher duration value for when women are using a combination
+            --> then combine values from years and month 
+            --> then add t1 + t2 usw...
+```{r}
+#higher duration value:  years
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(hc_duration_y = pmax(YPILL, YPATCH, YRING,
+        YDEPO, YIMPLANT, na.rm = TRUE)) 
+
+#higher duration value: months
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(hc_duration_m = pmax(MPILL, MPATCH, MRING,
+        MDEPO, MIMPLANT,  na.rm = TRUE)) 
+
+#now combine values (months)
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(hc_dur = hc_duration_y + hc_duration_m)
+
+#now add values t1 + t2-4
+
+
+
+library(ggplot2)
+qplot(Fake_cccu_complete1$hc_dur)
+
+xx = Fake_cccu_complete1 %>%
+  select(hc, YPILL, YPATCH, YRING,
+        YDEPO, YIMPLANT,MPILL, MPATCH, MRING,
+        MDEPO, MIMPLANT, hc_dur,hc_duration_y, hc_duration_m )
+
+```
 
             
-##4.20 switch 
+##4.22 switch 
 ```{r}
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
   group_by(CASEID) %>%
