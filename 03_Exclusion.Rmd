@@ -47,6 +47,10 @@ table(is.na(Fake_cccu_complete1$hc))
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
  mutate(exclusion_missing_predHC = ifelse(is.na(hc), 1, 0))
+
+table(Fake_cccu_complete1$exclusion_missing_predHC)
+Fake_cccu_complete1$exclusion_missing_predHC <- as.factor(Fake_cccu_complete1$exclusion_missing_predHC)
+qplot(Fake_cccu_complete1$exclusion_missing_predHC)
 ```
 
 ## 4.2 Missing Main Predictor: Satisfaction with HC
@@ -56,6 +60,10 @@ table(is.na(Fake_cccu_complete1$contra_satisfaction))
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
  mutate(exclusion_missing_pred_contra_satis = ifelse(is.na(contra_satisfaction), 1, 0))
+
+table(Fake_cccu_complete1$exclusion_missing_pred_contra_satis)
+Fake_cccu_complete1$exclusion_missing_pred_contra_satis <- as.factor(Fake_cccu_complete1$exclusion_missing_pred_contra_satis)
+qplot(Fake_cccu_complete1$exclusion_missing_pred_contra_satis)
 ```
 
 
@@ -69,12 +77,23 @@ table(is.na(Fake_cccu_complete1$sex_freq))
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
  mutate(exclusion_missing_pred_sex_freq= ifelse(is.na(sex_freq), 1, 0))
 
+table(Fake_cccu_complete1$exclusion_missing_pred_sex_freq)
+Fake_cccu_complete1$exclusion_missing_pred_sex_freq <- as.factor(Fake_cccu_complete1$exclusion_missing_pred_sex_freq)
+qplot(Fake_cccu_complete1$exclusion_missing_pred_sex_freq)
+
 #sex_sat
 table(Fake_cccu_complete1$sexual_satisfaction)
 table(is.na(Fake_cccu_complete1$sexual_satisfaction))
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
  mutate(exclusion_missing_pred_sex_sat= ifelse(is.na(sexual_satisfaction), 1, 0))
+
+
+table(Fake_cccu_complete1$exclusion_missing_pred_sex_sat)
+Fake_cccu_complete1$exclusion_missing_pred_sex_sat <- as.factor(Fake_cccu_complete1$exclusion_missing_pred_sex_sat)
+qplot(Fake_cccu_complete1$exclusion_missing_pred_sex_sat)
+
+
 
 
 ```
@@ -96,6 +115,10 @@ table(is.na(Fake_cccu_complete1$switch))
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
  mutate(exclusion_missing_outc_switch= ifelse(is.na(switch), 1, 0))
 
+table(Fake_cccu_complete1$exclusion_missing_outc_switch)
+Fake_cccu_complete1$exclusion_missing_outc_switch <- as.factor(Fake_cccu_complete1$exclusion_missing_outc_switch)
+
+qplot(Fake_cccu_complete1$exclusion_missing_outc_switch)
 ```
 
 
@@ -112,6 +135,10 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
                                     ifelse(EC_recode == "No", 0,
                                            ifelse(EC_recode == "Yes", 1, NA))))
 
+table(Fake_cccu_complete1$exclusion_used_EC)
+Fake_cccu_complete1$exclusion_used_EC<- as.factor(Fake_cccu_complete1$exclusion_used_EC)
+qplot(Fake_cccu_complete1$exclusion_used_EC)
+
 ```
 
 ## 4.7 IUD & Non-Hormonal
@@ -125,6 +152,11 @@ table(Fake_cccu_complete2$exclusion_IUD)
 
 crosstabs(~exclusion_IUD + hc + IUD, data = Fake_cccu_complete1)
 
+table(Fake_cccu_complete1$exclusion_IUD)
+Fake_cccu_complete1$exclusion_IUD<- as.factor(Fake_cccu_complete1$exclusion_IUD)
+qplot(Fake_cccu_complete1$exclusion_IUD)
+
+
 #IUD_next & non-hormonal 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
  mutate(exclusion_IUD_next = ifelse(is.na(IUD_next) & hc == "0", 1,0))
@@ -133,6 +165,11 @@ table(is.na(Fake_cccu_complete2$IUD_next))
 table(Fake_cccu_complete2$exclusion_IUD_next)
 
 crosstabs(~exclusion_IUD_next + hc + IUD_next, data = Fake_cccu_complete1)
+
+
+table(Fake_cccu_complete1$exclusion_IUD_next)
+Fake_cccu_complete1$exclusion_IUD_next<- as.factor(Fake_cccu_complete1$exclusion_IUD_next)
+qplot(Fake_cccu_complete1$exclusion_IUD_next)
 
 ```
 
@@ -145,6 +182,11 @@ table(Fake_cccu_complete1$hc)
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
  mutate(exclusion_used_non_hc= ifelse(hc == "0", 1, 0))
 
+table(Fake_cccu_complete1$exclusion_used_non_hc)
+Fake_cccu_complete1$exclusion_used_non_hc<- as.factor(Fake_cccu_complete1$exclusion_used_non_hc)
+qplot(Fake_cccu_complete1$exclusion_used_non_hc)
+
+
 ```
 
 ### 4.8.2 unknow duration
@@ -154,6 +196,11 @@ table(is.na(Fake_cccu_complete1$contra_dura))
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
  mutate(exclusion_missing_pred_contra_dura= ifelse(is.na(contra_dura), 1, 0))
+
+table(Fake_cccu_complete1$exclusion_missing_pred_contra_dura)
+Fake_cccu_complete1$exclusion_missing_pred_contra_dura- as.factor(Fake_cccu_complete1$exclusion_missing_pred_contra_dura)
+qplot(Fake_cccu_complete1$exclusion_missing_pred_contra_dura)
+
 
 ```
 
@@ -175,6 +222,9 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
                                  sex_inlast30days == "No",1,0))
 
 table(Fake_cccu_complete1$exclusion_R1)
+Fake_cccu_complete1$exclusion_R1 <-as.factor(Fake_cccu_complete1$exclusion_R1)
+qplot(Fake_cccu_complete1$exclusion_R1)
+
 
 crosstabs(~exclusion_R1 + hc + NOBARRIER + sex_inlast30days, data = Fake_cccu_complete1) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = No)
 
@@ -200,6 +250,9 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
 
 table(Fake_cccu_complete1$exclusion_R2)
 
+Fake_cccu_complete1$exclusion_R2 <-as.factor(Fake_cccu_complete1$exclusion_R2)
+qplot(Fake_cccu_complete1$exclusion_R2)
+
 crosstabs(~exclusion_R1 + hc + NOBARRIER + sex_inlast30days, data = Fake_cccu_complete1) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = Yes)
 
 ```
@@ -224,6 +277,9 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
 
 x = Fake_cccu_complete1 %>% filter(SP2VAS == "(1) Yes") %>% select(VASECTOMY, SP1VAS, SP2VAS, exclusion_R3)
 table(Fake_cccu_complete1$exclusion_R3)
+
+Fake_cccu_complete1$exclusion_R3 <-as.factor(Fake_cccu_complete1$exclusion_R3)
+qplot(Fake_cccu_complete1$exclusion_R3)
 
 ```
 
