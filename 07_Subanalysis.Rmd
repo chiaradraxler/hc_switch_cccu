@@ -27,6 +27,7 @@ sa_m1 <- glmer(switch ~ hc + (1 + hc | CASEID), family = binomial, data = Fake_c
 
 summary(sa_m1)
 
+confint(sa_m1)
 ```
 
 
@@ -38,6 +39,7 @@ DURATION and satisfaction!
 sa_m2 <- glmer(switch ~ hc*contra_satis + hc* contra_duration +  contra_satis * contra_duration + (1 + hc | CASEID), family = binomial, data = Fake_cccu_sub_analysis)
 
 summary(sa_m2)
+confint(sa_m2)
 ```
 
 ##3.3 Model 3: including not directly with contraceptive method associated predictors
@@ -45,6 +47,7 @@ summary(sa_m2)
 sa_m3 <- glmer(switch ~ hc * contra_satis + hc* contra_duration +  contra_satis * contra_duration + hc * sexual_satisfaction + hc * sex_freq + (1 + hc | CASEID), family = binomial, data = Fake_cccu_sub_analysis )
 
 summary(sa_m3)
+confint(sa_m3)
 
 ```
 
@@ -53,5 +56,7 @@ summary(sa_m3)
 m4 <- glmer(switch ~ hc * contra_satis + hc* contra_duration +  contra_satis * contra_duration + hc * sexual_satisfaction + hc * sex_freq ++  AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode + TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_recode + FEELPG_recode + rel_dur_factor + (1 + hc | CASEID), family = binomial, data = Fake_cccu_sub_analysis )
 
 summary(sa_m4)
+
+confint(sa_m4)
 ```
 
