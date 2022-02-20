@@ -4,27 +4,89 @@ author: "Chiara Draxler"
 date: "24 1 2022"
 output: html_document
 ---
+#1. Load Data
+```{r}
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+load("Fake_cccu_R1.RData")
+load("Fake_cccu_R2.RData")
+load("Fake_cccu_R3.RData")
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+#2. Load Packages
+```{r}
+library(lme4)
 ```
 
-## Including Plots
+#Analysis of Robustness R1
 
-You can also embed plots, for example:
+##Main Analysis
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+###3.1 Model 1: basic model
+```{r}
+R1_ma_1 <- glmer(switch ~ hc + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R1)
+
+summary(R1_ma_1)
+
+confint(R1_ma_1)
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+###3.2 Model 2: including directly with contraceptive method associated predictors
+```{r}
+R1_ma_2 <- glmer(switch ~ hc*contra_satis + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R1)
+
+summary(R1_ma_2)
+
+confint(R1_ma_2)
+```
+
+###3.3 Model 3: including not directly with contraceptive method associated predictors
+```{r}
+R1_ma_3 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R1)
+
+summary(R1_ma_3)
+confint(R1_ma_3)
+
+```
+
+##3.4 Model 4: Controlling for observed selection effects
+```{r}
+R1_ma_4 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq ++  AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode + TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_recode + FEELPG_recode + rel_dur_factor + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R1)
+
+summary(R1_ma_4)
+confint(R1_ma_4)
+```
+
+## Sub Analysis
+
+##3.2 Model 2: including directly with contraceptive method associated predictors
+
+DURATION and satisfaction!
+
+```{r}
+R1_sa_m2 <- glmer(switch ~ hc*contra_satis + hc* contra_duration +  contra_satis * contra_duration + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R1)
+
+summary(R1_sa_m2)
+confint(R1_sa_m2)
+```
+
+##3.3 Model 3: including not directly with contraceptive method associated predictors
+```{r}
+R1_sa_m3 <- glmer(switch ~ hc * contra_satis + hc* contra_duration +  contra_satis * contra_duration + hc * sexual_satisfaction + hc * sex_freq + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R1)
+
+summary(R1_sa_m3)
+confint(R1_sa_m3)
+
+```
+
+##3.4 Model 4: Controlling for observed selection effects
+```{r}
+R1_sa_m4 <- glmer(switch ~ hc * contra_satis + hc* contra_duration +  contra_satis * contra_duration + hc * sexual_satisfaction + hc * sex_freq ++  AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode + TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_recode + FEELPG_recode + rel_dur_factor + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R1)
+
+summary(R1_sa_m4)
+
+confint(R1_sa_m4)
+```
+
