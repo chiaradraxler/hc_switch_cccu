@@ -169,3 +169,8 @@ sum(data$switch_3to4, na.rm = T) # 184 switches
 sum(data$switch_1to2, data$switch_2to3, data$switch_3to4, na.rm = T) #792 switches
 ```
 
+## Percentage of switches
+```{r}
+(792/6647)*100 
+```
+
