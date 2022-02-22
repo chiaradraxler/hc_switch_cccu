@@ -855,34 +855,123 @@ x = Fake_cccu_complete1 %>%
             --> then combine values from years and month 
             --> then add t1 + t2 usw...
 ```{r}
-#higher duration value:  years
+#combine values first bc we only want maximum for combined time
+# not e.g. max years for pill and max months for patch
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
-  mutate(hc_duration_y = pmax(YPILL, YPATCH, YRING,
-        YDEPO, YIMPLANT, na.rm = TRUE)) 
+  mutate(hc_dur_pill = YPILL + MPILL,
+         hc_dur_patch = YPATCH + MPATCH,
+         hc_dur_ring = YRING + MRING,
+         hc_dur_depo = YDEPO + MDEPO,
+         hc_dur_implant = YIMPLANT + MIMPLANT)
+# for the simulated data this is a problem, bc if Y or M are missing, hc_dur is missing as well
+# this is not a problem for real data, bc !is.na(Y) <--> !is.na(M)
 
-#higher duration value: months
+# find longest time
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
-  mutate(hc_duration_m = pmax(MPILL, MPATCH, MRING,
-        MDEPO, MIMPLANT,  na.rm = TRUE)) 
+  mutate(hc_dur = pmax(hc_dur_pill, hc_dur_patch, hc_dur_ring, hc_dur_depo, hc_dur_implant,
+                            na.rm = TRUE)) 
 
-#now combine values (months)
+# distribution at t1
+table(Fake_cccu_complete1$hc_dur)
 
+# missings:
+table(is.na(Fake_cccu_complete1$hc_dur)) # a lot of missing bc of simulated data
+# check this for real data (shouldnt be that much missing!)
+
+# recode duration time for t2 - t4 into numeric values
+Fake_cccu_complete1 = Fake_cccu_complete1 %>%
+  mutate(Q23A_PILL = ifelse(Q23A_PILL %contains% "(1)", 0, 
+                              ifelse(Q23A_PILL %contains% "(2)", 1,
+                                      ifelse(Q23A_PILL %contains% "(3)", 2,
+                      ifelse(Q23A_PILL %contains% "(4)", 3,
+                             ifelse(Q23A_PILL %contains% "(5)", 4, 
+                                    ifelse(Q23A_PILL %contains% "(6)", 5,
+                                           ifelse(Q23A_PILL %contains% "(7)", 6,                                       ifelse(Q23A_PILL %contains% "(-1)", NA, NA)))))))),
+         Q23A_PATCH = ifelse(Q23A_PATCH %contains% "(1)", 0, 
+                   ifelse(Q23A_PATCH %contains% "(2)", 1,
+                          ifelse(Q23A_PATCH %contains% "(3)", 2,
+                                 ifelse(Q23A_PATCH %contains% "(4)", 3,
+                                        ifelse(Q23A_PATCH %contains% "(5)", 4, 
+                                               ifelse(Q23A_PATCH %contains% "(6)", 5,
+                                                      ifelse(Q23A_PATCH %contains% "(7)", 6,                                       ifelse(Q23A_PATCH %contains% "(-1)", NA, NA)))))))),
+         Q23A_RING = ifelse(Q23A_RING %contains% "(1)", 0, 
+                   ifelse(Q23A_RING %contains% "(2)", 1,
+                          ifelse(Q23A_RING %contains% "(3)", 2,
+                                 ifelse(Q23A_RING %contains% "(4)", 3,
+                                        ifelse(Q23A_RING %contains% "(5)", 4, 
+                                               ifelse(Q23A_RING %contains% "(6)", 5,
+                                                      ifelse(Q23A_RING %contains% "(7)", 6,                                       ifelse(Q23A_RING %contains% "(-1)", NA, NA)))))))),
+         Q23A_DEPO = ifelse(Q23A_DEPO %contains% "(1)", 0, 
+                   ifelse(Q23A_DEPO %contains% "(2)", 1,
+                          ifelse(Q23A_DEPO %contains% "(3)", 2,
+                                 ifelse(Q23A_DEPO %contains% "(4)", 3,
+                                        ifelse(Q23A_DEPO %contains% "(5)", 4, 
+                                               ifelse(Q23A_DEPO %contains% "(6)", 5,
+                                                      ifelse(Q23A_DEPO %contains% "(7)", 6,                                       ifelse(Q23A_DEPO %contains% "(-1)", NA, NA)))))))),
+         Q23A_IMPLANT = ifelse(Q23A_IMPLANT %contains% "(1)", 0, 
+                   ifelse(Q23A_IMPLANT %contains% "(2)", 1,
+                          ifelse(Q23A_IMPLANT %contains% "(3)", 2,
+                                 ifelse(Q23A_IMPLANT %contains% "(4)", 3,
+                                        ifelse(Q23A_IMPLANT %contains% "(5)", 4, 
+                                               ifelse(Q23A_IMPLANT %contains% "(6)", 5,
+                                                      ifelse(Q23A_IMPLANT %contains% "(7)", 6,                                       ifelse(Q23A_IMPLANT %contains% "(-1)", NA, NA)))))))))
+         
+
+# find values based on t2-t4
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
-  mutate(hc_dur = hc_duration_y + hc_duration_m)
+  mutate(hc_dur_add = pmax(Q23A_PILL, Q23A_PATCH, Q23A_RING, Q23A_DEPO, Q23A_IMPLANT,
+                            na.rm = TRUE))
 
-#now add values t1 + t2-4
+# distribution
+table(Fake_cccu_complete1$hc_dur_add)
+
+# missingness
+table(is.na(Fake_cccu_complete1$hc_dur_add)) # a lot of missing bc of simulated data
 
 
+# now calculate total duration values t1 + t2-4
+Fake_cccu_complete1 = Fake_cccu_complete1 %>%
+  group_by(CASEID) %>%
+  mutate(hc_prev = lag(hc),
+         hc_dur_prev = lag(hc_dur)) %>%
+  ungroup() %>%
+  mutate(hc_dur_1 = hc_dur,
+         hc_dur_2 = ifelse(WAVE == "t2" & hc == hc_prev,
+                           hc_dur_prev + 6, 
+                           ifelse(WAVE == "t2" & hc == "hc" & hc_prev == "non_hc",
+                                  hc_dur_add,
+                                  NA))) %>%
+  group_by(CASEID) %>%
+  mutate(hc_dur_prev = lag(hc_dur_2)) %>%
+  ungroup() %>%
+  mutate(hc_dur_3 = ifelse(WAVE == "t3" & hc == hc_prev,
+                           hc_dur_prev + 6, 
+                           ifelse(WAVE == "t3" & hc == "hc" & hc_prev == "non_hc",
+                                  hc_dur_add,
+                                  NA))) %>%
+  group_by(CASEID) %>%
+  mutate(hc_dur_prev = lag(hc_dur_3)) %>%
+  ungroup() %>%
+  mutate(hc_dur_4 = ifelse(WAVE == "t4" & hc == hc_prev,
+                           hc_dur_prev + 6, 
+                           ifelse(WAVE == "t4" & hc == "hc" & hc_prev == "non_hc",
+                                  hc_dur_add,
+                                  NA))) %>%
+  select(-hc_prev, -hc_dur_prev)
 
+table(Fake_cccu_complete1$hc_dur_1)
+table(Fake_cccu_complete1$hc_dur_2)
+table(Fake_cccu_complete1$hc_dur_3)
+table(Fake_cccu_complete1$hc_dur_4)
 
-library(ggplot2)
-qplot(Fake_cccu_complete1$hc_dur)
+#combine waves
+Fake_cccu_complete1 = Fake_cccu_complete1 %>%
+  mutate(hc_dur = ifelse(!is.na(hc_dur_1), hc_dur_1,
+                         ifelse(!is.na(hc_dur_2), hc_dur_2,
+                                ifelse(!is.na(hc_dur_3), hc_dur_3,
+                                       ifelse(!is.na(hc_dur_4), hc_dur_4, NA)))))
 
-xx = Fake_cccu_complete1 %>%
-  select(hc, YPILL, YPATCH, YRING,
-        YDEPO, YIMPLANT,MPILL, MPATCH, MRING,
-        MDEPO, MIMPLANT, hc_dur,hc_duration_y, hc_duration_m )
-
+table(Fake_cccu_complete1$hc_dur)
 ```
 
             
