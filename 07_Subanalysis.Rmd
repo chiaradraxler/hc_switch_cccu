@@ -18,7 +18,6 @@ library(lme4)
 
 
 #3. Models
-currently impossible to test bc of problems with missingness
 
 
 ##3.2 Model 2: including directly with contraceptive method associated predictors

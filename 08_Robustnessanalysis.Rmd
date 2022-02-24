@@ -6,10 +6,15 @@ output: html_document
 ---
 #1. Load Data
 ```{r}
-
+#MA
 load("Fake_cccu_R1.RData")
 load("Fake_cccu_R2.RData")
 load("Fake_cccu_R3.RData")
+
+#SA
+load("Fake_cccu_R1_s.RData")
+load("Fake_cccu_R2_s.RData")
+load("Fake_cccu_R3_s.RData")
 ```
 
 
@@ -66,7 +71,7 @@ confint(R1_ma_4)
 DURATION and satisfaction!
 
 ```{r}
-R1_sa_m2 <- glmer(switch ~ contra_satis + contra_duration +  contra_satis * contra_duration + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R1)
+R1_sa_m2 <- glmer(switch ~ contra_satis + contra_duration +  contra_satis * contra_duration + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R1_s)
 
 summary(R1_sa_m2)
 confint(R1_sa_m2)
@@ -122,7 +127,7 @@ confint(R2_ma_4)
 DURATION and satisfaction!
 
 ```{r}
-R2_sa_m2 <- glmer(switch ~ contra_satis + contra_duration +  contra_satis * contra_duration + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R2)
+R2_sa_m2 <- glmer(switch ~ contra_satis + contra_duration +  contra_satis * contra_duration + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R2_s)
 
 summary(R2_sa_m2)
 confint(R2_sa_m2)
@@ -177,7 +182,7 @@ confint(R3_ma_4)
 DURATION and satisfaction!
 
 ```{r}
-R3_sa_m2 <- glmer(switch ~ contra_satis + ontra_duration +  contra_satis * contra_duration + (1 + hc | CASEID), family = binomial, data = Fake_cccu_3)
+R3_sa_m2 <- glmer(switch ~ contra_satis + ontra_duration +  contra_satis * contra_duration + (1 + hc | CASEID), family = binomial, data = Fake_cccu_3_s)
 
 summary(R3_sa_m2)
 confint(R3_sa_m2)

@@ -265,7 +265,7 @@ crosstabs(~exclusion_R1 + hc + NOBARRIER + sex_inlast30days, data = Fake_cccu_co
 table(Fake_cccu_complete1$VASECTOMY)
 table(Fake_cccu_complete1$SP1VAS)
 table(Fake_cccu_complete1$SP2VAS)
-crosstabs(~exclusion_R3+SP2VAS, data = Fake_cccu_complete1)
+
 
 
 #create column that indicates if used Vasectomy
@@ -278,6 +278,7 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
 
 x = Fake_cccu_complete1 %>% filter(SP2VAS == "(1) Yes") %>% select(VASECTOMY, SP1VAS, SP2VAS, exclusion_R3)
 table(Fake_cccu_complete1$exclusion_R3)
+crosstabs(~exclusion_R3+SP2VAS, data = Fake_cccu_complete1)
 
 Fake_cccu_complete1$exclusion_R3 <-as.factor(Fake_cccu_complete1$exclusion_R3)
 qplot(Fake_cccu_complete1$exclusion_R3)
@@ -350,7 +351,7 @@ Fake_cccu_complete4 <-Fake_cccu_complete3 %>%
 
 length(unique(Fake_cccu_complete1$CASEID)) -
   Fake_cccu_complete1 %>%
-  filter(exclusion_missing_pred_sex_freqs !=1) %>%
+  filter(exclusion_missing_pred_sex_freq !=1) %>%
   select(CASEID) %>%
   unique() %>%
   nrow()
@@ -611,7 +612,7 @@ save(Fake_cccu_R1,file = "Fake_cccu_R1.RData")
 load("Fake_cccu_R1.RData")
 
 ##SA
-save(Fake_cccu_R1_S,file = "Fake_cccu_R1_s.RData")
+save(Fake_cccu_R1_s,file = "Fake_cccu_R1_s.RData")
 
 load("Fake_cccu_R1_s.RData")
 

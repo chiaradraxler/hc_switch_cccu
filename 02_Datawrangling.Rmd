@@ -832,18 +832,18 @@ table(Fake_cccu_complete1$RSAT5_r)
 #building contra_satisfaction 
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
-  mutate(contra_satisfaction = ifelse(hc == "hc",
+  mutate(contra_satis = ifelse(hc == "hc",
                                       pmax(Q23D_PILL_r, Q23D_PATCH_r, Q23D_DEPO_r,
                                            Q23D_IMPLANT_r, Q23D_RING_r,
                                            na.rm = TRUE),
                                       pmax(RSAT1_r, RSAT2_r, RSAT3_r, RSAT4_r, RSAT5_r,
                                            na.rm = TRUE)))
 
-table(Fake_cccu_complete1$contra_satisfaction)
+table(Fake_cccu_complete1$contra_satis)
 
 x = Fake_cccu_complete1 %>%
   select(hc, Q23D_PILL_r, Q23D_PATCH_r, Q23D_DEPO_r,
-         Q23D_IMPLANT_r, Q23D_RING_r,RSAT1_r, RSAT2_r, RSAT3_r, RSAT4_r, RSAT5_r, contra_satisfaction)
+         Q23D_IMPLANT_r, Q23D_RING_r,RSAT1_r, RSAT2_r, RSAT3_r, RSAT4_r, RSAT5_r, contra_satis)
 ```
   
 
