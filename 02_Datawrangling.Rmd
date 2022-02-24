@@ -154,6 +154,7 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
 #factorize
 Fake_cccu_complete1$EC_recode<-factor(Fake_cccu_complete1$EC_recode, levels = c(0,1), labels = c("No", "Yes"))
 
+qplot(Fake_cccu_complete1$EC_recode)
 
 
 ```
@@ -592,6 +593,7 @@ Fake_cccu_complete1$sexual_satisfaction <- as.numeric(Fake_cccu_complete1$sexual
                                  
 table(Fake_cccu_complete1$sexual_satisfaction)
 
+hist(Fake_cccu_complete1$sexual_satisfaction)
 
 ```
 
@@ -644,6 +646,8 @@ crosstabs(~sex_inlast30days + NSEXMO , data = Fake_cccu_complete1)
 
 #factorize
 Fake_cccu_complete1$sex_freq<-factor(Fake_cccu_complete1$sex_freq, levels = c(0,1,2,3,4), labels = c("No sex", "Once", "2-5 times", "6-10 times", "11 or more times")) 
+
+qplot(Fake_cccu_complete1$sex_freq)
 
 ```
 
@@ -844,6 +848,8 @@ table(Fake_cccu_complete1$contra_satis)
 x = Fake_cccu_complete1 %>%
   select(hc, Q23D_PILL_r, Q23D_PATCH_r, Q23D_DEPO_r,
          Q23D_IMPLANT_r, Q23D_RING_r,RSAT1_r, RSAT2_r, RSAT3_r, RSAT4_r, RSAT5_r, contra_satis)
+
+hist(Fake_cccu_complete1$contra_satis)
 ```
   
 
@@ -972,6 +978,8 @@ Fake_cccu_complete1 = Fake_cccu_complete1 %>%
                                        ifelse(!is.na(hc_dur_4), hc_dur_4, NA)))))
 
 table(Fake_cccu_complete1$hc_dur)
+
+qplot(Fake_cccu_complete1$hc_dur)
 ```
 
             
@@ -993,6 +1001,7 @@ Fake_cccu_complete1 %>%
   table()
 
 table(is.na(Fake_cccu_complete1$switch))
+hist(Fake_cccu_complete1$switch)
 ```
 
 
