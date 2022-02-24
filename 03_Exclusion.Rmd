@@ -17,6 +17,7 @@ load("Fake_cccu_complete1.RData")
 ```{r}
 library(dplyr)
 library(formr)
+library(ggplot2)
 ```
 
 #3. Full Dataset
@@ -191,15 +192,15 @@ qplot(Fake_cccu_complete1$exclusion_used_non_hc)
 
 ### 4.8.2 unknow duration
 ```{r}
-table(Fake_cccu_complete1$contra_dura)
-table(is.na(Fake_cccu_complete1$contra_dura))
+table(Fake_cccu_complete1$hc_dur)
+table(is.na(Fake_cccu_complete1$hc_dur))
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
- mutate(exclusion_missing_pred_contra_dura= ifelse(is.na(contra_dura), 1, 0))
+ mutate(exclusion_missing_pred_hc_dur= ifelse(is.na(hc_dur), 1, 0))
 
-table(Fake_cccu_complete1$exclusion_missing_pred_contra_dura)
-Fake_cccu_complete1$exclusion_missing_pred_contra_dura- as.factor(Fake_cccu_complete1$exclusion_missing_pred_contra_dura)
-qplot(Fake_cccu_complete1$exclusion_missing_pred_contra_dura)
+table(Fake_cccu_complete1$exclusion_missing_pred_hc_dur)
+Fake_cccu_complete1$exclusion_missing_pred_hc_dur<- as.factor(Fake_cccu_complete1$exclusion_missing_pred_hc_dur)
+qplot(Fake_cccu_complete1$exclusion_missing_pred_hc_dur)
 
 
 ```
@@ -502,17 +503,17 @@ length(unique(Fake_cccu_complete1$CASEID)) -
 
 ### 5.8.2 unknow duration
 ```{r}
-table(Fake_cccu_complete1$exclusion_missing_pred_contra_dura)
+table(Fake_cccu_complete1$exclusion_missing_pred_hc_dur)
 
 #exclude from df
 Fake_cccu_SA <-Fake_cccu_SA1 %>%
-  filter(exclusion_missing_pred_contra_dura !=1)
+  filter(exclusion_missing_pred_hc_dur !=1)
 
-#number of excluded women from Fake_cccu_complete1 bc of exclusion_missing_pred_contra_dura = 1 (might be combination with other exclusion criteria)
+#number of excluded women from Fake_cccu_complete1 bc of exclusion_missing_pred_hc_dur = 1 (might be combination with other exclusion criteria)
 
 length(unique(Fake_cccu_complete1$CASEID)) -
   Fake_cccu_complete1 %>%
-  filter(exclusion_missing_pred_contra_dura !=1) %>%
+  filter(exclusion_missing_pred_hc_dur !=1) %>%
   select(CASEID) %>%
   unique() %>%
   nrow()
@@ -535,6 +536,10 @@ length(unique(Fake_cccu_complete1$CASEID)) -
   unique() %>%
   nrow()
 
+#df for subanalysis
+Fake_cccu_R1_s<-Fake_cccu_SA %>%
+  filter(exclusion_R1 !=1)
+
 ```
 
 ### 5.9.2. Sex + no contra
@@ -554,6 +559,10 @@ length(unique(Fake_cccu_complete1$CASEID)) -
   unique() %>%
   nrow()
 
+#df for SA
+Fake_cccu_R2_s<-Fake_cccu_SA %>%
+  filter(exclusion_R2 !=1)
+
 ```
 
 ### 5.9.3. Vasectomy
@@ -571,6 +580,10 @@ length(unique(Fake_cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
+
+#df for subanalysis
+Fake_cccu_R3_s<-Fake_cccu_SA %>%
+  filter(exclusion_R3 !=1)
 ```
 
 
@@ -592,18 +605,36 @@ save(Fake_cccu_SA,file = "Fake_cccu_SA.RData")
 load("Fake_cccu_SA.RData")
 
 #R1
+##MA
 save(Fake_cccu_R1,file = "Fake_cccu_R1.RData")
 
 load("Fake_cccu_R1.RData")
 
+##SA
+save(Fake_cccu_R1_S,file = "Fake_cccu_R1_s.RData")
+
+load("Fake_cccu_R1_s.RData")
+
 #R2
+##MA
 save(Fake_cccu_R2,file = "Fake_cccu_R2.RData")
 
 load("Fake_cccu_R2.RData")
+##SA
+
+save(Fake_cccu_R2_s,file = "Fake_cccu_R2_s.RData")
+
+load("Fake_cccu_R2_s.RData")
 
 #R3
+##MA
 save(Fake_cccu_R3,file = "Fake_cccu_R3.RData")
 
 load("Fake_cccu_R3.RData")
+
+##SA
+save(Fake_cccu_R3_s,file = "Fake_cccu_R3_s.RData")
+
+load("Fake_cccu_R3_s.RData")
 ```
 
