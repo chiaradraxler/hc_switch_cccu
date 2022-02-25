@@ -161,10 +161,10 @@ qplot(Fake_cccu_complete1$exclusion_used_EC)
 ```{r}
 #IUD & non-hormonal 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
- mutate(exclusion_IUD = ifelse(is.na(IUD) & hc == "0", 1,0))
+ mutate(exclusion_IUD = ifelse(is.na(IUD) & hc == "0", 1,0)) #@CHIARA@ this doesnt work? why is.na(IUD)?
 
-table(is.na(Fake_cccu_complete2$IUD))
-table(Fake_cccu_complete2$exclusion_IUD)
+table(is.na(Fake_cccu_complete1$IUD))
+table(Fake_cccu_complete1$exclusion_IUD)
 
 crosstabs(~exclusion_IUD + hc + IUD, data = Fake_cccu_complete1)
 
