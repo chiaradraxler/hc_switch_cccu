@@ -25,7 +25,7 @@ library(lme4)
 DURATION and satisfaction!
 
 ```{r}
-sa_m2 <- glmer(switch ~ contra_satis + contra_duration +  contra_satis * contra_duration + (1 + hc | CASEID), family = binomial, data = Fake_cccu_SA)
+sa_m2 <- glmer(switch ~ contra_satis * contra_duration + (1 + hc | CASEID), family = binomial, data = Fake_cccu_SA)
 
 summary(sa_m2)
 confint(sa_m2)
