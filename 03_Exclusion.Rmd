@@ -56,11 +56,11 @@ qplot(Fake_cccu_complete1$exclusion_missing_predHC)
 
 ## 4.2 Missing Main Predictor: Satisfaction with HC
 ```{r}
-table(Fake_cccu_complete1$contra_satisfaction)
-table(is.na(Fake_cccu_complete1$contra_satisfaction))
+table(Fake_cccu_complete1$contra_satis) #@CHIARA@ Variable heißt contra_satis
+table(is.na(Fake_cccu_complete1$contra_satis))
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
- mutate(exclusion_missing_pred_contra_satis = ifelse(is.na(contra_satisfaction), 1, 0))
+ mutate(exclusion_missing_pred_contra_satis = ifelse(is.na(contra_satis), 1, 0))
 
 table(Fake_cccu_complete1$exclusion_missing_pred_contra_satis)
 Fake_cccu_complete1$exclusion_missing_pred_contra_satis <- as.factor(Fake_cccu_complete1$exclusion_missing_pred_contra_satis)
