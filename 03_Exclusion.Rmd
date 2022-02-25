@@ -161,7 +161,7 @@ qplot(Fake_cccu_complete1$exclusion_used_EC)
 ```{r}
 #IUD & non-hormonal 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
- mutate(exclusion_IUD = ifelse(is.na(IUD) & hc == "0", 1,0)) #@CHIARA@ this doesnt work? why is.na(IUD)?
+ mutate(exclusion_IUD = ifelse(is.na(IUD) & hc == "0", 1,0)) 
 
 table(is.na(Fake_cccu_complete1$IUD))
 table(Fake_cccu_complete1$exclusion_IUD)
@@ -196,7 +196,7 @@ qplot(Fake_cccu_complete1$exclusion_IUD_next)
 table(Fake_cccu_complete1$hc)
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
- mutate(exclusion_used_non_hc= ifelse(hc == "0", 1, 0))
+ mutate(exclusion_used_non_hc= ifelse(hc == "non_hc", 1, 0))
 
 table(Fake_cccu_complete1$exclusion_used_non_hc)
 Fake_cccu_complete1$exclusion_used_non_hc<- as.factor(Fake_cccu_complete1$exclusion_used_non_hc)
