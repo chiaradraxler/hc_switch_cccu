@@ -103,7 +103,7 @@ qplot(Fake_cccu_complete1$exclusion_missing_pred_sex_sat)
 @CHIARA@ seperate for all selection variables - otherwise we are unable to see which are the problematic variables
 ```{r}
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
- mutate(exclusion_missing_selection = ifelse(is.na(AGE) | is.na(DEGREE_recode) | is.na(POVRATE)| is.na(HLTHPROB_recode) | is.na(MEDPROB_recode)| is.na(GAPINS_recode) | is.na(TYPEINS_recode) | is.na(NKIDS_t1) |is.na(pregnant_between_waves) | is.na(had_baby_between_waves) | is.na(FEELPG_recode) | is.na(Avoid_recode) | is.na(rel_dur_factor), 1, 0))
+ mutate(exclusion_missing_selection = as.factor(ifelse(is.na(AGE) | is.na(DEGREE_recode) | is.na(POVRATE)| is.na(HLTHPROB_recode) | is.na(MEDPROB_recode)| is.na(GAPINS_recode) | is.na(TYPEINS_recode) | is.na(NKIDS_t1) |is.na(pregnant_between_waves) | is.na(had_baby_between_waves) | is.na(FEELPG_recode) | is.na(Avoid_recode) | is.na(rel_dur_factor), 1, 0)))
 
 qplot(Fake_cccu_complete1$exclusion_missing_selection)
 table(is.na(Fake_cccu_complete1$AGE))
