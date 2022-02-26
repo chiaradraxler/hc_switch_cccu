@@ -71,7 +71,7 @@ confint(R1_ma_4)
 DURATION and satisfaction!
 
 ```{r}
-R1_sa_m2 <- glmer(switch ~ contra_satis * contra_duration + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R1_s)
+R1_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R1_s)
 
 summary(R1_sa_m2)
 confint(R1_sa_m2)
@@ -127,7 +127,7 @@ confint(R2_ma_4)
 DURATION and satisfaction!
 
 ```{r}
-R2_sa_m2 <- glmer(switch ~ contra_satis * contra_duration + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R2_s)
+R2_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R2_s)
 
 summary(R2_sa_m2)
 confint(R2_sa_m2)
@@ -182,7 +182,7 @@ confint(R3_ma_4)
 DURATION and satisfaction!
 
 ```{r}
-R3_sa_m2 <- glmer(switch ~ contra_satis * contra_duration + (1 + hc | CASEID), family = binomial, data = Fake_cccu_3_s)
+R3_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1 + hc | CASEID), family = binomial, data = Fake_cccu_3_s)
 
 summary(R3_sa_m2)
 confint(R3_sa_m2)
