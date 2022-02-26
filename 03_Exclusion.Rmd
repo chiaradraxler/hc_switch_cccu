@@ -109,7 +109,6 @@ x = Fake_cccu_complete1 %>%
 ```
 
 ## 4.4 Missing Selection Predictors
-@CHIARA@ seperate for all selection variables - otherwise we are unable to see which are the problematic variables
 ```{r}
 #Age
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
@@ -211,6 +210,9 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>% mutate(exclusion_missing_selectio
 
 qplot(Fake_cccu_complete1$exclusion_missing_selection)
 
+
+x = Fake_cccu_complete1 %>%
+  select(exclusion_missing_selection, exclusion_missing_selection_age, exclusion_missing_selection_degree, exclusion_missing_selection_povrate, exclusion_missing_selection_healthprb, exclusion_missing_selection_medprob, exclusion_missing_selection_gapins, exclusion_missing_selection_typeins, exclusion_missing_selection_nkids, exclusion_missing_selection_preg_bet_waves, exclusion_missing_selection_baby_bet_waves, exclusion_missing_selection_feelpg, exclusion_missing_selection_avoid, exclusion_missing_selection_reldur)
 ```
 
 
@@ -306,7 +308,7 @@ x = Fake_cccu_complete1 %>%
 table(Fake_cccu_complete1$hc)
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
- mutate(exclusion_used_non_hc= ifelse(hc == "non_hc", 1, 0))
+ mutate(exclusion_used_non_hc= ifelse(hc == "non_hc", 1,0))
 
 table(Fake_cccu_complete1$exclusion_used_non_hc)
 Fake_cccu_complete1$exclusion_used_non_hc<- as.factor(Fake_cccu_complete1$exclusion_used_non_hc)
@@ -513,13 +515,120 @@ Fake_cccu_complete6 <-Fake_cccu_complete5 %>%
 
 #number of excluded women from Fake_cccu_complete1 bc of exclusion_missing_selection = 1 (might be combination with other exclusion criteria)
 
+#for alle selection predictors
+
 length(unique(Fake_cccu_complete1$CASEID)) -
   Fake_cccu_complete1 %>%
   filter(exclusion_missing_selection !=1) %>%
   select(CASEID) %>%
   unique() %>%
   nrow()
+#
+#separate for all selection predictors:
+#Age
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_selection_age !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
 
+#Degree
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_selection_degree !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+#Povrate
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_selection_povrate !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+#Hlthprob
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_selection_healthprb !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+#MedProb
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_selection_medprob !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+#Gapins
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_selection_gapins !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+#Typeins
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_selection_typeins !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+#N kids at t1
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_selection_nkids !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+
+#Preg between waves
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_selection_preg_bet_waves !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+#baby between waves
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_selection_baby_bet_waves !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+#Feelpg
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_selection_feelpg !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+#Avoid
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_selection_avoid !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
+
+#rel dur
+length(unique(Fake_cccu_complete1$CASEID)) -
+  Fake_cccu_complete1 %>%
+  filter(exclusion_missing_selection_reldur !=1) %>%
+  select(CASEID) %>%
+  unique() %>%
+  nrow()
 ```
 
 
