@@ -22,7 +22,7 @@ currently impossible to test bc of problems with missingness
 
 ##3.1 Model 1: basic model
 ```{r}
-m1 <- glmer(switch ~ hc + (1 + hc | CASEID), family = binomial, data = Fake_cccu_MA )
+m1 <- glmer(switch ~ hc + (1 + hc | CASEID), family = binomial, data = Fake_cccu_MA)
 
 summary(m1)
 
@@ -33,7 +33,7 @@ confint(m1)
 
 ##3.2 Model 2: including directly with contraceptive method associated predictors
 ```{r}
-m2 <- glmer(switch ~ hc*contra_satis + (1 + hc | CASEID), family = binomial, data = Fake_cccu_MA )
+m2 <- glmer(switch ~ hc*contra_satis + (1 + hc | CASEID), family = binomial, data = Fake_cccu_MA)
 
 summary(m2)
 
@@ -42,7 +42,7 @@ confint(m2)
 
 ##3.3 Model 3: including not directly with contraceptive method associated predictors
 ```{r}
-m3 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + (1 + hc | CASEID), family = binomial, data = Fake_cccu_MA )
+m3 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + (1 + hc | CASEID), family = binomial, data = Fake_cccu_MA)
 
 summary(m3)
 confint(m3)
@@ -51,7 +51,7 @@ confint(m3)
 
 ##3.4 Model 4: Controlling for observed selection effects
 ```{r}
-m4 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq +  AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode + TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_recode + FEELPG_recode + rel_dur_factor + (1 + hc | CASEID), family = binomial, data = Fake_cccu_MA )
+m4 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq +  hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_recode + hc *FEELPG_recode + hc *rel_dur_factor + (1 + hc | CASEID), family = binomial, data = Fake_cccu_MA )
 
 summary(m4)
 confint(m4)
