@@ -359,6 +359,11 @@ plot(Fake_cccu_complete1$HLTHPROB_recode)
 ```{r}
 #overview
 table(Fake_cccu_complete1$AVOID)
+table(is.na(Fake_cccu_complete1$AVOID))
+x = Fake_cccu_complete1 %>%
+  select(WAVE, AVOID)%>%
+  filter(WAVE == "t3")
+
 #recode
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
@@ -433,6 +438,11 @@ Since September 2012, did you experience any of the following?
 ```{r}
 #overview
 table(Fake_cccu_complete1$PREG)
+
+table(is.na(Fake_cccu_complete1$PREG))
+
+x = Fake_cccu_complete1 %>%
+  select(WAVE, PREG)
 
 #recode
 
