@@ -203,9 +203,9 @@ table(Fake_cccu_complete1$exclusion_missing_selection_feelpg)#missings
 
 #Avoidance of pregnancy
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
- mutate(exclusion_missing_selection_avoid= as.factor(ifelse(is.na(Avoid_recode),1,0))) 
+ mutate(exclusion_missing_selection_avoid= as.factor(ifelse(is.na(Avoid_r),1,0))) 
 
-table(is.na(Fake_cccu_complete1$Avoid_recode))
+table(is.na(Fake_cccu_complete1$Avoid_r))
 table(Fake_cccu_complete1$exclusion_missing_selection_avoid)#lot missings -> something wrong?
 
 #Relationship duration
@@ -218,7 +218,7 @@ table(Fake_cccu_complete1$exclusion_missing_selection_reldur)
 
 
 #complete exclusion for all selection variables
-Fake_cccu_complete1 <- Fake_cccu_complete1 %>% mutate(exclusion_missing_selection = as.factor(ifelse(is.na(AGE) | is.na(DEGREE_recode) | is.na(POVRATE)| is.na(HLTHPROB_recode) | is.na(MEDPROB_recode)| is.na(GAPINS_recode) | is.na(TYPEINS_recode) | is.na(NKIDS_t1) |is.na(pregnant_between_waves) | is.na(had_baby_between_waves) | is.na(FEELPG_recode) | is.na(Avoid_recode) | is.na(rel_dur_factor), 1, 0)))
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>% mutate(exclusion_missing_selection = as.factor(ifelse(is.na(AGE) | is.na(DEGREE_recode) | is.na(POVRATE)| is.na(HLTHPROB_recode) | is.na(MEDPROB_recode)| is.na(GAPINS_recode) | is.na(TYPEINS_recode) | is.na(NKIDS_t1) |is.na(pregnant_between_waves) | is.na(had_baby_between_waves) | is.na(FEELPG_recode) | is.na(Avoid_r) | is.na(rel_dur_factor), 1, 0)))
 
 qplot(Fake_cccu_complete1$exclusion_missing_selection)
 
