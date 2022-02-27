@@ -451,7 +451,7 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
                                           PREG == "(3) I had a baby"|
                                           PREG == "(4) I", 1,
                                          ifelse(CURRENT == "(2) I am currently pregnant." |
-                                                  CURRENT == "(3) I might currently be pregnant", 1, ifelse(PREG == "(-1) Refused", NA, 0))))
+                                                  CURRENT == "(3) I might currently be pregnant", 1, ifelse(PREG == "(-1) Refused" | CURRENT == "(-1) Refused", NA, 0))))
 
 
 table(Fake_cccu_complete1$pregnant_between_waves)
@@ -475,7 +475,7 @@ table(Fake_cccu_complete1$CURRENT)
 #recoding in 0 = no baby and 1 = baby
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
-  mutate(had_baby_between_waves = ifelse(PREG=="(3) I had a baby" | CURRENT == "(1) I had a baby within the last 3 months", 1, ifelse(PREG == "(-1) Refused", NA, 0)))
+  mutate(had_baby_between_waves = ifelse(PREG=="(3) I had a baby" | CURRENT == "(1) I had a baby within the last 3 months", 1, ifelse(PREG == "(-1) Refused" | CURRENT == "(-1) Refused", NA, 0)))
 
 table(Fake_cccu_complete1$had_baby_between_waves)
 #factorize
