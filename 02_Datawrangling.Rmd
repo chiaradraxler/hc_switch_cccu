@@ -470,11 +470,12 @@ Since September 2012, did you experience any of the following?: I had a baby
 ```{r}
 #overview
 table(Fake_cccu_complete1$PREG)
+table(Fake_cccu_complete1$CURRENT)
 
 #recoding in 0 = no baby and 1 = baby
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
-  mutate(had_baby_between_waves = ifelse(PREG=="(3) I had a baby", 1, ifelse(PREG == "(-1) Refused", NA, 0)))
+  mutate(had_baby_between_waves = ifelse(PREG=="(3) I had a baby" | CURRENT == "(1) I had a baby within the last 3 months", 1, ifelse(PREG == "(-1) Refused", NA, 0)))
 
 table(Fake_cccu_complete1$had_baby_between_waves)
 #factorize
