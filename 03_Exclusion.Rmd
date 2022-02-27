@@ -58,6 +58,18 @@ x = Fake_cccu_complete1 %>%
 ```
 
 ## 4.2 Missing Main Predictor: Satisfaction with HC
+
+###dealing with high missingness because of simulation (so that models in analyses run)
+
+NEEDS TO BE REMOVED!
+```{r}
+
+Fake_cccu_complete1$contra_satis = ifelse(is.na(Fake_cccu_complete1$contra_satis),1,Fake_cccu_complete1$contra_satis)
+
+table(is.na(Fake_cccu_complete1$contra_satis))
+
+```
+
 ```{r}
 table(Fake_cccu_complete1$contra_satis) 
 table(is.na(Fake_cccu_complete1$contra_satis))
@@ -257,19 +269,17 @@ qplot(Fake_cccu_complete1$exclusion_used_EC)
 ```
 
 ## 4.7 IUD & Non-Hormonal
-@Laura@ -> die Kombi IUD und non_hormonal scheint nach unserer Codierung nicht zu existieren? 
 ```{r}
 table(Fake_cccu_complete1$hc)
 table(Fake_cccu_complete1$IUD)
 
 #IUD & non-hormonal 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
- mutate(exclusion_IUD = ifelse(IUD == "(1) Yes" & hc == "non_hc", 1,0)) 
+ mutate(exclusion_IUD = ifelse(hc == "IUD&non_hc", 1,0)) 
 
 table(Fake_cccu_complete1$IUD)
 table(Fake_cccu_complete1$exclusion_IUD)
 
-crosstabs(~exclusion_IUD + hc + IUD, data = Fake_cccu_complete1)
 
 table(Fake_cccu_complete1$exclusion_IUD)
 Fake_cccu_complete1$exclusion_IUD<- as.factor(Fake_cccu_complete1$exclusion_IUD)
@@ -282,23 +292,21 @@ x = Fake_cccu_complete1 %>%
 
 #IUD_next & non-hormonal 
 
-table(Fake_cccu_complete1$IUD_next)
+table(Fake_cccu_complete1$hc_next)
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
- mutate(exclusion_IUD_next = ifelse(IUD_next == "(1) Yes" & hc == "non_hc", 1,0))
+ mutate(exclusion_IUD_next = ifelse(hc_next == "IUD&non_hc", 1,0))
 
-table(Fake_cccu_complete1$IUD_next)
 table(Fake_cccu_complete1$exclusion_IUD_next)
 
-crosstabs(~exclusion_IUD_next + hc + IUD_next, data = Fake_cccu_complete1)
 
 
 table(Fake_cccu_complete1$exclusion_IUD_next)
 Fake_cccu_complete1$exclusion_IUD_next<- as.factor(Fake_cccu_complete1$exclusion_IUD_next)
-qplot(Fake_cccu_complete1$exclusion_IUD_next)
+qplot(Fake_cccu_complete1$exclusion_IUD_next) #NA (missings) should be removed when excluding for missigness in hc or switch
 
 
 x = Fake_cccu_complete1 %>%
-  select(IUD_next, hc, exclusion_IUD_next)
+  select(CASEID, WAVE, IUD_next, hc_next, exclusion_IUD_next)
 ```
 
 
@@ -318,6 +326,17 @@ qplot(Fake_cccu_complete1$exclusion_used_non_hc)
 ```
 
 ### 4.8.2 unknow duration
+
+####dealing with high missingness because of simulation (so that models run)
+NEEDS TO BE REMOVED!
+```{r}
+table(is.na(Fake_cccu_complete1$hc_dur))
+Fake_cccu_complete1$hc_dur = ifelse(is.na(Fake_cccu_complete1$hc_dur),1,Fake_cccu_complete1$hc_dur)
+
+table(is.na(Fake_cccu_complete1$hc_dur))
+```
+
+
 ```{r}
 table(Fake_cccu_complete1$hc_dur)
 table(is.na(Fake_cccu_complete1$hc_dur))
@@ -353,7 +372,7 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
 
 table(Fake_cccu_complete1$exclusion_R1)
 Fake_cccu_complete1$exclusion_R1 <-as.factor(Fake_cccu_complete1$exclusion_R1)
-qplot(Fake_cccu_complete1$exclusion_R1)
+qplot(Fake_cccu_complete1$exclusion_R1)#missingness might be because sex_inlast30days and NOBARRIER can be missing 
 
 
 crosstabs(~exclusion_R1 + hc + NOBARRIER + sex_inlast30days, data = Fake_cccu_complete1) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = No)
@@ -381,11 +400,13 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
 table(Fake_cccu_complete1$exclusion_R2)
 
 Fake_cccu_complete1$exclusion_R2 <-as.factor(Fake_cccu_complete1$exclusion_R2)
-qplot(Fake_cccu_complete1$exclusion_R2)
+qplot(Fake_cccu_complete1$exclusion_R2)#missingness might be because sex_inlast30days and NOBARRIER can be missing 
 
 crosstabs(~exclusion_R2 + hc + NOBARRIER + sex_inlast30days, data = Fake_cccu_complete1) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = Yes)
 
 ```
+-> should keep an eye on missingess in exclusion columns (if we exclude based on filter(exclusion_missing_XXX !=1) or filter(exclusion_missing_XXX == 0 | is.na(XXX))
+
 
 ### 4.9.3. Vasectomy
 ```{r}

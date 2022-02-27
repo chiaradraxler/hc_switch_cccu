@@ -696,6 +696,7 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
 
 
 table(Fake_cccu_complete1$hc)
+table(is.na(Fake_cccu_complete1$hc))
 
 crosstabs(~IUD + hc, data = Fake_cccu_complete1)
 
