@@ -29,7 +29,7 @@ library(lme4)
 
 ###3.1 Model 1: basic model
 ```{r}
-R1_ma_1 <- glmer(switch ~ hc + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R1)
+R1_ma_1 <- glmer(switch ~ hc + (1| CASEID), family = binomial, data = Fake_cccu_R1)
 
 summary(R1_ma_1)
 
@@ -40,7 +40,7 @@ confint(R1_ma_1)
 
 ###3.2 Model 2: including directly with contraceptive method associated predictors
 ```{r}
-R1_ma_2 <- glmer(switch ~ hc*contra_satis + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R1)
+R1_ma_2 <- glmer(switch ~ hc*contra_satis + (1| CASEID), family = binomial, data = Fake_cccu_R1)
 
 summary(R1_ma_2)
 
@@ -49,7 +49,7 @@ confint(R1_ma_2)
 
 ###3.3 Model 3: including not directly with contraceptive method associated predictors
 ```{r}
-R1_ma_3 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R1)
+R1_ma_3 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + (1| CASEID), family = binomial, data = Fake_cccu_R1)
 
 summary(R1_ma_3)
 confint(R1_ma_3)
@@ -58,7 +58,7 @@ confint(R1_ma_3)
 
 ##3.4 Model 4: Controlling for observed selection effects
 ```{r}
-R1_ma_4 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R1)
+R1_ma_4 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor + (1| CASEID), family = binomial, data = Fake_cccu_R1)
 
 summary(R1_ma_4)
 confint(R1_ma_4)
@@ -71,7 +71,7 @@ confint(R1_ma_4)
 DURATION and satisfaction!
 
 ```{r}
-R1_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R1_s)
+R1_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1| CASEID), family = binomial, data = Fake_cccu_R1_s)
 
 summary(R1_sa_m2)
 confint(R1_sa_m2)
@@ -85,7 +85,7 @@ confint(R1_sa_m2)
 
 ###3.1 Model 1: basic model
 ```{r}
-R2_ma_1 <- glmer(switch ~ hc + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R2)
+R2_ma_1 <- glmer(switch ~ hc + (1| CASEID), family = binomial, data = Fake_cccu_R2)
 
 summary(R2_ma_1)
 
@@ -96,7 +96,7 @@ confint(R2_ma_1)
 
 ###3.2 Model 2: including directly with contraceptive method associated predictors
 ```{r}
-R2_ma_2 <- glmer(switch ~ hc*contra_satis + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R2)
+R2_ma_2 <- glmer(switch ~ hc*contra_satis + (1| CASEID), family = binomial, data = Fake_cccu_R2)
 
 summary(R2_ma_2)
 
@@ -105,7 +105,7 @@ confint(R2_ma_2)
 
 ###3.3 Model 3: including not directly with contraceptive method associated predictors
 ```{r}
-R2_ma_3 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R2)
+R2_ma_3 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + (1| CASEID), family = binomial, data = Fake_cccu_R2)
 
 summary(R2_ma_3)
 confint(R2_ma_3)
@@ -114,7 +114,7 @@ confint(R2_ma_3)
 
 ##3.4 Model 4: Controlling for observed selection effects
 ```{r}
-R2_ma_4 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R2)
+R2_ma_4 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor + (1| CASEID), family = binomial, data = Fake_cccu_R2)
 
 summary(R2_ma_4)
 confint(R2_ma_4)
@@ -127,7 +127,7 @@ confint(R2_ma_4)
 DURATION and satisfaction!
 
 ```{r}
-R2_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R2_s)
+R2_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1| CASEID), family = binomial, data = Fake_cccu_R2_s)
 
 summary(R2_sa_m2)
 confint(R2_sa_m2)
@@ -140,7 +140,7 @@ confint(R2_sa_m2)
 
 ###3.1 Model 1: basic model
 ```{r}
-R3_ma_1 <- glmer(switch ~ hc + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R3)
+R3_ma_1 <- glmer(switch ~ hc + (1| CASEID), family = binomial, data = Fake_cccu_R3)
 
 summary(R3_ma_1)
 
@@ -151,7 +151,7 @@ confint(R3_ma_1)
 
 ###3.2 Model 2: including directly with contraceptive method associated predictors
 ```{r}
-R3_ma_2 <- glmer(switch ~ hc*contra_satis + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R3)
+R3_ma_2 <- glmer(switch ~ hc*contra_satis + (1| CASEID), family = binomial, data = Fake_cccu_R3)
 
 summary(R3_ma_2)
 
@@ -160,7 +160,7 @@ confint(R3_ma_2)
 
 ###3.3 Model 3: including not directly with contraceptive method associated predictors
 ```{r}
-R3_ma_3 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R3)
+R3_ma_3 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + (1| CASEID), family = binomial, data = Fake_cccu_R3)
 
 summary(R3_ma_3)
 confint(R3_ma_3)
@@ -169,7 +169,7 @@ confint(R3_ma_3)
 
 ##3.4 Model 4: Controlling for observed selection effects
 ```{r}
-R3_ma_4 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor + (1 + hc | CASEID), family = binomial, data = Fake_cccu_R3)
+R3_ma_4 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor + (1| CASEID), family = binomial, data = Fake_cccu_R3)
 
 summary(R3_ma_4)
 confint(R3_ma_4)
@@ -182,7 +182,7 @@ confint(R3_ma_4)
 DURATION and satisfaction!
 
 ```{r}
-R3_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1 + hc | CASEID), family = binomial, data = Fake_cccu_3_s)
+R3_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1| CASEID), family = binomial, data = Fake_cccu_3_s)
 
 summary(R3_sa_m2)
 confint(R3_sa_m2)
