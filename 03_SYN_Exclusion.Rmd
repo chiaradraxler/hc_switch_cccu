@@ -61,7 +61,7 @@ x = Fake_cccu_complete1 %>%
 
 ###dealing with high missingness because of simulation (so that models in analyses run)
 
-NEEDS TO BE REMOVED!
+!!!!NEEDS TO BE REMOVED!!
 ```{r}
 
 Fake_cccu_complete1$contra_satis = ifelse(is.na(Fake_cccu_complete1$contra_satis),1,Fake_cccu_complete1$contra_satis)
@@ -183,7 +183,7 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
  mutate(exclusion_missing_selection_preg_bet_waves= as.factor(ifelse(is.na(pregnant_between_waves),1,0))) 
 
 table(is.na(Fake_cccu_complete1$pregnant_between_waves))
-table(Fake_cccu_complete1$exclusion_missing_selection_preg_bet_waves)#a lot of missings -> something wrong?
+table(Fake_cccu_complete1$exclusion_missing_selection_preg_bet_waves)#missings
 
 
 #had baby between waves
@@ -191,7 +191,7 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
  mutate(exclusion_missing_selection_baby_bet_waves= as.factor(ifelse(is.na(had_baby_between_waves),1,0))) 
 
 table(is.na(Fake_cccu_complete1$had_baby_between_waves))
-table(Fake_cccu_complete1$exclusion_missing_selection_baby_bet_waves)#a lot of missings -> something wrong?
+table(Fake_cccu_complete1$exclusion_missing_selection_baby_bet_waves)#missings
 
 
 #Feel about pregnancy
@@ -206,7 +206,7 @@ Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
  mutate(exclusion_missing_selection_avoid= as.factor(ifelse(is.na(Avoid_r),1,0))) 
 
 table(is.na(Fake_cccu_complete1$Avoid_r))
-table(Fake_cccu_complete1$exclusion_missing_selection_avoid)#lot missings -> something wrong?
+table(Fake_cccu_complete1$exclusion_missing_selection_avoid)#missings
 
 #Relationship duration
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
