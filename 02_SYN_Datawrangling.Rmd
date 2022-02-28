@@ -362,18 +362,33 @@ table(Fake_cccu_complete1$AVOID)
 table(Fake_cccu_complete1$AVOID3)
 table(is.na(Fake_cccu_complete1$AVOID))
 
+crosstabs(~is.na(AVOID) + WAVE, data = Fake_cccu_complete1)
+crosstabs(~is.na(AVOID3) + WAVE, data = Fake_cccu_complete1)
+
+#AVOID is always missing in t3, therefore  just replace missing values in AVOID with non-missing values in AVOID3
+#everything else is the same (scale, etc.) @Chiara: better check this again please :)
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(AVOID_r = ifelse(is.na(AVOID), as.character(AVOID3), as.character(AVOID)))
+
+crosstabs(~is.na(AVOID_r) + WAVE, data = Fake_cccu_complete1)
+table(Fake_cccu_complete1$AVOID_r)
 
 #recode
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
-  mutate(Avoid_r = ifelse(AVOID == "(1) Not at all important to avoid pregnancy 1" | AVOID3 == "(1) Not at all important to avoid pregnancy 1", 1,ifelse(AVOID == "(2) 2" | AVOID3 == "(2) 2", 2,ifelse(AVOID == "(3) 3" | AVOID3 == "(3) 3", 3,ifelse(AVOID == "(4) 4" | AVOID3 == "(4) 4", 4, ifelse(AVOID == "(5) 5" | AVOID3 == "(5) 5" , 5, ifelse(AVOID == "(6) Very important to avoid pregnancy 6" | AVOID3 == "(6) Very important to avoid pregnancy 6",6, NA))))))) 
+  mutate(Avoid_r = ifelse(AVOID_r == "(1) Not at all important to avoid pregnancy 1", 1,
+                          ifelse(AVOID_r == "(2) 2", 2,
+                                 ifelse(AVOID_r == "(3) 3", 3,
+                                        ifelse(AVOID_r == "(4) 4" , 4,
+                                               ifelse(AVOID_r == "(5) 5" , 5, 
+                                                      ifelse(AVOID_r == "(6) Very important to avoid pregnancy 6",6 , NA))))))) 
 
  
 table(Fake_cccu_complete1$Avoid_r)             
     
 sum(is.na(Fake_cccu_complete1$AVOID))   
-sum(is.na(Fake_cccu_complete1$Avoid_recode))
-Fake_cccu_complete1$Avoid_recode <- as.numeric(Fake_cccu_complete1$Avoid_recode)
+sum(is.na(Fake_cccu_complete1$Avoid_r))
+Fake_cccu_complete1$Avoid_recode <- as.numeric(Fake_cccu_complete1$Avoid_r)
 class(Fake_cccu_complete1$Avoid_recode)
 
 
