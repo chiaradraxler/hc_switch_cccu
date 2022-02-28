@@ -366,7 +366,8 @@ crosstabs(~is.na(AVOID) + WAVE, data = Fake_cccu_complete1)
 crosstabs(~is.na(AVOID3) + WAVE, data = Fake_cccu_complete1)
 
 #AVOID is always missing in t3, therefore  just replace missing values in AVOID with non-missing values in AVOID3
-#everything else is the same (scale, etc.) @Chiara: better check this again please :)
+#everything else is the same (scale, etc.) 
+
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
   mutate(AVOID_r = ifelse(is.na(AVOID), as.character(AVOID3), as.character(AVOID)))
 
@@ -388,11 +389,11 @@ table(Fake_cccu_complete1$Avoid_r)
     
 sum(is.na(Fake_cccu_complete1$AVOID))   
 sum(is.na(Fake_cccu_complete1$Avoid_r))
-Fake_cccu_complete1$Avoid_recode <- as.numeric(Fake_cccu_complete1$Avoid_r)
-class(Fake_cccu_complete1$Avoid_recode)
+Fake_cccu_complete1$Avoid_r <- as.numeric(Fake_cccu_complete1$Avoid_r)
+class(Fake_cccu_complete1$Avoid_r)
 
 
-hist(Fake_cccu_complete1$Avoid_recode)
+hist(Fake_cccu_complete1$Avoid_r)
 ```
 
 
