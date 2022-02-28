@@ -456,18 +456,38 @@ table(Fake_cccu_complete1$CURRENT)
 
 table(is.na(Fake_cccu_complete1$PREG))
 
-x = Fake_cccu_complete1 %>%
-  select(WAVE, PREG)
+crosstabs(~is.na(PREG) + WAVE, data = Fake_cccu_complete1)
+crosstabs(~is.na(CURRENT) + WAVE, data = Fake_cccu_complete1)
+
+#PREG is always missing in t1, therefore   replace missing values in PREG with non-missing values in CURRENT
+#scale of CURRENT needs to be the same as in PREG
+
+#translate values from CURRENT in scale PREG
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(CURRENT_r = ifelse(CURRENT == "(1) I had a baby within the last 3 months.", "(3) I had a baby", 
+                            ifelse(CURRENT == "(2) I am currently pregnant.", "(4) I",
+                                   ifelse(CURRENT == "(3) I might currently be pregnant.", "(5) I might be pregnant", 
+                                          ifelse(CURRENT == "(4) None of the above.", "(6) None of the above", CURRENT)))))
+
+table(Fake_cccu_complete1$CURRENT_r)
+
+#combine values now
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(PREG_r = ifelse(is.na(PREG), as.character(CURRENT_r), as.character(PREG)))
+
+crosstabs(~is.na(PREG_r) + WAVE, data = Fake_cccu_complete1)
+table(Fake_cccu_complete1$PREG_r)
 
 #recode
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
-  mutate(pregnant_between_waves = ifelse(PREG == "(1) I had a miscarriage" |
-                                         PREG== "(2) I had an abortion" |
-                                          PREG == "(3) I had a baby"|
-                                          PREG == "(4) I", 1,
-                                         ifelse(CURRENT == "(2) I am currently pregnant." |
-                                                  CURRENT == "(3) I might currently be pregnant", 1, ifelse(PREG == "(-1) Refused" | CURRENT == "(-1) Refused", NA, 0))))
+  mutate(pregnant_between_waves = ifelse(PREG_r == "(1) I had a miscarriage" |
+                                         PREG_r== "(2) I had an abortion" |
+                                          PREG_r == "(3) I had a baby"|
+                                          PREG_r == "(4) I", 1,
+                                         ifelse(PREG_r == "(-1) Refused", NA, 0)))
 
 
 table(Fake_cccu_complete1$pregnant_between_waves)
@@ -485,13 +505,12 @@ plot(Fake_cccu_complete1$pregnant_between_waves)
 Since September 2012, did you experience any of the following?: I had a baby
 ```{r}
 #overview
-table(Fake_cccu_complete1$PREG)
-table(Fake_cccu_complete1$CURRENT)
+table(Fake_cccu_complete1$PREG_r) #<-referring now to PREG_r which combines all PREG values t1-t4
 
 #recoding in 0 = no baby and 1 = baby
 
 Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
-  mutate(had_baby_between_waves = ifelse(PREG=="(3) I had a baby" | CURRENT == "(1) I had a baby within the last 3 months", 1, ifelse(PREG == "(-1) Refused" | CURRENT == "(-1) Refused", NA, 0)))
+  mutate(had_baby_between_waves = ifelse(PREG_r=="(3) I had a baby", 1, ifelse(PREG == "(-1) Refused", NA, 0)))
 
 table(Fake_cccu_complete1$had_baby_between_waves)
 #factorize
@@ -683,10 +702,6 @@ qplot(Fake_cccu_complete1$sex_freq)
 
 
 
-
-
-
-
 ##4.19 hc use:grouping
 
 ```{r}
@@ -734,8 +749,6 @@ Fake_cccu_complete1 %>% select(CASEID, WAVE, IUD, IUD_next) %>% View()
 ```
 
 ##4.20 Contraceptive Satisfaction 
-
-ACHTUNG: Item muss rekodiert werden: hier ist bisher 4 = dissatisfied, obwohl wir Hypothese (und Logik es auch eigentlich eher sagen würde) 4 = satisfied
 
 
 ```{r}
