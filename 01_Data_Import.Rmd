@@ -1,0 +1,81 @@
+---
+title: "01_Data_Import"
+author: "Chiara Draxler"
+date: "22 12 2021"
+output: html_document
+---
+
+#1. Loading Data 
+
+```{r}
+load("RData/DS0001/37067-0001-Data.rda")
+cccu_wave1 = da37067.0001
+
+load("RData/DS0002/37067-0002-Data.rda")
+cccu_wave2 = da37067.0002
+
+load("RData/DS0003/37067-0003-Data.rda")
+cccu_wave3 = da37067.0003
+
+load("RData/DS0004/37067-0004-Data.rda")
+cccu_wave4 = da37067.0004
+```
+
+#2. Loading Packages
+```{r}
+#loading package plyr
+library("plyr")
+#loading dplyr
+library("dplyr")
+```
+
+#3. Create column WAVE to indicate wave
+Because it is the simplest to just add WAVE and t1-t4 for the waves 
+
+```{r}
+#create column in each df
+cccu_wave1$WAVE <- 't1'
+
+#check
+table(cccu_wave1$WAVE)#correct
+
+cccu_wave2$WAVE<- 't2'
+cccu_wave3$WAVE <- 't3'
+cccu_wave4$WAVE <- 't4'
+
+
+```
+
+#4. Connect datasets via rowbind (to get in longitudinal format)
+```{r}
+#check column names
+colnames(cccu_wave1)
+colnames(cccu_wave2)
+colnames(cccu_wave3)
+colnames(cccu_wave4)
+
+#we have different columns in every df --> we can use rbind.fill from plyr, which works as follows:  "If a column exists in both data frames, it is row binded as usual. However, if a column is missing in one of the two data frames, the empty cells are replaced by NA" (https://statisticsglobe.com/rbind-in-r-example-vector-data-frame-fill-columns/)
+
+
+#binding rows of the df via rbind.fill from plyr
+cccu_complete <- rbind.fill(cccu_wave1, cccu_wave1)
+
+#binding the all four df to complete dataframe:
+cccu_complete <- rbind.fill(cccu_wave1, cccu_wave2, cccu_wave3, cccu_wave4)
+
+#checking rows and CASEID 
+nrow(cccu_wave1)+nrow(cccu_wave2)+nrow(cccu_wave3)+nrow(cccu_wave4)
+nrow(cccu_complete)#true
+
+which(cccu_complete$CASEID == 81, arr.ind=TRUE)#CaseID exists four times!
+
+##we now have a complete df with up to 4 observations per particpant and binded columns (or new columns, if they did not exist before)
+```
+#5. Saving Data
+```{r}
+save(cccu_complete,file = "cccu_complete.RData")
+
+load("cccu_complete.RData")
+```
+
+
