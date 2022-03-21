@@ -1,0 +1,1062 @@
+---
+title: "02_Datawrangling"
+author: "Chiara Draxler"
+date: "6 1 2022"
+output: html_document
+---
+
+#1.Load Data
+```{r}
+load("Fake_cccu_complete.RData")
+
+```
+
+
+#2.Load Packages
+```{r}
+#loading dplyr
+library("dplyr")
+library(formr)
+library("tidyverse")
+
+```
+
+
+#3. Selecting necessary columnsfor thesis' question 
+```{r}
+#Getting overview over columns
+colnames(Fake_cccu_complete)
+
+```
+List of necessary columns:
+CASEID
+WAVE
+WEIGHT 
+AGE
+DEGREE
+POVRATE
+POVCAT
+TYPEINS
+MEDPROB
+GAPINS
+HLTHPROB
+AVOID
+FEELPG
+NBIRTHS
+BIRTH3MO
+PREG
+MONTHSA
+MONTHSB
+MONTHSC
+MOTNHSD1
+MONTHSD3
+MONTHSE1
+MONTHSE3
+YEARSA
+YEARSB
+YEARSC
+YEARSD1
+YEARSD2
+YEARSE1
+YEARSE2
+SEXSAT
+SEXMO
+NSEXMO
+RASAT1
+RASAT2
+RASAT3
+RASAT4
+RASAT5
+RSATIS
+SATISBC
+PILL
+PATCH
+RING
+DEPO
+IUD
+IMPLANT
+YPILL
+YPATCH
+YRING
+YDEPO
+YIMPLANT
+YIUD
+MPILL
+MPATCH
+MRING
+MDEPO
+MIMPLANT
+MIUD
+Q23A_PILL
+Q23A_PATCH
+Q23A_RING
+Q23A_DEPO
+Q23A_IMPLANT
+Q23A_IUD
+TIMEUSE
+FREQBAR
+FREQBARB
+WITHDRAW
+VASECTOMY
+CONDOM
+NFP
+SPERM
+NOBARRIER
+XBARR
+DOV_Q26_1
+DOV_Q26_2
+DOV_Q26_3
+DOV_Q26_4
+DOV_Q26_5
+DOV_Q26_6
+DOV_Q26_REFUSED
+Time
+
+```{r}
+#Select variables 
+
+Fake_cccu_complete1 <- Fake_cccu_complete %>% 
+  select(CASEID, WAVE,EC,AGE, DEGREE,
+        POVRATE, TYPEINS,MEDPROB,
+        GAPINS, HLTHPROB, AVOID,AVOID3, FEELPG,
+        NBIRTHS, BIRTH3MO, PREG,CURRENT,
+        Q3B_A, Q3B_B, Q3B_C, Q3B_D1,
+        Q4_C, Q4_D1,
+        MONTHSA, MONTHSB, MONTHSC, MONTHSD1, 
+        YEARSA, YEARSB, YEARSC, YEARSD1,
+        SEXSAT,
+        SEXMO, NSEXMO, starts_with("RSAT"),#includes RSATIS as overall measure for satisfaciton with barrier methods
+        SATISBC, starts_with("Q23D"),HORMONAL,
+        PILL,PATCH,RING,DEPO,IUD,
+        IMPLANT, YPILL, YPATCH, YRING,
+        YDEPO, YIMPLANT, YIUD, MPILL, MPATCH,
+        MRING, MDEPO, MIMPLANT, MIUD,
+        starts_with("Q23A_"), TIMEUSE, WITHDRAWR,VASECTOMY,CONDOMR,
+        NFPR,SPERMR,NOBARRIER,XBARR, starts_with("DOV_Q26_"), SP1VAS, SP2VAS)
+
+#double check column WAVE
+table(Fake_cccu_complete1$WAVE) 
+```
+
+
+#4. Variable Wrangling 
+
+##EC (for exclusion)
+```{r}
+table(Fake_cccu_complete1$EC)
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(EC_recode = ifelse(EC == "(0) No", 0, 
+                            ifelse(EC == "(1) Yes", 1,NA)))
+
+
+
+#factorize
+Fake_cccu_complete1$EC_recode<-factor(Fake_cccu_complete1$EC_recode, levels = c(0,1), labels = c("No", "Yes"))
+
+qplot(Fake_cccu_complete1$EC_recode)
+
+
+```
+
+
+##4.0 Wave
+```{r}
+Fake_cccu_complete1$WAVE <- as.factor(Fake_cccu_complete1$WAVE)
+
+class(Fake_cccu_complete1$WAVE)
+```
+
+##4.1 Degree
+```{r}
+#Overview over Column
+table(Fake_cccu_complete1$DEGREE)
+```
+Values are:
+(-2) Not asked                                  (-1) refused 
+(01) No formal education 
+(02) 1st, 2nd, 3rd, or 4th grade
+(03) 5th or 6th grade
+(04) 7th or 8th grade 
+(05) 9th grade 
+(06) 10th grade 
+(07) 11th grade 
+(08) 12th grade NO DIPLOMA 
+(09) HIGH SCHOOL GRADUATE - high school DIPLOMA or the equivalent (GED) 
+(10) Some college, no degree 
+(11) Associate degree 
+(12) Bachelors degree 
+(13) Masters degree 
+(14) Professional or Doctorate degree 
+
+we want to keep all numbers (not necessary to summarize in one category) and there is no category twice (with different number), we can simply recode it 
+
+
+
+```{r}
+Fake_cccu_complete1<- Fake_cccu_complete1 %>%
+  mutate(DEGREE_recode = recode(DEGREE,
+                                "(-2) Not asked"="NA",
+                                "(-1) refused"="NA",
+                                "(01) No formal education" ="1",
+                                "(02) 1st, 2nd, 3rd, or 4th grade" = "2",
+                                "(03) 5th or 6th grade" = "3",
+                                "(04) 7th or 8th grade" = "4",
+                                "(05) 9th grade" = "5",
+                                "(06) 10th grade" = "6",
+                                "(07) 11th grade" = "7",
+                                "(08) 12th grade NO DIPLOMA" = "8",
+                                "(09) HIGH SCHOOL GRADUATE - high school DIPLOMA or the equivalent (GED)" = "9",
+                                "(10) Some college, no degree" = "10",
+                                "(11) Associate degree" = "11",
+                                "(12) Bachelors degree" = "12",
+                                "(13) Masters degree" = "13",
+                                "(14) Professional or Doctorate degree" = "14" 
+))
+table(Fake_cccu_complete1$DEGREE)
+table(Fake_cccu_complete1$DEGREE_recode)
+
+#Factorizing it with levels
+Fake_cccu_complete1$DEGREE_recode<-
+factor(Fake_cccu_complete1$DEGREE_recode, levels = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14), labels = c("no formal education", "1st to 4th grade", "5th/6th grade", "7th/8th grade", "9th grade", "10th grade", "11th grade", "12th grade / no diploma", "high school diploma or equivalent", "some college, no degree", "associate degree", "bachelors degree", "masters degree", "professional or doctoral degree"))
+
+
+plot(Fake_cccu_complete1$DEGREE_recode)
+```
+
+
+## 4.2 Age
+```{r}
+#overview
+
+table(Fake_cccu_complete1$AGE)
+
+#as.numeric
+Fake_cccu_complete1$AGE <- as.numeric(Fake_cccu_complete1$AGE)
+
+class(Fake_cccu_complete1$AGE)
+
+hist(Fake_cccu_complete1$AGE)
+```
+
+
+##4.3 POVERTY: POVRATE 
+
+```{r}
+table(Fake_cccu_complete1$POVRATE)
+
+Fake_cccu_complete1$POVRATE <- as.numeric(Fake_cccu_complete1$POVRATE)
+
+class(Fake_cccu_complete1$POVRATE)
+
+hist(Fake_cccu_complete1$POVRATE)
+```
+
+
+##4.4 TYPE of INSURANCE
+```{r}
+#Overview
+table(Fake_cccu_complete1$TYPEINS)
+```
+I recode variable with 2 Levels: yes (1), no (2), NA
+
+
+```{r}
+Fake_cccu_complete1<- Fake_cccu_complete1 %>%
+  mutate(TYPEINS_recode = recode(TYPEINS,
+                                "(-1) Refused"= "NA",
+                                "(1) Private health insurance I get through my job or school, a family member or that I pay for myself." ="1",
+                                "(2) (Medicaid Program - BASED ON PPSTATEN) or some other government-sponsored health insurance." = "1",
+                                "(3) Some other type of health insurance" = "1",
+                                "(4) I don't have health insurance." = "0",
+                                "(2) {#\\.POV_Q38} or some other government-sponsored health insurance." = "1",
+                                "(0) Insurance obtained through a health insurance marketplace or exchange, such as www.healthcare.gov or {state-specific mar" = "1",
+                                "(1) Private health insurance that I get through my job or school, a family member or that I pay for myself." = "1",
+                                "(2) {PPSTATE} or some other government-sponsored health insurance." = "1",
+                                "(5) Insurance obtained through a health insurance marketplace or exchange, such as www.healthcare.gov{#POV_PROGNAME_Q" = "1"))
+
+table(Fake_cccu_complete1$TYPEINS_recode)
+sum(is.na(Fake_cccu_complete1$TYPEINS))
+
+#Factorize
+Fake_cccu_complete1$TYPEINS_recode<- factor(Fake_cccu_complete1$TYPEINS_recode, levels = c(0,1), labels = c("No", "Yes"))
+table(Fake_cccu_complete1$TYPEINS_recode)
+
+plot(Fake_cccu_complete1$TYPEINS_recode)
+
+```
+
+##4.5 MEDICAL PROBLEMS
+```{r}
+table(Fake_cccu_complete1$MEDPROB)
+
+Fake_cccu_complete1<- Fake_cccu_complete1 %>%
+  mutate(MEDPROB_recode = recode(MEDPROB,
+                                 "(0) No"="0",
+                                 "(1) Yes" ="1"))
+
+
+
+#factorize
+Fake_cccu_complete1$MEDPROB_recode<- factor(Fake_cccu_complete1$MEDPROB_recode, levels = c(0,1), labels = c("No", "Yes"))
+table(Fake_cccu_complete1$MEDPROB_recode)
+
+plot(Fake_cccu_complete1$MEDPROB_recode)
+```
+
+##4.6 GAPS in INSURANCE
+
+```{r}
+#overview
+table(Fake_cccu_complete1$GAPINS)
+#recode
+Fake_cccu_complete1<- Fake_cccu_complete1 %>%
+  mutate(GAPINS_recode = recode(GAPINS,
+                                 "(0) no"="0",
+                                "(1) yes"="1"))
+#control
+table(Fake_cccu_complete1$GAPINS_recode)
+#factorize
+Fake_cccu_complete1$GAPINS_recode<-factor(Fake_cccu_complete1$GAPINS_recode, levels = c(0,1), labels = c("No", "Yes"))
+
+plot(Fake_cccu_complete1$GAPINS_recode)
+```
+
+##4.7 HEALTH PROBLEMS
+```{r}
+#overview
+table(Fake_cccu_complete1$HLTHPROB)
+
+```
+Recoding values
+
+```{r}
+#Recoding
+Fake_cccu_complete1<- Fake_cccu_complete1 %>%
+  mutate(HLTHPROB_recode = recode(HLTHPROB,
+                                    "(-1) Refused"="NA",
+                                  "(0) No"="0",
+                                  "(1) Yes"="1",
+                                  "(3) Dont Know"="NA",
+                                  "(4) Didnt care"="NA"))
+table(Fake_cccu_complete1$HLTHPROB_recode)
+#factorize
+Fake_cccu_complete1$HLTHPROB_recode<-factor(Fake_cccu_complete1$HLTHPROB_recode, levels = c(0,1), labels = c("No", "Yes"))
+
+sum(is.na(Fake_cccu_complete1$HLTHPROB_recode))
+
+
+#fill for each wave after t1 (for t2,t3,t4)
+Fake_cccu_complete1 = Fake_cccu_complete1 %>%
+group_by(CASEID) %>%
+fill(HLTHPROB_recode)
+
+plot(Fake_cccu_complete1$HLTHPROB_recode)
+```
+
+
+##4.8 Avoid Pregnancy
+```{r}
+#overview
+table(Fake_cccu_complete1$AVOID)
+table(Fake_cccu_complete1$AVOID3)
+table(is.na(Fake_cccu_complete1$AVOID))
+
+crosstabs(~is.na(AVOID) + WAVE, data = Fake_cccu_complete1)
+crosstabs(~is.na(AVOID3) + WAVE, data = Fake_cccu_complete1)
+
+#AVOID is always missing in t3, therefore  just replace missing values in AVOID with non-missing values in AVOID3
+#everything else is the same (scale, etc.) 
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(AVOID_r = ifelse(is.na(AVOID), as.character(AVOID3), as.character(AVOID)))
+
+crosstabs(~is.na(AVOID_r) + WAVE, data = Fake_cccu_complete1)
+table(Fake_cccu_complete1$AVOID_r)
+
+#recode
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(Avoid_r = ifelse(AVOID_r == "(1) Not at all important to avoid pregnancy 1", 1,
+                          ifelse(AVOID_r == "(2) 2", 2,
+                                 ifelse(AVOID_r == "(3) 3", 3,
+                                        ifelse(AVOID_r == "(4) 4" , 4,
+                                               ifelse(AVOID_r == "(5) 5" , 5, 
+                                                      ifelse(AVOID_r == "(6) Very important to avoid pregnancy 6",6 , NA))))))) 
+
+ 
+table(Fake_cccu_complete1$Avoid_r)             
+    
+sum(is.na(Fake_cccu_complete1$AVOID))   
+sum(is.na(Fake_cccu_complete1$Avoid_r))
+Fake_cccu_complete1$Avoid_r <- as.numeric(Fake_cccu_complete1$Avoid_r)
+class(Fake_cccu_complete1$Avoid_r)
+
+
+hist(Fake_cccu_complete1$Avoid_r)
+```
+
+
+##4.9 FEEL About Pregnancy
+```{r}
+#overview
+table(Fake_cccu_complete1$FEELPG)
+
+#recode
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(FEELPG_recode = ifelse(FEELPG == "(1) Not at all happy to be pregnant 1", 1, ifelse(FEELPG == "(2) 2", 2, 
+                                                                                                   ifelse(FEELPG == "(3) 3", 3, 
+                                                                                                          ifelse(FEELPG == "(4) 4", 4, 
+                                                                                                                 ifelse(FEELPG == "(5) 5", 5, ifelse(FEELPG == "(6) Very happy to be pregnant 6",6, NA)))))))
+
+
+table(Fake_cccu_complete1$FEELPG_recode)
+sum(is.na(Fake_cccu_complete1$FEELPG_recode))
+
+Fake_cccu_complete1$FEELPG_recode <- as.numeric(Fake_cccu_complete1$FEELPG_recode)
+
+
+hist(Fake_cccu_complete1$FEELPG_recode)
+
+```
+
+##4.10 NUMBER of Kids at t1
+```{r}
+table(Fake_cccu_complete1$NBIRTHS)
+Fake_cccu_complete1<- Fake_cccu_complete1 %>%
+  mutate(NKIDS_t1 = recode(NBIRTHS,
+                                    "(0) 0"="0",
+                                  "(1) 1"="1",
+                                 "(2) 2" = "2",
+                                 "(3) 3" = "3",
+                                 "(4) 4 or more" = "4"))
+table(Fake_cccu_complete1$NKIDS_t1)
+#factorize
+Fake_cccu_complete1$NKIDS_t1<-factor(Fake_cccu_complete1$NKIDS_t1, levels = c(0,1,2,3,4), labels = c("0", "1", "2", "3", "4 or more"))
+
+
+#fill for each wave after t1 (for t2,t3,t4)
+Fake_cccu_complete1 = Fake_cccu_complete1 %>%
+group_by(CASEID) %>%
+fill(NKIDS_t1)
+
+
+plot(Fake_cccu_complete1$NKIDS_t1)
+```
+
+
+##4.11 Pregnant between two waves?
+Since September 2012, did you experience any of the following?
+
+```{r}
+#overview
+table(Fake_cccu_complete1$PREG)
+table(Fake_cccu_complete1$CURRENT)
+
+table(is.na(Fake_cccu_complete1$PREG))
+
+crosstabs(~is.na(PREG) + WAVE, data = Fake_cccu_complete1)
+crosstabs(~is.na(CURRENT) + WAVE, data = Fake_cccu_complete1)
+
+#PREG is always missing in t1, therefore   replace missing values in PREG with non-missing values in CURRENT
+#scale of CURRENT needs to be the same as in PREG
+
+#translate values from CURRENT in scale PREG
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(CURRENT_r = ifelse(CURRENT == "(1) I had a baby within the last 3 months.", "(3) I had a baby", 
+                            ifelse(CURRENT == "(2) I am currently pregnant.", "(4) I",
+                                   ifelse(CURRENT == "(3) I might currently be pregnant.", "(5) I might be pregnant", 
+                                          ifelse(CURRENT == "(4) None of the above.", "(6) None of the above", CURRENT)))))
+
+table(Fake_cccu_complete1$CURRENT_r)
+
+#combine values now
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(PREG_r = ifelse(is.na(PREG), as.character(CURRENT_r), as.character(PREG)))
+
+crosstabs(~is.na(PREG_r) + WAVE, data = Fake_cccu_complete1)
+table(Fake_cccu_complete1$PREG_r)
+
+#recode
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(pregnant_between_waves = ifelse(PREG_r == "(1) I had a miscarriage" |
+                                         PREG_r== "(2) I had an abortion" |
+                                          PREG_r == "(3) I had a baby"|
+                                          PREG_r == "(4) I", 1,
+                                         ifelse(PREG_r == "(-1) Refused", NA, 0)))
+
+
+table(Fake_cccu_complete1$pregnant_between_waves)
+sum(is.na(Fake_cccu_complete1$pregnant_between_waves))
+
+#factorize
+Fake_cccu_complete1$pregnant_between_waves<-factor(Fake_cccu_complete1$pregnant_between_waves, levels = c(0,1), labels = c("No", "Yes"))
+
+
+plot(Fake_cccu_complete1$pregnant_between_waves)
+```
+
+
+##4.12 had_baby_between_waves
+Since September 2012, did you experience any of the following?: I had a baby
+```{r}
+#overview
+table(Fake_cccu_complete1$PREG_r) #<-referring now to PREG_r which combines all PREG values t1-t4
+table(is.na(Fake_cccu_complete1$PREG_r))
+
+#recoding in 0 = no baby and 1 = baby
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(had_baby_between_waves = ifelse(PREG_r=="(3) I had a baby", 1, ifelse(PREG_r == "(-1) Refused", NA, 0)))
+
+table(Fake_cccu_complete1$had_baby_between_waves)
+table(is.na(Fake_cccu_complete1$had_baby_between_waves))
+#factorize
+
+Fake_cccu_complete1$had_baby_between_waves<-factor(Fake_cccu_complete1$had_baby_between_waves, levels = c(0,1), labels = c("No", "Yes"))
+
+
+plot(Fake_cccu_complete1$had_baby_between_waves)
+```
+
+
+##4.13 Relationship Duration
+Relationship information is stored seperately for (items refer to item about gender of partner):
+* Q3B_A: Married couples
+* Q3B_B: Non-married but living together couples
+* Q3B_C: Dating couples (one partner)
+* Q3B_D1: Dating couples (first of several partners)
+We exclude any further dating partners (Q3B_D2, Q3B_E1, Q3B_E2)
+
+For dating partners, we have further information, whether the relationship is classified as a "special romantic relationship with each other" (Q4_C and Q4_D1). We only want to count dating relationship as serious relationships, if participants indicated that they are in a romantic relationship.
+
+Therefore, we form a new variable "partnered", that indicates whether a person is in a relationship (non-missing Q3_A or Q3_B, non-missing Q3B_C and Q4_C == 1, non-missing Q3B_D1 and Q4_D1 == 1), or single (everybody else).
+```{r}
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(
+    partnered = case_when(
+    !is.na(Q3B_A) ~ 1,
+    !is.na(Q3B_B) ~ 1,
+    !is.na(Q3B_C) & Q4_C == 1 ~ 1,
+    !is.na(Q3B_D1) & Q4_D1 == 1 ~ 1,
+    TRUE ~ 0
+    )
+  )
+  
+table(Fake_cccu_complete1$partnered)  
+```
+
+This number (7018 timepoints with partnered values) is lower than in the original data because the missings in the simulated data are random (e.g. somebody can have no missings in Q3_A and Q3_B which will not be possible based on real data). Therefore, we cant check 100% if our code is correct here and have to compare results for the real data with the codebook.
+
+For relationship duration we need to combine items MONTHSA, MONTHSB, MONTHSC and MONTHSD1 (with a descending hierarchy). Same needs to be done for YEARSA, YEARSB, YEARSC and YEARSD1. We will first combine them in two columnes (rel_dur_months and rel_dur_years).
+```{r}
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(
+    rel_dur_months = case_when(
+      !is.na(Q3B_A) ~ MONTHSA,
+      !is.na(Q3B_B) ~ MONTHSB,
+      !is.na(Q3B_C) & Q4_C == 1 ~ MONTHSC,
+      !is.na(Q3B_D1) & Q4_D1 == 1 ~ MONTHSD1
+    ),
+    rel_dur_years = case_when(
+      !is.na(Q3B_A) ~ YEARSA,
+      !is.na(Q3B_B) ~ YEARSB,
+      !is.na(Q3B_C) & Q4_C == 1 ~ YEARSC,
+      !is.na(Q3B_D1) & Q4_D1 == 1 ~ YEARSD1
+    ),
+  )
+
+table(is.na(Fake_cccu_complete1$rel_dur_months))
+table(is.na(Fake_cccu_complete1$rel_dur_years))
+table(Fake_cccu_complete1$rel_dur_months)
+table(Fake_cccu_complete1$rel_dur_years)
+```
+Again, these numbers (especially the zeros) dont represent correct numbers so should not be interepreted here.
+
+Now we combine years and months to one variable rel_dur (in months).
+```{r}
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(rel_dur = rel_dur_years + rel_dur_months)
+
+library(ggplot2)
+qplot(Fake_cccu_complete1$rel_dur)
+```
+
+To incorporate relationship status and relationship duration in one variable we need a factor variable rel_dur_factor that includes five categories:
+*singles
+*partnered, relationship duration in <25%-quartile
+*partnered, relationship duration in 25 - 50%-quartile
+*partnered, relationship duration in 50 - 75%-quartile
+*partnered, relationship duration in >75%-quartile
+This way all partnered categories are the same size.
+
+```{r}
+quantile(Fake_cccu_complete1$rel_dur, na.rm = T)
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(
+    rel_dur_factor = case_when(
+      is.na(rel_dur) ~ "Single",
+      rel_dur <= quantile(Fake_cccu_complete1$rel_dur, na.rm = T)[[2]] ~ "0q-25q",
+      rel_dur <= quantile(Fake_cccu_complete1$rel_dur, na.rm = T)[[3]] ~ "26q-50q",
+      rel_dur <= quantile(Fake_cccu_complete1$rel_dur, na.rm = T)[[4]] ~ "51q-75q",
+      rel_dur > quantile(Fake_cccu_complete1$rel_dur, na.rm = T)[[4]] ~ "76q-100q",
+    )
+  )
+
+Fake_cccu_complete1$rel_dur_factor <- factor(Fake_cccu_complete1$rel_dur_factor,
+                                             levels = c("Single", "0q-25q", "26q-50q", "51q-75q",
+                                                        "76q-100q"),
+                                             labels = c("Single", "0q-25q", "26q-50q", "51q-75q",
+                                                        "76q-100q"))
+
+table(is.na(Fake_cccu_complete1$rel_dur_factor))
+
+crosstabs(~rel_dur + rel_dur_factor, data = Fake_cccu_complete1)
+
+ggplot(aes(rel_dur,  fill = rel_dur_factor), data = Fake_cccu_complete1) + geom_histogram(binwidth = 1)
+```
+
+
+
+##4.14 SEXUAL SATISFACTION: How satisfied is R in his / her sexual relationship?
+
+```{r}
+#overview
+table(Fake_cccu_complete1$SEXSAT)
+
+#recoding
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(sexual_satisfaction = ifelse(SEXSAT == "1", 1, 
+                                      ifelse(SEXSAT == "2", 2, 
+                                                                                                   ifelse(SEXSAT == "3", 3, 
+                                                                                                          ifelse(SEXSAT == "4", 4, 
+                                                                                                                 ifelse(SEXSAT == "5", 5, ifelse(SEXSAT == "6",6, NA)))))))
+
+
+Fake_cccu_complete1$sexual_satisfaction <- as.numeric(Fake_cccu_complete1$sexual_satisfaction)
+                                 
+table(Fake_cccu_complete1$sexual_satisfaction)
+
+hist(Fake_cccu_complete1$sexual_satisfaction)
+
+```
+
+
+## 4.15 SEX In LAST 30 days? SEXMO
+```{r}
+#overview
+table(Fake_cccu_complete1$SEXMO)
+
+#recoding
+Fake_cccu_complete1<- Fake_cccu_complete1 %>%
+  mutate(sex_inlast30days = recode(SEXMO,
+                                    "(-1) Refused"="NA",
+                                  "(0) No"="0",
+                                 "(1) Yes" = "1",
+                                 "(3) Dont Know" = "NA",
+                                 "(4) Didnt care" = "NA"))
+table(Fake_cccu_complete1$sex_inlast30days)
+
+#factorize
+Fake_cccu_complete1$sex_inlast30days<-factor(Fake_cccu_complete1$sex_inlast30days, levels = c(0,1), labels = c("No", "Yes")) 
+
+sum(is.na(Fake_cccu_complete1$sex_inlast30days))
+
+```
+
+
+##4.16 Sexual Frequency: NSEXMO: how many times sex in last 30 days
+
+```{r}
+#overview:
+table(Fake_cccu_complete1$NSEXMO)
+
+#overview
+table(Fake_cccu_complete1$sex_inlast30days)
+
+#building sexual frequency: if sex_inlast30days = 0 ("No") we want 0, if NSEXMO = 1 we want 1, if NSEXMO 2 = 2, 3 =3, 4 = 4, otherwise NA
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(sex_freq = ifelse(sex_inlast30days == "No", 0, 
+                                      ifelse(NSEXMO == "(1) 1", 1, 
+                                                                                                   ifelse(NSEXMO == "(2) 2-5", 2, 
+                                                                                                          ifelse(NSEXMO == "(3) 6-10", 3, 
+                                                                                                                 ifelse(NSEXMO == "(4) 11 or more", 4, NA))))))
+
+table(Fake_cccu_complete1$sex_freq)
+
+crosstabs(~sex_inlast30days + NSEXMO , data = Fake_cccu_complete1)
+
+
+#factorize
+Fake_cccu_complete1$sex_freq<-factor(Fake_cccu_complete1$sex_freq, levels = c(0,1,2,3,4), labels = c("No sex", "Once", "2-5 times", "6-10 times", "11 or more times")) 
+
+qplot(Fake_cccu_complete1$sex_freq)
+
+```
+
+
+
+
+
+##4.19 hc use:grouping
+
+```{r}
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(hc = ifelse(PILL %contains% "1"|
+                       PATCH %contains% "1" |
+                       RING %contains% "1" |
+                       DEPO %contains% "1" |
+                       IMPLANT %contains% "1", 1,
+                      ifelse(IUD %contains% "1", 2,
+                             ifelse(CONDOMR %contains% "1"| #actively include non_hc user as 0
+                                     VASECTOMY %contains% "1"|
+                                     WITHDRAWR %contains% "1" |
+                                     NFPR %contains% "1" |
+                                     SPERMR %contains% "1" |
+                                     NOBARRIER %contains% "1", 0, NA))),
+         hc = ifelse(PILL %contains% "0" &
+                       PATCH %contains% "0" &
+                       RING %contains% "0" &
+                       DEPO %contains% "0" &
+                       IMPLANT %contains% "0" &
+                        IUD %contains% "0", 0, hc))
+
+
+table(Fake_cccu_complete1$hc)
+table(is.na(Fake_cccu_complete1$hc))
+
+crosstabs(~IUD + hc, data = Fake_cccu_complete1)
+
+#factorizing
+Fake_cccu_complete1$hc<-factor(Fake_cccu_complete1$hc, levels = c(0,1,2), labels = c("non_hc", "hc", "IUD&non_hc")) 
+
+
+plot(Fake_cccu_complete1$hc)
+```
+
+##4.19.1 Building IUD next
+```{r}
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  group_by(CASEID) %>%
+  mutate(IUD_next = lead(IUD)) %>%
+  ungroup()
+
+Fake_cccu_complete1 %>% select(CASEID, WAVE, IUD, IUD_next) %>% View()
+```
+
+##4.20 Contraceptive Satisfaction 
+
+
+```{r}
+table(Fake_cccu_complete1$hc)
+
+#recoding values for hc satisfaction (note: 1 = very satisfied, for hypotheses 1 must be very dissatisfied)
+
+##pill
+table(Fake_cccu_complete1$Q23D_PILL)
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(Q23D_PILL_r = ifelse(Q23D_PILL %contains% "(1)", 4, 
+                              ifelse(Q23D_PILL %contains% "(2)", 3,
+                                      ifelse(Q23D_PILL %contains% "(3)", 2,
+                                             ifelse(Q23D_PILL %contains% "(4)", 1, NA)))))
+                               
+table(Fake_cccu_complete1$Q23D_PILL_r)
+
+##Patch
+
+table(Fake_cccu_complete1$Q23D_PATCH)
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(Q23D_PATCH_r = ifelse(Q23D_PATCH %contains% "(1)", 4, 
+                              ifelse(Q23D_PATCH %contains% "(2)", 3,
+                                      ifelse(Q23D_PATCH %contains% "(3)", 2,
+                                             ifelse(Q23D_PATCH %contains% "(4)", 1, NA)))))
+                               
+table(Fake_cccu_complete1$Q23D_PATCH_r)
+
+##Depo
+table(Fake_cccu_complete1$Q23D_DEPO)
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(Q23D_DEPO_r = ifelse(Q23D_DEPO %contains% "(1)", 4, 
+                              ifelse(Q23D_DEPO %contains% "(2)", 3,
+                                      ifelse(Q23D_DEPO %contains% "(3)", 2,
+                                             ifelse(Q23D_DEPO %contains% "(4)", 1, NA)))))
+                               
+table(Fake_cccu_complete1$Q23D_DEPO_r)
+
+##Implant
+table(Fake_cccu_complete1$Q23D_IMPLANT)
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(Q23D_IMPLANT_r = ifelse(Q23D_IMPLANT %contains% "(1)", 4, 
+                              ifelse(Q23D_IMPLANT %contains% "(2)", 3,
+                                      ifelse(Q23D_IMPLANT %contains% "(3)", 2,
+                                             ifelse(Q23D_IMPLANT %contains% "(4)", 1, NA)))))
+                               
+table(Fake_cccu_complete1$Q23D_IMPLANT_r)
+
+##Ring
+table(Fake_cccu_complete1$Q23D_RING)
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(Q23D_RING_r = ifelse(Q23D_RING %contains% "(1)", 4, 
+                              ifelse(Q23D_RING %contains% "(2)", 3,
+                                      ifelse(Q23D_RING %contains% "(3)", 2,
+                                             ifelse(Q23D_RING %contains% "(4)", 1, NA)))))
+                               
+table(Fake_cccu_complete1$Q23D_RING_r)
+
+
+
+#recoding non-hc satisfaction values
+
+#withdrawl
+
+table(Fake_cccu_complete1$RSAT1)
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(RSAT1_r = ifelse(RSAT1 %contains% "(001)", 4, 
+                              ifelse(RSAT1 %contains% "(002)", 3,
+                                      ifelse(RSAT1 %contains% "(003)", 2,
+                                             ifelse(RSAT1 %contains% "(004)", 1, NA)))))
+                               
+table(Fake_cccu_complete1$RSAT1_r)
+
+##vasectomy
+table(Fake_cccu_complete1$RSAT2)
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(RSAT2_r = ifelse(RSAT2 %contains% "(001)", 4, 
+                              ifelse(RSAT2 %contains% "(002)", 3,
+                                      ifelse(RSAT2 %contains% "(003)", 2,
+                                             ifelse(RSAT2 %contains% "(004)", 1, NA)))))
+                               
+table(Fake_cccu_complete1$RSAT2_r)
+
+##condoms
+table(Fake_cccu_complete1$RSAT3)
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(RSAT3_r = ifelse(RSAT3 %contains% "(001)", 4, 
+                              ifelse(RSAT3 %contains% "(002)", 3,
+                                      ifelse(RSAT3 %contains% "(003)", 2,
+                                             ifelse(RSAT3 %contains% "(004)", 1, NA)))))
+                               
+table(Fake_cccu_complete1$RSAT3_r)
+
+##natural /calender
+
+table(Fake_cccu_complete1$RSAT4)
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(RSAT4_r = ifelse(RSAT4 %contains% "(001)", 4, 
+                              ifelse(RSAT4 %contains% "(002)", 3,
+                                      ifelse(RSAT4 %contains% "(003)", 2,
+                                             ifelse(RSAT4 %contains% "(004)", 1, NA)))))
+                               
+table(Fake_cccu_complete1$RSAT4_r)
+
+##spermicid
+
+table(Fake_cccu_complete1$RSAT5)
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(RSAT5_r = ifelse(RSAT5 %contains% "(001)", 4, 
+                              ifelse(RSAT5 %contains% "(002)", 3,
+                                      ifelse(RSAT5 %contains% "(003)", 2,
+                                             ifelse(RSAT5 %contains% "(004)", 1, NA)))))
+                               
+table(Fake_cccu_complete1$RSAT5_r)
+
+
+#building contra_satisfaction 
+
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(contra_satis = ifelse(hc == "hc",
+                                      pmax(Q23D_PILL_r, Q23D_PATCH_r, Q23D_DEPO_r,
+                                           Q23D_IMPLANT_r, Q23D_RING_r,
+                                           na.rm = TRUE),
+                                      pmax(RSAT1_r, RSAT2_r, RSAT3_r, RSAT4_r, RSAT5_r,
+                                           na.rm = TRUE)))
+
+table(Fake_cccu_complete1$contra_satis)
+
+x = Fake_cccu_complete1 %>%
+  select(hc, Q23D_PILL_r, Q23D_PATCH_r, Q23D_DEPO_r,
+         Q23D_IMPLANT_r, Q23D_RING_r,RSAT1_r, RSAT2_r, RSAT3_r, RSAT4_r, RSAT5_r, contra_satis)
+
+hist(Fake_cccu_complete1$contra_satis)
+```
+  
+
+##4.21 Contraceptive Duration
+-> only duration values for hc users are needed for subanalysis 
+-> we have t1: years & month duration
+            t2-4: last 6 month 
+            --> we need to pmax() -> get higher duration value for when women are using a combination
+            --> then combine values from years and month 
+            --> then add t1 + t2 usw...
+```{r}
+#combine values first bc we only want maximum for combined time
+# not e.g. max years for pill and max months for patch
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(hc_dur_pill = YPILL + MPILL,
+         hc_dur_patch = YPATCH + MPATCH,
+         hc_dur_ring = YRING + MRING,
+         hc_dur_depo = YDEPO + MDEPO,
+         hc_dur_implant = YIMPLANT + MIMPLANT)
+# for the simulated data this is a problem, bc if Y or M are missing, hc_dur is missing as well
+# this is not a problem for real data, bc !is.na(Y) <--> !is.na(M)
+
+# find longest time
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(hc_dur = pmax(hc_dur_pill, hc_dur_patch, hc_dur_ring, hc_dur_depo, hc_dur_implant,
+                            na.rm = TRUE)) 
+
+# distribution at t1
+table(Fake_cccu_complete1$hc_dur)
+
+# missings:
+table(is.na(Fake_cccu_complete1$hc_dur)) # a lot of missing bc of simulated data
+# check this for real data (shouldnt be that much missing!)
+
+# recode duration time for t2 - t4 into numeric values
+Fake_cccu_complete1 = Fake_cccu_complete1 %>%
+  mutate(Q23A_PILL = ifelse(Q23A_PILL %contains% "(1)", 0, 
+                              ifelse(Q23A_PILL %contains% "(2)", 1,
+                                      ifelse(Q23A_PILL %contains% "(3)", 2,
+                      ifelse(Q23A_PILL %contains% "(4)", 3,
+                             ifelse(Q23A_PILL %contains% "(5)", 4, 
+                                    ifelse(Q23A_PILL %contains% "(6)", 5,
+                                           ifelse(Q23A_PILL %contains% "(7)", 6,                                       ifelse(Q23A_PILL %contains% "(-1)", NA, NA)))))))),
+         Q23A_PATCH = ifelse(Q23A_PATCH %contains% "(1)", 0, 
+                   ifelse(Q23A_PATCH %contains% "(2)", 1,
+                          ifelse(Q23A_PATCH %contains% "(3)", 2,
+                                 ifelse(Q23A_PATCH %contains% "(4)", 3,
+                                        ifelse(Q23A_PATCH %contains% "(5)", 4, 
+                                               ifelse(Q23A_PATCH %contains% "(6)", 5,
+                                                      ifelse(Q23A_PATCH %contains% "(7)", 6,                                       ifelse(Q23A_PATCH %contains% "(-1)", NA, NA)))))))),
+         Q23A_RING = ifelse(Q23A_RING %contains% "(1)", 0, 
+                   ifelse(Q23A_RING %contains% "(2)", 1,
+                          ifelse(Q23A_RING %contains% "(3)", 2,
+                                 ifelse(Q23A_RING %contains% "(4)", 3,
+                                        ifelse(Q23A_RING %contains% "(5)", 4, 
+                                               ifelse(Q23A_RING %contains% "(6)", 5,
+                                                      ifelse(Q23A_RING %contains% "(7)", 6,                                       ifelse(Q23A_RING %contains% "(-1)", NA, NA)))))))),
+         Q23A_DEPO = ifelse(Q23A_DEPO %contains% "(1)", 0, 
+                   ifelse(Q23A_DEPO %contains% "(2)", 1,
+                          ifelse(Q23A_DEPO %contains% "(3)", 2,
+                                 ifelse(Q23A_DEPO %contains% "(4)", 3,
+                                        ifelse(Q23A_DEPO %contains% "(5)", 4, 
+                                               ifelse(Q23A_DEPO %contains% "(6)", 5,
+                                                      ifelse(Q23A_DEPO %contains% "(7)", 6,                                       ifelse(Q23A_DEPO %contains% "(-1)", NA, NA)))))))),
+         Q23A_IMPLANT = ifelse(Q23A_IMPLANT %contains% "(1)", 0, 
+                   ifelse(Q23A_IMPLANT %contains% "(2)", 1,
+                          ifelse(Q23A_IMPLANT %contains% "(3)", 2,
+                                 ifelse(Q23A_IMPLANT %contains% "(4)", 3,
+                                        ifelse(Q23A_IMPLANT %contains% "(5)", 4, 
+                                               ifelse(Q23A_IMPLANT %contains% "(6)", 5,
+                                                      ifelse(Q23A_IMPLANT %contains% "(7)", 6,                                       ifelse(Q23A_IMPLANT %contains% "(-1)", NA, NA)))))))))
+         
+
+# find values based on t2-t4
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  mutate(hc_dur_add = pmax(Q23A_PILL, Q23A_PATCH, Q23A_RING, Q23A_DEPO, Q23A_IMPLANT,
+                            na.rm = TRUE))
+
+# distribution
+table(Fake_cccu_complete1$hc_dur_add)
+
+# missingness
+table(is.na(Fake_cccu_complete1$hc_dur_add)) # a lot of missing bc of simulated data
+
+
+# now calculate total duration values t1 + t2-4
+Fake_cccu_complete1 = Fake_cccu_complete1 %>%
+  group_by(CASEID) %>%
+  mutate(hc_prev = lag(hc),
+         hc_dur_prev = lag(hc_dur)) %>%
+  ungroup() %>%
+  mutate(hc_dur_1 = hc_dur,
+         hc_dur_2 = ifelse(WAVE == "t2" & hc == hc_prev,
+                           hc_dur_prev + 6, 
+                           ifelse(WAVE == "t2" & hc == "hc" & hc_prev == "non_hc",
+                                  hc_dur_add,
+                                  NA))) %>%
+  group_by(CASEID) %>%
+  mutate(hc_dur_prev = lag(hc_dur_2)) %>%
+  ungroup() %>%
+  mutate(hc_dur_3 = ifelse(WAVE == "t3" & hc == hc_prev,
+                           hc_dur_prev + 6, 
+                           ifelse(WAVE == "t3" & hc == "hc" & hc_prev == "non_hc",
+                                  hc_dur_add,
+                                  NA))) %>%
+  group_by(CASEID) %>%
+  mutate(hc_dur_prev = lag(hc_dur_3)) %>%
+  ungroup() %>%
+  mutate(hc_dur_4 = ifelse(WAVE == "t4" & hc == hc_prev,
+                           hc_dur_prev + 6, 
+                           ifelse(WAVE == "t4" & hc == "hc" & hc_prev == "non_hc",
+                                  hc_dur_add,
+                                  NA))) %>%
+  select(-hc_prev, -hc_dur_prev)
+
+table(Fake_cccu_complete1$hc_dur_1)
+table(Fake_cccu_complete1$hc_dur_2)
+table(Fake_cccu_complete1$hc_dur_3)
+table(Fake_cccu_complete1$hc_dur_4)
+
+#combine waves
+Fake_cccu_complete1 = Fake_cccu_complete1 %>%
+  mutate(hc_dur = ifelse(!is.na(hc_dur_1), hc_dur_1,
+                         ifelse(!is.na(hc_dur_2), hc_dur_2,
+                                ifelse(!is.na(hc_dur_3), hc_dur_3,
+                                       ifelse(!is.na(hc_dur_4), hc_dur_4, NA)))))
+
+table(Fake_cccu_complete1$hc_dur)
+
+qplot(Fake_cccu_complete1$hc_dur)
+```
+
+            
+##4.22 switch 
+```{r}
+Fake_cccu_complete1 <- Fake_cccu_complete1 %>%
+  group_by(CASEID) %>%
+  mutate(hc_next = lead(hc),
+         switch = case_when(hc == hc_next ~ 0,
+                            hc != hc_next ~ 1)) %>%
+  ungroup()
+
+Fake_cccu_complete1 %>% select(CASEID, WAVE, hc, hc_next, switch) %>% View()
+
+Fake_cccu_complete1 %>%
+  filter(WAVE != "t4") %>%
+  select(switch) %>%
+  is.na() %>%
+  table()
+
+table(is.na(Fake_cccu_complete1$switch))
+hist(Fake_cccu_complete1$switch)
+```
+
+
+#5. Saving Data
+```{r}
+save(Fake_cccu_complete1,file = "Fake_cccu_complete1.RData")
+
+load("Fake_cccu_complete1.RData")
+```
+
+
+
+
+
