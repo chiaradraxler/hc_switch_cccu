@@ -213,7 +213,8 @@ cccu_complete1$EC_recode <-
 
 qplot(cccu_complete1$EC_recode)
 
-
+table(cccu_complete1$EC_recode)
+crosstabs( ~ is.na(EC) + WAVE, data = cccu_complete1)#item is missing at t1
 ```
 
 
@@ -298,7 +299,7 @@ cccu_complete1$DEGREE_recode <-
       "professional or doctoral degree"
     ))
 
-
+crosstabs( ~ DEGREE_recode + WAVE, data = cccu_complete1)
 plot(cccu_complete1$DEGREE_recode)
 ```
 
@@ -313,7 +314,7 @@ table(cccu_complete1$AGE)
 cccu_complete1$AGE <- as.numeric(cccu_complete1$AGE)
 
 class(cccu_complete1$AGE)
-
+crosstabs( ~ AGE + WAVE, data = cccu_complete1)
 hist(cccu_complete1$AGE)
 ```
 
@@ -326,7 +327,7 @@ table(cccu_complete1$POVRATE)
 cccu_complete1$POVRATE <- as.numeric(cccu_complete1$POVRATE)
 
 class(cccu_complete1$POVRATE)
-
+crosstabs( ~ POVRATE + WAVE, data = cccu_complete1)
 hist(cccu_complete1$POVRATE)
 ```
 
@@ -369,6 +370,7 @@ cccu_complete1$TYPEINS_recode <-
     labels = c("No", "Yes")
   )
 table(cccu_complete1$TYPEINS_recode)
+crosstabs( ~ TYPEINS + WAVE, data = cccu_complete1)
 
 plot(cccu_complete1$TYPEINS_recode)
 
@@ -377,6 +379,7 @@ plot(cccu_complete1$TYPEINS_recode)
 ##4.5 MEDICAL PROBLEMS
 ```{r}
 table(cccu_complete1$MEDPROB)
+crosstabs( ~ MEDPROB + WAVE, data = cccu_complete1)
 
 cccu_complete1 <- cccu_complete1 %>%
   mutate(MEDPROB_recode = recode(MEDPROB,
@@ -402,6 +405,8 @@ plot(cccu_complete1$MEDPROB_recode)
 ```{r}
 #overview
 table(cccu_complete1$GAPINS)
+crosstabs( ~ GAPINS + WAVE, data = cccu_complete1)
+
 #recode
 cccu_complete1 <- cccu_complete1 %>%
   mutate(GAPINS_recode = recode(GAPINS,
@@ -424,6 +429,7 @@ plot(cccu_complete1$GAPINS_recode)
 ```{r}
 #overview
 table(cccu_complete1$HLTHPROB)
+crosstabs( ~ HLTHPROB + WAVE, data = cccu_complete1)
 
 ```
 Recoding values
@@ -468,6 +474,9 @@ plot(cccu_complete1$HLTHPROB_recode)
 table(cccu_complete1$AVOID)
 table(cccu_complete1$AVOID3)
 table(is.na(cccu_complete1$AVOID))
+
+crosstabs( ~ AVOID + WAVE, data = cccu_complete1)
+crosstabs( ~ AVOID3 + WAVE, data = cccu_complete1)
 
 crosstabs( ~ is.na(AVOID) + WAVE, data = cccu_complete1)
 crosstabs( ~ is.na(AVOID3) + WAVE, data = cccu_complete1)
@@ -517,6 +526,7 @@ hist(cccu_complete1$Avoid_r)
 ```{r}
 #overview
 table(cccu_complete1$FEELPG)
+crosstabs( ~ FEELPG + WAVE, data = cccu_complete1)
 
 #recode
 
@@ -588,6 +598,9 @@ Since September 2012, did you experience any of the following?
 #overview
 table(cccu_complete1$PREG)
 table(cccu_complete1$CURRENT)
+
+crosstabs( ~ PREG + WAVE, data = cccu_complete1)
+crosstabs( ~ CURRENT + WAVE, data = cccu_complete1)
 
 table(is.na(cccu_complete1$PREG))
 
@@ -708,11 +721,14 @@ cccu_complete1 <- cccu_complete1 %>%
     TRUE ~ 0
     )
   )
-  
+crosstabs( ~ Q3B_A + WAVE, data = cccu_complete1)
+crosstabs( ~ Q3B_B + WAVE, data = cccu_complete1)
+crosstabs( ~ Q3B_C + Q4_C + WAVE, data = cccu_complete1)
+crosstabs( ~ Q3B_D1 + Q4_D1 + WAVE, data = cccu_complete1)
+
 table(cccu_complete1$partnered)  
 ```
 
-This number (7018 timepoints with partnered values) is lower than in the original data because the missings in the simulated data are random (e.g. somebody can have no missings in Q3_A and Q3_B which will not be possible based on real data). Therefore, we cant check 100% if our code is correct here and have to compare results for the real data with the codebook.
 
 For relationship duration we need to combine items MONTHSA, MONTHSB, MONTHSC and MONTHSD1 (with a descending hierarchy). Same needs to be done for YEARSA, YEARSB, YEARSC and YEARSD1. We will first combine them in two columnes (rel_dur_months and rel_dur_years).
 ```{r}
@@ -737,7 +753,6 @@ table(is.na(cccu_complete1$rel_dur_years))
 table(cccu_complete1$rel_dur_months)
 table(cccu_complete1$rel_dur_years)
 ```
-Again, these numbers (especially the zeros) dont represent correct numbers so should not be interepreted here.
 
 Now we combine years and months to one variable rel_dur (in months).
 ```{r}
@@ -784,12 +799,12 @@ ggplot(aes(rel_dur,  fill = rel_dur_factor), data = cccu_complete1) + geom_histo
 ```
 
 
-
 ##4.14 SEXUAL SATISFACTION: How satisfied is R in his / her sexual relationship?
 
 ```{r}
 #overview
 table(cccu_complete1$SEXSAT)
+crosstabs( ~ SEXSAT+ WAVE, data = cccu_complete1)
 
 #recoding
 cccu_complete1 <- cccu_complete1 %>%
@@ -816,6 +831,8 @@ hist(cccu_complete1$sexual_satisfaction)
 ```{r}
 #overview
 table(cccu_complete1$SEXMO)
+
+crosstabs( ~ SEXMO + WAVE, data = cccu_complete1)
 
 #recoding
 cccu_complete1 <- cccu_complete1 %>%
@@ -849,6 +866,7 @@ sum(is.na(cccu_complete1$sex_inlast30days))
 ```{r}
 #overview:
 table(cccu_complete1$NSEXMO)
+crosstabs( ~ NSEXMO + WAVE, data = cccu_complete1)
 
 #overview
 table(cccu_complete1$sex_inlast30days)
@@ -883,13 +901,22 @@ qplot(cccu_complete1$sex_freq)
 
 ```
 
-
-
-
-
 ##4.19 hc use:grouping
 
 ```{r}
+crosstabs( ~ PILL + WAVE, data = cccu_complete1)
+crosstabs( ~ PATCH+ WAVE, data = cccu_complete1)
+crosstabs( ~ RING + WAVE, data = cccu_complete1)
+crosstabs( ~ DEPO + WAVE, data = cccu_complete1)
+crosstabs( ~ IMPLANT + WAVE, data = cccu_complete1)
+crosstabs( ~ IUD+ WAVE, data = cccu_complete1)
+crosstabs( ~ CONDOMR + WAVE, data = cccu_complete1)
+crosstabs( ~ VASECTOMY+ WAVE, data = cccu_complete1)
+crosstabs( ~ WITHDRAWR+ WAVE, data = cccu_complete1)
+crosstabs( ~ NFPR + WAVE, data = cccu_complete1)
+crosstabs( ~ SPERMR + WAVE, data = cccu_complete1)
+crosstabs( ~ NOBARRIER + WAVE, data = cccu_complete1)
+
 cccu_complete1 <- cccu_complete1 %>%
   mutate(hc = ifelse(PILL %contains% "1"|
                        PATCH %contains% "1" |
@@ -948,6 +975,7 @@ table(cccu_complete1$hc)
 
 ##pill
 table(cccu_complete1$Q23D_PILL)
+crosstabs( ~ Q23D_PILL + WAVE, data = cccu_complete1)
 
 cccu_complete1 <- cccu_complete1 %>%
   mutate(Q23D_PILL_r = ifelse(
@@ -967,6 +995,7 @@ table(cccu_complete1$Q23D_PILL_r)
 ##Patch
 
 table(cccu_complete1$Q23D_PATCH)
+crosstabs( ~ Q23D_PATCH + WAVE, data = cccu_complete1)
 
 cccu_complete1 <- cccu_complete1 %>%
   mutate(Q23D_PATCH_r = ifelse(
@@ -987,6 +1016,7 @@ table(cccu_complete1$Q23D_PATCH_r)
 
 ##Depo
 table(cccu_complete1$Q23D_DEPO)
+crosstabs( ~ Q23D_DEPO + WAVE, data = cccu_complete1)
 
 cccu_complete1 <- cccu_complete1 %>%
   mutate(Q23D_DEPO_r = ifelse(
@@ -1007,6 +1037,7 @@ table(cccu_complete1$Q23D_DEPO_r)
 
 ##Implant
 table(cccu_complete1$Q23D_IMPLANT)
+crosstabs( ~ Q23D_IMPLANT + WAVE, data = cccu_complete1)
 
 cccu_complete1 <- cccu_complete1 %>%
   mutate(Q23D_IMPLANT_r = ifelse(
@@ -1027,6 +1058,7 @@ table(cccu_complete1$Q23D_IMPLANT_r)
 
 ##Ring
 table(cccu_complete1$Q23D_RING)
+crosstabs( ~ Q23D_RING + WAVE, data = cccu_complete1)
 
 cccu_complete1 <- cccu_complete1 %>%
   mutate(Q23D_RING_r = ifelse(
@@ -1051,6 +1083,7 @@ table(cccu_complete1$Q23D_RING_r)
 #withdrawl
 
 table(cccu_complete1$RSAT1)
+crosstabs( ~ RSAT1 + WAVE, data = cccu_complete1)
 
 cccu_complete1 <- cccu_complete1 %>%
   mutate(RSAT1_r = ifelse(
@@ -1071,6 +1104,7 @@ table(cccu_complete1$RSAT1_r)
 
 ##vasectomy
 table(cccu_complete1$RSAT2)
+crosstabs( ~ RSAT2 + WAVE, data = cccu_complete1)
 
 cccu_complete1 <- cccu_complete1 %>%
   mutate(RSAT2_r = ifelse(
@@ -1091,6 +1125,7 @@ table(cccu_complete1$RSAT2_r)
 
 ##condoms
 table(cccu_complete1$RSAT3)
+crosstabs( ~ RSAT3 + WAVE, data = cccu_complete1)
 
 
 cccu_complete1 <- cccu_complete1 %>%
@@ -1113,6 +1148,7 @@ table(cccu_complete1$RSAT3_r)
 ##natural /calender
 
 table(cccu_complete1$RSAT4)
+crosstabs( ~ RSAT4 + WAVE, data = cccu_complete1)
 
 cccu_complete1 <- cccu_complete1 %>%
   mutate(RSAT4_r = ifelse(
@@ -1134,6 +1170,7 @@ table(cccu_complete1$RSAT4_r)
 ##spermicid
 
 table(cccu_complete1$RSAT5)
+crosstabs( ~ RSAT5 + WAVE, data = cccu_complete1)
 
 cccu_complete1 <- cccu_complete1 %>%
   mutate(RSAT5_r = ifelse(
@@ -1190,6 +1227,17 @@ hist(cccu_complete1$contra_satis)
 ```{r}
 #combine values first bc we only want maximum for combined time
 # not e.g. max years for pill and max months for patch
+crosstabs( ~ YPILL + WAVE, data = cccu_complete1)
+crosstabs( ~ MPILL + WAVE, data = cccu_complete1)
+crosstabs( ~ YPATCH + WAVE, data = cccu_complete1)
+crosstabs( ~ MPATCH + WAVE, data = cccu_complete1)
+crosstabs( ~ YRING + WAVE, data = cccu_complete1)
+crosstabs( ~ MRING + WAVE, data = cccu_complete1)
+crosstabs( ~ YDEPO + WAVE, data = cccu_complete1)
+crosstabs( ~ MDEPO + WAVE, data = cccu_complete1)
+crosstabs( ~ YIMPLANT + WAVE, data = cccu_complete1)
+crosstabs( ~ MIMPLANT + WAVE, data = cccu_complete1)
+
 cccu_complete1 <- cccu_complete1 %>%
   mutate(
     hc_dur_pill = YPILL + MPILL,
@@ -1220,6 +1268,14 @@ table(cccu_complete1$hc_dur)
 # missings:
 table(is.na(cccu_complete1$hc_dur)) # a lot of missing bc of simulated data
 # check this for real data (shouldnt be that much missing!)
+
+#duration time for t2-t4
+
+crosstabs( ~ Q23A_PILL + WAVE, data = cccu_complete1)
+crosstabs( ~ Q23A_PATCH + WAVE, data = cccu_complete1)
+crosstabs( ~ Q23A_RING + WAVE, data = cccu_complete1)
+crosstabs( ~ Q23A_DEPO + WAVE, data = cccu_complete1)
+crosstabs( ~ Q23IMPLANT + WAVE, data = cccu_complete1)
 
 # recode duration time for t2 - t4 into numeric values
 cccu_complete1 = cccu_complete1 %>%
