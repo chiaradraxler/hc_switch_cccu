@@ -1,0 +1,61 @@
+---
+title: "06_Main Analysis"
+author: "Chiara Draxler"
+date: "24 1 2022"
+output: html_document
+---
+
+#1. Load Data
+```{r}
+
+load("cccu_MA.RData")
+```
+
+
+#2. Load Packages
+```{r}
+library(lme4)
+```
+
+#3. Models
+currently impossible to test bc of problems with missingness
+
+##3.1 Model 1: basic model
+```{r}
+m1 <- glmer(switch ~ hc + (1| CASEID), family = binomial, data = cccu_MA)
+
+summary(m1)
+
+confint(m1)
+
+```
+
+
+##3.2 Model 2: including directly with contraceptive method associated predictors
+```{r}
+m2 <- glmer(switch ~ hc*contra_satis + (1| CASEID), family = binomial, data = cccu_MA)
+
+summary(m2)
+
+confint(m2)
+```
+
+##3.3 Model 3: including not directly with contraceptive method associated predictors
+```{r}
+m3 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + (1| CASEID), family = binomial, data = cccu_MA)
+
+summary(m3)
+confint(m3)
+
+```
+
+##3.4 Model 4: Controlling for observed selection effects
+```{r}
+m4 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq +  hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor + (1| CASEID), family = binomial, data = cccu_MA )
+
+summary(m4)
+confint(m4)
+```
+
+
+

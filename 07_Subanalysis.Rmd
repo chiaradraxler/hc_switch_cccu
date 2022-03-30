@@ -7,7 +7,7 @@ output: html_document
 #1. Load Data
 ```{r}
 
-load("Fake_cccu_SA.RData")
+load("cccu_SA.RData")
 ```
 
 
@@ -25,7 +25,7 @@ library(lme4)
 DURATION and satisfaction!
 
 ```{r}
-sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1| CASEID), family = binomial, data = Fake_cccu_SA)
+sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1| CASEID), family = binomial, data = cccu_SA)
 
 summary(sa_m2)
 confint(sa_m2)
