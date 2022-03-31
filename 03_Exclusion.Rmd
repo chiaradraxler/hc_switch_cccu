@@ -110,7 +110,7 @@ cccu_complete1 <- cccu_complete1 %>%
  mutate(exclusion_missing_pred_sex_sat= ifelse(is.na(sexual_satisfaction), 1, 0))
 
 
-table(cccu_complete1$exclusion_missing_pred_sex_sat)
+table(cccu_complete1$exclusion_missing_pred_sex_sat)#high missingness
 cccu_complete1$exclusion_missing_pred_sex_sat <- as.factor(cccu_complete1$exclusion_missing_pred_sex_sat)
 qplot(cccu_complete1$exclusion_missing_pred_sex_sat)
 
@@ -147,7 +147,7 @@ cccu_complete1 <- cccu_complete1 %>%
  mutate(exclusion_missing_selection_healthprb= as.factor(ifelse(is.na(HLTHPROB_recode),1,0))) 
 
 table(is.na(cccu_complete1$HLTHPROB_recode))
-table(cccu_complete1$exclusion_missing_selection_healthprb)#missings
+table(cccu_complete1$exclusion_missing_selection_healthprb)#high missings
 
 #Med Problems
 cccu_complete1 <- cccu_complete1 %>%
@@ -198,14 +198,14 @@ cccu_complete1 <- cccu_complete1 %>%
  mutate(exclusion_missing_selection_feelpg= as.factor(ifelse(is.na(FEELPG_recode),1,0))) 
 
 table(is.na(cccu_complete1$FEELPG_recode))
-table(cccu_complete1$exclusion_missing_selection_feelpg)#missings
+table(cccu_complete1$exclusion_missing_selection_feelpg)#high missings
 
 #Avoidance of pregnancy
 cccu_complete1 <- cccu_complete1 %>%
  mutate(exclusion_missing_selection_avoid= as.factor(ifelse(is.na(Avoid_r),1,0))) 
 
 table(is.na(cccu_complete1$Avoid_r))
-table(cccu_complete1$exclusion_missing_selection_avoid)#missings
+table(cccu_complete1$exclusion_missing_selection_avoid)#high missings
 
 #Relationship duration
 cccu_complete1 <- cccu_complete1 %>%
@@ -476,7 +476,7 @@ length(unique(cccu_complete1$CASEID)) -
   unique() %>%
   nrow()
 
-#1188
+#1188#high exclusion
 ```
 
 
@@ -521,7 +521,7 @@ length(unique(cccu_complete1$CASEID)) -
   unique() %>%
   nrow()
 
-#469
+#469#high exclusion
 ```
 
 ## 5.4 Missing Selection Predictors
@@ -579,7 +579,7 @@ length(unique(cccu_complete1$CASEID)) -
   filter(exclusion_missing_selection_healthprb !=1) %>%
   select(CASEID) %>%
   unique() %>%
-  nrow()#266
+  nrow()#266#relatively high exclusion
 
 #MedProb
 length(unique(cccu_complete1$CASEID)) -
@@ -644,7 +644,7 @@ length(unique(cccu_complete1$CASEID)) -
   filter(exclusion_missing_selection_avoid !=1) %>%
   select(CASEID) %>%
   unique() %>%
-  nrow()ä14
+  nrow()#14
 
 #rel dur
 length(unique(cccu_complete1$CASEID)) -
@@ -672,7 +672,7 @@ length(unique(cccu_complete1$CASEID)) -
   filter(exclusion_missing_outc_switch !=1) %>%
   select(CASEID) %>%
   unique() %>%
-  nrow()#1427
+  nrow()#1427#high exclusion!
 
 
 
@@ -714,7 +714,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
-#402
+#402#high exclusion
 
 #IUD next
 
@@ -732,7 +732,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
-#1669
+#1669#high exclusiuon!!!
 
 ```
 
@@ -759,7 +759,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
-#2079
+#2079#high exclusion
 ```
 
 ### 5.8.2 unknow duration
@@ -778,7 +778,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
-#2580
+#2580#high exclusion
 ```
 
 ## 5.9 Robustness analyses
@@ -797,7 +797,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
-#410
+#410#relatively high exclusion
 
 #df for subanalysis
 cccu_R1_s<-cccu_SA %>%
@@ -821,7 +821,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
-#386
+#386#relatively high exclusion
 
 #df for SA
 cccu_R2_s<-cccu_SA %>%
@@ -844,7 +844,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
-#4634
+#4634#high exclusion 
 
 #df for subanalysis
 cccu_R3_s<-cccu_SA %>%
