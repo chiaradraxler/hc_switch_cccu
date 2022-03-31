@@ -62,15 +62,16 @@ x = cccu_complete1 %>%
 !!!!NEEDS TO BE REMOVED!!
 ```{r}
 
-cccu_complete1$contra_satis = ifelse(is.na(cccu_complete1$contra_satis),1,cccu_complete1$contra_satis)
+#cccu_complete1$contra_satis = ifelse(is.na(cccu_complete1$contra_satis),1,cccu_complete1$contra_satis)
 
-table(is.na(cccu_complete1$contra_satis))
+#table(is.na(cccu_complete1$contra_satis))
 
 ```
 
 ```{r}
 table(cccu_complete1$contra_satis) 
-table(is.na(cccu_complete1$contra_satis))
+table(is.na(cccu_complete1$contra_satis))#still high missingness
+crosstabs( ~ is.na(contra_satis) + WAVE, data = cccu_complete1)
 
 cccu_complete1 <- cccu_complete1 %>%
  mutate(exclusion_missing_pred_contra_satis = ifelse(is.na(contra_satis), 1, 0))
@@ -219,7 +220,7 @@ table(cccu_complete1$exclusion_missing_selection_reldur)
 cccu_complete1 <- cccu_complete1 %>% mutate(exclusion_missing_selection = as.factor(ifelse(is.na(AGE) | is.na(DEGREE_recode) | is.na(POVRATE)| is.na(HLTHPROB_recode) | is.na(MEDPROB_recode)| is.na(GAPINS_recode) | is.na(TYPEINS_recode) | is.na(NKIDS_t1) |is.na(pregnant_between_waves) | is.na(had_baby_between_waves) | is.na(FEELPG_recode) | is.na(Avoid_r) | is.na(rel_dur_factor), 1, 0)))
 
 qplot(cccu_complete1$exclusion_missing_selection)
-
+table(cccu_complete1$exclusion_missing_selection)
 
 x = cccu_complete1 %>%
   select(exclusion_missing_selection, exclusion_missing_selection_age, exclusion_missing_selection_degree, exclusion_missing_selection_povrate, exclusion_missing_selection_healthprb, exclusion_missing_selection_medprob, exclusion_missing_selection_gapins, exclusion_missing_selection_typeins, exclusion_missing_selection_nkids, exclusion_missing_selection_preg_bet_waves, exclusion_missing_selection_baby_bet_waves, exclusion_missing_selection_feelpg, exclusion_missing_selection_avoid, exclusion_missing_selection_reldur)
@@ -230,7 +231,7 @@ x = cccu_complete1 %>%
 Dont exclude next IUD & non-hormonal
 ```{r}
 table(cccu_complete1$switch)
-table(is.na(cccu_complete1$switch))
+table(is.na(cccu_complete1$switch))#high missingness
 
 cccu_complete1 <- cccu_complete1 %>%
  mutate(exclusion_missing_outc_switch= ifelse(is.na(switch), 1, 0))
@@ -328,10 +329,11 @@ qplot(cccu_complete1$exclusion_used_non_hc)
 ####dealing with high missingness because of simulation (so that models run)
 NEEDS TO BE REMOVED!
 ```{r}
-table(is.na(cccu_complete1$hc_dur))
-cccu_complete1$hc_dur = ifelse(is.na(cccu_complete1$hc_dur),1,cccu_complete1$hc_dur)
+#table(is.na(cccu_complete1$hc_dur))
 
-table(is.na(cccu_complete1$hc_dur))
+#cccu_complete1$hc_dur = ifelse(is.na(cccu_complete1$hc_dur),1,cccu_complete1$hc_dur)
+
+#table(is.na(cccu_complete1$hc_dur))
 ```
 
 
@@ -373,7 +375,7 @@ cccu_complete1$exclusion_R1 <-as.factor(cccu_complete1$exclusion_R1)
 qplot(cccu_complete1$exclusion_R1)#missingness might be because sex_inlast30days and NOBARRIER can be missing 
 
 
-crosstabs(~exclusion_R1 + hc + NOBARRIER + sex_inlast30days, data = cccu_complete1) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = No)
+crosstabs(~exclusion_R1 + hc + NOBARRIER + sex_inlast30days, data =cccu_complete1) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = No)
 
 ```
 
@@ -417,17 +419,13 @@ table(cccu_complete1$SP2VAS)
 
 
 #create column that indicates if used Vasectomy
-
 cccu_complete1 <- cccu_complete1 %>%
-  mutate(exclusion_R3 = ifelse(VASECTOMY == "(1) Yes", 1,
-                              ifelse(SP1VAS == "(1) Yes", 1, NA)),
-         exclusion_R3 = ifelse(SP2VAS == "(1) Yes" & (is.na(VASECTOMY) | VASECTOMY == "(0) No") & is.na(SP1VAS), 1, exclusion_R3),
-         exclusion_R3 = ifelse(is.na(exclusion_R3), 0, exclusion_R3))
-
-x = cccu_complete1 %>% filter(SP2VAS == "(1) Yes") %>% select(VASECTOMY, SP1VAS, SP2VAS, exclusion_R3)
+  mutate(exclusion_R3 = ifelse(VASECTOMY == "(1) Yes" |
+                                 SP1VAS == "(1) Yes" | SP2VAS == "(1) Yes", 1, ifelse (VASECTOMY == "(0) No" |
+                                 SP1VAS == "(0) No" | SP2VAS == "(0) No", 0, NA)))
+                               
 table(cccu_complete1$exclusion_R3)
-crosstabs(~exclusion_R3+SP2VAS, data = cccu_complete1)
-
+crosstabs(~exclusion_R3+ SP2VAS, data = cccu_complete1)
 cccu_complete1$exclusion_R3 <-as.factor(cccu_complete1$exclusion_R3)
 qplot(cccu_complete1$exclusion_R3)
 
@@ -456,7 +454,7 @@ length(unique(cccu_complete1$CASEID)) -
   unique() %>%
   nrow() 
 
-
+#0
 ```
 
 
@@ -478,6 +476,7 @@ length(unique(cccu_complete1$CASEID)) -
   unique() %>%
   nrow()
 
+#1188
 ```
 
 
@@ -503,6 +502,8 @@ length(unique(cccu_complete1$CASEID)) -
   unique() %>%
   nrow()
 
+#20
+
 #sex satis
 table(cccu_complete1$exclusion_missing_pred_sex_sat)
 
@@ -520,6 +521,7 @@ length(unique(cccu_complete1$CASEID)) -
   unique() %>%
   nrow()
 
+#469
 ```
 
 ## 5.4 Missing Selection Predictors
@@ -542,7 +544,10 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
-#
+
+#306
+
+
 #separate for all selection predictors:
 #Age
 length(unique(cccu_complete1$CASEID)) -
@@ -550,7 +555,7 @@ length(unique(cccu_complete1$CASEID)) -
   filter(exclusion_missing_selection_age !=1) %>%
   select(CASEID) %>%
   unique() %>%
-  nrow()
+  nrow()#0
 
 #Degree
 length(unique(cccu_complete1$CASEID)) -
@@ -558,7 +563,7 @@ length(unique(cccu_complete1$CASEID)) -
   filter(exclusion_missing_selection_degree !=1) %>%
   select(CASEID) %>%
   unique() %>%
-  nrow()
+  nrow()#0
 
 #Povrate
 length(unique(cccu_complete1$CASEID)) -
@@ -566,7 +571,7 @@ length(unique(cccu_complete1$CASEID)) -
   filter(exclusion_missing_selection_povrate !=1) %>%
   select(CASEID) %>%
   unique() %>%
-  nrow()
+  nrow()#0
 
 #Hlthprob
 length(unique(cccu_complete1$CASEID)) -
@@ -574,7 +579,7 @@ length(unique(cccu_complete1$CASEID)) -
   filter(exclusion_missing_selection_healthprb !=1) %>%
   select(CASEID) %>%
   unique() %>%
-  nrow()
+  nrow()#266
 
 #MedProb
 length(unique(cccu_complete1$CASEID)) -
@@ -582,7 +587,7 @@ length(unique(cccu_complete1$CASEID)) -
   filter(exclusion_missing_selection_medprob !=1) %>%
   select(CASEID) %>%
   unique() %>%
-  nrow()
+  nrow()#0
 
 #Gapins
 length(unique(cccu_complete1$CASEID)) -
@@ -590,7 +595,7 @@ length(unique(cccu_complete1$CASEID)) -
   filter(exclusion_missing_selection_gapins !=1) %>%
   select(CASEID) %>%
   unique() %>%
-  nrow()
+  nrow()#24
 
 #Typeins
 length(unique(cccu_complete1$CASEID)) -
@@ -598,7 +603,7 @@ length(unique(cccu_complete1$CASEID)) -
   filter(exclusion_missing_selection_typeins !=1) %>%
   select(CASEID) %>%
   unique() %>%
-  nrow()
+  nrow()#24
 
 #N kids at t1
 length(unique(cccu_complete1$CASEID)) -
@@ -606,7 +611,7 @@ length(unique(cccu_complete1$CASEID)) -
   filter(exclusion_missing_selection_nkids !=1) %>%
   select(CASEID) %>%
   unique() %>%
-  nrow()
+  nrow()#15
 
 
 #Preg between waves
@@ -615,7 +620,7 @@ length(unique(cccu_complete1$CASEID)) -
   filter(exclusion_missing_selection_preg_bet_waves !=1) %>%
   select(CASEID) %>%
   unique() %>%
-  nrow()
+  nrow()#6
 
 #baby between waves
 length(unique(cccu_complete1$CASEID)) -
@@ -623,7 +628,7 @@ length(unique(cccu_complete1$CASEID)) -
   filter(exclusion_missing_selection_baby_bet_waves !=1) %>%
   select(CASEID) %>%
   unique() %>%
-  nrow()
+  nrow()#6
 
 #Feelpg
 length(unique(cccu_complete1$CASEID)) -
@@ -631,7 +636,7 @@ length(unique(cccu_complete1$CASEID)) -
   filter(exclusion_missing_selection_feelpg !=1) %>%
   select(CASEID) %>%
   unique() %>%
-  nrow()
+  nrow()#16
 
 #Avoid
 length(unique(cccu_complete1$CASEID)) -
@@ -639,7 +644,7 @@ length(unique(cccu_complete1$CASEID)) -
   filter(exclusion_missing_selection_avoid !=1) %>%
   select(CASEID) %>%
   unique() %>%
-  nrow()
+  nrow()ä14
 
 #rel dur
 length(unique(cccu_complete1$CASEID)) -
@@ -647,7 +652,7 @@ length(unique(cccu_complete1$CASEID)) -
   filter(exclusion_missing_selection_reldur !=1) %>%
   select(CASEID) %>%
   unique() %>%
-  nrow()
+  nrow()#0
 ```
 
 
@@ -667,7 +672,7 @@ length(unique(cccu_complete1$CASEID)) -
   filter(exclusion_missing_outc_switch !=1) %>%
   select(CASEID) %>%
   unique() %>%
-  nrow()
+  nrow()#1427
 
 
 
@@ -688,7 +693,7 @@ length(unique(cccu_complete1$CASEID)) -
   filter(exclusion_used_EC !=1) %>%
   select(CASEID) %>%
   unique() %>%
-  nrow()
+  nrow()#0
 ```
 
 
@@ -709,6 +714,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
+#402
 
 #IUD next
 
@@ -726,7 +732,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
-
+#1669
 
 ```
 
@@ -753,7 +759,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
-
+#2079
 ```
 
 ### 5.8.2 unknow duration
@@ -772,6 +778,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
+#2580
 ```
 
 ## 5.9 Robustness analyses
@@ -790,6 +797,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
+#410
 
 #df for subanalysis
 cccu_R1_s<-cccu_SA %>%
@@ -813,6 +821,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
+#386
 
 #df for SA
 cccu_R2_s<-cccu_SA %>%
@@ -835,6 +844,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
+#4634
 
 #df for subanalysis
 cccu_R3_s<-cccu_SA %>%

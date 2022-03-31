@@ -975,6 +975,7 @@ table(cccu_complete1$hc)
 
 ##pill
 table(cccu_complete1$Q23D_PILL)
+
 crosstabs( ~ Q23D_PILL + WAVE, data = cccu_complete1)
 
 cccu_complete1 <- cccu_complete1 %>%
@@ -1214,6 +1215,8 @@ x = cccu_complete1 %>%
          Q23D_IMPLANT_r, Q23D_RING_r,RSAT1_r, RSAT2_r, RSAT3_r, RSAT4_r, RSAT5_r, contra_satis)
 
 hist(cccu_complete1$contra_satis)
+
+crosstabs( ~ is.na(contra_satis) + WAVE, data = cccu_complete1)
 ```
   
 
