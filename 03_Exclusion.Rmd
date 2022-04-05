@@ -401,6 +401,7 @@ cccu_complete1 <- cccu_complete1 %>%
 
 table(cccu_complete1$exclusion_R2)
 
+
 cccu_complete1$exclusion_R2 <-as.factor(cccu_complete1$exclusion_R2)
 qplot(cccu_complete1$exclusion_R2)#missingness might be because sex_inlast30days and NOBARRIER can be missing 
 
