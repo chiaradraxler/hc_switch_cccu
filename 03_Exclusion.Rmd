@@ -366,14 +366,15 @@ table(cccu_complete1$sex_inlast30days)#no sex in last 30 days
 #create column that indicates with 1 = no sex and no contraceptive method used in last 30 days
 
 cccu_complete1 <- cccu_complete1 %>%
-  mutate(exclusion_R1 = ifelse(NOBARRIER == "(1) Yes" & 
-                                 hc == "non_hc" &
-                                 sex_inlast30days == "No",1,0))
+  mutate(exclusion_R1 = ifelse(is.na(sex_inlast30days), 0, 
+                               ifelse(sex_inlast30days == "No", 1,
+                                      ifelse(sex_inlast30days == "Yes", 0, NA))))
 
-table(cccu_complete1$exclusion_R1)
+table(is.na(cccu_complete1$exclusion_R1))
 cccu_complete1$exclusion_R1 <-as.factor(cccu_complete1$exclusion_R1)
 qplot(cccu_complete1$exclusion_R1)#missingness might be because sex_inlast30days and NOBARRIER can be missing 
 
+crosstabs(~hc + sex_inlast30days, data =cccu_complete1) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = No)
 
 crosstabs(~exclusion_R1 + hc + NOBARRIER + sex_inlast30days, data =cccu_complete1) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = No)
 
