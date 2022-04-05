@@ -422,9 +422,10 @@ table(cccu_complete1$SP2VAS)
 #create column that indicates if used Vasectomy
 cccu_complete1 <- cccu_complete1 %>%
   mutate(exclusion_R3 = ifelse(VASECTOMY == "(1) Yes" |
-                                 SP1VAS == "(1) Yes" | SP2VAS == "(1) Yes", 1, ifelse (VASECTOMY == "(0) No" |
-                                 SP1VAS == "(0) No" | SP2VAS == "(0) No", 0, NA)))
-                               
+                                 SP1VAS == "(1) Yes" | SP2VAS == "(1) Yes", 1, NA),
+         exclusion_R3 = ifelse(is.na(exclusion_R3), 0, exclusion_R3))
+         
+
 table(cccu_complete1$exclusion_R3)
 crosstabs(~exclusion_R3+ SP2VAS, data = cccu_complete1)
 cccu_complete1$exclusion_R3 <-as.factor(cccu_complete1$exclusion_R3)
