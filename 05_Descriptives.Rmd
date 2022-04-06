@@ -1,0 +1,84 @@
+---
+title: "05_descriptives"
+author: "Chiara Draxler"
+date: "24 1 2022"
+output: html_document
+---
+
+#1. load Data
+```{r}
+load("cccu_MA.RData")
+```
+
+
+#2. Load Packages
+```{r}
+library(psych)
+library(dplyr)
+```
+
+
+#3. Participants
+##filter values only for t1
+
+```{r}
+cccu_MA_t1 <- cccu_MA%>%
+  filter(WAVE == "t1")
+```
+
+
+##Age
+```{r}
+#as.numeric
+psych::describe(cccu_MA_t1$AGE)
+table(cccu_MA_t1$AGE)
+```
+##Ethnicity
+
+##Degree
+```{r}
+table(cccu_MA_t1$DEGREE_recode)
+
+```
+#Employment Status
+
+##Relationship Status & Duration
+
+```{r}
+#status
+table(cccu_MA_t1$partnered)
+
+#duration
+table(cccu_MA_t1$rel_dur)
+
+describe(cccu_MA_t1$rel_dur)
+
+describe(cccu_MA_t1$rel_dur_years)
+describe(cccu_MA_t1$rel_dur_months)
+```
+
+
+##Region and State
+
+
+##Number of Kids
+```{r}
+table(cccu_MA_t1$NKIDS_t1)
+
+```
+
+
+##Type of Insurance
+```{r}
+table(cccu_MA_t1$TYPEINS)
+table(cccu_MA_t1$TYPEINS_recode)
+
+```
+
+
+##Income
+```{r}
+table(cccu_MA_t1$Income)
+```
+
+

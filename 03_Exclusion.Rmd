@@ -355,7 +355,7 @@ x = cccu_complete1 %>%
 
 
 ## 4.9 Robustness analyses
-### 4.9.1. No sex + no contra
+### 4.9.1. No sex 
 ```{r}
 table(cccu_complete1$NOBARRIER)#no non-hormonal contraceptive method in last 30days
 table(cccu_complete1$hc)#no hormonal contraceptive method 
