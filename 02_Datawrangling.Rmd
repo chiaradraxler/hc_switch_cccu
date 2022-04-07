@@ -124,11 +124,12 @@ cccu_complete1 <- cccu_complete %>%
     DEGREE,
     POVRATE,
     HHINC,
+    MARSTAT,
     REGION,
     STATE,
     TYPEINS,
     EMPSTAT,
-    RACETH
+    RACETH,
     MEDPROB,
     GAPINS,
     HLTHPROB,
@@ -200,7 +201,8 @@ table(cccu_complete1$WAVE)
 
 #4. Variable Wrangling 
 
-##EC (for exclusion)
+##Variables for Exclusion
+###EC (for exclusion)
 ```{r}
 table(cccu_complete1$EC)
 
@@ -222,7 +224,8 @@ table(cccu_complete1$EC_recode)
 crosstabs( ~ is.na(EC) + WAVE, data = cccu_complete1)#item is missing at t1
 ```
 
-#Income (for descriptives)
+##Variables for Sample Description 
+###Income (for descriptives)
 ```{r}
 table(cccu_complete1$HHINC)
 
@@ -232,25 +235,25 @@ cccu_complete1 <- cccu_complete1 %>%
       HHINC,
       "(-2) Not asked"="NA",
       "(-1) refused"="NA",
-      "(01) Less than $5,000" = "Less than $5,000",
-      "(02) $5,000 to $7,499" = "$5,000 to $7,499",
-      "(03) $7,500 to $9,999" = "$7,500 to $9,999",
-      "(04) $10,000 to $12,499" = "$10,000 to $12,499",
-      "(05) $12,500 to $14,999" = "$12,500 to $14,999",
-      "(06) $15,000 to $19,999" = "$15,000 to $19,999",
-      "(07) $20,000 to $24,999" = "$20,000 to $24,999",
-      "(08) $25,000 to $29,999"= "$25,000 to $29,999",
-      "(09) $30,000 to $34,999"="$30,000 to $34,999",
-      "(10) $35,000 to $39,999"= "$35,000 to $39,999",
-      "(11) $40,000 to $49,999" = "$40,000 to $49,999",
-      "(12) $50,000 to $59,999"= "$50,000 to $59,999",
-      "(13) $60,000 to $74,999"= "$60,000 to $74,999",
-      "(14) $75,000 to $84,999"= "$75,000 to $84,999",
-      "(15) $85,000 to $99,999"= "$85,000 to $99,999",
-      "(16) $100,000 to $124,999"= "$100,000 to $124,999",
-      "(17) $125,000 to $149,999"= "$125,000 to $149,999",
-      "(18) $150,000 to $174,999"= "$150,000 to $174,999",
-      "(19) $175,000 or more"= "$175,000 or more"
+      "(01) Less than $5,000" = "1",
+      "(02) $5,000 to $7,499" = "2",
+      "(03) $7,500 to $9,999" = "3",
+      "(04) $10,000 to $12,499" = "4",
+      "(05) $12,500 to $14,999" = "5",
+      "(06) $15,000 to $19,999" = "6",
+      "(07) $20,000 to $24,999" = "7",
+      "(08) $25,000 to $29,999"= "8",
+      "(09) $30,000 to $34,999"="9",
+      "(10) $35,000 to $39,999"= "10",
+      "(11) $40,000 to $49,999" = "11",
+      "(12) $50,000 to $59,999"= "12",
+      "(13) $60,000 to $74,999"= "13",
+      "(14) $75,000 to $84,999"= "14",
+      "(15) $85,000 to $99,999"= "15",
+      "(16) $100,000 to $124,999"= "16",
+      "(17) $125,000 to $149,999"= "17",
+      "(18) $150,000 to $174,999"= "18",
+      "(19) $175,000 or more"= "19",
 )) 
 
 table(cccu_complete1$Income)
@@ -282,6 +285,192 @@ cccu_complete1$Income<-
 
       
 ```
+###Ethnicity
+```{r}
+table(cccu_complete1$RACETH)
+
+cccu_complete1 <- cccu_complete1 %>%
+  mutate(
+    Ethnicity = recode(
+      RACETH,
+      "(-2) Not asked"= "NA",
+      "(-1) refused"= "NA",
+      "(1) White, Non-Hispanic"="1",
+      "(2) Black, Non-Hispanic"="2",
+      "(3) Other, Non-Hispanic"="3",
+      "(4) Hispanic"="4",
+      "(5) 2+ Races, Non-Hispanic"="5"
+    ))
+    
+
+cccu_complete1$Ethnicity<-
+  factor(
+    cccu_complete1$Ethnicity,
+    levels = c(1, 2, 3, 4, 5),
+    labels = c(
+      "White, Non-Hispanic",
+      "Black, Non-Hispanic",
+      "Other, Non-Hispanic",
+      "Hispanic",
+      "2+ Races, Non-Hispanic"))
+  
+table(cccu_complete1$Ethnicity)
+```
+
+###Employment Status
+```{r}
+table(cccu_complete1$EMPSTAT)
+
+cccu_complete1 <- cccu_complete1 %>%
+  mutate(
+    Employment_status = recode(
+      EMPSTAT,
+      "(-2) Not asked"="NA",
+      "(-1) refused"="NA",
+      "(1) Working - as a paid employee"="1",
+      "(2) Working - self-employed"="2",
+      "(3) Not working - on temporary layoff from a job"="3",
+      "(4) Not working - looking for work"="4",
+      "(5) Not working - retired"="5",
+      "(6) Not working - disabled"="6",
+      "(7) Not working - other"="7"
+))
+
+cccu_complete1$Employment_status<-
+  factor(
+    cccu_complete1$Employment_status,
+    levels = c(1, 2, 3, 4, 5,6,7),
+    labels = c("Working - as a paid employee",
+               "Working - self-employed",
+               "Not working - on temporary layoff from a job",
+               "Not working - looking for work",
+               "Not working - retired",
+               "Not working - disabled",
+               "Not working - other"))
+
+table(cccu_complete1$Employment_status)
+```
+
+###Martial Status
+```{r}
+table(cccu_complete1$MARSTAT)
+
+```
+
+###Region 
+```{r}
+table(cccu_complete1$REGION)
+cccu_complete1 <- cccu_complete1 %>%
+  mutate(
+    Region_recode = recode(
+      REGION,
+      "(-2) Not asked"="NA",
+      "(-1) refused"="NA",
+      "(1) Northeast"="1",
+      "(2) Midwest"="2",
+      "(3) South"="3",
+      "(4) West"="4"
+    ))
+
+cccu_complete1$Region_recode<-
+  factor(
+    cccu_complete1$Region_recode,
+    levels = c(1, 2, 3, 4),
+    labels = c("Northeast", "Midwest", "South", "West"))
+
+table(cccu_complete1$Region_recode)
+
+```
+
+
+###State
+```{r}
+table(cccu_complete1$STATE)
+cccu_complete1$STATE<-as.character(cccu_complete1$STATE)
+
+cccu_complete1 <- cccu_complete1 %>%
+  mutate(
+    state_recode = recode(
+      STATE,
+      "(11) me"="1",
+"(12) nh"="2", 
+"(13) vt"="3",
+"(14) ma"="4",
+"(15) ri"="5", 
+"(16) ct"="6", 
+"(21) ny"="7", 
+"(22) nj"="8", 
+"(23) pa"="9",
+"(31) oh" ="10",
+"(32) in"="11",
+"(33) il" ="12",
+"(34) mi" ="13",
+"(35) wi" ="14",
+"(41) mn" ="15",
+"(42) ia" ="16",
+"(43) mo" ="17",
+"(44) nd" ="18",
+"(45) sd"="19",
+"(46) ne" ="20",
+"(47) ks"="21",
+"(51) de" ="22",
+"(52) md" ="23",
+"(53) dc" ="24",
+"(54) va" ="25",
+"(55) wv" ="26",
+"(56) nc"="27",
+"(57) sc" ="28",
+"(58) ga" ="29",
+"(59) fl" ="30",
+"(61) ky" ="31",
+"(62) tn"="32",
+"(63) al" ="33",
+"(64) ms"="34",
+"(71) ar" ="35",
+"(72) la" ="36",
+"(73) ok" ="37",
+"(74) tx" ="38",
+"(81) mt" ="39",
+"(82) id" ="40",
+"(83) wy"="41",
+"(84) co" ="42",
+"(85) nm" ="43",
+"(86) az"="44",
+"(87) ut" ="45",
+"(88) nv" ="46",
+"(91) wa" ="47",
+"(92) or" ="48",
+"(93) ca" ="49",
+"(94) ak"="50",
+"(95) hi"="51"))
+
+table(cccu_complete1$state_recode)
+
+
+cccu_complete1$state_recode<-
+  factor(
+    cccu_complete1$state_recode,
+    levels = c(1:51),
+    labels = c("Maine", "New Hampshire", "Vermont", 
+               "Massachusetts", "Rhode Island", "Conneticut",
+               "New York", "New Jersey", "Pennsylvania",
+               "Ohio", "Indiana", "Illinois", "Michigan", 
+               "Wisconsin", "Minnesota", "Iowa",
+               "Missouri", "North Dakota", "South Dakota", 
+               "Nevada", "Kansas", "Delaware", 
+               "Maryland", "D.C.", "Virginia", "West Virginia",
+               "North Carolina", "South Carolina", "Georgia",
+               "Florida", "Kentucky", "Tennessee", "Alabama",
+               "Mississippi", "Arkansas", "Louisiana",
+               "Oklahoma", "Texas", "Montana", "Idaho", 
+               "Wyoming", "Colorado", "New Mexico", "Arizona",
+               "Utah", "Nevada", "Washington", "Oregon", 
+               "California", "Alaska", "Hawaii"))
+
+table(cccu_complete1$state_recode)
+```
+
+
 
 ##4.0 Wave
 ```{r}
