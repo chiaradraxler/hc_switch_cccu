@@ -30,6 +30,8 @@ cccu_MA_t1 <- cccu_MA%>%
 table(cccu_MA_t1$hc)#IUD & non_hc should be zero bc of exclusion - yes
 
 cccu_MA_t1_hc <- cccu_MA_t1 %>%
+  filter(hc == "hc")
+ 
 table(cccu_MA_t1_hc$PILL)
 table(cccu_MA_t1_hc$PATCH)
 table(cccu_MA_t1_hc$RING)
