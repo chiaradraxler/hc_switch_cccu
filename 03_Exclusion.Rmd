@@ -278,6 +278,7 @@ cccu_complete1 <- cccu_complete1 %>%
 
 table(cccu_complete1$IUD)
 table(cccu_complete1$exclusion_IUD)
+table(is.na(cccu_complete1$exclusion_IUD))
 
 
 table(cccu_complete1$exclusion_IUD)
@@ -293,10 +294,12 @@ x = cccu_complete1 %>%
 
 table(cccu_complete1$hc_next)
 cccu_complete1 <- cccu_complete1 %>%
- mutate(exclusion_IUD_next = ifelse(hc_next == "IUD&non_hc", 1,0))
+ mutate(exclusion_IUD_next = ifelse(is.na(hc_next), 0,
+                                    ifelse(hc_next == "non_hc" | hc_next == "hc", 0,
+                                           ifelse(hc_next == "IUD&non_hc", 1, NA))))
 
 table(cccu_complete1$exclusion_IUD_next)
-
+table(is.na(cccu_complete1$exclusion_IUD_next))
 
 
 table(cccu_complete1$exclusion_IUD_next)
@@ -318,6 +321,8 @@ cccu_complete1 <- cccu_complete1 %>%
  mutate(exclusion_used_non_hc= ifelse(hc == "non_hc", 1,0))
 
 table(cccu_complete1$exclusion_used_non_hc)
+table(is.na(cccu_complete1$exclusion_used_non_hc))
+
 cccu_complete1$exclusion_used_non_hc<- as.factor(cccu_complete1$exclusion_used_non_hc)
 qplot(cccu_complete1$exclusion_used_non_hc)
 
@@ -357,10 +362,6 @@ x = cccu_complete1 %>%
 ## 4.9 Robustness analyses
 ### 4.9.1. No sex 
 ```{r}
-table(cccu_complete1$NOBARRIER)#no non-hormonal contraceptive method in last 30days
-table(cccu_complete1$hc)#no hormonal contraceptive method 
-#joint = no contraceptive method 
-
 table(cccu_complete1$sex_inlast30days)#no sex in last 30 days
 
 #create column that indicates with 1 = no sex and no contraceptive method used in last 30 days
@@ -386,7 +387,7 @@ crosstabs(~exclusion_R1 + hc + NOBARRIER + sex_inlast30days, data =cccu_complete
 #overview over relevant variables
 
 table(cccu_complete1$NOBARRIER)#no non-hormonal contraceptive method in last 30days
-table(cccu_complete1$hc)#no hormonal contracepive method 
+table(cccu_complete1$hc)#no hormonal contraceptive method 
 #joint = no contraceptive method 
 
 table(cccu_complete1$sex_inlast30days)# yes= sex in last 30 days
@@ -408,8 +409,6 @@ qplot(cccu_complete1$exclusion_R2)#missingness might be because sex_inlast30days
 crosstabs(~is.na(exclusion_R2) + NOBARRIER + sex_inlast30days, data = cccu_complete1) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = Yes)
 
 ```
--> should keep an eye on missingess in exclusion columns (if we exclude based on filter(exclusion_missing_XXX !=1) or filter(exclusion_missing_XXX == 0 | is.na(XXX))
-
 
 ### 4.9.3. Vasectomy
 ```{r}
