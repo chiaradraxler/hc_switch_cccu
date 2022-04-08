@@ -25,7 +25,30 @@ library(dplyr)
 cccu_MA_t1 <- cccu_MA%>%
   filter(WAVE == "t1")
 ```
+##hormonal vs. non hormonal contraception 
+```{r}
+table(cccu_MA_t1$hc)#IUD & non_hc should be zero bc of exclusion - yes
 
+cccu_MA_t1_hc <- cccu_MA_t1 %>%
+table(cccu_MA_t1_hc$PILL)
+table(cccu_MA_t1_hc$PATCH)
+table(cccu_MA_t1_hc$RING)
+table(cccu_MA_t1_hc$DEPO)
+table(cccu_MA_t1_hc$IMPLANT)
+table(cccu_MA_t1_hc$IUD)
+
+
+cccu_MA_t1_non_hc <- cccu_MA_t1 %>%
+  filter(hc == "non_hc")
+
+table(cccu_MA_t1_non_hc$CONDOMR)
+table(cccu_MA_t1_non_hc$VASECTOMY)
+table(cccu_MA_t1_non_hc$WITHDRAWR)
+table(cccu_MA_t1_non_hc$NFPR)
+table(cccu_MA_t1_non_hc$SPERMR)
+table(cccu_MA_t1_non_hc$NOBARRIER)
+
+```
 
 ##Age
 ```{r}
@@ -56,6 +79,8 @@ table(cccu_MA_t1$Employment_status)
 ```{r}
 #status
 table(cccu_MA_t1$partnered)
+
+table(cccu_MA_t1$rel_dur_factor)
 
 #duration
 table(cccu_MA_t1$rel_dur)
@@ -96,6 +121,11 @@ table(cccu_MA_t1$TYPEINS_recode)
 ##Income
 ```{r}
 table(cccu_MA_t1$Income)
+```
+
+##POVRATE
+```{r}
+describe(cccu_MA_t1$POVRATE)
 ```
 
 
