@@ -890,6 +890,9 @@ cccu_R3_s<-cccu_SA %>%
 save(cccu_MA,file = "cccu_MA.RData")
 
 load("cccu_MA.RData")
+##excluded sample
+save(cccu_excluded, file = "cccu_excluded.RData")
+load("cccu_excluded.RData")
 
 
 #Sub Analysis

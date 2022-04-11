@@ -8,6 +8,7 @@ output: html_document
 #1. load Data
 ```{r}
 load("cccu_MA.RData")
+load("cccu_excluded.RData")
 ```
 
 
@@ -131,3 +132,42 @@ describe(cccu_MA_t1$POVRATE)
 ```
 
 
+#Comparision included to excluded sample 
+
+##hc use
+
+##contraceptive satisfation
+
+##sexual frequency
+
+##sexual satisfaction 
+
+##Age
+```{r}
+t.test(cccu_MA$AGE ~ cccu_excluded$AGE, alternative = 'two.sided', conf.level = .95)
+```
+
+
+##Degree
+
+##Poverty
+
+##Health problems
+
+##medical problems
+
+##gaps in insurance
+
+##insuranced?
+
+##number of kids at t1
+
+##pregnant between waves
+
+##had baby between waves
+
+##avoidance
+
+##feelings about pregnancy
+
+##relationship duration 
