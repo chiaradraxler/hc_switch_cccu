@@ -70,7 +70,8 @@ x = cccu_complete1 %>%
 
 ```{r}
 table(cccu_complete1$contra_satis) 
-table(is.na(cccu_complete1$contra_satis))#still high missingness
+table(is.na(cccu_complete1$contra_satis))
+
 crosstabs( ~ is.na(contra_satis) + WAVE, data = cccu_complete1)
 
 cccu_complete1 <- cccu_complete1 %>%
@@ -108,6 +109,8 @@ table(is.na(cccu_complete1$sexual_satisfaction))
 
 cccu_complete1 <- cccu_complete1 %>%
  mutate(exclusion_missing_pred_sex_sat= ifelse(is.na(sexual_satisfaction), 1, 0))
+
+crosstabs( ~ is.na(sexual_satisfaction) + rel_dur_factor, data = cccu_complete1)
 
 
 table(cccu_complete1$exclusion_missing_pred_sex_sat)#high missingness
@@ -233,6 +236,11 @@ Dont exclude next IUD & non-hormonal
 table(cccu_complete1$switch)
 table(is.na(cccu_complete1$switch))#high missingness
 
+
+crosstabs( ~ is.na(switch) + WAVE, data = cccu_complete1)
+
+cccu_complete1 %>% select(CASEID, WAVE, hc, hc_next, switch) %>% View()
+
 cccu_complete1 <- cccu_complete1 %>%
  mutate(exclusion_missing_outc_switch= ifelse(is.na(switch), 1, 0))
 
@@ -310,6 +318,11 @@ qplot(cccu_complete1$exclusion_IUD_next) #NA (missings) should be removed when e
 x = cccu_complete1 %>%
   select(CASEID, WAVE, IUD_next, hc_next, exclusion_IUD_next)
 ```
+#column for complete exclusion process of main analysis
+```{r}
+#create column for complete exclusion process 
+cccu_complete1 <- cccu_complete1 %>% mutate(exclusion_complete = as.factor(ifelse(exclusion_missing_predHC == 1 | exclusion_missing_pred_contra_satis ==1 | exclusion_missing_pred_sex_freq ==1 | exclusion_missing_pred_sex_sat ==1 | exclusion_missing_selection ==1 | exclusion_missing_outc_switch ==1 | exclusion_used_EC ==1| exclusion_IUD ==1 | exclusion_IUD_next ==1, 1, 0)))
+```
 
 
 ## 4.8 Subanalyses Duration
@@ -345,6 +358,8 @@ NEEDS TO BE REMOVED!
 ```{r}
 table(cccu_complete1$hc_dur)
 table(is.na(cccu_complete1$hc_dur))
+
+crosstabs( ~ is.na(hc_dur) + sex_inlast30days, data = cccu_complete1)
 
 cccu_complete1 <- cccu_complete1 %>%
  mutate(exclusion_missing_pred_hc_dur= ifelse(is.na(hc_dur), 1, 0))
@@ -717,7 +732,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
-#402#high exclusion
+#402
 
 #IUD next
 
@@ -735,7 +750,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
-#1669#high exclusiuon!!!
+#135
 
 ```
 
@@ -743,6 +758,16 @@ length(unique(cccu_complete1$CASEID)) -
 ```{r}
 cccu_MA <- cccu_complete10
 ```
+
+
+#save excluded sample for comparison included (cccu_MA) vs excluded sample (cccu_excluded)
+```{r}
+#save excluded sample 
+cccu_excluded <-cccu_complete1 %>%
+  filter(exclusion_complete ==1)
+
+```
+
 
 ## 5.8 Subanalyses Duration
 ### 5.8.1 non-hormonal contra
@@ -800,7 +825,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
-#410#relatively high exclusion
+#656#relatively high exclusion
 
 #df for subanalysis
 cccu_R1_s<-cccu_SA %>%
@@ -824,7 +849,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
-#386#relatively high exclusion
+#325#relatively high exclusion
 
 #df for SA
 cccu_R2_s<-cccu_SA %>%
@@ -847,7 +872,7 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
-#4634#high exclusion 
+#1
 
 #df for subanalysis
 cccu_R3_s<-cccu_SA %>%
