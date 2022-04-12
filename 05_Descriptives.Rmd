@@ -164,7 +164,7 @@ t.test(t1_comp_inex$AGE ~ t1_comp_inex$exclude,
 
 ##Degree
 ```{r}
-chisq.test(cccu_MA_t1$DEGREE_recode, cccu_excluded_t1$DEGREE, correct=FALSE)
+chisq.test(t1_comp_inex$DEGREE_recode, t1_comp_inex$exclude, correct=FALSE)
 ```
 
 
