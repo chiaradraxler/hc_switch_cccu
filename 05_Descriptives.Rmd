@@ -139,6 +139,11 @@ describe(cccu_MA_t1$POVRATE)
 
 
 #Comparision included to excluded sample 
+```{r}
+t1_comp_inex = rbind(cccu_MA_t1 %>% mutate(exclude = "no"),
+                     cccu_excluded_t1 %>% mutate(exclude = "yes"))
+table(t1_comp_inex$exclude)
+```
 
 ##hc use
 
@@ -150,7 +155,10 @@ describe(cccu_MA_t1$POVRATE)
 
 ##Age
 ```{r}
-t.test(cccu_MA_t1$AGE ~ cccu_excluded_t1$AGE, alternative = 'two.sided', conf.level = .95)
+t.test(t1_comp_inex$AGE ~ t1_comp_inex$exclude,
+       alternative = 'two.sided',
+       paired = FALSE,
+       conf.level = .95)
 ```
 
 
