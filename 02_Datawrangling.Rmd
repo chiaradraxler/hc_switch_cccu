@@ -1532,7 +1532,7 @@ crosstabs( ~ Q23A_PILL + WAVE, data = cccu_complete1)
 crosstabs( ~ Q23A_PATCH + WAVE, data = cccu_complete1)
 crosstabs( ~ Q23A_RING + WAVE, data = cccu_complete1)
 crosstabs( ~ Q23A_DEPO + WAVE, data = cccu_complete1)
-crosstabs( ~ Q23IMPLANT + WAVE, data = cccu_complete1)
+crosstabs( ~ Q23A_IMPLANT + WAVE, data = cccu_complete1)
 
 # recode duration time for t2 - t4 into numeric values
 cccu_complete1 = cccu_complete1 %>%
