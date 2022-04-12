@@ -549,8 +549,16 @@ length(unique(cccu_complete1$CASEID)) -
 table(cccu_complete1$exclusion_missing_selection)
 
 #exclude from df
-cccu_complete6 <-cccu_complete5 %>%
+cccu_complete6_version1 <-cccu_complete5 %>%
   filter(exclusion_missing_selection !=1)
+
+cccu_complete6_version2 <-cccu_complete5 %>%
+  filter(!is.na(AGE), !is.na(DEGREE_recode), !is.na(POVRATE), !is.na(HLTHPROB_recode),
+           !is.na(MEDPROB_recode), !is.na(GAPINS_recode), !is.na(TYPEINS_recode),
+           !is.na(NKIDS_t1), !is.na(pregnant_between_waves),
+           !is.na(had_baby_between_waves), !is.na(FEELPG_recode), !is.na(Avoid_r),
+           !is.na(rel_dur_factor))
+
 
 #number of excluded women from cccu_complete1 bc of exclusion_missing_selection = 1 (might be combination with other exclusion criteria)
 
