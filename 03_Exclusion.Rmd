@@ -559,7 +559,7 @@ cccu_complete6_version2 <-cccu_complete5 %>%
            !is.na(had_baby_between_waves), !is.na(FEELPG_recode), !is.na(Avoid_r),
            !is.na(rel_dur_factor))
 
-cccu_complete6 -> cccu_complete6_version1
+cccu_complete6 <- cccu_complete6_version1
 
 #number of excluded women from cccu_complete1 bc of exclusion_missing_selection = 1 (might be combination with other exclusion criteria)
 
