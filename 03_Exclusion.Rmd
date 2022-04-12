@@ -559,6 +559,7 @@ cccu_complete6_version2 <-cccu_complete5 %>%
            !is.na(had_baby_between_waves), !is.na(FEELPG_recode), !is.na(Avoid_r),
            !is.na(rel_dur_factor))
 
+cccu_complete6 -> cccu_complete6_version1
 
 #number of excluded women from cccu_complete1 bc of exclusion_missing_selection = 1 (might be combination with other exclusion criteria)
 
@@ -686,6 +687,7 @@ length(unique(cccu_complete1$CASEID)) -
 Dont exclude next IUD & non-hormonal
 ```{r}
 table(cccu_complete1$exclusion_missing_outc_switch)
+crosstabs(~exclusion_missing_outc_switch + WAVE, data = cccu_complete1)
 
 #exclude from df
 cccu_complete7 <-cccu_complete6 %>%
