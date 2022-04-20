@@ -549,7 +549,7 @@ length(unique(cccu_complete1$CASEID)) -
 table(cccu_complete1$exclusion_missing_selection)
 
 #exclude from df
-cccu_complete6_version1 <-cccu_complete5 %>%
+cccu_complete6<-cccu_complete5 %>%
   filter(exclusion_missing_selection !=1)
 
 cccu_complete6_version2 <-cccu_complete5 %>%
