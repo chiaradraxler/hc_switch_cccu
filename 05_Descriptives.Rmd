@@ -16,6 +16,8 @@ load("cccu_excluded.RData")
 ```{r}
 library(psych)
 library(dplyr)
+library(rstatix)
+
 
 ```
 
@@ -69,6 +71,10 @@ table(cccu_MA_t1$AGE)
 
 ```{r}
 table(cccu_MA_t1$Ethnicity)
+
+1169/1723
+275/1723
+
 ```
 
 
@@ -76,10 +82,17 @@ table(cccu_MA_t1$Ethnicity)
 ```{r}
 table(cccu_MA_t1$DEGREE_recode)
 
+597/1723
+432/1723
+
+
 ```
 ##Employment Status
 ```{r}
 table(cccu_MA_t1$Employment_status)
+1078/1723
+81/1723
+(12+186+26+340)/1723
 ```
 
 
@@ -88,6 +101,7 @@ table(cccu_MA_t1$Employment_status)
 ```{r}
 #status
 table(cccu_MA_t1$partnered)
+1293/1723
 
 table(cccu_MA_t1$rel_dur_factor)
 
@@ -105,6 +119,8 @@ describe(cccu_MA_t1$rel_dur_months)
 ```{r}
 #region
 table(cccu_MA_t1$Region_recode)
+548/1723
+283/1723
 
 #state
 table(cccu_MA_t1$state_recode)
@@ -116,6 +132,10 @@ table(cccu_MA_t1$state_recode)
 ```{r}
 table(cccu_MA_t1$NKIDS_t1)
 
+936/1723
+329/1723
+304/1723
+
 ```
 
 
@@ -123,6 +143,7 @@ table(cccu_MA_t1$NKIDS_t1)
 ```{r}
 table(cccu_MA_t1$TYPEINS)
 table(cccu_MA_t1$TYPEINS_recode)
+1456/1723
 
 ```
 
@@ -158,6 +179,8 @@ t.test(t1_comp_inex$contra_satis ~ t1_comp_inex$exclude,
        paired = FALSE,
        conf.level = .95)
 
+t1_comp_inex %>% cohens_d(contra_satis ~ exclude, var.equal = TRUE)
+
 ```
 
 
@@ -173,6 +196,8 @@ t.test(t1_comp_inex$sexual_satisfaction ~ t1_comp_inex$exclude,
        alternative = 'two.sided',
        paired = FALSE,
        conf.level = .95)
+
+t1_comp_inex %>% cohens_d(sexual_satisfaction ~ exclude, var.equal = TRUE)
 ```
 
 
@@ -182,6 +207,8 @@ t.test(t1_comp_inex$AGE ~ t1_comp_inex$exclude,
        alternative = 'two.sided',
        paired = FALSE,
        conf.level = .95)
+
+t1_comp_inex %>% cohens_d(AGE ~ exclude, var.equal = TRUE)
 ```
 
 
@@ -197,6 +224,8 @@ t.test(t1_comp_inex$POVRATE ~ t1_comp_inex$exclude,
        alternative = 'two.sided',
        paired = FALSE,
        conf.level = .95)
+
+t1_comp_inex %>% cohens_d(POVRATE ~ exclude, var.equal = TRUE)
 ```
 
 
@@ -246,6 +275,8 @@ t.test(t1_comp_inex$Avoid_r ~ t1_comp_inex$exclude,
        alternative = 'two.sided',
        paired = FALSE,
        conf.level = .95)
+
+t1_comp_inex %>% cohens_d(Avoid_r ~ exclude, var.equal = TRUE)
 ```
 
 
@@ -255,6 +286,8 @@ t.test(t1_comp_inex$FEELPG_recode ~ t1_comp_inex$exclude,
        alternative = 'two.sided',
        paired = FALSE,
        conf.level = .95)
+
+t1_comp_inex %>% cohens_d(FEELPG_recode ~ exclude, var.equal = TRUE)
 ```
 
 
@@ -264,6 +297,8 @@ t.test(t1_comp_inex$rel_dur ~ t1_comp_inex$exclude,
        alternative = 'two.sided',
        paired = FALSE,
        conf.level = .95)
+
+t1_comp_inex %>% cohens_d(rel_dur ~ exclude, var.equal = TRUE)
 ```
 
 
