@@ -146,12 +146,35 @@ table(t1_comp_inex$exclude)
 ```
 
 ##hc use
+```{r}
+chisq.test(t1_comp_inex$hc, t1_comp_inex$exclude, correct=FALSE)
+```
+
 
 ##contraceptive satisfation
+```{r}
+t.test(t1_comp_inex$contra_satis ~ t1_comp_inex$exclude,
+       alternative = 'two.sided',
+       paired = FALSE,
+       conf.level = .95)
+
+```
+
 
 ##sexual frequency
+```{r}
+chisq.test(t1_comp_inex$sex_freq, t1_comp_inex$exclude, correct=FALSE)
+```
+
 
 ##sexual satisfaction 
+```{r}
+t.test(t1_comp_inex$sexual_satisfaction ~ t1_comp_inex$exclude,
+       alternative = 'two.sided',
+       paired = FALSE,
+       conf.level = .95)
+```
+
 
 ##Age
 ```{r}
@@ -170,29 +193,79 @@ chisq.test(t1_comp_inex$DEGREE_recode, t1_comp_inex$exclude, correct=FALSE)
 
 ##Poverty
 ```{r}
-t.test(cccu_MA_t1$POVRATE ~ cccu_excluded_t1$POVRATE, alternative = 'two.sided', conf.level = .95)
+t.test(t1_comp_inex$POVRATE ~ t1_comp_inex$exclude,
+       alternative = 'two.sided',
+       paired = FALSE,
+       conf.level = .95)
 ```
 
 
 ##Health problems
+```{r}
+chisq.test(t1_comp_inex$HLTHPROB_recode, t1_comp_inex$exclude, correct=FALSE)
+```
+
 
 ##medical problems
+```{r}
+chisq.test(t1_comp_inex$MEDPROB_recode, t1_comp_inex$exclude, correct=FALSE)
+```
+
 
 ##gaps in insurance
+```{r}
+chisq.test(t1_comp_inex$GAPINS_recode, t1_comp_inex$exclude, correct=FALSE)
+```
 
 ##insuranced?
+```{r}
+chisq.test(t1_comp_inex$TYPEINS_recode, t1_comp_inex$exclude, correct=FALSE)
+```
+
 
 ##number of kids at t1
+```{r}
+chisq.test(t1_comp_inex$NKIDS_t1, t1_comp_inex$exclude, correct=FALSE)
+```
+
 
 ##pregnant between waves
+```{r}
+chisq.test(t1_comp_inex$pregnant_between_waves, t1_comp_inex$exclude, correct=FALSE)
+```
 
 ##had baby between waves
+```{r}
+chisq.test(t1_comp_inex$had_baby_between_waves, t1_comp_inex$exclude, correct=FALSE)
+```
+
 
 ##avoidance
+```{r}
+t.test(t1_comp_inex$Avoid_r ~ t1_comp_inex$exclude,
+       alternative = 'two.sided',
+       paired = FALSE,
+       conf.level = .95)
+```
+
 
 ##feelings about pregnancy
+```{r}
+t.test(t1_comp_inex$FEELPG_recode ~ t1_comp_inex$exclude,
+       alternative = 'two.sided',
+       paired = FALSE,
+       conf.level = .95)
+```
+
 
 ##relationship duration
+```{r}
+t.test(t1_comp_inex$rel_dur ~ t1_comp_inex$exclude,
+       alternative = 'two.sided',
+       paired = FALSE,
+       conf.level = .95)
+```
+
 
 #4. Descriptives of Variables
 ```{r}
