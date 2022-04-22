@@ -381,6 +381,26 @@ cccu_MA_t1_descriptives <- cccu_MA_t1 %>%
     rel_dur)
 
 describe(cccu_MA_t1_descriptives)
+table(cccu_MA_t1_descriptives$hc)
+table(cccu_MA_t1_descriptives$sex_freq)
+table(cccu_MA_t1_descriptives$DEGREE_recode)
+table(cccu_MA_t1_descriptives$HLTHPROB_recode)
+table(cccu_MA_t1_descriptives$MEDPROB_recode)
+table(cccu_MA_t1_descriptives$GAPINS_recode)
+table(cccu_MA_t1_descriptives$TYPEINS_recode)
+table(cccu_MA_t1_descriptives$NKIDS_t1)
+table(cccu_MA_t1_descriptives$pregnant_between_waves)
+table(cccu_MA_t1_descriptives$had_baby_between_waves)
+
+
+
+cccu_MA_t1_correlations <- cccu_MA_t1 %>%
+  select(contra_satis, hc_dur,
+    sexual_satisfaction,
+    AGE, POVRATE, Avoid_r, FEELPG_recode,
+    rel_dur)
+
+cor(cccu_MA_t1_correlations)
 ```
 
 
