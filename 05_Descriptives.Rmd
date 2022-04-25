@@ -18,6 +18,7 @@ library(psych)
 library(dplyr)
 library(rstatix)
 library(ufs)
+library(Hmisc)
 
 
 ```
@@ -392,15 +393,20 @@ table(cccu_MA_t1_descriptives$NKIDS_t1)
 table(cccu_MA_t1_descriptives$pregnant_between_waves)
 table(cccu_MA_t1_descriptives$had_baby_between_waves)
 
+```
 
 
+#5. Correlation Matrix
+```{r}
 cccu_MA_t1_correlations <- cccu_MA_t1 %>%
   select(contra_satis, hc_dur,
     sexual_satisfaction,
     AGE, POVRATE, Avoid_r, FEELPG_recode,
     rel_dur)
 
-cor(cccu_MA_t1_correlations)
+rcorr(as.matrix(cccu_MA_t1_correlations))
+
+
 ```
 
 
