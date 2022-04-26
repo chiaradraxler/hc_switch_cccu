@@ -51,6 +51,13 @@ table(cccu_MA_t1_hc$DEPO)
 table(cccu_MA_t1_hc$IMPLANT)
 table(cccu_MA_t1_hc$IUD)
 
+table(cccu_MA_t1_hc$CONDOMR)
+table(cccu_MA_t1_hc$VASECTOMY)
+table(cccu_MA_t1_hc$WITHDRAWR)
+table(cccu_MA_t1_hc$NFPR)
+table(cccu_MA_t1_hc$SPERMR)
+table(cccu_MA_t1_hc$NOBARRIER)
+
 
 cccu_MA_t1_non_hc <- cccu_MA_t1 %>%
   filter(hc == "non_hc")
