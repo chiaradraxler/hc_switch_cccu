@@ -41,22 +41,35 @@ cccu_excluded_t1 <- cccu_excluded %>%
 table(cccu_MA_t1$hc)#IUD & non_hc should be zero bc of exclusion - yes
 1032/1723
 
-cccu_MA_t1_hc <- cccu_MA_t1 %>%
-  filter(hc == "hc")
- 
-table(cccu_MA_t1_hc$PILL)
-table(cccu_MA_t1_hc$PATCH)
-table(cccu_MA_t1_hc$RING)
-table(cccu_MA_t1_hc$DEPO)
-table(cccu_MA_t1_hc$IMPLANT)
-table(cccu_MA_t1_hc$IUD)
+cccu_MA_t1_only_hc <- cccu_MA_t1 %>%
+  filter(hc == "hc") %>%
+  filter(CONDOMR != "(1) yes" | is.na(CONDOMR),
+         VASECTOMY != "(1) yes" | is.na(VASECTOMY),
+         WITHDRAWR != "(1) yes" | is.na(WITHDRAWR),
+         NFPR != "(1) yes" | is.na(NFPR),
+         SPERMR != "(1) yes" | is.na(SPERMR))
 
-table(cccu_MA_t1_hc$CONDOMR)
-table(cccu_MA_t1_hc$VASECTOMY)
-table(cccu_MA_t1_hc$WITHDRAWR)
-table(cccu_MA_t1_hc$NFPR)
-table(cccu_MA_t1_hc$SPERMR)
-table(cccu_MA_t1_hc$NOBARRIER)
+table(cccu_MA_t1_only_hc$PILL)
+table(cccu_MA_t1_only_hc$PATCH)
+table(cccu_MA_t1_only_hc$RING)
+table(cccu_MA_t1_only_hc$DEPO)
+table(cccu_MA_t1_only_hc$IMPLANT)
+table(cccu_MA_t1_only_hc$IUD)
+
+cccu_MA_t1_combi_hc <- cccu_MA_t1 %>%
+  filter(hc == "hc") %>%
+  filter(CONDOMR == "(1) yes" | 
+           VASECTOMY == "(1) yes" |
+           WITHDRAWR == "(1) yes" |
+           NFPR == "(1) yes" | 
+           SPERMR == "(1) yes")
+
+table(cccu_MA_t1_combi_hc$PILL)
+table(cccu_MA_t1_combi_hc$PATCH)
+table(cccu_MA_t1_combi_hc$RING)
+table(cccu_MA_t1_combi_hc$DEPO)
+table(cccu_MA_t1_combi_hc$IMPLANT)
+table(cccu_MA_t1_combi_hc$IUD)
 
 
 cccu_MA_t1_non_hc <- cccu_MA_t1 %>%
