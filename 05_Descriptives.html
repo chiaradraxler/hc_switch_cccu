@@ -232,33 +232,70 @@ cccu_excluded_t1 &lt;- cccu_excluded %&gt;%
 ##        691       1032          0</code></pre>
 <pre class="r"><code>1032/1723</code></pre>
 <pre><code>## [1] 0.5989553</code></pre>
-<pre class="r"><code>cccu_MA_t1_hc &lt;- cccu_MA_t1 %&gt;%
-  filter(hc == &quot;hc&quot;)
- 
-table(cccu_MA_t1_hc$PILL)</code></pre>
+<pre class="r"><code>cccu_MA_t1_only_hc &lt;- cccu_MA_t1 %&gt;%
+  filter(hc == &quot;hc&quot;) %&gt;%
+  filter(CONDOMR != &quot;(1) yes&quot; | is.na(CONDOMR),
+         VASECTOMY != &quot;(1) yes&quot; | is.na(VASECTOMY),
+         WITHDRAWR != &quot;(1) yes&quot; | is.na(WITHDRAWR),
+         NFPR != &quot;(1) yes&quot; | is.na(NFPR),
+         SPERMR != &quot;(1) yes&quot; | is.na(SPERMR))
+
+table(cccu_MA_t1_only_hc$PILL)</code></pre>
 <pre><code>## 
 ##  (0) No (1) Yes 
-##     202     830</code></pre>
-<pre class="r"><code>table(cccu_MA_t1_hc$PATCH)</code></pre>
+##     137     493</code></pre>
+<pre class="r"><code>table(cccu_MA_t1_only_hc$PATCH)</code></pre>
 <pre><code>## 
 ##  (0) No (1) Yes 
-##    1022      10</code></pre>
-<pre class="r"><code>table(cccu_MA_t1_hc$RING)</code></pre>
+##     624       6</code></pre>
+<pre class="r"><code>table(cccu_MA_t1_only_hc$RING)</code></pre>
 <pre><code>## 
 ##  (0) No (1) Yes 
-##     956      76</code></pre>
-<pre class="r"><code>table(cccu_MA_t1_hc$DEPO)</code></pre>
+##     585      45</code></pre>
+<pre class="r"><code>table(cccu_MA_t1_only_hc$DEPO)</code></pre>
 <pre><code>## 
 ##  (0) No (1) Yes 
-##     939      93</code></pre>
-<pre class="r"><code>table(cccu_MA_t1_hc$IMPLANT)</code></pre>
+##     568      62</code></pre>
+<pre class="r"><code>table(cccu_MA_t1_only_hc$IMPLANT)</code></pre>
 <pre><code>## 
 ##  (0) No (1) Yes 
-##     995      37</code></pre>
-<pre class="r"><code>table(cccu_MA_t1_hc$IUD)</code></pre>
+##     601      29</code></pre>
+<pre class="r"><code>table(cccu_MA_t1_only_hc$IUD)</code></pre>
 <pre><code>## 
 ##  (0) No (1) Yes 
-##    1028       4</code></pre>
+##     627       3</code></pre>
+<pre class="r"><code>cccu_MA_t1_combi_hc &lt;- cccu_MA_t1 %&gt;%
+  filter(hc == &quot;hc&quot;) %&gt;%
+  filter(CONDOMR == &quot;(1) yes&quot; | 
+           VASECTOMY == &quot;(1) yes&quot; |
+           WITHDRAWR == &quot;(1) yes&quot; |
+           NFPR == &quot;(1) yes&quot; | 
+           SPERMR == &quot;(1) yes&quot;)
+
+table(cccu_MA_t1_combi_hc$PILL)</code></pre>
+<pre><code>## 
+##  (0) No (1) Yes 
+##      65     337</code></pre>
+<pre class="r"><code>table(cccu_MA_t1_combi_hc$PATCH)</code></pre>
+<pre><code>## 
+##  (0) No (1) Yes 
+##     398       4</code></pre>
+<pre class="r"><code>table(cccu_MA_t1_combi_hc$RING)</code></pre>
+<pre><code>## 
+##  (0) No (1) Yes 
+##     371      31</code></pre>
+<pre class="r"><code>table(cccu_MA_t1_combi_hc$DEPO)</code></pre>
+<pre><code>## 
+##  (0) No (1) Yes 
+##     371      31</code></pre>
+<pre class="r"><code>table(cccu_MA_t1_combi_hc$IMPLANT)</code></pre>
+<pre><code>## 
+##  (0) No (1) Yes 
+##     394       8</code></pre>
+<pre class="r"><code>table(cccu_MA_t1_combi_hc$IUD)</code></pre>
+<pre><code>## 
+##  (0) No (1) Yes 
+##     401       1</code></pre>
 <pre class="r"><code>cccu_MA_t1_non_hc &lt;- cccu_MA_t1 %&gt;%
   filter(hc == &quot;non_hc&quot;)
 
@@ -352,6 +389,16 @@ psych::describe(cccu_MA_t1$AGE)</code></pre>
 <pre><code>## [1] 0.04701103</code></pre>
 <pre class="r"><code>(12+186+26+340)/1723</code></pre>
 <pre><code>## [1] 0.327336</code></pre>
+<pre class="r"><code>12/564</code></pre>
+<pre><code>## [1] 0.0212766</code></pre>
+<pre class="r"><code>186/564</code></pre>
+<pre><code>## [1] 0.3297872</code></pre>
+<pre class="r"><code>26/564</code></pre>
+<pre><code>## [1] 0.04609929</code></pre>
+<pre class="r"><code>340/564</code></pre>
+<pre><code>## [1] 0.6028369</code></pre>
+<pre class="r"><code>12+186+26+340</code></pre>
+<pre><code>## [1] 564</code></pre>
 <p>##Relationship Status &amp; Duration</p>
 <pre class="r"><code>#status
 table(cccu_MA_t1$partnered)</code></pre>
@@ -512,14 +559,31 @@ table(cccu_MA_t1$state_recode)</code></pre>
 ##     $175,000 or more 
 ##                   40</code></pre>
 <p>##POVRATE</p>
-<pre class="r"><code>describe(cccu_MA_t1$POVRATE)</code></pre>
-<pre><code>## cccu_MA_t1$POVRATE 
-##        n  missing distinct     Info     Mean      Gmd      .05      .10 
-##     1723        0      140        1    313.7      251       38       59 
-##      .25      .50      .75      .90      .95 
-##      141      250      446      611      744 
-## 
-## lowest :   14   16   18   19   20, highest: 1007 1074 1163 1231 1455</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t1$POVRATE)</code></pre>
+<pre><code>##    vars    n  mean  sd median trimmed    mad min  max range skew kurtosis   se
+## X1    1 1723 313.7 232    250  285.47 212.01  14 1455  1441 1.13     1.23 5.59</code></pre>
+<pre class="r"><code>table(cccu_MA_t1$POVRATE)</code></pre>
+<pre><code>## 
+##   14   16   18   19   20   22   23   25   26   27   28   29   32   33   35   36 
+##    2    3    1    4    3   13    3    1   15    7    1    1    2   21    1    1 
+##   38   39   41   42   44   45   46   49   50   51   56   57   58   59   60   64 
+##   12    1    7    4    2   11   11    7    1    5    8    4   11   16   11    4 
+##   65   71   72   73   74   76   78   79   83   84   89   91   92   96   98  101 
+##    3    3   16    1   14   18    4    1   10    1    9    9   14    3   13    2 
+##  102  105  107  116  118  119  120  121  123  128  139  141  144  145  149  157 
+##    8    5    2   11   19   22   17    1    6    1   11   17   30    7   30    6 
+##  163  167  170  178  182  187  193  195  196  201  204  206  215  216  218  229 
+##   21   13   18    4   37    2    3   30   22   10   14    2   36    1    7    1 
+##  236  239  240  246  248  250  258  259  265  288  291  293  296  297  299  322 
+##   44   34    1   10   34   14    7    1    2   40    9   45    8   70    5    1 
+##  336  342  347  354  363  364  394  401  403  417  419  444  446  485  488  492 
+##   12    9   21   37    2   56    1   27   28    6   24    2   60   32   25   14 
+##  504  509  525  529  531  568  576  589  597  602  604  611  646  652  705  716 
+##    2    5    1   43    1    1    1   30    9    4    9   50    1    3   10    5 
+##  720  744  764  828  851  909  922 1007 1074 1163 1231 1455 
+##   18   36   14    8   10   18   11    3   10    8    1    1</code></pre>
+<pre class="r"><code>(2 +   3  +  1  +  4  +  3   +13 +   3 +   1 +  15  +  7 +   1 +   1  +  2+   21    +1    +1 +  12 +   1 +   7 + 4   + 2  + 11 +  11  +  7   + 1 +   5+    8  +  4 +  11  + 16  + 11 +   4  +  3 +   3 +  16 +   1  + 14   +18 + 4  +  1 +  10+    1  +  9  +  9  + 14 +   3+   13)/1723</code></pre>
+<pre><code>## [1] 0.1816599</code></pre>
 <p>#Comparision included to excluded sample</p>
 <pre class="r"><code>t1_comp_inex = rbind(cccu_MA_t1 %&gt;% mutate(exclude = &quot;no&quot;),
                      cccu_excluded_t1 %&gt;% mutate(exclude = &quot;yes&quot;))
@@ -538,20 +602,26 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.36</code></pre>
 <pre class="r"><code>confIntV(t1_comp_inex$hc,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .36):  
-## Bootstrapped: [.34; .38]  
+## Bootstrapped: [.34; .39]  
 ## Using Fisher&#39;s z: [.34; .39]</code></pre>
 <pre class="r"><code>table(cccu_MA_t1$hc)</code></pre>
 <pre><code>## 
 ##     non_hc         hc IUD&amp;non_hc 
 ##        691       1032          0</code></pre>
+<pre class="r"><code>691/1723</code></pre>
+<pre><code>## [1] 0.4010447</code></pre>
 <pre class="r"><code>1032/1723</code></pre>
 <pre><code>## [1] 0.5989553</code></pre>
 <pre class="r"><code>table(cccu_excluded_t1$hc)</code></pre>
 <pre><code>## 
 ##     non_hc         hc IUD&amp;non_hc 
 ##       1639        810        462</code></pre>
+<pre class="r"><code>1639/2911</code></pre>
+<pre><code>## [1] 0.5630368</code></pre>
 <pre class="r"><code>810/2911</code></pre>
 <pre><code>## [1] 0.2782549</code></pre>
+<pre class="r"><code>462/2911</code></pre>
+<pre><code>## [1] 0.1587083</code></pre>
 <p>##contraceptive satisfation</p>
 <pre class="r"><code>t.test(t1_comp_inex$contra_satis ~ t1_comp_inex$exclude,
        alternative = &#39;two.sided&#39;,
@@ -572,7 +642,13 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.          group1 group2 effsize    n1    n2 conf.low conf.high magnitude 
 ## * &lt;chr&gt;        &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;     
-## 1 contra_satis no     yes     0.0583  1723  2911    -0.01      0.14 negligible</code></pre>
+## 1 contra_satis no     yes     0.0583  1723  2911  -0.0064      0.13 negligible</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t1$contra_satis)</code></pre>
+<pre><code>##    vars    n mean   sd median trimmed mad min max range  skew kurtosis   se
+## X1    1 1723 3.44 0.73      4    3.58   0   1   4     3 -1.29     1.44 0.02</code></pre>
+<pre class="r"><code>psych::describe(cccu_excluded_t1$contra_satis)</code></pre>
+<pre><code>##    vars    n mean   sd median trimmed mad min max range  skew kurtosis   se
+## X1    1 1395  3.4 0.76      4    3.54   0   1   4     3 -1.23      1.2 0.02</code></pre>
 <p>##sexual frequency</p>
 <pre class="r"><code>chisq.test(t1_comp_inex$sex_freq, t1_comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
@@ -592,24 +668,32 @@ table(t1_comp_inex$exclude)</code></pre>
 ##               97              125              760              466 
 ## 11 or more times 
 ##              275</code></pre>
-<pre class="r"><code>275/1723</code></pre>
-<pre><code>## [1] 0.1596053</code></pre>
-<pre class="r"><code>466/1723</code></pre>
-<pre><code>## [1] 0.2704585</code></pre>
 <pre class="r"><code>97/1723</code></pre>
 <pre><code>## [1] 0.05629716</code></pre>
+<pre class="r"><code>125/1723</code></pre>
+<pre><code>## [1] 0.07254788</code></pre>
+<pre class="r"><code>760/1723</code></pre>
+<pre><code>## [1] 0.4410911</code></pre>
+<pre class="r"><code>466/1723</code></pre>
+<pre><code>## [1] 0.2704585</code></pre>
+<pre class="r"><code>275/1723</code></pre>
+<pre><code>## [1] 0.1596053</code></pre>
 <pre class="r"><code>table(cccu_excluded_t1$sex_freq)</code></pre>
 <pre><code>## 
 ##           No sex             Once        2-5 times       6-10 times 
 ##              866              168              864              548 
 ## 11 or more times 
 ##              418</code></pre>
-<pre class="r"><code>418/2911</code></pre>
-<pre><code>## [1] 0.1435933</code></pre>
-<pre class="r"><code>548/2911</code></pre>
-<pre><code>## [1] 0.1882515</code></pre>
 <pre class="r"><code>866/2911</code></pre>
 <pre><code>## [1] 0.2974923</code></pre>
+<pre class="r"><code>168/2911</code></pre>
+<pre><code>## [1] 0.05771213</code></pre>
+<pre class="r"><code>864/2911</code></pre>
+<pre><code>## [1] 0.2968052</code></pre>
+<pre class="r"><code>548/2911</code></pre>
+<pre><code>## [1] 0.1882515</code></pre>
+<pre class="r"><code>418/2911</code></pre>
+<pre><code>## [1] 0.1435933</code></pre>
 <p>##sexual satisfaction</p>
 <pre class="r"><code>t.test(t1_comp_inex$sexual_satisfaction ~ t1_comp_inex$exclude,
        alternative = &#39;two.sided&#39;,
@@ -630,7 +714,13 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.             group1 group2 effsize    n1    n2 conf.low conf.high magnitude
 ## * &lt;chr&gt;           &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;    
-## 1 sexual_satisfa~ no     yes     0.0624  1723  2911   0.0014      0.12 negligib~</code></pre>
+## 1 sexual_satisfa~ no     yes     0.0624  1723  2911  0.00071      0.13 negligib~</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t1$sexual_satisfaction)</code></pre>
+<pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
+## X1    1 1723 5.04 1.17      5    5.24 1.48   1   6     5 -1.24     1.12 0.03</code></pre>
+<pre class="r"><code>psych::describe(cccu_excluded_t1$sexual_satisfaction)</code></pre>
+<pre><code>##    vars    n mean   sd median trimmed  mad min max range skew kurtosis   se
+## X1    1 2189 4.96 1.29      5    5.18 1.48   1   6     5 -1.2     0.69 0.03</code></pre>
 <p>##Age</p>
 <pre class="r"><code>t.test(t1_comp_inex$AGE ~ t1_comp_inex$exclude,
        alternative = &#39;two.sided&#39;,
@@ -651,7 +741,13 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.   group1 group2 effsize    n1    n2 conf.low conf.high magnitude 
 ## * &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;     
-## 1 AGE   no     yes    -0.0528  1723  2911    -0.11   0.00052 negligible</code></pre>
+## 1 AGE   no     yes    -0.0528  1723  2911    -0.11    0.0033 negligible</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t1$AGE)</code></pre>
+<pre><code>##    vars    n  mean   sd median trimmed  mad min max range skew kurtosis   se
+## X1    1 1723 28.15 5.18     28   27.92 5.93  18  39    21 0.36    -0.73 0.12</code></pre>
+<pre class="r"><code>psych::describe(cccu_excluded_t1$AGE)</code></pre>
+<pre><code>##    vars    n  mean   sd median trimmed  mad min max range skew kurtosis  se
+## X1    1 2911 28.43 5.35     28   28.27 5.93  18  39    21 0.25    -0.85 0.1</code></pre>
 <p>##Degree</p>
 <pre class="r"><code>chisq.test(t1_comp_inex$DEGREE_recode, t1_comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## Warning in chisq.test(t1_comp_inex$DEGREE_recode, t1_comp_inex$exclude, : Chi-
@@ -683,6 +779,32 @@ table(t1_comp_inex$exclude)</code></pre>
 ##                               186                               597 
 ##                    masters degree   professional or doctoral degree 
 ##                               197                                41</code></pre>
+<pre class="r"><code>1/1723</code></pre>
+<pre><code>## [1] 0.0005803831</code></pre>
+<pre class="r"><code>9/1723</code></pre>
+<pre><code>## [1] 0.005223447</code></pre>
+<pre class="r"><code>7/1723</code></pre>
+<pre><code>## [1] 0.004062681</code></pre>
+<pre class="r"><code>13/1723</code></pre>
+<pre><code>## [1] 0.00754498</code></pre>
+<pre class="r"><code>12/1723</code></pre>
+<pre><code>## [1] 0.006964597</code></pre>
+<pre class="r"><code>8/1723</code></pre>
+<pre><code>## [1] 0.004643064</code></pre>
+<pre class="r"><code>15/1723</code></pre>
+<pre><code>## [1] 0.008705746</code></pre>
+<pre class="r"><code>205/1723</code></pre>
+<pre><code>## [1] 0.1189785</code></pre>
+<pre class="r"><code>432/1723</code></pre>
+<pre><code>## [1] 0.2507255</code></pre>
+<pre class="r"><code>186/1723</code></pre>
+<pre><code>## [1] 0.1079512</code></pre>
+<pre class="r"><code>597/1723</code></pre>
+<pre><code>## [1] 0.3464887</code></pre>
+<pre class="r"><code>197/1723</code></pre>
+<pre><code>## [1] 0.1143355</code></pre>
+<pre class="r"><code>41/1723</code></pre>
+<pre><code>## [1] 0.02379571</code></pre>
 <pre class="r"><code>table(cccu_excluded_t1$DEGREE_recode)</code></pre>
 <pre><code>## 
 ##               no formal education                  1st to 4th grade 
@@ -699,12 +821,34 @@ table(t1_comp_inex$exclude)</code></pre>
 ##                               321                               733 
 ##                    masters degree   professional or doctoral degree 
 ##                               274                                77</code></pre>
+<pre class="r"><code>6/2911</code></pre>
+<pre><code>## [1] 0.002061147</code></pre>
+<pre class="r"><code>2/2911</code></pre>
+<pre><code>## [1] 0.0006870491</code></pre>
+<pre class="r"><code>14/2911</code></pre>
+<pre><code>## [1] 0.004809344</code></pre>
+<pre class="r"><code>19/2911</code></pre>
+<pre><code>## [1] 0.006526967</code></pre>
+<pre class="r"><code>26/2911</code></pre>
+<pre><code>## [1] 0.008931639</code></pre>
+<pre class="r"><code>28/2911</code></pre>
+<pre><code>## [1] 0.009618688</code></pre>
+<pre class="r"><code>33/2911</code></pre>
+<pre><code>## [1] 0.01133631</code></pre>
+<pre class="r"><code>44/2911</code></pre>
+<pre><code>## [1] 0.01511508</code></pre>
+<pre class="r"><code>513/2911</code></pre>
+<pre><code>## [1] 0.1762281</code></pre>
 <pre class="r"><code>821/2911</code></pre>
 <pre><code>## [1] 0.2820337</code></pre>
+<pre class="r"><code>321/2911</code></pre>
+<pre><code>## [1] 0.1102714</code></pre>
 <pre class="r"><code>733/2911</code></pre>
 <pre><code>## [1] 0.2518035</code></pre>
 <pre class="r"><code>274/2911</code></pre>
 <pre><code>## [1] 0.09412573</code></pre>
+<pre class="r"><code>77/2911</code></pre>
+<pre><code>## [1] 0.02645139</code></pre>
 <p>##Poverty</p>
 <pre class="r"><code>t.test(t1_comp_inex$POVRATE ~ t1_comp_inex$exclude,
        alternative = &#39;two.sided&#39;,
@@ -725,7 +869,15 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.     group1 group2 effsize    n1    n2 conf.low conf.high magnitude
 ## * &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;    
-## 1 POVRATE no     yes      0.227  1723  2911     0.17      0.29 small</code></pre>
+## 1 POVRATE no     yes      0.227  1723  2911     0.16      0.29 small</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t1$POVRATE)</code></pre>
+<pre><code>##    vars    n  mean  sd median trimmed    mad min  max range skew kurtosis   se
+## X1    1 1723 313.7 232    250  285.47 212.01  14 1455  1441 1.13     1.23 5.59</code></pre>
+<pre class="r"><code>psych::describe(cccu_excluded_t1$POVRATE)</code></pre>
+<pre><code>##    vars    n   mean     sd median trimmed    mad min  max range skew kurtosis
+## X1    1 2911 262.72 219.48    201  230.57 182.36  13 1576  1563 1.59     3.52
+##      se
+## X1 4.07</code></pre>
 <p>##Health problems</p>
 <pre class="r"><code>chisq.test(t1_comp_inex$HLTHPROB_recode, t1_comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
@@ -739,6 +891,26 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .03):  
 ## Bootstrapped: [0; .06]  
 ## Using Fisher&#39;s z: [0; .06]</code></pre>
+<pre class="r"><code>table(cccu_MA_t1$HLTHPROB_recode)</code></pre>
+<pre><code>## 
+##   No  Yes 
+## 1424  299</code></pre>
+<pre class="r"><code>1424/1723</code></pre>
+<pre><code>## [1] 0.8264655</code></pre>
+<pre class="r"><code>299/1723</code></pre>
+<pre><code>## [1] 0.1735345</code></pre>
+<pre class="r"><code>1424+299</code></pre>
+<pre><code>## [1] 1723</code></pre>
+<pre class="r"><code>table(cccu_excluded_t1$HLTHPROB_recode)</code></pre>
+<pre><code>## 
+##   No  Yes 
+## 2128  517</code></pre>
+<pre class="r"><code>2128+517</code></pre>
+<pre><code>## [1] 2645</code></pre>
+<pre class="r"><code>2128/2645</code></pre>
+<pre><code>## [1] 0.8045369</code></pre>
+<pre class="r"><code>517/2645</code></pre>
+<pre><code>## [1] 0.1954631</code></pre>
 <p>##medical problems</p>
 <pre class="r"><code>chisq.test(t1_comp_inex$MEDPROB_recode, t1_comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
@@ -752,6 +924,22 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .01):  
 ## Bootstrapped: [0; .04]  
 ## Using Fisher&#39;s z: [0; .04]</code></pre>
+<pre class="r"><code>table(cccu_MA_t1$MEDPROB_recode)</code></pre>
+<pre><code>## 
+##   No  Yes 
+## 1579  144</code></pre>
+<pre class="r"><code>1579/1723</code></pre>
+<pre><code>## [1] 0.9164248</code></pre>
+<pre class="r"><code>144/1723</code></pre>
+<pre><code>## [1] 0.08357516</code></pre>
+<pre class="r"><code>table(cccu_excluded_t1$MEDPROB_recode)</code></pre>
+<pre><code>## 
+##   No  Yes 
+## 2648  263</code></pre>
+<pre class="r"><code>2648/2911</code></pre>
+<pre><code>## [1] 0.909653</code></pre>
+<pre class="r"><code>263/2911</code></pre>
+<pre><code>## [1] 0.09034696</code></pre>
 <p>##gaps in insurance</p>
 <pre class="r"><code>chisq.test(t1_comp_inex$GAPINS_recode, t1_comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
@@ -769,10 +957,18 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## 
 ##   No  Yes 
 ## 1382  341</code></pre>
+<pre class="r"><code>1382/1723</code></pre>
+<pre><code>## [1] 0.8020894</code></pre>
+<pre class="r"><code>341/1723</code></pre>
+<pre><code>## [1] 0.1979106</code></pre>
 <pre class="r"><code>table(cccu_excluded_t1$GAPINS_recode)</code></pre>
 <pre><code>## 
 ##   No  Yes 
 ## 2157  713</code></pre>
+<pre class="r"><code>2157/2870</code></pre>
+<pre><code>## [1] 0.7515679</code></pre>
+<pre class="r"><code>713/2870</code></pre>
+<pre><code>## [1] 0.2484321</code></pre>
 <p>##insuranced?</p>
 <pre class="r"><code>chisq.test(t1_comp_inex$TYPEINS_recode, t1_comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
@@ -790,14 +986,18 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## 
 ##   No  Yes 
 ##  267 1456</code></pre>
+<pre class="r"><code>1456/1723</code></pre>
+<pre><code>## [1] 0.8450377</code></pre>
+<pre class="r"><code>267/1723</code></pre>
+<pre><code>## [1] 0.1549623</code></pre>
 <pre class="r"><code>table(cccu_excluded_t1$TYPEINS_recode)</code></pre>
 <pre><code>## 
 ##   No  Yes 
 ##  574 2296</code></pre>
-<pre class="r"><code>1456/1723</code></pre>
-<pre><code>## [1] 0.8450377</code></pre>
-<pre class="r"><code>2296/2911</code></pre>
-<pre><code>## [1] 0.7887324</code></pre>
+<pre class="r"><code>547/2843</code></pre>
+<pre><code>## [1] 0.1924024</code></pre>
+<pre class="r"><code>2296/2843</code></pre>
+<pre><code>## [1] 0.8075976</code></pre>
 <p>##number of kids at t1</p>
 <pre class="r"><code>chisq.test(t1_comp_inex$NKIDS_t1, t1_comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
@@ -817,20 +1017,28 @@ table(t1_comp_inex$exclude)</code></pre>
 ##       936       329       304        98        56</code></pre>
 <pre class="r"><code>936/1723</code></pre>
 <pre><code>## [1] 0.5432385</code></pre>
-<pre class="r"><code>56/1723</code></pre>
-<pre><code>## [1] 0.03250145</code></pre>
+<pre class="r"><code>329/1723</code></pre>
+<pre><code>## [1] 0.190946</code></pre>
 <pre class="r"><code>304/1723</code></pre>
 <pre><code>## [1] 0.1764364</code></pre>
+<pre class="r"><code>98/1723</code></pre>
+<pre><code>## [1] 0.05687754</code></pre>
+<pre class="r"><code>56/1723</code></pre>
+<pre><code>## [1] 0.03250145</code></pre>
 <pre class="r"><code>table(cccu_excluded_t1$NKIDS_t1)</code></pre>
 <pre><code>## 
 ##         0         1         2         3 4 or more 
 ##      1358       621       561       252       104</code></pre>
-<pre class="r"><code>1358/2911</code></pre>
-<pre><code>## [1] 0.4665064</code></pre>
-<pre class="r"><code>104/2911</code></pre>
-<pre><code>## [1] 0.03572655</code></pre>
-<pre class="r"><code>561/2911</code></pre>
-<pre><code>## [1] 0.1927173</code></pre>
+<pre class="r"><code>1358/2896</code></pre>
+<pre><code>## [1] 0.4689227</code></pre>
+<pre class="r"><code>621/2896</code></pre>
+<pre><code>## [1] 0.2144337</code></pre>
+<pre class="r"><code>561/2896</code></pre>
+<pre><code>## [1] 0.1937155</code></pre>
+<pre class="r"><code>252/2896</code></pre>
+<pre><code>## [1] 0.08701657</code></pre>
+<pre class="r"><code>104/2896</code></pre>
+<pre><code>## [1] 0.0359116</code></pre>
 <p>##pregnant between waves</p>
 <pre class="r"><code>chisq.test(t1_comp_inex$pregnant_between_waves, t1_comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
@@ -848,14 +1056,18 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## 
 ##   No  Yes 
 ## 1688   35</code></pre>
+<pre class="r"><code>1688/1723</code></pre>
+<pre><code>## [1] 0.9796866</code></pre>
 <pre class="r"><code>35/1723</code></pre>
 <pre><code>## [1] 0.02031341</code></pre>
 <pre class="r"><code>table(cccu_excluded_t1$pregnant_between_waves)</code></pre>
 <pre><code>## 
 ##   No  Yes 
 ## 2770  124</code></pre>
-<pre class="r"><code>124/2911</code></pre>
-<pre><code>## [1] 0.04259705</code></pre>
+<pre class="r"><code>2770/2894</code></pre>
+<pre><code>## [1] 0.9571527</code></pre>
+<pre class="r"><code>124/2894</code></pre>
+<pre><code>## [1] 0.04284727</code></pre>
 <p>##had baby between waves</p>
 <pre class="r"><code>chisq.test(t1_comp_inex$had_baby_between_waves, t1_comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
@@ -873,6 +1085,10 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## 
 ##   No  Yes 
 ## 1688   35</code></pre>
+<pre class="r"><code>1688/1723</code></pre>
+<pre><code>## [1] 0.9796866</code></pre>
+<pre class="r"><code>35/1723</code></pre>
+<pre><code>## [1] 0.02031341</code></pre>
 <pre class="r"><code>table(cccu_excluded_t1$had_baby_between_waves)</code></pre>
 <pre><code>## 
 ##   No  Yes 
@@ -898,6 +1114,12 @@ table(t1_comp_inex$exclude)</code></pre>
 ##   .y.     group1 group2 effsize    n1    n2 conf.low conf.high magnitude
 ## * &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;    
 ## 1 Avoid_r no     yes      0.214  1723  2911     0.16      0.27 small</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t1$Avoid_r)</code></pre>
+<pre><code>##    vars    n mean   sd median trimmed mad min max range  skew kurtosis   se
+## X1    1 1723 4.81 1.52      6    5.08   0   1   6     5 -1.14     0.23 0.04</code></pre>
+<pre class="r"><code>psych::describe(cccu_excluded_t1$Avoid_r)</code></pre>
+<pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
+## X1    1 2883 4.42 1.93      5    4.66 1.48   1   6     5 -0.83     -0.9 0.04</code></pre>
 <p>##feelings about pregnancy</p>
 <pre class="r"><code>t.test(t1_comp_inex$FEELPG_recode ~ t1_comp_inex$exclude,
        alternative = &#39;two.sided&#39;,
@@ -918,7 +1140,13 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.           group1 group2 effsize    n1    n2 conf.low conf.high magnitude 
 ## * &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;     
-## 1 FEELPG_recode no     yes    -0.0657  1723  2911    -0.12   -0.0076 negligible</code></pre>
+## 1 FEELPG_recode no     yes    -0.0657  1723  2911    -0.13   -0.0028 negligible</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t1$FEELPG_recode)</code></pre>
+<pre><code>##    vars    n mean   sd median trimmed  mad min max range skew kurtosis   se
+## X1    1 1723 3.41 1.67      3    3.38 1.48   1   6     5    0    -1.18 0.04</code></pre>
+<pre class="r"><code>psych::describe(cccu_excluded_t1$FEELPG_recode)</code></pre>
+<pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
+## X1    1 2882 3.52 1.84      4    3.53 2.97   1   6     5 -0.03    -1.38 0.03</code></pre>
 <p>##relationship duration</p>
 <pre class="r"><code>t.test(t1_comp_inex$rel_dur ~ t1_comp_inex$exclude,
        alternative = &#39;two.sided&#39;,
@@ -939,7 +1167,13 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.     group1 group2 effsize    n1    n2 conf.low conf.high magnitude 
 ## * &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;     
-## 1 rel_dur no     yes    -0.0784  1723  2911    -0.15   -0.0061 negligible</code></pre>
+## 1 rel_dur no     yes    -0.0784  1723  2911    -0.15   -0.0051 negligible</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t1$rel_dur)</code></pre>
+<pre><code>##    vars    n  mean    sd median trimmed   mad min max range skew kurtosis   se
+## X1    1 1293 91.37 58.84     82   86.26 56.34   0 542   542 1.03     2.54 1.64</code></pre>
+<pre class="r"><code>psych::describe(cccu_excluded_t1$rel_dur)</code></pre>
+<pre><code>##    vars    n  mean    sd median trimmed   mad min  max range skew kurtosis   se
+## X1    1 1794 96.37 67.02     86    90.9 56.34   0 1385  1385 4.72    77.48 1.58</code></pre>
 <p>#4. Descriptives of Variables</p>
 <pre class="r"><code>cccu_MA_t1_descriptives &lt;- cccu_MA_t1 %&gt;%
   select(

@@ -574,7 +574,7 @@ length(unique(cccu_complete1$CASEID)) -
   nrow()
 
 #306
-2930-306
+
 
 
 #separate for all selection predictors:
