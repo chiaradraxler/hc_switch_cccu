@@ -29,7 +29,7 @@ library(lme4)
 
 ###3.1 Model 1: basic model
 ```{r}
-R1_ma_1 <- glmer(switch ~ hc + (1| CASEID), family = binomial, data = cccu_R1)
+R1_ma_1 <- glmer(switch ~ hc + (1| CASEID), family = binomial, data = cccu_R1, control=glmerControl(optimizer="bobyqa"))
 
 summary(R1_ma_1)
 
@@ -40,7 +40,7 @@ summary(R1_ma_1)
 
 ###3.2 Model 2: including directly with contraceptive method associated predictors
 ```{r}
-R1_ma_2 <- glmer(switch ~ hc*contra_satis + (1| CASEID), family = binomial, data = cccu_R1)
+R1_ma_2 <- glmer(switch ~ hc*contra_satis + (1| CASEID), family = binomial, data = cccu_R1, control=glmerControl(optimizer="bobyqa"))
 
 summary(R1_ma_2)
 
@@ -72,7 +72,7 @@ summary(R1_ma_4)
 DURATION and satisfaction!
 
 ```{r}
-R1_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1| CASEID), family = binomial, data = cccu_R1_s)
+R1_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1| CASEID), family = binomial, data = cccu_R1_s, control=glmerControl(optimizer="bobyqa"))
 
 summary(R1_sa_m2)
 #confint(R1_sa_m2)
@@ -86,7 +86,7 @@ summary(R1_sa_m2)
 
 ###3.1 Model 1: basic model
 ```{r}
-R2_ma_1 <- glmer(switch ~ hc + (1| CASEID), family = binomial, data = cccu_R2)
+R2_ma_1 <- glmer(switch ~ hc + (1| CASEID), family = binomial, data = cccu_R2, control=glmerControl(optimizer="bobyqa"))
 
 summary(R2_ma_1)
 
@@ -97,7 +97,7 @@ summary(R2_ma_1)
 
 ###3.2 Model 2: including directly with contraceptive method associated predictors
 ```{r}
-R2_ma_2 <- glmer(switch ~ hc*contra_satis + (1| CASEID), family = binomial, data = cccu_R2)
+R2_ma_2 <- glmer(switch ~ hc*contra_satis + (1| CASEID), family = binomial, data = cccu_R2, control=glmerControl(optimizer="bobyqa"))
 
 summary(R2_ma_2)
 
@@ -129,7 +129,7 @@ summary(R2_ma_4)
 DURATION and satisfaction!
 
 ```{r}
-R2_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1| CASEID), family = binomial, data = cccu_R2_s)
+R2_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1| CASEID), family = binomial, data = cccu_R2_s, control=glmerControl(optimizer="bobyqa"))
 
 summary(R2_sa_m2)
 #confint(R2_sa_m2)
@@ -142,7 +142,7 @@ summary(R2_sa_m2)
 
 ###3.1 Model 1: basic model
 ```{r}
-R3_ma_1 <- glmer(switch ~ hc + (1| CASEID), family = binomial, data = cccu_R3)
+R3_ma_1 <- glmer(switch ~ hc + (1| CASEID), family = binomial, data = cccu_R3, control=glmerControl(optimizer="bobyqa"))
 
 summary(R3_ma_1)
 
@@ -153,7 +153,7 @@ summary(R3_ma_1)
 
 ###3.2 Model 2: including directly with contraceptive method associated predictors
 ```{r}
-R3_ma_2 <- glmer(switch ~ hc*contra_satis + (1| CASEID), family = binomial, data = cccu_R3)
+R3_ma_2 <- glmer(switch ~ hc*contra_satis + (1| CASEID), family = binomial, data = cccu_R3, control=glmerControl(optimizer="bobyqa"))
 
 summary(R3_ma_2)
 
@@ -185,7 +185,7 @@ summary(R3_ma_4)
 DURATION and satisfaction!
 
 ```{r}
-R3_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1| CASEID), family = binomial, data = cccu_3_s)
+R3_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1| CASEID), family = binomial, data = cccu_3_s, control=glmerControl(optimizer="bobyqa"))
 
 summary(R3_sa_m2)
 #confint(R3_sa_m2)

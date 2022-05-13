@@ -7,7 +7,6 @@ output: html_document
 
 #1. Load Data
 ```{r}
-
 load("cccu_MA.RData")
 ```
 
@@ -18,7 +17,6 @@ library(lme4)
 ```
 
 #3. Models
-currently impossible to test bc of problems with missingness
 
 ##3.1 Model 1: basic model
 ```{r}
@@ -33,7 +31,7 @@ summary(m1)
 
 ##3.2 Model 2: including directly with contraceptive method associated predictors
 ```{r}
-m2 <- glmer(switch ~ hc*contra_satis + (1| CASEID), family = binomial, data = cccu_MA)
+m2 <- glmer(switch ~ hc*contra_satis + (1| CASEID), family = binomial, data = cccu_MA, control=glmerControl(optimizer="bobyqa"))
 
 summary(m2)
 
