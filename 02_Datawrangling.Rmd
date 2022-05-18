@@ -1655,6 +1655,20 @@ hist(cccu_complete1$switch)
 ```
 
 
+#final data wrangling steps (for models)
+##hc and sex_freq
+```{r}
+library(tidyverse)
+cccu_MA <- cccu_MA %>%
+  mutate(hc = factor(as.character(hc),
+                     levels = c("non_hc", "hc"),
+                     labels = c("non_hc", "hc")),
+         sex_freq = factor(str_replace_all(sex_freq, " ", "_"),
+                           levels = c("No_sex", "Once", "2-5_times", "6-10_times", "11_or_more_times"),
+                           labels = c("No_sex", "Once", "2-5_times", "6-10_times", "11_or_more_times")))
+```
+
+
 #5. Saving Data
 ```{r}
 save(cccu_complete1,file = "cccu_complete1.RData")

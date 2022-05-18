@@ -16,19 +16,57 @@ load("cccu_MA.RData")
 library(formr)
 library(effects)
 library(lme4)
+library(psych)
+library(dplyr)
 ```
 
-# Datawrangling
+##Outliers
 ```{r}
-library(tidyverse)
+
+#see outliers
+boxplot(cccu_MA$AGE)$out #no
+boxplot(cccu_MA$hc)$out #no
+boxplot(cccu_MA$contra_satis)$out #outlier!!!
+
+boxplot(cccu_MA$sexual_satisfaction)$out
+boxplot(cccu_MA$sex_freq)$out#outlier! but no trimming possible bc factor
+
+boxplot(cccu_MA$AGE)$out
+boxplot(cccu_MA$DEGREE_recode)$out#outlier! but no trimming possible bc factor
+boxplot(cccu_MA$POVRATE)$out#outlier
+
+boxplot(cccu_MA$HLTHPROB_recode)$out#outlier but no trimming possible bc factor
+boxplot(cccu_MA$MEDPROB_recode)$out#outlier but no trimming possible bc factor
+boxplot(cccu_MA$GAPINS_recode)$out#outlier but no trimming possible bc factor
+boxplot(cccu_MA$TYPEINS_recode)$out#outlier but no trimming possible bc factor
+boxplot(cccu_MA$NKIDS_t1)$out
+boxplot(cccu_MA$pregnant_between_waves)$out#outlier but no trimming possible bc factor
+boxplot(cccu_MA$had_baby_between_waves)$out#outlier but no trimming possible bc factor
+
+boxplot(cccu_MA$Avoid_r)$out
+
+boxplot(cccu_MA$FEELPG_recode)$out
+boxplot(cccu_MA$rel_dur_factor)$out
+
+
+#dealing with outliers
+
+##contra_satis
 cccu_MA <- cccu_MA %>%
-  mutate(hc = factor(as.character(hc),
-                     levels = c("non_hc", "hc"),
-                     labels = c("non_hc", "hc")),
-         sex_freq = factor(str_replace_all(sex_freq, " ", "_"),
-                           levels = c("No_sex", "Once", "2-5_times", "6-10_times", "11_or_more_times"),
-                           labels = c("No_sex", "Once", "2-5_times", "6-10_times", "11_or_more_times")))
+  mutate(contra_satis_trim = ifelse(contra_satis > (mean(contra_satis)+3*sd(contra_satis)), mean(contra_satis), contra_satis))
+describe(cccu_MA$contra_satis)
+cccu_MA %>% select(CASEID, WAVE, contra_satis_trim, contra_satis) %>% View()
+
+##povrate
+
+cccu_MA <- cccu_MA %>%
+  mutate(POVRATE_trim = ifelse(POVRATE > (mean(POVRATE)+3*sd(POVRATE)), mean(POVRATE), POVRATE))
+describe(cccu_MA$POVRATE)
+cccu_MA %>% select(CASEID, WAVE, POVRATE_trim, POVRATE) %>% View()
+
+table(cccu_MA$TYPEINS_recode)
 ```
+
 
 #3. Models
 
