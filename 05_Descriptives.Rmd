@@ -524,6 +524,47 @@ rcorr(as.matrix(cccu_MA_t1_correlations))
 
 
 
+#6. Checks for normality
+```{r}
+#contraceptive satisfaction
+hist(cccu_MA$contra_satis) #no normal distribution
+qqnorm(cccu_MA$contra_satis)
+qqline(cccu_MA$contra_satis)
 
+#contraceptive duration
+hist(cccu_MA$hc_dur) #no normal distribution
+qqnorm(cccu_MA$hc_dur)
+qqline(cccu_MA$hc_dur)
+
+
+#sexual satisfaction
+hist(cccu_MA$sexual_satisfaction) #no normal distribution
+qqnorm(cccu_MA$sexual_satisfaction)
+qqline(cccu_MA$sexual_satisfaction)
+
+
+#Age
+hist(cccu_MA$AGE) #nearly no normal distribution
+qqnorm(cccu_MA$AGE)
+qqline(cccu_MA$AGE)
+
+
+#Povrate
+hist(cccu_MA$POVRATE) #no normal distribution
+qqnorm(cccu_MA$POVRATE)
+qqline(cccu_MA$POVRATE)
+
+
+#avoidance
+hist(cccu_MA$Avoid_r) #no normal distribution
+qqnorm(cccu_MA$Avoid_r)
+qqline(cccu_MA$Avoid_r)
+
+#feelings about pregnancy
+hist(cccu_MA$FEELPG_recode) #no normal distribution
+qqnorm(cccu_MA$FEELPG_recode)
+qqline(cccu_MA$FEELPG_recode)
+
+```
 
 
