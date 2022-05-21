@@ -28,18 +28,23 @@ boxplot(cccu_MA$AGE)$out #no
 boxplot(cccu_MA$hc)$out #no
 boxplot(cccu_MA$contra_satis)$out #outlier!!!
 
-boxplot(cccu_MA$sexual_satisfaction)$out
+boxplot(cccu_MA$sexual_satisfaction)$out #no
 boxplot(cccu_MA$sex_freq)$out#outlier! but no trimming possible bc factor
 
-boxplot(cccu_MA$AGE)$out
+
+
+boxplot(cccu_MA$AGE)$out #no
 boxplot(cccu_MA$DEGREE_recode)$out#outlier! but no trimming possible bc factor
 boxplot(cccu_MA$POVRATE)$out#outlier
 
 boxplot(cccu_MA$HLTHPROB_recode)$out#outlier but no trimming possible bc factor
+
 boxplot(cccu_MA$MEDPROB_recode)$out#outlier but no trimming possible bc factor
 boxplot(cccu_MA$GAPINS_recode)$out#outlier but no trimming possible bc factor
 boxplot(cccu_MA$TYPEINS_recode)$out#outlier but no trimming possible bc factor
+
 boxplot(cccu_MA$NKIDS_t1)$out
+
 boxplot(cccu_MA$pregnant_between_waves)$out#outlier but no trimming possible bc factor
 boxplot(cccu_MA$had_baby_between_waves)$out#outlier but no trimming possible bc factor
 

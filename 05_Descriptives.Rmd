@@ -526,6 +526,10 @@ rcorr(as.matrix(cccu_MA_t1_correlations))
 
 #6. Checks for normality
 ```{r}
+#hc use
+table(cccu_MA$hc)
+plot(cccu_MA$hc)
+
 #contraceptive satisfaction
 hist(cccu_MA$contra_satis) #no normal distribution
 qqnorm(cccu_MA$contra_satis)
@@ -542,18 +546,50 @@ hist(cccu_MA$sexual_satisfaction) #no normal distribution
 qqnorm(cccu_MA$sexual_satisfaction)
 qqline(cccu_MA$sexual_satisfaction)
 
+#sexual frequency
+table(cccu_MA$sex_freq)
+plot(cccu_MA$sex_freq)
 
 #Age
 hist(cccu_MA$AGE) #nearly no normal distribution
 qqnorm(cccu_MA$AGE)
 qqline(cccu_MA$AGE)
 
+#degree
+table(cccu_MA$DEGREE_recode)
+plot(cccu_MA$DEGREE_recode)
 
 #Povrate
 hist(cccu_MA$POVRATE) #no normal distribution
 qqnorm(cccu_MA$POVRATE)
 qqline(cccu_MA$POVRATE)
 
+#health problems
+table(cccu_MA$HLTHPROB_recode)
+plot(cccu_MA$HLTHPROB_recode)
+
+#medical problems
+table(cccu_MA$MEDPROB_recode)
+plot(cccu_MA$MEDPROB_recode)
+
+#gaps in insurance
+table(cccu_MA$GAPINS_recode)
+plot(cccu_MA$GAPINS_recode)
+
+#insuranced
+table(cccu_MA$TYPEINS_recode)
+plot(cccu_MA$TYPEINS_recode)
+
+#nkids t1
+table(cccu_MA$NKIDS_t1)
+plot(cccu_MA$NKIDS_t1)
+
+#pregnant / had baby between waves
+table(cccu_MA$pregnant_between_waves)
+plot(cccu_MA$pregnant_between_waves)
+
+table(cccu_MA$had_baby_between_waves)
+plot(cccu_MA$had_baby_between_waves)
 
 #avoidance
 hist(cccu_MA$Avoid_r) #no normal distribution
@@ -565,6 +601,9 @@ hist(cccu_MA$FEELPG_recode) #no normal distribution
 qqnorm(cccu_MA$FEELPG_recode)
 qqline(cccu_MA$FEELPG_recode)
 
+#relationship duration
+table(cccu_MA$rel_dur_factor)
+plot(cccu_MA$rel_dur_factor)
 ```
 
 
