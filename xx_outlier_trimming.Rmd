@@ -4,6 +4,18 @@ author: "Chiara Draxler"
 date: "23 5 2022"
 output: html_document
 ---
+
+```{r}
+library(psych)
+library(tidyverse)
+```
+
+#1. Load Data
+```{r}
+load("cccu_MA.RData")
+```
+
+
 ```{r}
 ##Outliers
 
@@ -76,5 +88,4 @@ cccu_MA %>% select(CASEID, WAVE, FEELPG_recode_trim, FEELPG_recode) %>% View()
 
 ```
 
-```
 
