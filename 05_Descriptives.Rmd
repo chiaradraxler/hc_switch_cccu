@@ -539,6 +539,7 @@ qqline(cccu_MA$contra_satis)
 hist(cccu_MA$hc_dur) #no normal distribution
 qqnorm(cccu_MA$hc_dur)
 qqline(cccu_MA$hc_dur)
+table(cccu_MA$hc_dur)
 
 
 #sexual satisfaction
@@ -548,7 +549,7 @@ qqline(cccu_MA$sexual_satisfaction)
 
 #sexual frequency
 table(cccu_MA$sex_freq)
-plot(cccu_MA$sex_freq)
+plot(cccu_MA$sex_freq)#no sex und once relativ klein
 
 #Age
 hist(cccu_MA$AGE) #nearly no normal distribution
@@ -556,7 +557,7 @@ qqnorm(cccu_MA$AGE)
 qqline(cccu_MA$AGE)
 
 #degree
-table(cccu_MA$DEGREE_recode)
+table(cccu_MA$DEGREE_recode)#no education bis 12. klasse sehr klein, ebenso doctoral degree
 plot(cccu_MA$DEGREE_recode)
 
 #Povrate
@@ -565,30 +566,30 @@ qqnorm(cccu_MA$POVRATE)
 qqline(cccu_MA$POVRATE)
 
 #health problems
-table(cccu_MA$HLTHPROB_recode)
+table(cccu_MA$HLTHPROB_recode)#yes klein
 plot(cccu_MA$HLTHPROB_recode)
 
 #medical problems
-table(cccu_MA$MEDPROB_recode)
+table(cccu_MA$MEDPROB_recode)#yes klein
 plot(cccu_MA$MEDPROB_recode)
 
 #gaps in insurance
-table(cccu_MA$GAPINS_recode)
+table(cccu_MA$GAPINS_recode)#yes klein
 plot(cccu_MA$GAPINS_recode)
 
 #insuranced
-table(cccu_MA$TYPEINS_recode)
+table(cccu_MA$TYPEINS_recode)#no klein
 plot(cccu_MA$TYPEINS_recode)
 
 #nkids t1
-table(cccu_MA$NKIDS_t1)
+table(cccu_MA$NKIDS_t1)# 3 und 4 oder mehr Kinder klein
 plot(cccu_MA$NKIDS_t1)
 
 #pregnant / had baby between waves
-table(cccu_MA$pregnant_between_waves)
+table(cccu_MA$pregnant_between_waves)#yes klein
 plot(cccu_MA$pregnant_between_waves)
 
-table(cccu_MA$had_baby_between_waves)
+table(cccu_MA$had_baby_between_waves)#yes klein
 plot(cccu_MA$had_baby_between_waves)
 
 #avoidance
@@ -603,7 +604,7 @@ qqline(cccu_MA$FEELPG_recode)
 
 #relationship duration
 table(cccu_MA$rel_dur_factor)
-plot(cccu_MA$rel_dur_factor)
+kplot(cccu_MA$rel_dur_factor)
 ```
 
 
