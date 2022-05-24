@@ -7,6 +7,8 @@ output: html_document
 
 ```{r}
 library(psych)
+library(lme4)
+library(lmerTest)
 library(tidyverse)
 ```
 
@@ -15,7 +17,7 @@ library(tidyverse)
 load("cccu_MA.RData")
 ```
 
-
+# Visual inspection
 ```{r}
 ##Outliers
 
@@ -26,7 +28,6 @@ boxplot(cccu_MA$hc)$out #no
 boxplot(cccu_MA$contra_satis)$out #outlier!!!
 boxplot(cccu_MA$sexual_satisfaction)$out #no
 boxplot(cccu_MA$sex_freq)$out#outlier! but no trimming possible bc factor
-boxplot(cccu_MA$AGE)$out #no
 boxplot(cccu_MA$DEGREE_recode)$out#outlier! but no trimming possible bc factor
 boxplot(cccu_MA$POVRATE)$out#outlier
 boxplot(cccu_MA$HLTHPROB_recode)$out#outlier but no trimming possible bc factor
@@ -41,51 +42,93 @@ boxplot(cccu_MA$Avoid_r)$out
 table(cccu_MA$Avoid_r)
 boxplot(cccu_MA$FEELPG_recode)$out
 boxplot(cccu_MA$rel_dur_factor)$out
+```
+
+# Continous variables
+```{r}
+mean_contra_satis = mean(cccu_MA$contra_satis, na.rm = T)
+sd_contra_satis = sd(cccu_MA$contra_satis, na.rm = T)
+
+cccu_MA_trim = cccu_MA %>%
+  mutate(contra_satis_trim = ifelse(contra_satis > mean_contra_satis + 3*sd_contra_satis |
+                                      contra_satis < mean_contra_satis - 3*sd_contra_satis,
+                                    mean_contra_satis,
+                                    contra_satis))
+
+boxplot(cccu_MA_trim$contra_satis_trim)$out
+```
 
 
-#dealing with outliers for numerical variables
+```{r}
+mean_POVRATE = mean(cccu_MA$POVRATE, na.rm = T)
+sd_POVRATE = sd(cccu_MA$POVRATE, na.rm = T)
 
-##contra_satis
-cccu_MA <- cccu_MA %>%
-  mutate(contra_satis_trim = ifelse(contra_satis > (mean(contra_satis)+3*sd(contra_satis)), mean(contra_satis), contra_satis))
-describe(cccu_MA$contra_satis)
-cccu_MA %>% select(CASEID, WAVE, contra_satis_trim, contra_satis) %>% View()
+cccu_MA_trim = cccu_MA %>%
+  mutate(POVRATE_trim = ifelse(POVRATE >= mean_POVRATE + 3*sd_POVRATE |
+                                      POVRATE <= mean_POVRATE - 3*sd_POVRATE,
+                                    mean_POVRATE,
+                                    POVRATE))
 
-##sexual satisfaction
-cccu_MA <- cccu_MA %>%
-  mutate(sexual_satisfaction_trim = ifelse(sexual_satisfaction > (mean(sexual_satisfaction)+3*sd(sexual_satisfaction)), mean(sexual_satisfaction), sexual_satisfaction))
-describe(cccu_MA$sexual_satisfaction)
-
-cccu_MA %>% select(CASEID, WAVE, sexual_satisfaction_trim, sexual_satisfaction) %>% View()
-
-##povrate
-
-cccu_MA <- cccu_MA %>%
-  mutate(POVRATE_trim = ifelse(POVRATE > (mean(POVRATE)+3*sd(POVRATE)), mean(POVRATE), POVRATE))
-describe(cccu_MA$POVRATE)
-cccu_MA %>% select(CASEID, WAVE, POVRATE_trim, POVRATE) %>% View()
-
-table(cccu_MA$TYPEINS_recode)
-
-##Age
-cccu_MA <- cccu_MA %>%
-  mutate(AGE_trim = ifelse(AGE > (mean(AGE)+3*sd(AGE)), mean(AGE), AGE))
-describe(cccu_MA$AGE)
-cccu_MA %>% select(CASEID, WAVE, AGE_trim, AGE) %>% View()
-
-#Avoid
-cccu_MA <- cccu_MA %>%
-  mutate(Avoid_r_trim = ifelse(Avoid_r > (mean(Avoid_r)+3*sd(Avoid_r)), mean(Avoid_r), Avoid_r))
-describe(cccu_MA$Avoid_r)
-cccu_MA %>% select(CASEID, WAVE, Avoid_r_trim, Avoid_r) %>% View()
-
-#Feelpg
-cccu_MA <- cccu_MA %>%
-  mutate(FEELPG_recode_trim = ifelse(FEELPG_recode > (mean(FEELPG_recode)+3*sd(FEELPG_recode)), mean(FEELPG_recode), FEELPG_recode))
-describe(cccu_MA$FEELPG_recode)
-cccu_MA %>% select(CASEID, WAVE, FEELPG_recode_trim, FEELPG_recode) %>% View()
+boxplot(cccu_MA_trim$POVRATE_trim)$out
+```
 
 
+# Old code
+```{r}
+# #dealing with outliers for numerical variables
+# 
+# ##contra_satis
+# cccu_MA <- cccu_MA %>%
+#   mutate(contra_satis_trim = ifelse(contra_satis > (mean(contra_satis)+3*sd(contra_satis)), mean(contra_satis), contra_satis))
+# describe(cccu_MA$contra_satis)
+# cccu_MA %>% select(CASEID, WAVE, contra_satis_trim, contra_satis) %>% View()
+# 
+# ##sexual satisfaction
+# cccu_MA <- cccu_MA %>%
+#   mutate(sexual_satisfaction_trim = ifelse(sexual_satisfaction > (mean(sexual_satisfaction)+3*sd(sexual_satisfaction)), mean(sexual_satisfaction), sexual_satisfaction))
+# describe(cccu_MA$sexual_satisfaction)
+# 
+# cccu_MA %>% select(CASEID, WAVE, sexual_satisfaction_trim, sexual_satisfaction) %>% View()
+# 
+# ##povrate
+# 
+# cccu_MA <- cccu_MA %>%
+#   mutate(POVRATE_trim = ifelse(POVRATE > (mean(POVRATE)+3*sd(POVRATE)), mean(POVRATE), POVRATE))
+# describe(cccu_MA$POVRATE)
+# cccu_MA %>% select(CASEID, WAVE, POVRATE_trim, POVRATE) %>% View()
+# 
+# table(cccu_MA$TYPEINS_recode)
+# 
+# ##Age
+# cccu_MA <- cccu_MA %>%
+#   mutate(AGE_trim = ifelse(AGE > (mean(AGE)+3*sd(AGE)), mean(AGE), AGE))
+# describe(cccu_MA$AGE)
+# cccu_MA %>% select(CASEID, WAVE, AGE_trim, AGE) %>% View()
+# 
+# #Avoid
+# cccu_MA <- cccu_MA %>%
+#   mutate(Avoid_r_trim = ifelse(Avoid_r > (mean(Avoid_r)+3*sd(Avoid_r)), mean(Avoid_r), Avoid_r))
+# describe(cccu_MA$Avoid_r)
+# cccu_MA %>% select(CASEID, WAVE, Avoid_r_trim, Avoid_r) %>% View()
+# 
+# #Feelpg
+# cccu_MA <- cccu_MA %>%
+#   mutate(FEELPG_recode_trim = ifelse(FEELPG_recode > (mean(FEELPG_recode)+3*sd(FEELPG_recode)), mean(FEELPG_recode), FEELPG_recode))
+# describe(cccu_MA$FEELPG_recode)
+# cccu_MA %>% select(CASEID, WAVE, FEELPG_recode_trim, FEELPG_recode) %>% View()
+
+(((((((((((((((((())))))))))))))))))
+
+```
+
+
+
+#Model
+```{r}
+m4 <- glmer(switch ~ hc * contra_satis_trim + hc * sexual_satisfaction_trim +  hc * sex_freq + hc *AGE_trim + hc *DEGREE_recode + hc *POVRATE_trim + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode +
+              hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r_trim + hc *FEELPG_recode_trim + hc *rel_dur_factor + (1| CASEID),
+            family = binomial,
+            data = cccu_MA, control=glmerControl(optimizer="bobyqa"))
 ```
 
 

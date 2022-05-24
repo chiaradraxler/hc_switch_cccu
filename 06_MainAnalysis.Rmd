@@ -20,93 +20,6 @@ library(psych)
 library(dplyr)
 ```
 
-##Doing everything so that models would converge
-
-
-## Optimizer
-```{r}
-# install.packages("afex")
-# library(afex)
-
-#allFit(show.meth.tab=TRUE) 
-#gm_all <- allFit(m4)
-
-#no optimizer did work
-```
-
-#Outliers
-```{r}
-
-#see outliers
-boxplot(cccu_MA$AGE)$out #no
-boxplot(cccu_MA$hc)$out #no
-boxplot(cccu_MA$contra_satis)$out #outlier!!!
-boxplot(cccu_MA$sexual_satisfaction)$out #no
-boxplot(cccu_MA$sex_freq)$out#outlier! but no trimming possible bc factor
-boxplot(cccu_MA$AGE)$out #no
-boxplot(cccu_MA$DEGREE_recode)$out#outlier! but no trimming possible bc factor
-boxplot(cccu_MA$POVRATE)$out#outlier
-boxplot(cccu_MA$HLTHPROB_recode)$out#outlier but no trimming possible bc factor
-boxplot(cccu_MA$MEDPROB_recode)$out#outlier but no trimming possible bc factor
-boxplot(cccu_MA$GAPINS_recode)$out#outlier but no trimming possible bc factor
-boxplot(cccu_MA$TYPEINS_recode)$out#outlier but no trimming possible bc factor
-boxplot(cccu_MA$NKIDS_t1)$out
-boxplot(cccu_MA$pregnant_between_waves)$out#outlier but no trimming possible bc
-table(cccu_MA$pregnant_between_waves)
-boxplot(cccu_MA$had_baby_between_waves)$out#outlier but no trimming possible bc factor
-boxplot(cccu_MA$Avoid_r)$out
-table(cccu_MA$Avoid_r)
-boxplot(cccu_MA$FEELPG_recode)$out
-boxplot(cccu_MA$rel_dur_factor)$out
-
-
-#dealing with outliers for numerical variables
-
-##contra_satis
-cccu_MA <- cccu_MA %>%
-  mutate(contra_satis_t = ifelse(contra_satis > (mean(contra_satis)+3*sd(contra_satis)), mean(contra_satis), ifelse(contra_satis < (mean(contra_satis)-3*sd(contra_satis)), mean(contra_satis), contra_satis)))
-describe(cccu_MA$contra_satis)
-cccu_MA %>% select(CASEID, WAVE, contra_satis_t, contra_satis) %>% View()
-
-##sexual satisfaction
-cccu_MA <- cccu_MA %>%
-  mutate(sexual_satisfaction_trim = ifelse(sexual_satisfaction > (mean(sexual_satisfaction)+3*sd(sexual_satisfaction)), mean(sexual_satisfaction), ifelse(sexual_satisfaction < (mean(sexual_satisfaction)- 3*sd(sexual_satisfaction)), mean(sexual_satisfaction), sexual_satisfaction)))
-         
-describe(cccu_MA$sexual_satisfaction)
-
-cccu_MA %>% select(CASEID, WAVE, sexual_satisfaction_trim, sexual_satisfaction) %>% View()
-
-##povrate
-
-cccu_MA <- cccu_MA %>%
-  mutate(POVRATE_trim = ifelse(POVRATE > (mean(POVRATE)+3*sd(POVRATE)), mean(POVRATE), ifelse(POVRATE < (mean(POVRATE)-3*sd(POVRATE)), mean(POVRATE), POVRATE)))
-
-describe(cccu_MA$POVRATE)
-cccu_MA %>% select(CASEID, WAVE, POVRATE_trim, POVRATE) %>% View()
-
-table(cccu_MA$TYPEINS_recode)
-
-##Age
-cccu_MA <- cccu_MA %>%
-  mutate(AGE_trim = ifelse(AGE > (mean(AGE)+3*sd(AGE)), mean(AGE), ifelse(AGE < (mean(AGE)- 3*sd(AGE)), mean(AGE), AGE)))
-describe(cccu_MA$AGE)
-cccu_MA %>% select(CASEID, WAVE, AGE_trim, AGE) %>% View()
-
-#Avoid
-cccu_MA <- cccu_MA %>%
-  mutate(Avoid_r_trim = ifelse(Avoid_r > (mean(Avoid_r)+3*sd(Avoid_r)), mean(Avoid_r), ifelse(Avoid_r < (mean(Avoid_r)-3*sd(Avoid_r)),mean(Avoid_r), Avoid_r)))
-describe(cccu_MA$Avoid_r)
-cccu_MA %>% select(CASEID, WAVE, Avoid_r_trim, Avoid_r) %>% View()
-
-#Feelpg
-cccu_MA <- cccu_MA %>%
-  mutate(FEELPG_recode_trim = ifelse(FEELPG_recode > (mean(FEELPG_recode)+3*sd(FEELPG_recode)), mean(FEELPG_recode), ifelse(FEELPG_recode < (mean(FEELPG_recode)-3*sd(FEELPG_recode)), mean(FEELPG_recode), FEELPG_recode)))
-describe(cccu_MA$FEELPG_recode)
-cccu_MA %>% select(CASEID, WAVE, FEELPG_recode_trim, FEELPG_recode) %>% View()
-
-
-```
-
 
 #3. Models
 
@@ -122,7 +35,7 @@ plot(allEffects(m1))
 
 ##3.2 Model 2: including directly with contraceptive method associated predictors
 ```{r}
-m2 <- glmer(switch ~ hc*contra_satis_t + (1| CASEID), family = binomial, data = cccu_MA, control=glmerControl(optimizer="bobyqa"))
+m2 <- glmer(switch ~ hc*contra_satis + (1| CASEID), family = binomial, data = cccu_MA, control=glmerControl(optimizer="bobyqa"))
 
 summary(m2)
 confint(m2, method = "Wald", level = .997)
@@ -132,7 +45,7 @@ plot(allEffects(m2))
 
 ##3.3 Model 3: including not directly with contraceptive method associated predictors
 ```{r}
-m3 <- glmer(switch ~ hc * contra_satis_t +  hc * sexual_satisfaction_trim + hc * sex_freq  + (1| CASEID), family = binomial, data = cccu_MA, control=glmerControl(optimizer="bobyqa"))
+m3 <- glmer(switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq  + (1| CASEID), family = binomial, data = cccu_MA, control=glmerControl(optimizer="bobyqa"))
 
 summary(m3)
 confint(m3, method = "Wald", level = .997)
@@ -141,10 +54,36 @@ plot(allEffects(m3))
 
 ##3.4 Model 4: Controlling for observed selection effects
 ```{r}
-m4 <- glmer(switch ~ hc * contra_satis_trim + hc * sexual_satisfaction_trim +  hc * sex_freq + hc *AGE_trim + hc *DEGREE_recode + hc *POVRATE_trim + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode +
-              hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r_trim + hc *FEELPG_recode_trim + hc *rel_dur_factor + (1| CASEID),
+m3 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq,
+          family = binomial,
+          data = cccu_MA)
+summary(m3)
+
+
+m4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE +
+              hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode +
+              hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode +
+              hc *rel_dur_factor,
             family = binomial,
             data = cccu_MA)
+summary(m4)
+
+m4 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq + AGE + DEGREE_recode +
+              POVRATE + HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+              TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r +
+              FEELPG_recode + rel_dur_factor + (1| CASEID),
+            family = binomial,
+            data = cccu_MA,
+            control=glmerControl(optimizer="bobyqa"))
+
+
+m4 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq + hc *AGE + hc *DEGREE_recode +
+              hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode +
+              hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r +
+              hc *FEELPG_recode + hc *rel_dur_factor + (1| CASEID),
+            family = binomial,
+            data = cccu_MA,
+            control=glmerControl(optimizer="bobyqa"))
 
 summary(m4)
 confint(m4, method = "Wald", level = .997)
