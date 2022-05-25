@@ -510,41 +510,30 @@ cccu_complete1 <- cccu_complete1 %>%
   mutate(
     DEGREE_recode = recode(
       DEGREE,
-      "(-2) Not asked" = "NA",
-      "(-1) refused" = "NA",
-      "(01) No formal education" = "1",
-      "(02) 1st, 2nd, 3rd, or 4th grade" = "1",
-      "(03) 5th or 6th grade" = "1",
-      "(04) 7th or 8th grade" = "1",
-      "(05) 9th grade" = "1",
-      "(06) 10th grade" = "1",
-      "(07) 11th grade" = "1",
-      "(08) 12th grade NO DIPLOMA" = "1",
-      "(09) HIGH SCHOOL GRADUATE - high school DIPLOMA or the equivalent (GED)" = "2",
-      "(10) Some college, no degree" = "3",
-      "(11) Associate degree" = "4",
-      "(12) Bachelors degree" = "5",
-      "(13) Masters degree" = "6",
-      "(14) Professional or Doctorate degree" = "7"
+      "(-2) Not asked"="NA",
+                                "(-1) refused"="NA",
+                                "(01) No formal education" ="1",
+                                "(02) 1st, 2nd, 3rd, or 4th grade" = "2",
+                                "(03) 5th or 6th grade" = "3",
+                                "(04) 7th or 8th grade" = "4",
+                                "(05) 9th grade" = "5",
+                                "(06) 10th grade" = "6",
+                                "(07) 11th grade" = "7",
+                                "(08) 12th grade NO DIPLOMA" = "8",
+                                "(09) HIGH SCHOOL GRADUATE - high school DIPLOMA or the equivalent (GED)" = "9",
+                                "(10) Some college, no degree" = "10",
+                                "(11) Associate degree" = "11",
+                                "(12) Bachelors degree" = "12",
+                                "(13) Masters degree" = "13",
+                                "(14) Professional or Doctorate degree" = "14" 
     ))
 
 table(cccu_complete1$DEGREE)
 table(cccu_complete1$DEGREE_recode)
 
 #Factorizing it with levels
-cccu_complete1$DEGREE_recode <-
-  factor(
-    cccu_complete1$DEGREE_recode,
-    levels = c(1, 2,3,4,5,6,7),
-    labels = c(
-      "no formal education up to 12th grade without diploma",
-      "high school diploma or equivalent",
-      "some college, no degree",
-      "associate degree",
-      "bachelors degree",
-      "masters degree",
-      "professional or doctoral degree"
-    ))
+cccu_complete1$DEGREE_recode<-
+factor(cccu_complete1$DEGREE_recode, levels = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14), labels = c("no formal education", "1st to 4th grade", "5th/6th grade", "7th/8th grade", "9th grade", "10th grade", "11th grade", "12th grade / no diploma", "high school diploma or equivalent", "some college, no degree", "associate degree", "bachelors degree", "masters degree", "professional or doctoral degree"))
 
 crosstabs( ~ DEGREE_recode + WAVE, data = cccu_complete1)
 plot(cccu_complete1$DEGREE_recode)
@@ -815,7 +804,7 @@ cccu_complete1 <- cccu_complete1 %>%
       "(1) 1" = "1",
       "(2) 2" = "2",
       "(3) 3" = "3",
-      "(4) 4 or more" = "3"
+      "(4) 4 or more" = "4"
     ))
 
 table(cccu_complete1$NKIDS_t1)
@@ -823,8 +812,8 @@ table(cccu_complete1$NKIDS_t1)
 cccu_complete1$NKIDS_t1 <-
   factor(
     cccu_complete1$NKIDS_t1,
-    levels = c(0, 1, 2, 3),
-    labels = c("0", "1", "2", "3 or more")
+    levels = c(0, 1, 2, 3,4),
+    labels = c("0", "1", "2", "3", "4 or more")
   )
 
 
@@ -1121,7 +1110,7 @@ table(cccu_complete1$sex_inlast30days)
 #building sexual frequency: if sex_inlast30days = 0 ("No") we want 0, if NSEXMO = 1 we want 1, if NSEXMO 2 = 2, 3 =3, 4 = 4, otherwise NA
 
 cccu_complete1 <- cccu_complete1 %>%
-  mutate(sex_freq = ifelse(sex_inlast30days == "No", 1,
+  mutate(sex_freq = ifelse(sex_inlast30days == "No", 0,
                            ifelse(
                              NSEXMO == "(1) 1", 1,
                              ifelse(NSEXMO == "(2) 2-5", 2,
@@ -1140,8 +1129,8 @@ crosstabs(~sex_inlast30days + NSEXMO , data = cccu_complete1)
 cccu_complete1$sex_freq <-
   factor(
     cccu_complete1$sex_freq,
-    levels = c(1, 2, 3, 4),
-    labels = c("No sex or once", "2-5 times", "6-10 times", "11 or more times")
+    levels = c(0,1, 2, 3, 4),
+    labels = c("No sex", "Once", "2-5 times", "6-10 times", "11 or more times")
   )
 
 qplot(cccu_complete1$sex_freq)
@@ -1656,8 +1645,8 @@ cccu_complete1 <- cccu_complete1 %>%
                      levels = c("hc", "non_hc", "IUD&non_hc"),
                      labels = c("hc", "non_hc", "IUD&non_hc")),
          sex_freq = factor(sex_freq,
-                           levels = c("No sex or once", "2-5 times", "6-10 times", "11 or more times"),
-                           labels = c("No sex or once", "2-5 times", "6-10 times", "11 or more times")))
+                           levels = c("No sex", "Once", "2-5 times", "6-10 times", "11 or more times"),
+                           labels = c("No sex", "Once", "2-5 times", "6-10 times", "11 or more times")))
 ```
 
 

@@ -604,7 +604,7 @@ qqline(cccu_MA$FEELPG_recode)
 
 #relationship duration
 table(cccu_MA$rel_dur_factor)
-kplot(cccu_MA$rel_dur_factor)
+plot(cccu_MA$rel_dur_factor)
 ```
 
 
