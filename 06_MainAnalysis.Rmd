@@ -54,11 +54,13 @@ plot(allEffects(m3))
 
 ##3.4 Model 4: Controlling for observed selection effects
 ```{r}
+#repeat model 3 for sensitivity analysis
 m3 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq,
           family = binomial,
           data = cccu_MA)
 summary(m3)
 
+#model 4 as linear model (bc did not converge otherwise)
 
 m4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE +
               hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode +
@@ -66,25 +68,6 @@ m4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq
               hc *rel_dur_factor,
             family = binomial,
             data = cccu_MA)
-summary(m4)
-
-m4 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq + AGE + DEGREE_recode +
-              POVRATE + HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
-              TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r +
-              FEELPG_recode + rel_dur_factor + (1| CASEID),
-            family = binomial,
-            data = cccu_MA,
-            control=glmerControl(optimizer="bobyqa"))
-
-
-m4 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq + hc *AGE + hc *DEGREE_recode +
-              hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode +
-              hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r +
-              hc *FEELPG_recode + hc *rel_dur_factor + (1| CASEID),
-            family = binomial,
-            data = cccu_MA,
-            control=glmerControl(optimizer="bobyqa"))
-
 summary(m4)
 confint(m4, method = "Wald", level = .997)
 plot(allEffects(m4))

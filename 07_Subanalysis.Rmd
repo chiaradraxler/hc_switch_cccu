@@ -25,10 +25,11 @@ library(lme4)
 DURATION and satisfaction!
 
 ```{r}
-sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1| CASEID), family = binomial, data = cccu_SA)
+sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1| CASEID), family = binomial, data = cccu_SA, control=glmerControl(optimizer="bobyqa"))
 
 summary(sa_m2)
-confint(sa_m2)
+confint(sa_m2, method = "Wald", level = .997)
+plot(allEffects(sa_m2))
 ```
 
 
