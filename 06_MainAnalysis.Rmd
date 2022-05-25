@@ -20,7 +20,6 @@ library(psych)
 library(dplyr)
 ```
 
-
 #3. Models
 
 ##3.1 Model 1: basic model
@@ -45,7 +44,7 @@ plot(allEffects(m2))
 
 ##3.3 Model 3: including not directly with contraceptive method associated predictors
 ```{r}
-m3 <- glmer(switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq  + (1| CASEID), family = binomial, data = cccu_MA, control=glmerControl(optimizer="bobyqa"))
+m3 <- glmer(switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + (1| CASEID), family = binomial, data = cccu_MA, control=glmerControl(optimizer="bobyqa"))
 
 summary(m3)
 confint(m3, method = "Wald", level = .997)
@@ -59,6 +58,7 @@ m3 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq
           family = binomial,
           data = cccu_MA)
 summary(m3)
+plot(allEffects(m3))
 
 #model 4 as linear model (bc did not converge otherwise)
 

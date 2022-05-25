@@ -1110,7 +1110,7 @@ table(cccu_complete1$sex_inlast30days)
 #building sexual frequency: if sex_inlast30days = 0 ("No") we want 0, if NSEXMO = 1 we want 1, if NSEXMO 2 = 2, 3 =3, 4 = 4, otherwise NA
 
 cccu_complete1 <- cccu_complete1 %>%
-  mutate(sex_freq = ifelse(sex_inlast30days == "No", 0,
+  mutate(sex_freq = ifelse(sex_inlast30days == "No", 1,
                            ifelse(
                              NSEXMO == "(1) 1", 1,
                              ifelse(NSEXMO == "(2) 2-5", 2,
@@ -1129,8 +1129,8 @@ crosstabs(~sex_inlast30days + NSEXMO , data = cccu_complete1)
 cccu_complete1$sex_freq <-
   factor(
     cccu_complete1$sex_freq,
-    levels = c(0,1, 2, 3, 4),
-    labels = c("No sex", "Once", "2-5 times", "6-10 times", "11 or more times")
+    levels = c(1, 2, 3, 4),
+    labels = c("No sex or once", "2-5 times", "6-10 times", "11 or more times")
   )
 
 qplot(cccu_complete1$sex_freq)
@@ -1645,8 +1645,8 @@ cccu_complete1 <- cccu_complete1 %>%
                      levels = c("hc", "non_hc", "IUD&non_hc"),
                      labels = c("hc", "non_hc", "IUD&non_hc")),
          sex_freq = factor(sex_freq,
-                           levels = c("No sex", "Once", "2-5 times", "6-10 times", "11 or more times"),
-                           labels = c("No sex", "Once", "2-5 times", "6-10 times", "11 or more times")))
+                           levels = c("No sex or once", "2-5 times", "6-10 times", "11 or more times"),
+                           labels = c("No sex or once", "2-5 times", "6-10 times", "11 or more times")))
 ```
 
 
