@@ -34,4 +34,24 @@ plot(allEffects(sa_m2))
 ```
 
 
+##3.3 Model 3: including not directly with contraceptive method associated predictors
+```{r}
+sa_m3 <- glmer(switch ~ contra_satis* hc_dur  +  sexual_satisfaction +  sex_freq + (1| CASEID), family = binomial, data = cccu_SA, control=glmerControl(optimizer="bobyqa"))
+
+summary(sa_m3)
+confint(sa_m3, method = "Wald", level = .997)
+plot(allEffects(sa_m3))
+```
+
+#model 4 as linear model (bc did not converge otherwise)
+```{r}
+sa_m4 <- glm(switch ~ contra_satis*hc_dur +  sexual_satisfaction +   sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
+              TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r + FEELPG_recode +
+              rel_dur_factor,
+            family = binomial,
+            data = cccu_SA)
+summary(sa_m4)
+confint(sa_m4, method = "Wald", level = .997)
+plot(allEffects(sa_m4))
+```
 
