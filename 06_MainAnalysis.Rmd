@@ -29,6 +29,8 @@ m1 <- glmer(switch ~ hc + (1| CASEID), family = binomial, data = cccu_MA, contro
 summary(m1)
 confint(m1, method = "Wald", level = .997)
 plot(allEffects(m1))
+
+
 ```
 
 
@@ -71,6 +73,19 @@ m4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq
 summary(m4)
 confint(m4, method = "Wald", level = .997)
 plot(allEffects(m4))
+
+
+library(lme4)
+exp(m4$coefficients)
+exp(confint(m4, method = "Wald", level = .997))
+
+
+#sensitivity analysis hc:non_hc
+
+
+
+library(EValue)
+evalue(OR(4.418412e-01),lo= 2.490910e-03,  hi=5.820342e+01, true = c(0,1))
 ```
 
 
