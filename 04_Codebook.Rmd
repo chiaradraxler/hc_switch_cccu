@@ -20,7 +20,7 @@ load("cccu_MA.RData")
 ## 2. Select data
 ```{r}
 cccu_MA = cccu_MA %>%
-  select(switch, hc, contra_satis, hc_dur, sexual_satisfaction, sex_freq,
+  select(WAVE, switch, hc, contra_satis, hc_dur, sexual_satisfaction, sex_freq,
          AGE, DEGREE_recode, POVRATE, HLTHPROB_recode, MEDPROB_recode, GAPINS_recode, TYPEINS_recode, NKIDS_t1, pregnant_between_waves, had_baby_between_waves, Avoid_r, FEELPG_recode, rel_dur_factor)
 ```
 
@@ -36,27 +36,38 @@ codebook(cccu_MA, missingness_report = FALSE, indent = "###")
 
 #Correlations
 
-##Predictors
 ```{r}
-# cccu_MA_t1__pred_correlations <- cccu_MA_t1 %>%
-#   select(contra_satis, hc_dur,
-#     sexual_satisfaction,
-#     AGE, POVRATE, Avoid_r, FEELPG_recode,
-#     rel_dur)
-# 
-# cor_pred_t1<-rcorr(as.matrix(cccu_MA_t1_pred_correlations))
-# print(cor_pred_t1)
+#for t1
+cccu_MA_t1 <- cccu_MA%>%
+  filter(WAVE == "t1")
+cccu_MA_t1_correlations <- cccu_MA_t1 %>%
+  select(contra_satis, hc_dur,
+    sexual_satisfaction,
+    AGE, POVRATE, Avoid_r, FEELPG_recode)
 
-```
+rcorr(as.matrix(cccu_MA_t1_correlations))
 
-##Selection Variables
-```{r}
-#numerical
-# correlations_selection = cccu_MA %>%
-#   select(AGE,  POVRATE, Avoid_r, FEELPG_recode)
-# 
-# cor_sel<-rcorr(as.matrix(correlations_selection))
-# print(cor_sel)
 
+#for t2
+cccu_MA_t2 <- cccu_MA%>%
+  filter(WAVE == "t2")
+
+cccu_MA_t2_correlations <- cccu_MA_t2 %>%
+  select(contra_satis, hc_dur,
+    sexual_satisfaction,
+    AGE, POVRATE, Avoid_r, FEELPG_recode)
+
+rcorr(as.matrix(cccu_MA_t2_correlations))
+
+#for t3
+cccu_MA_t3 <- cccu_MA%>%
+  filter(WAVE == "t3")
+
+cccu_MA_t3_correlations <- cccu_MA_t3 %>%
+  select(contra_satis, hc_dur,
+    sexual_satisfaction,
+    AGE, POVRATE, Avoid_r, FEELPG_recode)
+
+rcorr(as.matrix(cccu_MA_t3_correlations))
 ```
 

@@ -219,9 +219,18 @@ library(dplyr)</code></pre>
 <pre><code>## Die folgenden Objekte sind maskiert von &#39;package:base&#39;:
 ## 
 ##     format.pval, units</code></pre>
-<p>#3. Participants ##filter values only for t1</p>
+<p>#3. Participants ##filter values for waves</p>
 <pre class="r"><code>cccu_MA_t1 &lt;- cccu_MA%&gt;%
   filter(WAVE == &quot;t1&quot;)
+
+cccu_MA_t2 &lt;- cccu_MA%&gt;%
+  filter(WAVE == &quot;t2&quot;)
+
+cccu_MA_t3 &lt;- cccu_MA%&gt;%
+  filter(WAVE == &quot;t3&quot;)
+
+cccu_MA_t4 &lt;- cccu_MA%&gt;%
+  filter(WAVE == &quot;t4&quot;)
 
 cccu_excluded_t1 &lt;- cccu_excluded %&gt;%
   filter(WAVE == &quot;t1&quot;)</code></pre>
@@ -602,7 +611,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.36</code></pre>
 <pre class="r"><code>confIntV(t1_comp_inex$hc,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .36):  
-## Bootstrapped: [.34; .39]  
+## Bootstrapped: [.34; .38]  
 ## Using Fisher&#39;s z: [.34; .39]</code></pre>
 <pre class="r"><code>table(cccu_MA_t1$hc)</code></pre>
 <pre><code>## 
@@ -642,7 +651,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.          group1 group2 effsize    n1    n2 conf.low conf.high magnitude 
 ## * &lt;chr&gt;        &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;     
-## 1 contra_satis no     yes     0.0583  1723  2911    -0.02      0.13 negligible</code></pre>
+## 1 contra_satis no     yes     0.0583  1723  2911    -0.01      0.13 negligible</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA_t1$contra_satis)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed mad min max range  skew kurtosis   se
 ## X1    1 1723 3.44 0.73      4    3.58   0   1   4     3 -1.29     1.44 0.02</code></pre>
@@ -655,19 +664,17 @@ table(t1_comp_inex$exclude)</code></pre>
 ##  Pearson&#39;s Chi-squared test
 ## 
 ## data:  t1_comp_inex$sex_freq and t1_comp_inex$exclude
-## X-squared = 404.39, df = 4, p-value &lt; 2.2e-16</code></pre>
+## X-squared = 302.66, df = 3, p-value &lt; 2.2e-16</code></pre>
 <pre class="r"><code>cramersV(t1_comp_inex$sex_freq,t1_comp_inex$exclude)</code></pre>
-<pre><code>## Cramér&#39;s V =  0.3</code></pre>
+<pre><code>## Cramér&#39;s V =  0.26</code></pre>
 <pre class="r"><code>confIntV(t1_comp_inex$sex_freq,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
-<pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .3):  
-## Bootstrapped: [.27; .32]  
-## Using Fisher&#39;s z: [.27; .32]</code></pre>
+<pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .26):  
+## Bootstrapped: [.23; .28]  
+## Using Fisher&#39;s z: [.23; .28]</code></pre>
 <pre class="r"><code>table(cccu_MA_t1$sex_freq)</code></pre>
 <pre><code>## 
-##           No sex             Once        2-5 times       6-10 times 
-##               97              125              760              466 
-## 11 or more times 
-##              275</code></pre>
+##   No sex or once        2-5 times       6-10 times 11 or more times 
+##              222              760              466              275</code></pre>
 <pre class="r"><code>97/1723</code></pre>
 <pre><code>## [1] 0.05629716</code></pre>
 <pre class="r"><code>125/1723</code></pre>
@@ -680,10 +687,8 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## [1] 0.1596053</code></pre>
 <pre class="r"><code>table(cccu_excluded_t1$sex_freq)</code></pre>
 <pre><code>## 
-##           No sex             Once        2-5 times       6-10 times 
-##              866              168              864              548 
-## 11 or more times 
-##              418</code></pre>
+##   No sex or once        2-5 times       6-10 times 11 or more times 
+##             1034              864              548              418</code></pre>
 <pre class="r"><code>866/2911</code></pre>
 <pre><code>## [1] 0.2974923</code></pre>
 <pre class="r"><code>168/2911</code></pre>
@@ -714,7 +719,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.             group1 group2 effsize    n1    n2 conf.low conf.high magnitude
 ## * &lt;chr&gt;           &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;    
-## 1 sexual_satisfa~ no     yes     0.0624  1723  2911   0.0029      0.12 negligib~</code></pre>
+## 1 sexual_satisfa~ no     yes     0.0624  1723  2911  0.00047      0.12 negligib~</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA_t1$sexual_satisfaction)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
 ## X1    1 1723 5.04 1.17      5    5.24 1.48   1   6     5 -1.24     1.12 0.03</code></pre>
@@ -741,7 +746,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.   group1 group2 effsize    n1    n2 conf.low conf.high magnitude 
 ## * &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;     
-## 1 AGE   no     yes    -0.0528  1723  2911    -0.11    0.0086 negligible</code></pre>
+## 1 AGE   no     yes    -0.0528  1723  2911    -0.11    0.0068 negligible</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA_t1$AGE)</code></pre>
 <pre><code>##    vars    n  mean   sd median trimmed  mad min max range skew kurtosis   se
 ## X1    1 1723 28.15 5.18     28   27.92 5.93  18  39    21 0.36    -0.73 0.12</code></pre>
@@ -889,7 +894,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.027</code></pre>
 <pre class="r"><code>confIntV(t1_comp_inex$HLTHPROB_recode,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .03):  
-## Bootstrapped: [0; .06]  
+## Bootstrapped: [0; .05]  
 ## Using Fisher&#39;s z: [0; .06]</code></pre>
 <pre class="r"><code>table(cccu_MA_t1$HLTHPROB_recode)</code></pre>
 <pre><code>## 
@@ -951,7 +956,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.058</code></pre>
 <pre class="r"><code>confIntV(t1_comp_inex$GAPINS_recode,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .06):  
-## Bootstrapped: [.03; .09]  
+## Bootstrapped: [.03; .08]  
 ## Using Fisher&#39;s z: [.03; .09]</code></pre>
 <pre class="r"><code>table(cccu_MA_t1$GAPINS_recode)</code></pre>
 <pre><code>## 
@@ -980,7 +985,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.056</code></pre>
 <pre class="r"><code>confIntV(t1_comp_inex$TYPEINS_recode,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .06):  
-## Bootstrapped: [.03; .09]  
+## Bootstrapped: [.03; .08]  
 ## Using Fisher&#39;s z: [.03; .08]</code></pre>
 <pre class="r"><code>table(cccu_MA_t1$TYPEINS_recode)</code></pre>
 <pre><code>## 
@@ -1009,7 +1014,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.08</code></pre>
 <pre class="r"><code>confIntV(t1_comp_inex$NKIDS_t1,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .08):  
-## Bootstrapped: [.06; .11]  
+## Bootstrapped: [.05; .11]  
 ## Using Fisher&#39;s z: [.05; .11]</code></pre>
 <pre class="r"><code>table(cccu_MA_t1$NKIDS_t1)</code></pre>
 <pre><code>## 
@@ -1079,7 +1084,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.06</code></pre>
 <pre class="r"><code>confIntV(t1_comp_inex$had_baby_between_waves,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .06):  
-## Bootstrapped: [.04; .08]  
+## Bootstrapped: [.03; .08]  
 ## Using Fisher&#39;s z: [.03; .09]</code></pre>
 <pre class="r"><code>table(cccu_MA_t1$had_baby_between_waves)</code></pre>
 <pre><code>## 
@@ -1113,7 +1118,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.     group1 group2 effsize    n1    n2 conf.low conf.high magnitude
 ## * &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;    
-## 1 Avoid_r no     yes      0.214  1723  2911     0.16      0.26 small</code></pre>
+## 1 Avoid_r no     yes      0.214  1723  2911     0.16      0.27 small</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA_t1$Avoid_r)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed mad min max range  skew kurtosis   se
 ## X1    1 1723 4.81 1.52      6    5.08   0   1   6     5 -1.14     0.23 0.04</code></pre>
@@ -1140,7 +1145,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.           group1 group2 effsize    n1    n2 conf.low conf.high magnitude 
 ## * &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;     
-## 1 FEELPG_recode no     yes    -0.0657  1723  2911    -0.12   -0.0049 negligible</code></pre>
+## 1 FEELPG_recode no     yes    -0.0657  1723  2911    -0.13   -0.0044 negligible</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA_t1$FEELPG_recode)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed  mad min max range skew kurtosis   se
 ## X1    1 1723 3.41 1.67      3    3.38 1.48   1   6     5    0    -1.18 0.04</code></pre>
@@ -1148,36 +1153,36 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
 ## X1    1 2882 3.52 1.84      4    3.53 2.97   1   6     5 -0.03    -1.38 0.03</code></pre>
 <p>##relationship duration</p>
-<pre class="r"><code>t.test(t1_comp_inex$rel_dur ~ t1_comp_inex$exclude,
-       alternative = &#39;two.sided&#39;,
-       paired = FALSE,
-       conf.level = .95)</code></pre>
+<pre class="r"><code>chisq.test(t1_comp_inex$rel_dur_factor, t1_comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
-##  Welch Two Sample t-test
+##  Pearson&#39;s Chi-squared test
 ## 
-## data:  t1_comp_inex$rel_dur by t1_comp_inex$exclude
-## t = -2.196, df = 2968.1, p-value = 0.02817
-## alternative hypothesis: true difference in means between group no and group yes is not equal to 0
-## 95 percent confidence interval:
-##  -9.4615760 -0.5353459
-## sample estimates:
-##  mean in group no mean in group yes 
-##          91.37278          96.37124</code></pre>
-<pre class="r"><code>t1_comp_inex %&gt;% cohens_d(rel_dur ~ exclude, var.equal = TRUE, ci =TRUE)</code></pre>
-<pre><code>## # A tibble: 1 x 9
-##   .y.     group1 group2 effsize    n1    n2 conf.low conf.high magnitude 
-## * &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;     
-## 1 rel_dur no     yes    -0.0784  1723  2911    -0.14     -0.01 negligible</code></pre>
-<pre class="r"><code>psych::describe(cccu_MA_t1$rel_dur)</code></pre>
-<pre><code>##    vars    n  mean    sd median trimmed   mad min max range skew kurtosis   se
-## X1    1 1293 91.37 58.84     82   86.26 56.34   0 542   542 1.03     2.54 1.64</code></pre>
-<pre class="r"><code>psych::describe(cccu_excluded_t1$rel_dur)</code></pre>
-<pre><code>##    vars    n  mean    sd median trimmed   mad min  max range skew kurtosis   se
-## X1    1 1794 96.37 67.02     86    90.9 56.34   0 1385  1385 4.72    77.48 1.58</code></pre>
-<p>#4. Descriptives of Variables</p>
+## data:  t1_comp_inex$rel_dur_factor and t1_comp_inex$exclude
+## X-squared = 91.437, df = 4, p-value &lt; 2.2e-16</code></pre>
+<pre class="r"><code>cramersV(t1_comp_inex$rel_dur_factor,t1_comp_inex$exclude)</code></pre>
+<pre><code>## Cramér&#39;s V =  0.14</code></pre>
+<pre class="r"><code>confIntV(t1_comp_inex$rel_dur_factor,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
+<pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .14):  
+## Bootstrapped: [.12; .17]  
+## Using Fisher&#39;s z: [.11; .17]</code></pre>
+<pre class="r"><code>table(cccu_MA_t1$rel_dur_factor)</code></pre>
+<pre><code>## 
+##   Single   0q-25q  26q-50q  51q-75q 76q-100q 
+##      430      336      345      320      292</code></pre>
+<pre class="r"><code>430/1723</code></pre>
+<pre><code>## [1] 0.2495647</code></pre>
+<pre class="r"><code>336/1723</code></pre>
+<pre><code>## [1] 0.1950087</code></pre>
+<pre class="r"><code>345/1723</code></pre>
+<pre><code>## [1] 0.2002322</code></pre>
+<pre class="r"><code>320/1723</code></pre>
+<pre><code>## [1] 0.1857226</code></pre>
+<pre class="r"><code>292/1723</code></pre>
+<pre><code>## [1] 0.1694719</code></pre>
+<p>#4. Descriptives of Variables ##t1</p>
 <pre class="r"><code>cccu_MA_t1_descriptives &lt;- cccu_MA_t1 %&gt;%
   select(
-    hc, contra_satis, hc_dur,
+    hc, switch, contra_satis, hc_dur,
     sexual_satisfaction, sex_freq,
     AGE, DEGREE_recode, POVRATE,
     HLTHPROB_recode, MEDPROB_recode,
@@ -1187,180 +1192,39 @@ table(t1_comp_inex$exclude)</code></pre>
     Avoid_r, FEELPG_recode,
     rel_dur)
 
-describe(cccu_MA_t1_descriptives)</code></pre>
-<pre><code>## cccu_MA_t1_descriptives 
-## 
-##  18  Variables      1723  Observations
-## --------------------------------------------------------------------------------
-## hc 
-##        n  missing distinct 
-##     1723        0        2 
-##                         
-## Value          hc non_hc
-## Frequency    1032    691
-## Proportion  0.599  0.401
-## --------------------------------------------------------------------------------
-## contra_satis 
-##        n  missing distinct     Info     Mean      Gmd 
-##     1723        0        4    0.781    3.445   0.7082 
-##                                   
-## Value          1     2     3     4
-## Frequency     43   115   598   967
-## Proportion 0.025 0.067 0.347 0.561
-## --------------------------------------------------------------------------------
-## hc_dur 
-##        n  missing distinct     Info     Mean      Gmd      .05      .10 
-##     1032      691       29    0.994    6.967    5.015        1        2 
-##      .25      .50      .75      .90      .95 
-##        3        6       10       13       15 
-## 
-## lowest :  0  1  2  3  4, highest: 25 26 29 32 40
-## --------------------------------------------------------------------------------
-## sexual_satisfaction 
-##        n  missing distinct     Info     Mean      Gmd 
-##     1723        0        6    0.873    5.039     1.19 
-## 
-## lowest : 1 2 3 4 5, highest: 2 3 4 5 6
-##                                               
-## Value          1     2     3     4     5     6
-## Frequency     24    44   111   300   427   817
-## Proportion 0.014 0.026 0.064 0.174 0.248 0.474
-## --------------------------------------------------------------------------------
-## sex_freq 
-##        n  missing distinct 
-##     1723        0        5 
-## 
-## lowest : No sex           Once             2-5 times        6-10 times       11 or more times
-## highest: No sex           Once             2-5 times        6-10 times       11 or more times
-##                                                                               
-## Value                No sex             Once        2-5 times       6-10 times
-## Frequency                97              125              760              466
-## Proportion            0.056            0.073            0.441            0.270
-##                            
-## Value      11 or more times
-## Frequency               275
-## Proportion            0.160
-## --------------------------------------------------------------------------------
-## AGE 
-##        n  missing distinct     Info     Mean      Gmd      .05      .10 
-##     1723        0       22    0.996    28.15    5.898       21       22 
-##      .25      .50      .75      .90      .95 
-##       24       28       32       36       38 
-## 
-## lowest : 18 19 20 21 22, highest: 35 36 37 38 39
-## --------------------------------------------------------------------------------
-## DEGREE_recode 
-##        n  missing distinct 
-##     1723        0       13 
-## 
-## lowest : 1st to 4th grade                5th/6th grade                   7th/8th grade                   9th grade                       10th grade                     
-## highest: some college, no degree         associate degree                bachelors degree                masters degree                  professional or doctoral degree
-## --------------------------------------------------------------------------------
-## POVRATE 
-##        n  missing distinct     Info     Mean      Gmd      .05      .10 
-##     1723        0      140        1    313.7      251       38       59 
-##      .25      .50      .75      .90      .95 
-##      141      250      446      611      744 
-## 
-## lowest :   14   16   18   19   20, highest: 1007 1074 1163 1231 1455
-## --------------------------------------------------------------------------------
-## HLTHPROB_recode 
-##        n  missing distinct 
-##     1723        0        2 
-##                       
-## Value         No   Yes
-## Frequency   1424   299
-## Proportion 0.826 0.174
-## --------------------------------------------------------------------------------
-## MEDPROB_recode 
-##        n  missing distinct 
-##     1723        0        2 
-##                       
-## Value         No   Yes
-## Frequency   1579   144
-## Proportion 0.916 0.084
-## --------------------------------------------------------------------------------
-## GAPINS_recode 
-##        n  missing distinct 
-##     1723        0        2 
-##                       
-## Value         No   Yes
-## Frequency   1382   341
-## Proportion 0.802 0.198
-## --------------------------------------------------------------------------------
-## TYPEINS_recode 
-##        n  missing distinct 
-##     1723        0        2 
-##                       
-## Value         No   Yes
-## Frequency    267  1456
-## Proportion 0.155 0.845
-## --------------------------------------------------------------------------------
-## NKIDS_t1 
-##        n  missing distinct 
-##     1723        0        5 
-## 
-## lowest : 0         1         2         3         4 or more
-## highest: 0         1         2         3         4 or more
-##                                                             
-## Value              0         1         2         3 4 or more
-## Frequency        936       329       304        98        56
-## Proportion     0.543     0.191     0.176     0.057     0.033
-## --------------------------------------------------------------------------------
-## pregnant_between_waves 
-##        n  missing distinct 
-##     1723        0        2 
-##                     
-## Value        No  Yes
-## Frequency  1688   35
-## Proportion 0.98 0.02
-## --------------------------------------------------------------------------------
-## had_baby_between_waves 
-##        n  missing distinct 
-##     1723        0        2 
-##                     
-## Value        No  Yes
-## Frequency  1688   35
-## Proportion 0.98 0.02
-## --------------------------------------------------------------------------------
-## Avoid_r 
-##        n  missing distinct     Info     Mean      Gmd 
-##     1723        0        6    0.866    4.807    1.559 
-## 
-## lowest : 1 2 3 4 5, highest: 2 3 4 5 6
-##                                               
-## Value          1     2     3     4     5     6
-## Frequency    105    71   162   237   286   862
-## Proportion 0.061 0.041 0.094 0.138 0.166 0.500
-## --------------------------------------------------------------------------------
-## FEELPG_recode 
-##        n  missing distinct     Info     Mean      Gmd 
-##     1723        0        6     0.97    3.405    1.904 
-## 
-## lowest : 1 2 3 4 5, highest: 2 3 4 5 6
-##                                               
-## Value          1     2     3     4     5     6
-## Frequency    331   237   295   363   257   240
-## Proportion 0.192 0.138 0.171 0.211 0.149 0.139
-## --------------------------------------------------------------------------------
-## rel_dur 
-##        n  missing distinct     Info     Mean      Gmd      .05      .10 
-##     1293      430      220        1    91.37    64.73       14       24 
-##      .25      .50      .75      .90      .95 
-##       48       82      128      173      204 
-## 
-## lowest :   0   1   2   3   4, highest: 276 277 292 324 542
-## --------------------------------------------------------------------------------</code></pre>
+psych::describe(cccu_MA_t1_descriptives$contra_satis)</code></pre>
+<pre><code>##    vars    n mean   sd median trimmed mad min max range  skew kurtosis   se
+## X1    1 1723 3.44 0.73      4    3.58   0   1   4     3 -1.29     1.44 0.02</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t1_descriptives$hc_dur)</code></pre>
+<pre><code>##    vars    n mean   sd median trimmed  mad min max range skew kurtosis   se
+## X1    1 1032 6.97 4.64      6    6.52 4.45   0  40    40 1.26     3.74 0.14</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t1_descriptives$sexual_satisfaction)</code></pre>
+<pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
+## X1    1 1723 5.04 1.17      5    5.24 1.48   1   6     5 -1.24     1.12 0.03</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t1_descriptives$AGE)</code></pre>
+<pre><code>##    vars    n  mean   sd median trimmed  mad min max range skew kurtosis   se
+## X1    1 1723 28.15 5.18     28   27.92 5.93  18  39    21 0.36    -0.73 0.12</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t1_descriptives$POVRATE)</code></pre>
+<pre><code>##    vars    n  mean  sd median trimmed    mad min  max range skew kurtosis   se
+## X1    1 1723 313.7 232    250  285.47 212.01  14 1455  1441 1.13     1.23 5.59</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t1_descriptives$Avoid_r)</code></pre>
+<pre><code>##    vars    n mean   sd median trimmed mad min max range  skew kurtosis   se
+## X1    1 1723 4.81 1.52      6    5.08   0   1   6     5 -1.14     0.23 0.04</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t1_descriptives$FEELPG_recode)</code></pre>
+<pre><code>##    vars    n mean   sd median trimmed  mad min max range skew kurtosis   se
+## X1    1 1723 3.41 1.67      3    3.38 1.48   1   6     5    0    -1.18 0.04</code></pre>
 <pre class="r"><code>table(cccu_MA_t1_descriptives$hc)</code></pre>
 <pre><code>## 
 ##         hc     non_hc IUD&amp;non_hc 
 ##       1032        691          0</code></pre>
+<pre class="r"><code>table(cccu_MA_t1_descriptives$switch)</code></pre>
+<pre><code>## 
+##    0    1 
+## 1483  240</code></pre>
 <pre class="r"><code>table(cccu_MA_t1_descriptives$sex_freq)</code></pre>
 <pre><code>## 
-##           No sex             Once        2-5 times       6-10 times 
-##               97              125              760              466 
-## 11 or more times 
-##              275</code></pre>
+##   No sex or once        2-5 times       6-10 times 11 or more times 
+##              222              760              466              275</code></pre>
 <pre class="r"><code>table(cccu_MA_t1_descriptives$DEGREE_recode)</code></pre>
 <pre><code>## 
 ##               no formal education                  1st to 4th grade 
@@ -1405,12 +1269,196 @@ describe(cccu_MA_t1_descriptives)</code></pre>
 <pre><code>## 
 ##   No  Yes 
 ## 1688   35</code></pre>
+<p>##t2</p>
+<pre class="r"><code>cccu_MA_t2_descriptives &lt;- cccu_MA_t2 %&gt;%
+  select(
+    hc, switch, contra_satis, hc_dur,
+    sexual_satisfaction, sex_freq,
+    AGE, DEGREE_recode, POVRATE,
+    HLTHPROB_recode, MEDPROB_recode,
+    GAPINS_recode, TYPEINS_recode,
+    NKIDS_t1, pregnant_between_waves, 
+    had_baby_between_waves,
+    Avoid_r, FEELPG_recode,
+    rel_dur)
+
+psych::describe(cccu_MA_t2_descriptives$contra_satis)</code></pre>
+<pre><code>##    vars    n mean   sd median trimmed mad min max range  skew kurtosis   se
+## X1    1 1181  3.5 0.69      4    3.62   0   1   4     3 -1.37     1.75 0.02</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t2_descriptives$hc_dur)</code></pre>
+<pre><code>##    vars   n  mean  sd median trimmed  mad min max range skew kurtosis   se
+## X1    1 717 12.19 5.2     12   12.08 4.45   0  35    35 0.39      0.9 0.19</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t2_descriptives$sexual_satisfaction)</code></pre>
+<pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
+## X1    1 1181 5.01 1.12      5    5.19 1.48   1   6     5 -1.14     1.02 0.03</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t2_descriptives$AGE)</code></pre>
+<pre><code>##    vars    n  mean   sd median trimmed  mad min max range skew kurtosis   se
+## X1    1 1181 28.15 5.22     27   27.93 5.93  18  39    21 0.36    -0.78 0.15</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t2_descriptives$POVRATE)</code></pre>
+<pre><code>##    vars    n   mean     sd median trimmed    mad min  max range skew kurtosis
+## X1    1 1181 323.36 227.49    282  296.57 213.49  14 1197  1183 1.06     0.94
+##      se
+## X1 6.62</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t2_descriptives$Avoid_r)</code></pre>
+<pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
+## X1    1 1181 4.76 1.57      5    5.04 1.48   1   6     5 -1.13     0.14 0.05</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t2_descriptives$FEELPG_recode)</code></pre>
+<pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
+## X1    1 1181 3.42 1.69      4     3.4 1.48   1   6     5 -0.02    -1.23 0.05</code></pre>
+<pre class="r"><code>table(cccu_MA_t2_descriptives$hc)</code></pre>
+<pre><code>## 
+##         hc     non_hc IUD&amp;non_hc 
+##        720        461          0</code></pre>
+<pre class="r"><code>table(cccu_MA_t2_descriptives$switch)</code></pre>
+<pre><code>## 
+##    0    1 
+## 1033  148</code></pre>
+<pre class="r"><code>table(cccu_MA_t2_descriptives$sex_freq)</code></pre>
+<pre><code>## 
+##   No sex or once        2-5 times       6-10 times 11 or more times 
+##              160              505              324              192</code></pre>
+<pre class="r"><code>table(cccu_MA_t2_descriptives$DEGREE_recode)</code></pre>
+<pre><code>## 
+##               no formal education                  1st to 4th grade 
+##                                 0                                 0 
+##                     5th/6th grade                     7th/8th grade 
+##                                 5                                 4 
+##                         9th grade                        10th grade 
+##                                 4                                 7 
+##                        11th grade           12th grade / no diploma 
+##                                 8                                 7 
+## high school diploma or equivalent           some college, no degree 
+##                               128                               285 
+##                  associate degree                  bachelors degree 
+##                               130                               433 
+##                    masters degree   professional or doctoral degree 
+##                               135                                35</code></pre>
+<pre class="r"><code>table(cccu_MA_t2_descriptives$HLTHPROB_recode)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 973 208</code></pre>
+<pre class="r"><code>table(cccu_MA_t2_descriptives$MEDPROB_recode)</code></pre>
+<pre><code>## 
+##   No  Yes 
+## 1064  117</code></pre>
+<pre class="r"><code>table(cccu_MA_t2_descriptives$GAPINS_recode)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 974 207</code></pre>
+<pre class="r"><code>table(cccu_MA_t2_descriptives$TYPEINS_recode)</code></pre>
+<pre><code>## 
+##   No  Yes 
+##  171 1010</code></pre>
+<pre class="r"><code>table(cccu_MA_t2_descriptives$NKIDS_t1)</code></pre>
+<pre><code>## 
+##         0         1         2         3 4 or more 
+##       664       225       192        65        35</code></pre>
+<pre class="r"><code>table(cccu_MA_t2_descriptives$pregnant_between_waves)</code></pre>
+<pre><code>## 
+##   No  Yes 
+## 1135   46</code></pre>
+<pre class="r"><code>table(cccu_MA_t2_descriptives$had_baby_between_waves)</code></pre>
+<pre><code>## 
+##   No  Yes 
+## 1157   24</code></pre>
+<p>##t3</p>
+<pre class="r"><code>cccu_MA_t3_descriptives &lt;- cccu_MA_t3 %&gt;%
+  select(
+    hc, switch, contra_satis, hc_dur,
+    sexual_satisfaction, sex_freq,
+    AGE, DEGREE_recode, POVRATE,
+    HLTHPROB_recode, MEDPROB_recode,
+    GAPINS_recode, TYPEINS_recode,
+    NKIDS_t1, pregnant_between_waves, 
+    had_baby_between_waves,
+    Avoid_r, FEELPG_recode,
+    rel_dur)
+
+psych::describe(cccu_MA_t3_descriptives$contra_satis)</code></pre>
+<pre><code>##    vars   n mean   sd median trimmed mad min max range  skew kurtosis   se
+## X1    1 883 3.55 0.66      4    3.66   0   1   4     3 -1.51     2.36 0.02</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t3_descriptives$hc_dur)</code></pre>
+<pre><code>##    vars   n  mean   sd median trimmed  mad min max range skew kurtosis   se
+## X1    1 536 17.13 6.79     18   17.54 5.93   0  41    41 -0.4     0.73 0.29</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t3_descriptives$sexual_satisfaction)</code></pre>
+<pre><code>##    vars   n mean   sd median trimmed  mad min max range  skew kurtosis   se
+## X1    1 883 4.98 1.19      5    5.18 1.48   1   6     5 -1.26     1.26 0.04</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t3_descriptives$AGE)</code></pre>
+<pre><code>##    vars   n  mean   sd median trimmed  mad min max range skew kurtosis   se
+## X1    1 883 28.16 5.25     27   27.95 5.93  18  39    21 0.36    -0.84 0.18</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t3_descriptives$POVRATE)</code></pre>
+<pre><code>##    vars   n   mean     sd median trimmed    mad min  max range skew kurtosis
+## X1    1 883 328.43 237.05    282  300.34 226.84  14 1532  1518 1.12     1.28
+##      se
+## X1 7.98</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t3_descriptives$Avoid_r)</code></pre>
+<pre><code>##    vars   n mean   sd median trimmed  mad min max range skew kurtosis   se
+## X1    1 883 4.74 1.58      5    5.01 1.48   1   6     5 -1.1     0.02 0.05</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t3_descriptives$FEELPG_recode)</code></pre>
+<pre><code>##    vars   n mean   sd median trimmed  mad min max range skew kurtosis   se
+## X1    1 883 3.39 1.72      3    3.36 2.97   1   6     5 0.01    -1.26 0.06</code></pre>
+<pre class="r"><code>table(cccu_MA_t3_descriptives$hc)</code></pre>
+<pre><code>## 
+##         hc     non_hc IUD&amp;non_hc 
+##        542        341          0</code></pre>
+<pre class="r"><code>table(cccu_MA_t3_descriptives$switch)</code></pre>
+<pre><code>## 
+##   0   1 
+## 786  97</code></pre>
+<pre class="r"><code>table(cccu_MA_t3_descriptives$sex_freq)</code></pre>
+<pre><code>## 
+##   No sex or once        2-5 times       6-10 times 11 or more times 
+##              116              394              246              127</code></pre>
+<pre class="r"><code>table(cccu_MA_t3_descriptives$DEGREE_recode)</code></pre>
+<pre><code>## 
+##               no formal education                  1st to 4th grade 
+##                                 0                                 0 
+##                     5th/6th grade                     7th/8th grade 
+##                                 5                                 4 
+##                         9th grade                        10th grade 
+##                                 3                                 7 
+##                        11th grade           12th grade / no diploma 
+##                                 5                                 5 
+## high school diploma or equivalent           some college, no degree 
+##                                88                               207 
+##                  associate degree                  bachelors degree 
+##                                86                               334 
+##                    masters degree   professional or doctoral degree 
+##                               110                                29</code></pre>
+<pre class="r"><code>table(cccu_MA_t3_descriptives$HLTHPROB_recode)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 728 155</code></pre>
+<pre class="r"><code>table(cccu_MA_t3_descriptives$MEDPROB_recode)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 801  82</code></pre>
+<pre class="r"><code>table(cccu_MA_t3_descriptives$GAPINS_recode)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 720 163</code></pre>
+<pre class="r"><code>table(cccu_MA_t3_descriptives$TYPEINS_recode)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 131 752</code></pre>
+<pre class="r"><code>table(cccu_MA_t3_descriptives$NKIDS_t1)</code></pre>
+<pre><code>## 
+##         0         1         2         3 4 or more 
+##       521       150       135        53        24</code></pre>
+<pre class="r"><code>table(cccu_MA_t3_descriptives$pregnant_between_waves)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 832  51</code></pre>
+<pre class="r"><code>table(cccu_MA_t3_descriptives$had_baby_between_waves)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 852  31</code></pre>
 <p>#5. Correlation Matrix</p>
-<pre class="r"><code>cccu_MA_t1_correlations &lt;- cccu_MA_t1 %&gt;%
+<pre class="r"><code>#for t1
+cccu_MA_t1_correlations &lt;- cccu_MA_t1 %&gt;%
   select(contra_satis, hc_dur,
     sexual_satisfaction,
-    AGE, POVRATE, Avoid_r, FEELPG_recode,
-    rel_dur)
+    AGE, POVRATE, Avoid_r, FEELPG_recode)
 
 rcorr(as.matrix(cccu_MA_t1_correlations))</code></pre>
 <pre><code>##                     contra_satis hc_dur sexual_satisfaction   AGE POVRATE
@@ -1421,16 +1469,14 @@ rcorr(as.matrix(cccu_MA_t1_correlations))</code></pre>
 ## POVRATE                     0.06   0.15               -0.01  0.18    1.00
 ## Avoid_r                     0.13   0.02               -0.03 -0.14   -0.02
 ## FEELPG_recode              -0.06  -0.03                0.12  0.20   -0.04
-## rel_dur                    -0.01   0.21               -0.02  0.61    0.05
-##                     Avoid_r FEELPG_recode rel_dur
-## contra_satis           0.13         -0.06   -0.01
-## hc_dur                 0.02         -0.03    0.21
-## sexual_satisfaction   -0.03          0.12   -0.02
-## AGE                   -0.14          0.20    0.61
-## POVRATE               -0.02         -0.04    0.05
-## Avoid_r                1.00         -0.61   -0.04
-## FEELPG_recode         -0.61          1.00    0.12
-## rel_dur               -0.04          0.12    1.00
+##                     Avoid_r FEELPG_recode
+## contra_satis           0.13         -0.06
+## hc_dur                 0.02         -0.03
+## sexual_satisfaction   -0.03          0.12
+## AGE                   -0.14          0.20
+## POVRATE               -0.02         -0.04
+## Avoid_r                1.00         -0.61
+## FEELPG_recode         -0.61          1.00
 ## 
 ## n
 ##                     contra_satis hc_dur sexual_satisfaction  AGE POVRATE
@@ -1441,16 +1487,14 @@ rcorr(as.matrix(cccu_MA_t1_correlations))</code></pre>
 ## POVRATE                     1723   1032                1723 1723    1723
 ## Avoid_r                     1723   1032                1723 1723    1723
 ## FEELPG_recode               1723   1032                1723 1723    1723
-## rel_dur                     1293    745                1293 1293    1293
-##                     Avoid_r FEELPG_recode rel_dur
-## contra_satis           1723          1723    1293
-## hc_dur                 1032          1032     745
-## sexual_satisfaction    1723          1723    1293
-## AGE                    1723          1723    1293
-## POVRATE                1723          1723    1293
-## Avoid_r                1723          1723    1293
-## FEELPG_recode          1723          1723    1293
-## rel_dur                1293          1293    1293
+##                     Avoid_r FEELPG_recode
+## contra_satis           1723          1723
+## hc_dur                 1032          1032
+## sexual_satisfaction    1723          1723
+## AGE                    1723          1723
+## POVRATE                1723          1723
+## Avoid_r                1723          1723
+## FEELPG_recode          1723          1723
 ## 
 ## P
 ##                     contra_satis hc_dur sexual_satisfaction AGE    POVRATE
@@ -1461,16 +1505,147 @@ rcorr(as.matrix(cccu_MA_t1_correlations))</code></pre>
 ## POVRATE             0.0177       0.0000 0.6176              0.0000        
 ## Avoid_r             0.0000       0.5793 0.1834              0.0000 0.4026 
 ## FEELPG_recode       0.0084       0.2867 0.0000              0.0000 0.1272 
-## rel_dur             0.8016       0.0000 0.5881              0.0000 0.0738 
-##                     Avoid_r FEELPG_recode rel_dur
-## contra_satis        0.0000  0.0084        0.8016 
-## hc_dur              0.5793  0.2867        0.0000 
-## sexual_satisfaction 0.1834  0.0000        0.5881 
-## AGE                 0.0000  0.0000        0.0000 
-## POVRATE             0.4026  0.1272        0.0738 
-## Avoid_r                     0.0000        0.1795 
-## FEELPG_recode       0.0000                0.0000 
-## rel_dur             0.1795  0.0000</code></pre>
+##                     Avoid_r FEELPG_recode
+## contra_satis        0.0000  0.0084       
+## hc_dur              0.5793  0.2867       
+## sexual_satisfaction 0.1834  0.0000       
+## AGE                 0.0000  0.0000       
+## POVRATE             0.4026  0.1272       
+## Avoid_r                     0.0000       
+## FEELPG_recode       0.0000</code></pre>
+<pre class="r"><code>#for t2
+
+
+cccu_MA_t2_correlations &lt;- cccu_MA_t2 %&gt;%
+  select(contra_satis, hc_dur,
+    sexual_satisfaction,
+    AGE, POVRATE, Avoid_r, FEELPG_recode)
+
+rcorr(as.matrix(cccu_MA_t2_correlations))</code></pre>
+<pre><code>##                     contra_satis hc_dur sexual_satisfaction   AGE POVRATE
+## contra_satis                1.00   0.15                0.14  0.01    0.06
+## hc_dur                      0.15   1.00                0.04  0.20    0.16
+## sexual_satisfaction         0.14   0.04                1.00 -0.05   -0.01
+## AGE                         0.01   0.20               -0.05  1.00    0.16
+## POVRATE                     0.06   0.16               -0.01  0.16    1.00
+## Avoid_r                     0.04   0.05               -0.08 -0.14    0.00
+## FEELPG_recode               0.00   0.01                0.18  0.19   -0.04
+##                     Avoid_r FEELPG_recode
+## contra_satis           0.04          0.00
+## hc_dur                 0.05          0.01
+## sexual_satisfaction   -0.08          0.18
+## AGE                   -0.14          0.19
+## POVRATE                0.00         -0.04
+## Avoid_r                1.00         -0.62
+## FEELPG_recode         -0.62          1.00
+## 
+## n
+##                     contra_satis hc_dur sexual_satisfaction  AGE POVRATE
+## contra_satis                1181    717                1181 1181    1181
+## hc_dur                       717    717                 717  717     717
+## sexual_satisfaction         1181    717                1181 1181    1181
+## AGE                         1181    717                1181 1181    1181
+## POVRATE                     1181    717                1181 1181    1181
+## Avoid_r                     1181    717                1181 1181    1181
+## FEELPG_recode               1181    717                1181 1181    1181
+##                     Avoid_r FEELPG_recode
+## contra_satis           1181          1181
+## hc_dur                  717           717
+## sexual_satisfaction    1181          1181
+## AGE                    1181          1181
+## POVRATE                1181          1181
+## Avoid_r                1181          1181
+## FEELPG_recode          1181          1181
+## 
+## P
+##                     contra_satis hc_dur sexual_satisfaction AGE    POVRATE
+## contra_satis                     0.0000 0.0000              0.6556 0.0531 
+## hc_dur              0.0000              0.2944              0.0000 0.0000 
+## sexual_satisfaction 0.0000       0.2944                     0.1034 0.7755 
+## AGE                 0.6556       0.0000 0.1034                     0.0000 
+## POVRATE             0.0531       0.0000 0.7755              0.0000        
+## Avoid_r             0.1471       0.1944 0.0098              0.0000 0.9078 
+## FEELPG_recode       0.8963       0.8778 0.0000              0.0000 0.2005 
+##                     Avoid_r FEELPG_recode
+## contra_satis        0.1471  0.8963       
+## hc_dur              0.1944  0.8778       
+## sexual_satisfaction 0.0098  0.0000       
+## AGE                 0.0000  0.0000       
+## POVRATE             0.9078  0.2005       
+## Avoid_r                     0.0000       
+## FEELPG_recode       0.0000</code></pre>
+<pre class="r"><code>#t3
+
+
+cccu_MA_t3_correlations &lt;- cccu_MA_t3 %&gt;%
+  select(contra_satis, hc_dur,
+    sexual_satisfaction,
+    AGE, POVRATE, Avoid_r, FEELPG_recode)
+
+rcorr(as.matrix(cccu_MA_t3_correlations))</code></pre>
+<pre><code>##                     contra_satis hc_dur sexual_satisfaction   AGE POVRATE
+## contra_satis                1.00   0.17                0.14 -0.02    0.06
+## hc_dur                      0.17   1.00                0.03  0.11    0.12
+## sexual_satisfaction         0.14   0.03                1.00 -0.01   -0.02
+## AGE                        -0.02   0.11               -0.01  1.00    0.16
+## POVRATE                     0.06   0.12               -0.02  0.16    1.00
+## Avoid_r                     0.05   0.01               -0.07 -0.12   -0.02
+## FEELPG_recode               0.01  -0.02                0.16  0.16   -0.06
+##                     Avoid_r FEELPG_recode
+## contra_satis           0.05          0.01
+## hc_dur                 0.01         -0.02
+## sexual_satisfaction   -0.07          0.16
+## AGE                   -0.12          0.16
+## POVRATE               -0.02         -0.06
+## Avoid_r                1.00         -0.64
+## FEELPG_recode         -0.64          1.00
+## 
+## n
+##                     contra_satis hc_dur sexual_satisfaction AGE POVRATE Avoid_r
+## contra_satis                 883    536                 883 883     883     883
+## hc_dur                       536    536                 536 536     536     536
+## sexual_satisfaction          883    536                 883 883     883     883
+## AGE                          883    536                 883 883     883     883
+## POVRATE                      883    536                 883 883     883     883
+## Avoid_r                      883    536                 883 883     883     883
+## FEELPG_recode                883    536                 883 883     883     883
+##                     FEELPG_recode
+## contra_satis                  883
+## hc_dur                        536
+## sexual_satisfaction           883
+## AGE                           883
+## POVRATE                       883
+## Avoid_r                       883
+## FEELPG_recode                 883
+## 
+## P
+##                     contra_satis hc_dur sexual_satisfaction AGE    POVRATE
+## contra_satis                     0.0000 0.0000              0.6369 0.0580 
+## hc_dur              0.0000              0.4937              0.0095 0.0059 
+## sexual_satisfaction 0.0000       0.4937                     0.8171 0.5747 
+## AGE                 0.6369       0.0095 0.8171                     0.0000 
+## POVRATE             0.0580       0.0059 0.5747              0.0000        
+## Avoid_r             0.1777       0.9037 0.0373              0.0004 0.5264 
+## FEELPG_recode       0.7616       0.6797 0.0000              0.0000 0.0715 
+##                     Avoid_r FEELPG_recode
+## contra_satis        0.1777  0.7616       
+## hc_dur              0.9037  0.6797       
+## sexual_satisfaction 0.0373  0.0000       
+## AGE                 0.0004  0.0000       
+## POVRATE             0.5264  0.0715       
+## Avoid_r                     0.0000       
+## FEELPG_recode       0.0000</code></pre>
+<pre class="r"><code>#t4
+
+
+#cccu_MA_t4_correlations &lt;- cccu_MA_t4 %&gt;%
+  #select(contra_satis, hc_dur,
+   # sexual_satisfaction,
+   # AGE, POVRATE, Avoid_r, FEELPG_recode)
+
+#cor(cccu_MA_t4_correlations)
+
+#rcorr(as.matrix(cccu_MA_t4_correlations))</code></pre>
 <p>#6. Checks for normality</p>
 <pre class="r"><code>#hc use
 table(cccu_MA$hc)</code></pre>
@@ -1506,12 +1681,10 @@ qqline(cccu_MA$sexual_satisfaction)</code></pre>
 <pre class="r"><code>#sexual frequency
 table(cccu_MA$sex_freq)</code></pre>
 <pre><code>## 
-##           No sex             Once        2-5 times       6-10 times 
-##              231              267             1659             1036 
-## 11 or more times 
-##              594</code></pre>
+##   No sex or once        2-5 times       6-10 times 11 or more times 
+##              498             1659             1036              594</code></pre>
 <pre class="r"><code>plot(cccu_MA$sex_freq)#no sex und once relativ klein</code></pre>
-<p><img src="data:image/png;base64,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" width="672" /></p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABUAAAAPACAMAAADDuCPrAAAAwFBMVEUAAAAAADoAAGYAOjoAOmYAOpAAZrY6AAA6OgA6Ojo6OmY6ZmY6ZpA6ZrY6kNtmAABmOgBmOjpmZjpmZmZmkJBmkLZmkNtmtttmtv+QOgCQZgCQZjqQkGaQkLaQtraQttuQtv+Q29uQ2/+2ZgC2Zjq2kGa2kLa2tpC2tra2ttu225C229u22/+2//++vr7bkDrbkGbbtmbbtpDbtrbb27bb29vb2//b/9vb////tmb/25D/27b/29v//7b//9v///9jutkeAAAACXBIWXMAAB2HAAAdhwGP5fFlAAAgAElEQVR4nO3da2MjRZYmYJlLG6a59XpYYNhtZnHXtNmCdVNAL6bA/f//1UoK+1hKhWVFQB5H5T7PJ8olWdab57zo5qzVvwDosnruHwDgTaVAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATopUIBOChSgkwIF6KRAATop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ggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogiqBA6xRoYVWCKIIoggKtU6CFVQmiCKIICrROgRZWJYgiiCIo0DoFWliVIIogirDkAr396Yerq6tvfvq547oKtLAqQRRBFGGxBfrjl6sHH7xsvboCLaxKEEUQRVhogb7+ZLXvna/bvoECLaxKEEUQRVhmgd6cb0rz/Yvivc0fzj5v+g4KtLAqQRRBFGGRBfrbx+vC/GrnC6/WhfrWdy3fQoEWViWIIogiLLJArw/qclOpH7V8CwVaWJUgiiCKsMQCvf1itZo+Yb9Zrd5teTdegRZWJYgiiCIssUDXDzcPnq/Xvrbzo1SceGO1qy7K6bk/9086O1EEUYTTo/iDKdA3wum5P/dPOjtRBFGE06P4g835FP5s+qml1qfwACObr7ovD9py87Lon2a7PYBk8xXoL+frBv125wuv1/158KAU4I0144sH15vXJs4u/nq18ffySfqmTzEBDG3OV1+/P5+80nv22Yy3BpBs1revbl/sVujZp95AApZk7vf/b3+8enFxcfHp1UvtCSzM0CdUBhiZAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXo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9jXx2u3P7frxt4920jzhoyePPyzZv0/T0P+we9JnHXz8DJW3TLZ2fuTDY/hg4Ez634VvKdAj1z822gPn9qTlFujdmZme/Bzo3eVL/ptP63y7961u7h6Z7h+42gfeDiat9jnQyfI9XOQyfgVg//bndvNwiwceuuXwU6InD/3hfZqG/sw2d6304PePfRB0t2xOOBvTgJmcVqAnjfWRu3Xs+kdGe+DcnrTgAi2vZR38JtL05evVh5u3734svwq0uc7mV4W2Hwq8/+z756Vm9o7OwXesTNrBhSqPXu5+E2nzq0l3s7N/+3M7eGS5a3Pntz9N5WSh9x9pfnroD+7TNPRntnlnYvPbLL8+/lrG5N2R7cXr5wMdNZPTCvSksT5yt45d/8hoD5zbkxZcoOUzYsd/F373lxW3f3Pz8Of7Z/931be/WwffsVag0wtVCnTnIvcf29//wsyuV7umd2H3Xc+Pan/1+QlDf3ifpqE/s50MHnkVba9sdu7O5DnpwJmcWKCnjPWxu3Xs+o+P9sC5PWnJBboNt/zx0bMx3X5xH/875UDf7H0qIp6THHzG+vC0M5VHcodnYzp4/Swucv9h7tRPZTzc/a3DVyHuf7rDf//ni/IznjD0B/fpIPRn9o/7n++Den9Oyub+4m9SJicW6CljffRuHbv+o6M9cG5PWnSBbv5/eP+m/KvaWdk2ftyciGf3/IIvds4v+PDS38GLgJPvWC3QyYWqb0BsT3y4c77Fvduf284jhmqB3t2B2k9zu3nf88OThv7wPk1Df2a/bs/R+m8vH/v7Sdk8+q9yjpvJqQV6wlg/cbeOXP/R0R43tyctrEAB8ihQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE4KFKCTAgXopEABOilQgE7/D2l7OjRSbI54AAAAAElFTkSuQmCC" width="672" /></p>
 <pre class="r"><code>#Age
 hist(cccu_MA$AGE) #nearly no normal distribution</code></pre>
 <p><img src="data:image/png;base64,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" width="672" /></p>

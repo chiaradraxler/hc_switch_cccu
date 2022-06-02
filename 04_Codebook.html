@@ -213,7 +213,7 @@ library(codebook)</code></pre>
 <div id="select-data" class="section level2">
 <h2>2. Select data</h2>
 <pre class="r"><code>cccu_MA = cccu_MA %&gt;%
-  select(switch, hc, contra_satis, hc_dur, sexual_satisfaction, sex_freq,
+  select(WAVE, switch, hc, contra_satis, hc_dur, sexual_satisfaction, sex_freq,
          AGE, DEGREE_recode, POVRATE, HLTHPROB_recode, MEDPROB_recode, GAPINS_recode, TYPEINS_recode, NKIDS_t1, pregnant_between_waves, had_baby_between_waves, Avoid_r, FEELPG_recode, rel_dur_factor)</code></pre>
 </div>
 <div id="codebook-1" class="section level2">
@@ -224,13 +224,13 @@ library(codebook)</code></pre>
 <div id="description" class="section level4">
 <h4>Description</h4>
 <p><strong>Dataset name</strong>: cccu_MA</p>
-<p>The dataset has N=3787 rows and 19 columns. 2285 rows have no missing values on any column.</p>
+<p>The dataset has N=3787 rows and 20 columns. 2285 rows have no missing values on any column.</p>
 <details>
 <summary title="Expand this section to see some additional metadata in a structured format that is useful for search engines">
 Metadata for search engines
 </summary>
 <ul>
-<li><strong>Date published</strong>: 2022-05-31</li>
+<li><strong>Date published</strong>: 2022-06-02</li>
 </ul>
 <table class="kable_wrapper">
 <tbody>
@@ -244,60 +244,63 @@ Metadata for search engines
 </thead>
 <tbody>
 <tr class="odd">
+<td align="left">WAVE</td>
+</tr>
+<tr class="even">
 <td align="left">switch</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">hc</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">contra_satis</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">hc_dur</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">sexual_satisfaction</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">sex_freq</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">AGE</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">DEGREE_recode</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">POVRATE</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">HLTHPROB_recode</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">MEDPROB_recode</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">GAPINS_recode</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">TYPEINS_recode</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">NKIDS_t1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">pregnant_between_waves</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">had_baby_between_waves</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Avoid_r</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">FEELPG_recode</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">rel_dur_factor</td>
 </tr>
 </tbody>
@@ -308,6 +311,61 @@ Metadata for search engines
 </table>
 </details>
 <p>###Variables</p>
+<div id="WAVE" class="section level5 tabset">
+<h5 class="tabset">WAVE</h5>
+<div id="WAVE_distribution" class="section level6">
+<h6>Distribution</h6>
+<div class="figure">
+<img src="data:image/png;base64,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6d53lWlIASWzyAc5073vKtOQAkpmkQ9ypnvfVaYhBZTMIh/kTPe+q0xDCiiZRT7Ime59V5mGFFAyi3yQM937rjINKaBkFvkgZ7r3XWUaUkDJLPJBznTvu8o0pICSWeSDnOned5VpSAEls8gHOdO97yrTkAJKZpEPcqZ731WmIQWUzCIf5Ez3vqtMQwoomUU+yJnufVeZhhRQMot8kDPd+64yDSmgZBb5IGe6911lGlJAySzyQc5077vKNKSAklnkg5zp3neVaUgBJbPIBznTve8q05ACSmaRD3Kme99VpiEFlMwiH+RM976rTEMKKJlFPsiZ7n1XmYYMCOjzH711/tdffnOzefXfvf/ib1H+S24JKO3qnr0DT2Sie99VpiEDAvp08/r2L483577ykxd+i/JfcktAaVf37B14IhPd+64yDRkW0I8evPrHp6cff/Oipnu/RfkvuSWgtKt79g48kYnufVeZhgwL6KPNN7Y/+OjBl39y+7co/yW3BJR2dc/egScy0b3vKtOQzQF9/s72hfv1m52fvi2gHI+6Z+/AE5no3neVacjogH704LXbH0YSULqpe/YOPJGJ7n1XmYaM+yDSuV882PzJzS996YM6ve8eCVQ+ezBPaEAfbTav/vX1PxdQugu9LHBbZECf/+W/frB59d/f/nkv4emm7tk78EQmeuXZVaYhg1/Cn/5y5zX81W9R/ktuCSjt6p69A09konvfVaYhowN69qPbH0USULqpe/YOPJGJ7n1XmYYMD+iLH4YXULqpe/YOPJGJ7n1XmYaMCujzdy5fugsoR6Tu2TvwRCa6911lGjLwK5Eu3g599MLXcgoo3dQ9eweeyET3vqtMQ4YEdPs250cPNm+9f/r8h5tXv3P7tyj/JbcElHZ1z96BJzLRve8q05ABAT1L5zahTy++G9Ortz8IL6D0U/fsHXgiE937rjINGfENlX/+4Pxt0I//6CyfX//xi79FxS95KqBEqHv2DjyRie59V5mG9B3pySzyQc5077vKNKSAklnkg5zp3neVaUgBJbPIBznTve8q05ACSmaRD3Kme99VpiEFlMwiH+RM976rTEMKKJlFPsiZ7n1XmYYUUDKLfJAz3fuuMg0poGQW+SBnuvddZRpSQMks8kHOdO+7yjSkgJJZ5IOc6d53lWlIASWzyAc5073vKtOQAkpmkQ9ypnvfVaYh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" alt="Distribution of values for WAVE" width="672" />
+<p class="caption">
+Distribution of values for WAVE
+</p>
+</div>
+<p>0 missing values.</p>
+</div>
+<div id="WAVE_summary" class="section level6">
+<h6>Summary statistics</h6>
+<table style="width:100%;">
+<colgroup>
+<col width="3%" />
+<col width="7%" />
+<col width="6%" />
+<col width="27%" />
+<col width="7%" />
+<col width="10%" />
+<col width="6%" />
+<col width="26%" />
+<col width="4%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">name</th>
+<th align="left">data_type</th>
+<th align="left">ordered</th>
+<th align="left">value_labels</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">n_unique</th>
+<th align="left">top_counts</th>
+<th align="left">label</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">WAVE</td>
+<td align="left">factor</td>
+<td align="left">FALSE</td>
+<td align="left">1. t1,<br>2. t2,<br>3. t3,<br>4. t4</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="left">t1: 1723, t2: 1181, t3: 883, t4: 0</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <div id="switch" class="section level5 tabset">
 <h5 class="tabset">switch</h5>
 <div id="switch_distribution" class="section level6">
@@ -1443,6 +1501,23 @@ Distribution of values for rel_dur_factor
 </thead>
 <tbody>
 <tr class="odd">
+<td align="left"><a href="#WAVE">WAVE</a></td>
+<td align="left">factor</td>
+<td align="left">FALSE</td>
+<td align="left">1. t1,<br>2. t2,<br>3. t3,<br>4. t4</td>
+<td align="right">0</td>
+<td align="right">1.00000</td>
+<td align="right">3</td>
+<td align="left">t1: 1723, t2: 1181, t3: 883, t4: 0</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
 <td align="left"><a href="#switch">switch</a></td>
 <td align="left">numeric</td>
 <td align="left">NA</td>
@@ -1459,7 +1534,7 @@ Distribution of values for rel_dur_factor
 <td align="left">&lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="#hc">hc</a></td>
 <td align="left">factor</td>
 <td align="left">FALSE</td>
@@ -1476,7 +1551,7 @@ Distribution of values for rel_dur_factor
 <td align="left">NA</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="#contra_satis">contra_satis</a></td>
 <td align="left">numeric</td>
 <td align="left">NA</td>
@@ -1493,7 +1568,7 @@ Distribution of values for rel_dur_factor
 <td align="left">&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2585&gt;&lt;U+2587&gt;</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="#hc_dur">hc_dur</a></td>
 <td align="left">numeric</td>
 <td align="left">NA</td>
@@ -1510,7 +1585,7 @@ Distribution of values for rel_dur_factor
 <td align="left">&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2583&gt;&lt;U+2581&gt;&lt;U+2581&gt;</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="#sexual_satisfaction">sexual_satisfaction</a></td>
 <td align="left">numeric</td>
 <td align="left">NA</td>
@@ -1527,7 +1602,7 @@ Distribution of values for rel_dur_factor
 <td align="left">&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2583&gt;&lt;U+2585&gt;&lt;U+2587&gt;</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="#sex_freq">sex_freq</a></td>
 <td align="left">factor</td>
 <td align="left">FALSE</td>
@@ -1544,7 +1619,7 @@ Distribution of values for rel_dur_factor
 <td align="left">NA</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="#AGE">AGE</a></td>
 <td align="left">numeric</td>
 <td align="left">NA</td>
@@ -1561,7 +1636,7 @@ Distribution of values for rel_dur_factor
 <td align="left">&lt;U+2583&gt;&lt;U+2587&gt;&lt;U+2586&gt;&lt;U+2585&gt;&lt;U+2585&gt;</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="#DEGREE_recode">DEGREE_recode</a></td>
 <td align="left">factor</td>
 <td align="left">FALSE</td>
@@ -1578,7 +1653,7 @@ Distribution of values for rel_dur_factor
 <td align="left">NA</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="#POVRATE">POVRATE</a></td>
 <td align="left">numeric</td>
 <td align="left">NA</td>
@@ -1595,7 +1670,7 @@ Distribution of values for rel_dur_factor
 <td align="left">&lt;U+2587&gt;&lt;U+2585&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="#HLTHPROB_recode">HLTHPROB_recode</a></td>
 <td align="left">factor</td>
 <td align="left">FALSE</td>
@@ -1612,7 +1687,7 @@ Distribution of values for rel_dur_factor
 <td align="left">NA</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="#MEDPROB_recode">MEDPROB_recode</a></td>
 <td align="left">factor</td>
 <td align="left">FALSE</td>
@@ -1629,7 +1704,7 @@ Distribution of values for rel_dur_factor
 <td align="left">NA</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="#GAPINS_recode">GAPINS_recode</a></td>
 <td align="left">factor</td>
 <td align="left">FALSE</td>
@@ -1646,7 +1721,7 @@ Distribution of values for rel_dur_factor
 <td align="left">NA</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="#TYPEINS_recode">TYPEINS_recode</a></td>
 <td align="left">factor</td>
 <td align="left">FALSE</td>
@@ -1663,7 +1738,7 @@ Distribution of values for rel_dur_factor
 <td align="left">NA</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="#NKIDS_t1">NKIDS_t1</a></td>
 <td align="left">factor</td>
 <td align="left">FALSE</td>
@@ -1680,7 +1755,7 @@ Distribution of values for rel_dur_factor
 <td align="left">NA</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="#pregnant_between_waves">pregnant_between_waves</a></td>
 <td align="left">factor</td>
 <td align="left">FALSE</td>
@@ -1697,7 +1772,7 @@ Distribution of values for rel_dur_factor
 <td align="left">NA</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="#had_baby_between_waves">had_baby_between_waves</a></td>
 <td align="left">factor</td>
 <td align="left">FALSE</td>
@@ -1714,7 +1789,7 @@ Distribution of values for rel_dur_factor
 <td align="left">NA</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="#Avoid_r">Avoid_r</a></td>
 <td align="left">numeric</td>
 <td align="left">NA</td>
@@ -1731,7 +1806,7 @@ Distribution of values for rel_dur_factor
 <td align="left">&lt;U+2582&gt;&lt;U+2582&gt;&lt;U+2582&gt;&lt;U+2583&gt;&lt;U+2587&gt;</td>
 <td align="left">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="#FEELPG_recode">FEELPG_recode</a></td>
 <td align="left">numeric</td>
 <td align="left">NA</td>
@@ -1748,7 +1823,7 @@ Distribution of values for rel_dur_factor
 <td align="left">&lt;U+2587&gt;&lt;U+2583&gt;&lt;U+2585&gt;&lt;U+2583&gt;&lt;U+2583&gt;</td>
 <td align="left">NA</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="#rel_dur_factor">rel_dur_factor</a></td>
 <td align="left">factor</td>
 <td align="left">FALSE</td>
@@ -1770,12 +1845,17 @@ Distribution of values for rel_dur_factor
 <script type="application/ld+json">
 {
   "name": "cccu_MA",
-  "datePublished": "2022-05-31",
-  "description": "The dataset has N=3787 rows and 19 columns.\n2285 rows have no missing values on any column.\n\n\n## Table of variables\nThis table contains variable names, labels, and number of missing values.\nSee the complete codebook for more.\n\n|name                   |label | n_missing|\n|:----------------------|:-----|---------:|\n|switch                 |NA    |         0|\n|hc                     |NA    |         0|\n|contra_satis           |NA    |         0|\n|hc_dur                 |NA    |      1502|\n|sexual_satisfaction    |NA    |         0|\n|sex_freq               |NA    |         0|\n|AGE                    |NA    |         0|\n|DEGREE_recode          |NA    |         0|\n|POVRATE                |NA    |         0|\n|HLTHPROB_recode        |NA    |         0|\n|MEDPROB_recode         |NA    |         0|\n|GAPINS_recode          |NA    |         0|\n|TYPEINS_recode         |NA    |         0|\n|NKIDS_t1               |NA    |         0|\n|pregnant_between_waves |NA    |         0|\n|had_baby_between_waves |NA    |         0|\n|Avoid_r                |NA    |         0|\n|FEELPG_recode          |NA    |         0|\n|rel_dur_factor         |NA    |         0|\n\n### Note\nThis dataset was automatically described using the [codebook R package](https://rubenarslan.github.io/codebook/) (version 0.9.2).",
-  "keywords": ["switch", "hc", "contra_satis", "hc_dur", "sexual_satisfaction", "sex_freq", "AGE", "DEGREE_recode", "POVRATE", "HLTHPROB_recode", "MEDPROB_recode", "GAPINS_recode", "TYPEINS_recode", "NKIDS_t1", "pregnant_between_waves", "had_baby_between_waves", "Avoid_r", "FEELPG_recode", "rel_dur_factor"],
+  "datePublished": "2022-06-02",
+  "description": "The dataset has N=3787 rows and 20 columns.\n2285 rows have no missing values on any column.\n\n\n## Table of variables\nThis table contains variable names, labels, and number of missing values.\nSee the complete codebook for more.\n\n|name                   |label | n_missing|\n|:----------------------|:-----|---------:|\n|WAVE                   |NA    |         0|\n|switch                 |NA    |         0|\n|hc                     |NA    |         0|\n|contra_satis           |NA    |         0|\n|hc_dur                 |NA    |      1502|\n|sexual_satisfaction    |NA    |         0|\n|sex_freq               |NA    |         0|\n|AGE                    |NA    |         0|\n|DEGREE_recode          |NA    |         0|\n|POVRATE                |NA    |         0|\n|HLTHPROB_recode        |NA    |         0|\n|MEDPROB_recode         |NA    |         0|\n|GAPINS_recode          |NA    |         0|\n|TYPEINS_recode         |NA    |         0|\n|NKIDS_t1               |NA    |         0|\n|pregnant_between_waves |NA    |         0|\n|had_baby_between_waves |NA    |         0|\n|Avoid_r                |NA    |         0|\n|FEELPG_recode          |NA    |         0|\n|rel_dur_factor         |NA    |         0|\n\n### Note\nThis dataset was automatically described using the [codebook R package](https://rubenarslan.github.io/codebook/) (version 0.9.2).",
+  "keywords": ["WAVE", "switch", "hc", "contra_satis", "hc_dur", "sexual_satisfaction", "sex_freq", "AGE", "DEGREE_recode", "POVRATE", "HLTHPROB_recode", "MEDPROB_recode", "GAPINS_recode", "TYPEINS_recode", "NKIDS_t1", "pregnant_between_waves", "had_baby_between_waves", "Avoid_r", "FEELPG_recode", "rel_dur_factor"],
   "@context": "http://schema.org/",
   "@type": "Dataset",
   "variableMeasured": [
+    {
+      "name": "WAVE",
+      "value": "1. t1,\n2. t2,\n3. t3,\n4. t4",
+      "@type": "propertyValue"
+    },
     {
       "name": "switch",
       "@type": "propertyValue"
@@ -1873,12 +1953,17 @@ JSON-LD metadata
 <p>The following JSON-LD can be found by search engines, if you share this codebook publicly on the web.</p>
 <pre class="json"><code>{
   &quot;name&quot;: &quot;cccu_MA&quot;,
-  &quot;datePublished&quot;: &quot;2022-05-31&quot;,
-  &quot;description&quot;: &quot;The dataset has N=3787 rows and 19 columns.\n2285 rows have no missing values on any column.\n\n\n## Table of variables\nThis table contains variable names, labels, and number of missing values.\nSee the complete codebook for more.\n\n|name                   |label | n_missing|\n|:----------------------|:-----|---------:|\n|switch                 |NA    |         0|\n|hc                     |NA    |         0|\n|contra_satis           |NA    |         0|\n|hc_dur                 |NA    |      1502|\n|sexual_satisfaction    |NA    |         0|\n|sex_freq               |NA    |         0|\n|AGE                    |NA    |         0|\n|DEGREE_recode          |NA    |         0|\n|POVRATE                |NA    |         0|\n|HLTHPROB_recode        |NA    |         0|\n|MEDPROB_recode         |NA    |         0|\n|GAPINS_recode          |NA    |         0|\n|TYPEINS_recode         |NA    |         0|\n|NKIDS_t1               |NA    |         0|\n|pregnant_between_waves |NA    |         0|\n|had_baby_between_waves |NA    |         0|\n|Avoid_r                |NA    |         0|\n|FEELPG_recode          |NA    |         0|\n|rel_dur_factor         |NA    |         0|\n\n### Note\nThis dataset was automatically described using the [codebook R package](https://rubenarslan.github.io/codebook/) (version 0.9.2).&quot;,
-  &quot;keywords&quot;: [&quot;switch&quot;, &quot;hc&quot;, &quot;contra_satis&quot;, &quot;hc_dur&quot;, &quot;sexual_satisfaction&quot;, &quot;sex_freq&quot;, &quot;AGE&quot;, &quot;DEGREE_recode&quot;, &quot;POVRATE&quot;, &quot;HLTHPROB_recode&quot;, &quot;MEDPROB_recode&quot;, &quot;GAPINS_recode&quot;, &quot;TYPEINS_recode&quot;, &quot;NKIDS_t1&quot;, &quot;pregnant_between_waves&quot;, &quot;had_baby_between_waves&quot;, &quot;Avoid_r&quot;, &quot;FEELPG_recode&quot;, &quot;rel_dur_factor&quot;],
+  &quot;datePublished&quot;: &quot;2022-06-02&quot;,
+  &quot;description&quot;: &quot;The dataset has N=3787 rows and 20 columns.\n2285 rows have no missing values on any column.\n\n\n## Table of variables\nThis table contains variable names, labels, and number of missing values.\nSee the complete codebook for more.\n\n|name                   |label | n_missing|\n|:----------------------|:-----|---------:|\n|WAVE                   |NA    |         0|\n|switch                 |NA    |         0|\n|hc                     |NA    |         0|\n|contra_satis           |NA    |         0|\n|hc_dur                 |NA    |      1502|\n|sexual_satisfaction    |NA    |         0|\n|sex_freq               |NA    |         0|\n|AGE                    |NA    |         0|\n|DEGREE_recode          |NA    |         0|\n|POVRATE                |NA    |         0|\n|HLTHPROB_recode        |NA    |         0|\n|MEDPROB_recode         |NA    |         0|\n|GAPINS_recode          |NA    |         0|\n|TYPEINS_recode         |NA    |         0|\n|NKIDS_t1               |NA    |         0|\n|pregnant_between_waves |NA    |         0|\n|had_baby_between_waves |NA    |         0|\n|Avoid_r                |NA    |         0|\n|FEELPG_recode          |NA    |         0|\n|rel_dur_factor         |NA    |         0|\n\n### Note\nThis dataset was automatically described using the [codebook R package](https://rubenarslan.github.io/codebook/) (version 0.9.2).&quot;,
+  &quot;keywords&quot;: [&quot;WAVE&quot;, &quot;switch&quot;, &quot;hc&quot;, &quot;contra_satis&quot;, &quot;hc_dur&quot;, &quot;sexual_satisfaction&quot;, &quot;sex_freq&quot;, &quot;AGE&quot;, &quot;DEGREE_recode&quot;, &quot;POVRATE&quot;, &quot;HLTHPROB_recode&quot;, &quot;MEDPROB_recode&quot;, &quot;GAPINS_recode&quot;, &quot;TYPEINS_recode&quot;, &quot;NKIDS_t1&quot;, &quot;pregnant_between_waves&quot;, &quot;had_baby_between_waves&quot;, &quot;Avoid_r&quot;, &quot;FEELPG_recode&quot;, &quot;rel_dur_factor&quot;],
   &quot;@context&quot;: &quot;http://schema.org/&quot;,
   &quot;@type&quot;: &quot;Dataset&quot;,
   &quot;variableMeasured&quot;: [
+    {
+      &quot;name&quot;: &quot;WAVE&quot;,
+      &quot;value&quot;: &quot;1. t1,\n2. t2,\n3. t3,\n4. t4&quot;,
+      &quot;@type&quot;: &quot;propertyValue&quot;
+    },
     {
       &quot;name&quot;: &quot;switch&quot;,
       &quot;@type&quot;: &quot;propertyValue&quot;
@@ -1971,22 +2056,191 @@ JSON-LD metadata
 </details>
 <p>#Plots</p>
 <p>#Correlations</p>
-<p>##Predictors</p>
-<pre class="r"><code># cccu_MA_t1__pred_correlations &lt;- cccu_MA_t1 %&gt;%
-#   select(contra_satis, hc_dur,
-#     sexual_satisfaction,
-#     AGE, POVRATE, Avoid_r, FEELPG_recode,
-#     rel_dur)
-# 
-# cor_pred_t1&lt;-rcorr(as.matrix(cccu_MA_t1_pred_correlations))
-# print(cor_pred_t1)</code></pre>
-<p>##Selection Variables</p>
-<pre class="r"><code>#numerical
-# correlations_selection = cccu_MA %&gt;%
-#   select(AGE,  POVRATE, Avoid_r, FEELPG_recode)
-# 
-# cor_sel&lt;-rcorr(as.matrix(correlations_selection))
-# print(cor_sel)</code></pre>
+<pre class="r"><code>#for t1
+cccu_MA_t1 &lt;- cccu_MA%&gt;%
+  filter(WAVE == &quot;t1&quot;)
+cccu_MA_t1_correlations &lt;- cccu_MA_t1 %&gt;%
+  select(contra_satis, hc_dur,
+    sexual_satisfaction,
+    AGE, POVRATE, Avoid_r, FEELPG_recode)
+
+rcorr(as.matrix(cccu_MA_t1_correlations))</code></pre>
+<pre><code>##                     contra_satis hc_dur sexual_satisfaction   AGE POVRATE
+## contra_satis                1.00   0.15                0.16  0.02    0.06
+## hc_dur                      0.15   1.00                0.01  0.25    0.15
+## sexual_satisfaction         0.16   0.01                1.00 -0.03   -0.01
+## AGE                         0.02   0.25               -0.03  1.00    0.18
+## POVRATE                     0.06   0.15               -0.01  0.18    1.00
+## Avoid_r                     0.13   0.02               -0.03 -0.14   -0.02
+## FEELPG_recode              -0.06  -0.03                0.12  0.20   -0.04
+##                     Avoid_r FEELPG_recode
+## contra_satis           0.13         -0.06
+## hc_dur                 0.02         -0.03
+## sexual_satisfaction   -0.03          0.12
+## AGE                   -0.14          0.20
+## POVRATE               -0.02         -0.04
+## Avoid_r                1.00         -0.61
+## FEELPG_recode         -0.61          1.00
+## 
+## n
+##                     contra_satis hc_dur sexual_satisfaction  AGE POVRATE
+## contra_satis                1723   1032                1723 1723    1723
+## hc_dur                      1032   1032                1032 1032    1032
+## sexual_satisfaction         1723   1032                1723 1723    1723
+## AGE                         1723   1032                1723 1723    1723
+## POVRATE                     1723   1032                1723 1723    1723
+## Avoid_r                     1723   1032                1723 1723    1723
+## FEELPG_recode               1723   1032                1723 1723    1723
+##                     Avoid_r FEELPG_recode
+## contra_satis           1723          1723
+## hc_dur                 1032          1032
+## sexual_satisfaction    1723          1723
+## AGE                    1723          1723
+## POVRATE                1723          1723
+## Avoid_r                1723          1723
+## FEELPG_recode          1723          1723
+## 
+## P
+##                     contra_satis hc_dur sexual_satisfaction AGE    POVRATE
+## contra_satis                     0.0000 0.0000              0.4981 0.0177 
+## hc_dur              0.0000              0.8285              0.0000 0.0000 
+## sexual_satisfaction 0.0000       0.8285                     0.1895 0.6176 
+## AGE                 0.4981       0.0000 0.1895                     0.0000 
+## POVRATE             0.0177       0.0000 0.6176              0.0000        
+## Avoid_r             0.0000       0.5793 0.1834              0.0000 0.4026 
+## FEELPG_recode       0.0084       0.2867 0.0000              0.0000 0.1272 
+##                     Avoid_r FEELPG_recode
+## contra_satis        0.0000  0.0084       
+## hc_dur              0.5793  0.2867       
+## sexual_satisfaction 0.1834  0.0000       
+## AGE                 0.0000  0.0000       
+## POVRATE             0.4026  0.1272       
+## Avoid_r                     0.0000       
+## FEELPG_recode       0.0000</code></pre>
+<pre class="r"><code>#for t2
+cccu_MA_t2 &lt;- cccu_MA%&gt;%
+  filter(WAVE == &quot;t2&quot;)
+
+cccu_MA_t2_correlations &lt;- cccu_MA_t2 %&gt;%
+  select(contra_satis, hc_dur,
+    sexual_satisfaction,
+    AGE, POVRATE, Avoid_r, FEELPG_recode)
+
+rcorr(as.matrix(cccu_MA_t2_correlations))</code></pre>
+<pre><code>##                     contra_satis hc_dur sexual_satisfaction   AGE POVRATE
+## contra_satis                1.00   0.15                0.14  0.01    0.06
+## hc_dur                      0.15   1.00                0.04  0.20    0.16
+## sexual_satisfaction         0.14   0.04                1.00 -0.05   -0.01
+## AGE                         0.01   0.20               -0.05  1.00    0.16
+## POVRATE                     0.06   0.16               -0.01  0.16    1.00
+## Avoid_r                     0.04   0.05               -0.08 -0.14    0.00
+## FEELPG_recode               0.00   0.01                0.18  0.19   -0.04
+##                     Avoid_r FEELPG_recode
+## contra_satis           0.04          0.00
+## hc_dur                 0.05          0.01
+## sexual_satisfaction   -0.08          0.18
+## AGE                   -0.14          0.19
+## POVRATE                0.00         -0.04
+## Avoid_r                1.00         -0.62
+## FEELPG_recode         -0.62          1.00
+## 
+## n
+##                     contra_satis hc_dur sexual_satisfaction  AGE POVRATE
+## contra_satis                1181    717                1181 1181    1181
+## hc_dur                       717    717                 717  717     717
+## sexual_satisfaction         1181    717                1181 1181    1181
+## AGE                         1181    717                1181 1181    1181
+## POVRATE                     1181    717                1181 1181    1181
+## Avoid_r                     1181    717                1181 1181    1181
+## FEELPG_recode               1181    717                1181 1181    1181
+##                     Avoid_r FEELPG_recode
+## contra_satis           1181          1181
+## hc_dur                  717           717
+## sexual_satisfaction    1181          1181
+## AGE                    1181          1181
+## POVRATE                1181          1181
+## Avoid_r                1181          1181
+## FEELPG_recode          1181          1181
+## 
+## P
+##                     contra_satis hc_dur sexual_satisfaction AGE    POVRATE
+## contra_satis                     0.0000 0.0000              0.6556 0.0531 
+## hc_dur              0.0000              0.2944              0.0000 0.0000 
+## sexual_satisfaction 0.0000       0.2944                     0.1034 0.7755 
+## AGE                 0.6556       0.0000 0.1034                     0.0000 
+## POVRATE             0.0531       0.0000 0.7755              0.0000        
+## Avoid_r             0.1471       0.1944 0.0098              0.0000 0.9078 
+## FEELPG_recode       0.8963       0.8778 0.0000              0.0000 0.2005 
+##                     Avoid_r FEELPG_recode
+## contra_satis        0.1471  0.8963       
+## hc_dur              0.1944  0.8778       
+## sexual_satisfaction 0.0098  0.0000       
+## AGE                 0.0000  0.0000       
+## POVRATE             0.9078  0.2005       
+## Avoid_r                     0.0000       
+## FEELPG_recode       0.0000</code></pre>
+<pre class="r"><code>#for t3
+cccu_MA_t3 &lt;- cccu_MA%&gt;%
+  filter(WAVE == &quot;t3&quot;)
+
+cccu_MA_t3_correlations &lt;- cccu_MA_t3 %&gt;%
+  select(contra_satis, hc_dur,
+    sexual_satisfaction,
+    AGE, POVRATE, Avoid_r, FEELPG_recode)
+
+rcorr(as.matrix(cccu_MA_t3_correlations))</code></pre>
+<pre><code>##                     contra_satis hc_dur sexual_satisfaction   AGE POVRATE
+## contra_satis                1.00   0.17                0.14 -0.02    0.06
+## hc_dur                      0.17   1.00                0.03  0.11    0.12
+## sexual_satisfaction         0.14   0.03                1.00 -0.01   -0.02
+## AGE                        -0.02   0.11               -0.01  1.00    0.16
+## POVRATE                     0.06   0.12               -0.02  0.16    1.00
+## Avoid_r                     0.05   0.01               -0.07 -0.12   -0.02
+## FEELPG_recode               0.01  -0.02                0.16  0.16   -0.06
+##                     Avoid_r FEELPG_recode
+## contra_satis           0.05          0.01
+## hc_dur                 0.01         -0.02
+## sexual_satisfaction   -0.07          0.16
+## AGE                   -0.12          0.16
+## POVRATE               -0.02         -0.06
+## Avoid_r                1.00         -0.64
+## FEELPG_recode         -0.64          1.00
+## 
+## n
+##                     contra_satis hc_dur sexual_satisfaction AGE POVRATE Avoid_r
+## contra_satis                 883    536                 883 883     883     883
+## hc_dur                       536    536                 536 536     536     536
+## sexual_satisfaction          883    536                 883 883     883     883
+## AGE                          883    536                 883 883     883     883
+## POVRATE                      883    536                 883 883     883     883
+## Avoid_r                      883    536                 883 883     883     883
+## FEELPG_recode                883    536                 883 883     883     883
+##                     FEELPG_recode
+## contra_satis                  883
+## hc_dur                        536
+## sexual_satisfaction           883
+## AGE                           883
+## POVRATE                       883
+## Avoid_r                       883
+## FEELPG_recode                 883
+## 
+## P
+##                     contra_satis hc_dur sexual_satisfaction AGE    POVRATE
+## contra_satis                     0.0000 0.0000              0.6369 0.0580 
+## hc_dur              0.0000              0.4937              0.0095 0.0059 
+## sexual_satisfaction 0.0000       0.4937                     0.8171 0.5747 
+## AGE                 0.6369       0.0095 0.8171                     0.0000 
+## POVRATE             0.0580       0.0059 0.5747              0.0000        
+## Avoid_r             0.1777       0.9037 0.0373              0.0004 0.5264 
+## FEELPG_recode       0.7616       0.6797 0.0000              0.0000 0.0715 
+##                     Avoid_r FEELPG_recode
+## contra_satis        0.1777  0.7616       
+## hc_dur              0.9037  0.6797       
+## sexual_satisfaction 0.0373  0.0000       
+## AGE                 0.0004  0.0000       
+## POVRATE             0.5264  0.0715       
+## Avoid_r                     0.0000       
+## FEELPG_recode       0.0000</code></pre>
 </div>
 </div>
 </div>
