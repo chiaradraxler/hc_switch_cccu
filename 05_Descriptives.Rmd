@@ -505,7 +505,7 @@ cccu_MA_t1_descriptives <- cccu_MA_t1 %>%
     NKIDS_t1, pregnant_between_waves, 
     had_baby_between_waves,
     Avoid_r, FEELPG_recode,
-    rel_dur)
+    rel_dur_factor)
 
 psych::describe(cccu_MA_t1_descriptives$contra_satis)
 psych::describe(cccu_MA_t1_descriptives$hc_dur)
@@ -530,6 +530,7 @@ table(cccu_MA_t1_descriptives$TYPEINS_recode)
 table(cccu_MA_t1_descriptives$NKIDS_t1)
 table(cccu_MA_t1_descriptives$pregnant_between_waves)
 table(cccu_MA_t1_descriptives$had_baby_between_waves)
+table(cccu_MA_t1_descriptives$rel_dur_factor)
 
 ```
 ##t2
@@ -544,7 +545,8 @@ cccu_MA_t2_descriptives <- cccu_MA_t2 %>%
     NKIDS_t1, pregnant_between_waves, 
     had_baby_between_waves,
     Avoid_r, FEELPG_recode,
-    rel_dur)
+    rel_dur_factor)
+colnames(cccu_MA_t2_descriptives)
 
 psych::describe(cccu_MA_t2_descriptives$contra_satis)
 psych::describe(cccu_MA_t2_descriptives$hc_dur)
@@ -569,7 +571,7 @@ table(cccu_MA_t2_descriptives$TYPEINS_recode)
 table(cccu_MA_t2_descriptives$NKIDS_t1)
 table(cccu_MA_t2_descriptives$pregnant_between_waves)
 table(cccu_MA_t2_descriptives$had_baby_between_waves)
-
+table(cccu_MA_t2_descriptives$rel_dur_factor)
 
 ```
 
@@ -585,7 +587,7 @@ cccu_MA_t3_descriptives <- cccu_MA_t3 %>%
     NKIDS_t1, pregnant_between_waves, 
     had_baby_between_waves,
     Avoid_r, FEELPG_recode,
-    rel_dur)
+    rel_dur_factor)
 
 psych::describe(cccu_MA_t3_descriptives$contra_satis)
 psych::describe(cccu_MA_t3_descriptives$hc_dur)
@@ -610,7 +612,7 @@ table(cccu_MA_t3_descriptives$TYPEINS_recode)
 table(cccu_MA_t3_descriptives$NKIDS_t1)
 table(cccu_MA_t3_descriptives$pregnant_between_waves)
 table(cccu_MA_t3_descriptives$had_baby_between_waves)
-
+table(cccu_MA_t3_descriptives$rel_dur_factor)
 ```
 
 
@@ -645,17 +647,6 @@ cccu_MA_t3_correlations <- cccu_MA_t3 %>%
 
 rcorr(as.matrix(cccu_MA_t3_correlations))
 
-#t4
-
-
-#cccu_MA_t4_correlations <- cccu_MA_t4 %>%
-  #select(contra_satis, hc_dur,
-   # sexual_satisfaction,
-   # AGE, POVRATE, Avoid_r, FEELPG_recode)
-
-#cor(cccu_MA_t4_correlations)
-
-#rcorr(as.matrix(cccu_MA_t4_correlations))
 ```
 
 
