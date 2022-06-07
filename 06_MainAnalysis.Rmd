@@ -15,6 +15,7 @@ load("cccu_MA.RData")
 ```{r}
 library(formr)
 library(effects)
+library(EValue)
 library(lme4)
 library(psych)
 library(dplyr)
@@ -76,21 +77,22 @@ m4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq
 summary(m4)
 confint(m4, method = "Wald", level = .997)
 plot(allEffects(m4))
+```
 
+#Senstivity analysis after m4: controlling for unobserved selection effects
+```{r}
 
 library(lme4)
 exp(m4$coefficients)
 exp(confint(m4, method = "Wald", level = .997))
 
 
-#sensitivity analysis hc:non_hc
+#sensitivity analysis for contra_satis
+evalue(OR(5.629007e-01,rare=FALSE),lo= 4.379552e-01,  hi=6.702586e-01)
 
-
-
-library(EValue)
-evalue(OR(4.418412e-01),lo= 2.490910e-03,  hi=5.820342e+01, true = c(0,1))
+#for interaction hc:contra_satis
+evalue(OR(1.418598e+00,rare=FALSE),lo= 8.901014e-01,  hi=2.289899e+00)
 ```
-
 
 
 #Average marginal effects
@@ -98,22 +100,18 @@ evalue(OR(4.418412e-01),lo= 2.490910e-03,  hi=5.820342e+01, true = c(0,1))
 ##predict values
 ```{r}
 
-source("0_helpers.R")
-library(modelr)
-library(tidybayes)
-library(rstantools)
 
 
-grid = cccu_MA %>%
+#grid = cccu_MA %>%
   data_grid(hc)
 
-data_pred = add_epred_draws(grid, m1,
-                   value = "E[y|A,B]",
-                   ndraws = 1000)
+#data_pred = add_epred_draws(grid, m1,
+                #   value = "E[y|A,B]",
+                 #  ndraws = 1000)
 
 
 #add predicted values
-predictions(m1) |> head()
+data_pred<-predictions(m1) |> head()
 #contrasts
 cmp <- comparisons(m1)
 #average marginal effect
