@@ -82,7 +82,7 @@ plot(allEffects(m4))
 #Senstivity analysis after m4: controlling for unobserved selection effects
 ```{r}
 
-library(lme4)
+
 exp(m4$coefficients)
 exp(confint(m4, method = "Wald", level = .997))
 
