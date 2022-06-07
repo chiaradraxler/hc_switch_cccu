@@ -18,6 +18,9 @@ library(effects)
 library(lme4)
 library(psych)
 library(dplyr)
+library(tidyverse)
+library(patchwork)
+library(marginaleffects)
 ```
 
 #3. Models
@@ -89,5 +92,73 @@ evalue(OR(4.418412e-01),lo= 2.490910e-03,  hi=5.820342e+01, true = c(0,1))
 ```
 
 
+
+#Average marginal effects
+#m1
+##predict values
+```{r}
+
+source("0_helpers.R")
+library(modelr)
+library(tidybayes)
+library(rstantools)
+
+
+grid = cccu_MA %>%
+  data_grid(hc)
+
+data_pred = add_epred_draws(grid, m1,
+                   value = "E[y|A,B]",
+                   ndraws = 1000)
+
+
+#add predicted values
+predictions(m1) |> head()
+#contrasts
+cmp <- comparisons(m1)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(m1)
+summary(ame)
+
+
+```
+
+#m2
+```{r}
+#add predicted values
+predictions(m2) |> head()
+#contrasts
+cmp <- comparisons(m2)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(m2)
+summary(ame)
+```
+
+#m3
+```{r}
+#add predicted values
+predictions(m3) |> head()
+#contrasts
+cmp <- comparisons(m3)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(m3)
+summary(ame)
+```
+
+#m4
+```{r}
+#add predicted values
+predictions(m4) |> head()
+#contrasts
+cmp <- comparisons(m4)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(m4)
+summary(ame)
+
+```
 
 
