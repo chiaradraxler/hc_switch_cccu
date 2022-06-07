@@ -963,6 +963,7 @@ crosstabs( ~ Q3B_C + Q4_C + WAVE, data = cccu_complete1)
 crosstabs( ~ Q3B_D1 + Q4_D1 + WAVE, data = cccu_complete1)
 
 table(cccu_complete1$partnered)  
+crosstabs( ~ partnered + WAVE, data = cccu_complete1)
 ```
 
 
@@ -988,6 +989,8 @@ table(is.na(cccu_complete1$rel_dur_months))
 table(is.na(cccu_complete1$rel_dur_years))
 table(cccu_complete1$rel_dur_months)
 table(cccu_complete1$rel_dur_years)
+
+crosstabs( ~ rel_dur_years + WAVE, data = cccu_complete1)
 ```
 
 Now we combine years and months to one variable rel_dur (in months).
@@ -997,6 +1000,17 @@ cccu_complete1 <- cccu_complete1 %>%
 
 library(ggplot2)
 qplot(cccu_complete1$rel_dur)
+          
+
+crosstabs( ~ rel_dur + WAVE, data = cccu_complete1)
+```
+
+adding six month to rel dur if patnered = still yes
+```{r}
+
+cccu_complete1 = cccu_complete1 %>%
+  group_by(WAVE) %>%
+  ifelse(partnered == 1, (fill(rel_dur)+6), rel_dur)
 ```
 
 To incorporate relationship status and relationship duration in one variable we need a factor variable rel_dur_factor that includes five categories:
@@ -1032,6 +1046,8 @@ table(is.na(cccu_complete1$rel_dur_factor))
 crosstabs(~rel_dur + rel_dur_factor, data = cccu_complete1)
 
 ggplot(aes(rel_dur,  fill = rel_dur_factor), data = cccu_complete1) + geom_histogram(binwidth = 1)
+
+crosstabs( ~ rel_dur_factor + WAVE, data = cccu_complete1)
 ```
 
 
