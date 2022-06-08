@@ -990,13 +990,15 @@ table(is.na(cccu_complete1$rel_dur_years))
 table(cccu_complete1$rel_dur_months)
 table(cccu_complete1$rel_dur_years)
 
+crosstabs( ~ MONTHSA + WAVE, data = cccu_complete1)
 crosstabs( ~ rel_dur_years + WAVE, data = cccu_complete1)
 ```
 
 Now we combine years and months to one variable rel_dur (in months).
 ```{r}
 cccu_complete1 <- cccu_complete1 %>%
-  mutate(rel_dur = rel_dur_years + rel_dur_months)
+  mutate(rel_dur = rel_dur_years + rel_dur_months,
+         rel_dur = ifelse(is.na(rel_dur), rel_dur_months, rel_dur))
 
 library(ggplot2)
 qplot(cccu_complete1$rel_dur)
@@ -1009,8 +1011,21 @@ adding six month to rel dur if patnered = still yes
 ```{r}
 
 cccu_complete1 = cccu_complete1 %>%
-  group_by(WAVE) %>%
-  ifelse(partnered == 1, (fill(rel_dur)+6), rel_dur)
+ group_by(CASEID)%>%#t2
+  mutate(rel_dur_lag = lag(rel_dur))%>%
+  mutate(rel_dur = ifelse(rel_dur == 0 & partnered == 1 & WAVE == "t2", (rel_dur_lag+6), rel_dur))%>%#t3
+  mutate(rel_dur_lag = lag(rel_dur))%>%
+  mutate(rel_dur = ifelse(rel_dur == 0 & partnered == 1 & WAVE == "t3", (rel_dur_lag+6), rel_dur))%>%#t4
+  mutate(rel_dur_lag = lag(rel_dur))%>%
+  mutate(rel_dur = ifelse(rel_dur == 0 & partnered == 1 & WAVE == "t4", (rel_dur_lag+6), rel_dur))%>%
+  ungroup()
+
+cccu_complete1 = cccu_complete1 %>%
+mutate(rel_dur = ifelse(is.na(rel_dur), rel_dur_months, rel_dur))
+
+crosstabs( ~ rel_dur + partnered, data = cccu_complete1)
+
+cccu_complete1 %>% select(CASEID, WAVE, rel_dur, rel_dur_lag, partnered) %>% View()
 ```
 
 To incorporate relationship status and relationship duration in one variable we need a factor variable rel_dur_factor that includes five categories:
