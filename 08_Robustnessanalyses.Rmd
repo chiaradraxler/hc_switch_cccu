@@ -24,7 +24,7 @@ library(lme4)
 library(effects)
 ```
 
-#Analysis of Robustness R1
+#3. R1:Analysis of Robustness 1
 
 ##Main Analysis
 
@@ -58,7 +58,7 @@ plot(allEffects(R1_ma_3))
 
 ```
 
-##3.4 Model 4: Controlling for observed selection effects
+###3.4 Model 4: Controlling for observed selection effects
 ```{r}
 R1_ma_4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor, family = binomial, data = cccu_R1)
 
@@ -67,9 +67,65 @@ confint(R1_ma_4, method = "Wald", level = .997)
 plot(allEffects(R1_ma_4))
 ```
 
-## Sub Analysis
+###R1: Average marginal effects
+####m1
+```{r}
 
-##3.2 Model 2: including directly with contraceptive method associated predictors
+#add predicted values
+data_pred<-predictions(R1_ma_1) |> head()
+#contrasts
+cmp <- comparisons(R1_ma_1)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(R1_ma_1)
+summary(ame)
+
+
+```
+
+####m2
+```{r}
+#add predicted values
+predictions(R1_ma_2) |> head()
+#contrasts
+cmp <- comparisons(R1_ma_2)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(R1_ma_2)
+summary(ame)
+```
+
+####m3
+```{r}
+#add predicted values
+predictions(R1_ma_3) |> head()
+#contrasts
+cmp <- comparisons(R1_ma_2)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(R1_ma_2)
+summary(ame)
+```
+
+####m4
+```{r}
+#add predicted values
+predictions(R1_ma_2) |> head()
+#contrasts
+cmp <- comparisons(R1_ma_2)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(R1_ma_2, interactions)
+summary(ame)
+
+```
+
+
+
+
+## R1: Sub Analysis
+
+###3.2 Model 2: including directly with contraceptive method associated predictors
 
 DURATION and satisfaction!
 
@@ -80,14 +136,25 @@ summary(R1_sa_m2)
 confint(R1_sa_m2, method = "Wald", level = .997)
 plot(allEffects(R1_sa_m2))
 ```
+###R1_SA: Average marginal effects
+####sa_m2
+```{r}
+#add predicted values
+predictions(R1_sa_m2) |> head()
+#contrasts
+cmp <- comparisons(R1_sa_m2)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(R1_sa_m2)
+summary(ame)
+```
 
 
-
-#Analysis of Robustness R2
+#4. R2:Analysis of Robustness 2
 
 ##Main Analysis
 
-###3.1 Model 1: basic model
+###4.1 Model 1: basic model
 ```{r}
 R2_ma_1 <- glmer(switch ~ hc + (1| CASEID), family = binomial, data = cccu_R2, control=glmerControl(optimizer="bobyqa"))
 
@@ -98,7 +165,7 @@ plot(allEffects(R2_ma_1))
 ```
 
 
-###3.2 Model 2: including directly with contraceptive method associated predictors
+###4.2 Model 2: including directly with contraceptive method associated predictors
 ```{r}
 R2_ma_2 <- glmer(switch ~ hc*contra_satis + (1| CASEID), family = binomial, data = cccu_R2, control=glmerControl(optimizer="bobyqa"))
 
@@ -107,7 +174,7 @@ confint(R2_ma_2, method = "Wald", level = .997)
 plot(allEffects(R2_ma_2))
 ```
 
-###3.3 Model 3: including not directly with contraceptive method associated predictors
+###4.3 Model 3: including not directly with contraceptive method associated predictors
 ```{r}
 R2_ma_3 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + (1| CASEID), family = binomial, data = cccu_R2, control=glmerControl(optimizer="bobyqa"))
 
@@ -117,7 +184,7 @@ plot(allEffects(R2_ma_3))
 
 ```
 
-##3.4 Model 4: Controlling for observed selection effects
+###4.4 Model 4: Controlling for observed selection effects
 ```{r}
 R2_ma_4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor, family = binomial, data = cccu_R2)
 
@@ -126,9 +193,64 @@ confint(R2_ma_4, method = "Wald", level = .997)
 plot(allEffects(R2_ma_4))
 ```
 
+###R2: Average marginal effects
+####m1
+```{r}
+
+#add predicted values
+data_pred<-predictions(R2_ma_1) |> head()
+#contrasts
+cmp <- comparisons(R2_ma_1)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(R2_ma_1)
+summary(ame)
+
+
+```
+
+####m2
+```{r}
+#add predicted values
+predictions(R2_ma_2) |> head()
+#contrasts
+cmp <- comparisons(R2_ma_2)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(R2_ma_2)
+summary(ame)
+```
+
+####m3
+```{r}
+#add predicted values
+predictions(R2_ma_3) |> head()
+#contrasts
+cmp <- comparisons(R2_ma_2)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(R2_ma_2)
+summary(ame)
+```
+
+####m4
+```{r}
+#add predicted values
+predictions(R2_ma_2) |> head()
+#contrasts
+cmp <- comparisons(R2_ma_2)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(R2_ma_2, interactions)
+summary(ame)
+
+```
+
+
+
 ## Sub Analysis
 
-##3.2 Model 2: including directly with contraceptive method associated predictors
+###4.2 Model 2: including directly with contraceptive method associated predictors
 
 DURATION and satisfaction!
 
@@ -141,11 +263,26 @@ plot(allEffects(R2_sa_m2))
 ```
 
 
-#Analysis of Robustness R3
+###R2_SA: Average marginal effects
+####sa_m2
+```{r}
+#add predicted values
+predictions(R2_sa_m2) |> head()
+#contrasts
+cmp <- comparisons(R2_sa_m2)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(R2_sa_m2)
+summary(ame)
+```
+
+
+
+#5. Analysis of Robustness R3
 
 ##Main Analysis
 
-###3.1 Model 1: basic model
+###5.1 Model 1: basic model
 ```{r}
 R3_ma_1 <- glmer(switch ~ hc + (1| CASEID), family = binomial, data = cccu_R3, control=glmerControl(optimizer="bobyqa"))
 
@@ -156,7 +293,7 @@ plot(allEffects(R3_ma_1))
 ```
 
 
-###3.2 Model 2: including directly with contraceptive method associated predictors
+###5.2 Model 2: including directly with contraceptive method associated predictors
 ```{r}
 R3_ma_2 <- glmer(switch ~ hc*contra_satis + (1| CASEID), family = binomial, data = cccu_R3, control=glmerControl(optimizer="bobyqa"))
 
@@ -165,7 +302,7 @@ confint(R3_ma_2, method = "Wald", level = .997)
 plot(allEffects(R3_ma_2))
 ```
 
-###3.3 Model 3: including not directly with contraceptive method associated predictors
+###5.3 Model 3: including not directly with contraceptive method associated predictors
 ```{r}
 R3_ma_3 <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + (1| CASEID), family = binomial, data = cccu_R3, control=glmerControl(optimizer="bobyqa"))
 
@@ -175,7 +312,7 @@ plot(allEffects(R3_ma_3))
 
 ```
 
-##3.4 Model 4: Controlling for observed selection effects
+###5.4 Model 4: Controlling for observed selection effects
 ```{r}
 R3_ma_4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor, family = binomial, data = cccu_R3)
 
@@ -184,9 +321,65 @@ confint(R3_ma_4, method = "Wald", level = .997)
 plot(allEffects(R3_ma_4))
 ```
 
+###R3: Average marginal effects
+####m1
+```{r}
+
+#add predicted values
+data_pred<-predictions(R3_ma_1) |> head()
+#contrasts
+cmp <- comparisons(R3_ma_1)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(R3_ma_1)
+summary(ame)
+
+
+```
+
+####m2
+```{r}
+#add predicted values
+predictions(R3_ma_2) |> head()
+#contrasts
+cmp <- comparisons(R3_ma_2)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(R3_ma_2)
+summary(ame)
+```
+
+####m3
+```{r}
+#add predicted values
+predictions(R3_ma_3) |> head()
+#contrasts
+cmp <- comparisons(R3_ma_2)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(R3_ma_2)
+summary(ame)
+```
+
+####m4
+```{r}
+#add predicted values
+predictions(R3_ma_2) |> head()
+#contrasts
+cmp <- comparisons(R3_ma_2)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(R3_ma_2, interactions)
+summary(ame)
+
+```
+
+
+
+
 ## Sub Analysis
 
-##3.2 Model 2: including directly with contraceptive method associated predictors
+##5.2 Model 2: including directly with contraceptive method associated predictors
 
 DURATION and satisfaction!
 
@@ -199,3 +392,16 @@ plot(allEffects(R3_sa_m2))
 
 ```
 
+
+###R3_SA: Average marginal effects
+####sa_m2
+```{r}
+#add predicted values
+predictions(R3_sa_m2) |> head()
+#contrasts
+cmp <- comparisons(R3_sa_m2)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(R3_sa_m2)
+summary(ame)
+```

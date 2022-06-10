@@ -43,7 +43,7 @@ confint(sa_m3, method = "Wald", level = .997)
 plot(allEffects(sa_m3))
 ```
 
-#model 4 as linear model (bc did not converge otherwise)
+##3.4 Model 4: Controlling for observed selection effects
 ```{r}
 #repeating model 3 as linear model 
 sa_m3 <- glm(switch ~ contra_satis* hc_dur  +  sexual_satisfaction +  sex_freq, family = binomial, data = cccu_SA, control=glmerControl(optimizer="bobyqa"))
@@ -52,7 +52,7 @@ summary(sa_m3)
 confint(sa_m3, method = "Wald", level = .997)
 plot(allEffects(sa_m3))
 
-#model 4
+#model 4 as linear model (did not converge otherwise)
 
 sa_m4 <- glm(switch ~ contra_satis*hc_dur +  sexual_satisfaction +   sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
               TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r + FEELPG_recode +
@@ -64,7 +64,47 @@ confint(sa_m4, method = "Wald", level = .997)
 plot(allEffects(sa_m4))
 ```
 
-#Senstivity analysis after m4: controlling for unobserved selection effects
+
+###Average marginal effects
+####m2
+```{r}
+#add predicted values
+predictions(sa_m2) |> head()
+#contrasts
+cmp <- comparisons(sa_m2)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(sa_m2)
+summary(ame)
+```
+
+####m3
+```{r}
+#add predicted values
+predictions(sa_m3) |> head()
+#contrasts
+cmp <- comparisons(sa_m3)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(sa_m3)
+summary(ame)
+```
+
+####m4
+```{r}
+#add predicted values
+predictions(sa_m4) |> head()
+#contrasts
+cmp <- comparisons(sa_m4)
+#average marginal effect
+summary(cmp)
+ame <- marginaleffects(sa_m4)
+summary(ame)
+
+```
+
+
+#4. Senstivity analysis after m4: controlling for unobserved selection effects
 ```{r}
 
 
@@ -80,42 +120,4 @@ evalue(OR(8.861297e-01,rare=FALSE),lo= 7.568679e-01,  hi=1.025526e+00)
 
 ```
 
-
-#Average marginal effects
-#m2
-```{r}
-#add predicted values
-predictions(sa_m2) |> head()
-#contrasts
-cmp <- comparisons(sa_m2)
-#average marginal effect
-summary(cmp)
-ame <- marginaleffects(sa_m2)
-summary(ame)
-```
-
-#m3
-```{r}
-#add predicted values
-predictions(sa_m3) |> head()
-#contrasts
-cmp <- comparisons(sa_m3)
-#average marginal effect
-summary(cmp)
-ame <- marginaleffects(sa_m3)
-summary(ame)
-```
-
-#m4
-```{r}
-#add predicted values
-predictions(sa_m4) |> head()
-#contrasts
-cmp <- comparisons(sa_m4)
-#average marginal effect
-summary(cmp)
-ame <- marginaleffects(sa_m4)
-summary(ame)
-
-```
 

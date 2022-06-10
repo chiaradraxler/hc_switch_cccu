@@ -22,6 +22,8 @@ library(dplyr)
 library(tidyverse)
 library(patchwork)
 library(marginaleffects)
+
+options(scipen=999)
 ```
 
 #3. Models
@@ -79,36 +81,11 @@ confint(m4, method = "Wald", level = .997)
 plot(allEffects(m4))
 ```
 
-#Senstivity analysis after m4: controlling for unobserved selection effects
+
+
+###Average marginal effects
+####m1
 ```{r}
-
-
-exp(m4$coefficients)
-exp(confint(m4, method = "Wald", level = .997))
-
-
-#sensitivity analysis for contra_satis
-evalue(OR(5.629007e-01,rare=FALSE),lo= 4.379552e-01,  hi=6.702586e-01)
-
-#for interaction hc:contra_satis
-evalue(OR(1.418598e+00,rare=FALSE),lo= 8.901014e-01,  hi=2.289899e+00)
-```
-
-
-#Average marginal effects
-#m1
-##predict values
-```{r}
-
-
-
-#grid = cccu_MA %>%
-  data_grid(hc)
-
-#data_pred = add_epred_draws(grid, m1,
-                #   value = "E[y|A,B]",
-                 #  ndraws = 1000)
-
 
 #add predicted values
 data_pred<-predictions(m1) |> head()
@@ -122,7 +99,7 @@ summary(ame)
 
 ```
 
-#m2
+####m2
 ```{r}
 #add predicted values
 predictions(m2) |> head()
@@ -134,7 +111,7 @@ ame <- marginaleffects(m2)
 summary(ame)
 ```
 
-#m3
+####m3
 ```{r}
 #add predicted values
 predictions(m3) |> head()
@@ -146,7 +123,7 @@ ame <- marginaleffects(m3)
 summary(ame)
 ```
 
-#m4
+####m4
 ```{r}
 #add predicted values
 predictions(m4) |> head()
@@ -154,9 +131,28 @@ predictions(m4) |> head()
 cmp <- comparisons(m4)
 #average marginal effect
 summary(cmp)
-ame <- marginaleffects(m4)
+ame <- marginaleffects(m4, interactions)
 summary(ame)
 
+```
+
+
+
+
+
+#4. Senstivity analysis after m4: controlling for unobserved selection effects
+```{r}
+
+
+exp(m4$coefficients)
+exp(confint(m4, method = "Wald", level = .997))
+
+
+#sensitivity analysis for contra_satis
+evalue(OR(5.629007e-01,rare=FALSE),lo= 4.379552e-01,  hi=6.702586e-01)
+
+#for interaction hc:contra_satis
+evalue(OR(1.418598e+00,rare=FALSE),lo= 8.901014e-01,  hi=2.289899e+00)
 ```
 
 
