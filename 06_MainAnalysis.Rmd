@@ -109,6 +109,20 @@ cmp <- comparisons(m2)
 summary(cmp)
 ame <- marginaleffects(m2)
 summary(ame)
+
+m2_hc_only <- glmer(switch ~ contra_satis + (1| CASEID),
+                    family = binomial,
+                    data = cccu_MA %>% filter(hc == "hc"),
+                    control=glmerControl(optimizer="bobyqa"))
+ame <- marginaleffects(m2_hc_only)
+summary(ame)
+
+m2_nonhc_only <- glmer(switch ~ contra_satis + (1| CASEID),
+                    family = binomial,
+                    data = cccu_MA %>% filter(hc == "non_hc"),
+                    control=glmerControl(optimizer="bobyqa"))
+ame <- marginaleffects(m2_nonhc_only)
+summary(ame)
 ```
 
 ####m3
@@ -121,6 +135,23 @@ cmp <- comparisons(m3)
 summary(cmp)
 ame <- marginaleffects(m3)
 summary(ame)
+
+m3_hc_only <- glmer(switch ~ contra_satis + sexual_satisfaction + sex_freq + 
+                      (1| CASEID),
+                    family = binomial,
+                    data = cccu_MA %>% filter(hc == "hc"),
+                    control=glmerControl(optimizer="bobyqa"))
+ame <- marginaleffects(m3_hc_only)
+summary(ame)
+
+
+m3_nonhc_only <- glmer(switch ~ contra_satis + sexual_satisfaction + sex_freq + 
+                      (1| CASEID),
+                    family = binomial,
+                    data = cccu_MA %>% filter(hc == "non_hc"),
+                    control=glmerControl(optimizer="bobyqa"))
+ame <- marginaleffects(m3_nonhc_only)
+summary(ame)
 ```
 
 ####m4
@@ -131,9 +162,32 @@ predictions(m4) |> head()
 cmp <- comparisons(m4)
 #average marginal effect
 summary(cmp)
-ame <- marginaleffects(m4, interactions)
+ame <- marginaleffects(m4)
 summary(ame)
 
+m4_hc_only <- glm(switch ~ contra_satis + sexual_satisfaction +  sex_freq +
+                    AGE + DEGREE_recode + POVRATE +
+                    HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+                    TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+                    had_baby_between_waves + Avoid_r + FEELPG_recode +
+                    rel_dur_factor,
+            family = binomial,
+            data = cccu_MA %>% filter(hc == "hc"))
+
+ame <- marginaleffects(m4_hc_only)
+summary(ame)
+
+m4_nonhc_only <- glm(switch ~ contra_satis + sexual_satisfaction +  sex_freq +
+                    AGE + DEGREE_recode + POVRATE +
+                    HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+                    TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+                    had_baby_between_waves + Avoid_r + FEELPG_recode +
+                    rel_dur_factor,
+            family = binomial,
+            data = cccu_MA %>% filter(hc == "non_hc"))
+
+ame <- marginaleffects(m4_nonhc_only)
+summary(ame)
 ```
 
 
