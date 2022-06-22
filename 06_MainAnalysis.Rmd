@@ -196,8 +196,35 @@ summary(ame)
 
 #4. Senstivity analysis after m4: controlling for unobserved selection effects
 ```{r}
+length(unique(cccu_MA$CASEID))
 
 
+cccu_MA_sens = cccu_MA %>%
+  group_by(CASEID) %>%
+  arrange(WAVE) %>%
+  mutate(count = row_number()) %>%
+  ungroup()
+
+cccu_MA_sens = cccu_MA_sens %>%
+  filter(count == 1)
+
+
+m3_lm = glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq,
+          family = binomial,
+          data = cccu_MA_sens)
+summary(m3_lm)
+
+m4_lm = glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq + hc *AGE + hc *DEGREE_recode +
+              hc *POVRATE +
+              hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode +
+              hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r +
+              hc *FEELPG_recode +
+              hc *rel_dur_factor,
+            family = binomial,
+            data = cccu_MA_sens)
+summary(m4_lm)
+
+table(cccu_MA_sens$WAVE)
 exp(m4$coefficients)
 exp(confint(m4, method = "Wald", level = .997))
 
