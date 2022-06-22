@@ -45,60 +45,62 @@ plot(allEffects(sa_m3))
 
 ##3.4 Model 4: Controlling for observed selection effects
 ```{r}
-#repeating model 3 as linear model 
-sa_m3 <- glm(switch ~ contra_satis* hc_dur  +  sexual_satisfaction +  sex_freq, family = binomial, data = cccu_SA, control=glmerControl(optimizer="bobyqa"))
+#filter for first measurement occasion
+length(unique(cccu_SA$CASEID))
 
-summary(sa_m3)
-confint(sa_m3, method = "Wald", level = .997)
-plot(allEffects(sa_m3))
+
+cccu_SA_sens = cccu_SA %>%
+  group_by(CASEID) %>%
+  arrange(WAVE) %>%
+  mutate(count = row_number()) %>%
+  ungroup()
+
+cccu_SA_sens = cccu_MS_sens %>%
+  filter(count == 1)
+
+table(cccu_SA_sens$WAVE)
+
+
+#repeating model 3 as linear model 
+sa_m3_lm <- glm(switch ~ contra_satis* hc_dur  +  sexual_satisfaction +  sex_freq, family = binomial, data = cccu_SA_sens)
+
+summary(sa_m3_lm)
+confint(sa_m3_lm, method = "Wald", level = .997)
+plot(allEffects(sa_m3_lm))
 
 #model 4 as linear model (did not converge otherwise)
 
-sa_m4 <- glm(switch ~ contra_satis*hc_dur +  sexual_satisfaction +   sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
+sa_m4_lm <- glm(switch ~ contra_satis*hc_dur +  sexual_satisfaction +   sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
               TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r + FEELPG_recode +
               rel_dur_factor,
             family = binomial,
-            data = cccu_SA)
-summary(sa_m4)
-confint(sa_m4, method = "Wald", level = .997)
-plot(allEffects(sa_m4))
+            data = cccu_SA_sens)
+
+summary(sa_m4_lm)
+confint(sa_m4_lm, method = "Wald", level = .997)
+plot(allEffects(sa_m4_lm))
 ```
 
 
 ###Average marginal effects
 ####m2
 ```{r}
-#add predicted values
-predictions(sa_m2) |> head()
-#contrasts
-cmp <- comparisons(sa_m2)
 #average marginal effect
-summary(cmp)
 ame <- marginaleffects(sa_m2)
 summary(ame)
 ```
 
 ####m3
 ```{r}
-#add predicted values
-predictions(sa_m3) |> head()
-#contrasts
-cmp <- comparisons(sa_m3)
 #average marginal effect
-summary(cmp)
 ame <- marginaleffects(sa_m3)
 summary(ame)
 ```
 
 ####m4
 ```{r}
-#add predicted values
-predictions(sa_m4) |> head()
-#contrasts
-cmp <- comparisons(sa_m4)
 #average marginal effect
-summary(cmp)
-ame <- marginaleffects(sa_m4)
+ame <- marginaleffects(sa_m4_lm)
 summary(ame)
 
 ```
@@ -106,17 +108,32 @@ summary(ame)
 
 #4. Senstivity analysis after m4: controlling for unobserved selection effects
 ```{r}
+#repeat models first
+
+summary(sa_m3_lm)
+
+summary(sa_m4_lm)
+
+##compute OR and CI first
+
+#model 3 to compare e-value for unobserved / observed confounders
+exp(sa_m3_lm$coefficients)
+exp(confint(sa_m3_lm, method = "Wald", level = .997))
+
+#model 4
+exp(sa_m4_lm$coefficients)
+exp(confint(sa_m4_lm, method = "Wald", level = .997))
 
 
-exp(sa_m4$coefficients)
-exp(confint(sa_m4, method = "Wald", level = .997))
+#compute e-values
+
+#model 3
 
 
-#sensitivity analysis for contra_satis
-evalue(OR(4.977703e-01,rare=FALSE),lo= 3.259269e-01,  hi=7.548503e-01)
 
-#sensitivity analysis for hc_dur
-evalue(OR(8.861297e-01,rare=FALSE),lo= 7.568679e-01,  hi=1.025526e+00)
+#model 4
+
+
 
 ```
 

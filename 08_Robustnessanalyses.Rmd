@@ -139,12 +139,7 @@ plot(allEffects(R1_sa_m2))
 ###R1_SA: Average marginal effects
 ####sa_m2
 ```{r}
-#add predicted values
-predictions(R1_sa_m2) |> head()
-#contrasts
-cmp <- comparisons(R1_sa_m2)
 #average marginal effect
-summary(cmp)
 ame <- marginaleffects(R1_sa_m2)
 summary(ame)
 ```
@@ -266,12 +261,7 @@ plot(allEffects(R2_sa_m2))
 ###R2_SA: Average marginal effects
 ####sa_m2
 ```{r}
-#add predicted values
-predictions(R2_sa_m2) |> head()
-#contrasts
-cmp <- comparisons(R2_sa_m2)
 #average marginal effect
-summary(cmp)
 ame <- marginaleffects(R2_sa_m2)
 summary(ame)
 ```
@@ -396,12 +386,7 @@ plot(allEffects(R3_sa_m2))
 ###R3_SA: Average marginal effects
 ####sa_m2
 ```{r}
-#add predicted values
-predictions(R3_sa_m2) |> head()
-#contrasts
-cmp <- comparisons(R3_sa_m2)
 #average marginal effect
-summary(cmp)
 ame <- marginaleffects(R3_sa_m2)
 summary(ame)
 ```

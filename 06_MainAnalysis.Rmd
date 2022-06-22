@@ -61,24 +61,42 @@ plot(allEffects(m3))
 
 ##3.4 Model 4: Controlling for observed selection effects
 ```{r}
-#repeat model 3 for sensitivity analysis
-m3 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq,
+
+#filter for first measurement occasion
+length(unique(cccu_MA$CASEID))
+
+
+cccu_MA_sens = cccu_MA %>%
+  group_by(CASEID) %>%
+  arrange(WAVE) %>%
+  mutate(count = row_number()) %>%
+  ungroup()
+
+cccu_MA_sens = cccu_MA_sens %>%
+  filter(count == 1)
+
+table(cccu_MA_sens$WAVE)
+
+#repeat model 3 for sensitivity analyses
+m3_lm = glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq,
           family = binomial,
-          data = cccu_MA)
-summary(m3)
-plot(allEffects(m3))
+          data = cccu_MA_sens)
+summary(m3_lm)
 
-#model 4 as linear model (bc did not converge otherwise)
-
-m4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE +
+m4_lm = glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq + hc *AGE + hc *DEGREE_recode +
+              hc *POVRATE +
               hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode +
-              hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode +
+              hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r +
+              hc *FEELPG_recode +
               hc *rel_dur_factor,
             family = binomial,
-            data = cccu_MA)
-summary(m4)
-confint(m4, method = "Wald", level = .997)
-plot(allEffects(m4))
+            data = cccu_MA_sens)
+summary(m4_lm)
+
+
+
+confint(m4_lm, method = "Wald", level = .997)
+plot(allEffects(m4_lm))
 ```
 
 
@@ -156,13 +174,15 @@ summary(ame)
 
 ####m4
 ```{r}
-#add predicted values
-predictions(m4) |> head()
-#contrasts
-cmp <- comparisons(m4)
+
 #average marginal effect
-summary(cmp)
-ame <- marginaleffects(m4)
+
+#model 3 lm
+ame <- marginaleffects(m3_lm)
+summary(ame)
+
+#model 4
+ame <- marginaleffects(m4_lm)
 summary(ame)
 
 m4_hc_only <- glm(switch ~ contra_satis + sexual_satisfaction +  sex_freq +
@@ -172,7 +192,7 @@ m4_hc_only <- glm(switch ~ contra_satis + sexual_satisfaction +  sex_freq +
                     had_baby_between_waves + Avoid_r + FEELPG_recode +
                     rel_dur_factor,
             family = binomial,
-            data = cccu_MA %>% filter(hc == "hc"))
+            data = cccu_MA_sens %>% filter(hc == "hc"))
 
 ame <- marginaleffects(m4_hc_only)
 summary(ame)
@@ -184,56 +204,55 @@ m4_nonhc_only <- glm(switch ~ contra_satis + sexual_satisfaction +  sex_freq +
                     had_baby_between_waves + Avoid_r + FEELPG_recode +
                     rel_dur_factor,
             family = binomial,
-            data = cccu_MA %>% filter(hc == "non_hc"))
+            data = cccu_MA_sens %>% filter(hc == "non_hc"))
 
 ame <- marginaleffects(m4_nonhc_only)
 summary(ame)
 ```
 
 
-
-
-
 #4. Senstivity analysis after m4: controlling for unobserved selection effects
 ```{r}
-length(unique(cccu_MA$CASEID))
+#repeat models first
 
-
-cccu_MA_sens = cccu_MA %>%
-  group_by(CASEID) %>%
-  arrange(WAVE) %>%
-  mutate(count = row_number()) %>%
-  ungroup()
-
-cccu_MA_sens = cccu_MA_sens %>%
-  filter(count == 1)
-
-
-m3_lm = glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq,
-          family = binomial,
-          data = cccu_MA_sens)
 summary(m3_lm)
 
-m4_lm = glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq + hc *AGE + hc *DEGREE_recode +
-              hc *POVRATE +
-              hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode +
-              hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r +
-              hc *FEELPG_recode +
-              hc *rel_dur_factor,
-            family = binomial,
-            data = cccu_MA_sens)
 summary(m4_lm)
 
-table(cccu_MA_sens$WAVE)
-exp(m4$coefficients)
-exp(confint(m4, method = "Wald", level = .997))
+##compute OR and CI first
+
+#model 3 to compare e-value for unobserved / observed confounders
+exp(m3_lm$coefficients)
+exp(confint(m3_lm, method = "Wald", level = .997))
+
+#model 4
+exp(m4_lm$coefficients)
+exp(confint(m4_lm, method = "Wald", level = .997))
 
 
-#sensitivity analysis for contra_satis
-evalue(OR(5.629007e-01,rare=FALSE),lo= 4.379552e-01,  hi=6.702586e-01)
+#compute e-values
 
-#for interaction hc:contra_satis
-evalue(OR(1.418598e+00,rare=FALSE),lo= 8.901014e-01,  hi=2.289899e+00)
+#model 3
+
+#for hc vs. non-hc 
+evalue(OR(0.05881423,rare=FALSE),lo= 0.0038230611,  hi=0.7217084)
+
+#for contra_satis
+evalue(OR(0.53722164,rare=FALSE),lo= 0.392258135,  hi=0.7352011)
+
+#hc:contra_satis
+evalue(OR(1.65072757,rare=FALSE),lo= 0.949608761,  hi=2.9511087)
+
+#model 4
+#for hc vs. non-hc 
+evalue(OR(0.1305422699437,rare=FALSE),lo=,  hi=)
+
+#for contra_satis
+evalue(OR(0.5539576142243,rare=FALSE),lo= ,  hi=)
+
+#hc:contra_satis
+evalue(OR(1.3873215961381,rare=FALSE),lo= ,  hi=)
+
 ```
 
 
