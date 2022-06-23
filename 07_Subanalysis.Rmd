@@ -8,13 +8,23 @@ output: html_document
 ```{r}
 
 load("cccu_SA.RData")
+length(unique(cccu_SA$CASEID)) #women
 ```
 
 
 #2. Load Packages
 ```{r}
 library(lme4)
+library(marginaleffects)
+library(formr)
 library(effects)
+library(EValue)
+library(psych)
+library(dplyr)
+library(tidyverse)
+library(marginaleffects)
+
+options(scipen=999)
 ```
 
 
@@ -55,7 +65,7 @@ cccu_SA_sens = cccu_SA %>%
   mutate(count = row_number()) %>%
   ungroup()
 
-cccu_SA_sens = cccu_MS_sens %>%
+cccu_SA_sens = cccu_SA_sens %>%
   filter(count == 1)
 
 table(cccu_SA_sens$WAVE)
@@ -100,6 +110,9 @@ summary(ame)
 ####m4
 ```{r}
 #average marginal effect
+
+ame <- marginaleffects(sa_m3_lm)
+summary(ame)
 ame <- marginaleffects(sa_m4_lm)
 summary(ame)
 
@@ -127,13 +140,15 @@ exp(confint(sa_m4_lm, method = "Wald", level = .997))
 
 #compute e-values
 
-#model 3
+#contraceptive satisfaction
 
+#model 3
+evalue(OR(0.5106508,rare=FALSE),lo= 0.3057875,  hi=0.8386828)
 
 
 #model 4
 
-
+evalue(OR(0.4827577906766,rare=FALSE),lo=0.280838541084514781154268803220475092530250549316406250 ,  hi=0.8191834098031136601747448366950266063213348388671875)
 
 ```
 

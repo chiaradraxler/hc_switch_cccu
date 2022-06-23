@@ -227,7 +227,7 @@ exp(confint(m3_lm, method = "Wald", level = .997))
 
 #model 4
 exp(m4_lm$coefficients)
-exp(confint(m4_lm, method = "Wald", level = .997))
+exp(confint(m4_lm, method = "boot", level = .997))
 
 
 #compute e-values

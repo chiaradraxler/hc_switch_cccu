@@ -21,7 +21,7 @@ load("cccu_R3_s.RData")
 #2. Load Packages
 ```{r}
 library(lme4)
-library(effects)
+library(marginaleffects)
 ```
 
 #3. R1:Analysis of Robustness 1
@@ -136,13 +136,90 @@ summary(R1_sa_m2)
 confint(R1_sa_m2, method = "Wald", level = .997)
 plot(allEffects(R1_sa_m2))
 ```
+
+
+###3.3 Model 3: including directly with contraceptive method associated predictors
+
+DURATION and satisfaction!
+
+```{r}
+R1_sa_m3 <- glmer(switch ~ contra_satis * hc_dur + +  sexual_satisfaction +  sex_freq (1| CASEID), family = binomial, data = cccu_R1_s, control=glmerControl(optimizer="bobyqa"))
+
+summary(R1_sa_m3)
+confint(R1_sa_m3, method = "Wald", level = .997)
+plot(allEffects(R1_sa_m3))
+```
+
+###3.3 Model 4: including directly with contraceptive method associated predictors
+
+DURATION and satisfaction!
+
+```{r}
+
+#filter for first measurement occasion
+length(unique(cccu_R1_s$CASEID))
+
+
+cccu_R1_SA_sens = cccu_R1_s %>%
+  group_by(CASEID) %>%
+  arrange(WAVE) %>%
+  mutate(count = row_number()) %>%
+  ungroup()
+
+cccu_R1_SA_sens = cccu_R1_SA_sens %>%
+  filter(count == 1)
+
+table(cccu_R1_SA_sens$WAVE)
+
+#repeating model 3 as linear model 
+R1_sa_m3_lm <- glm(switch ~ contra_satis* hc_dur  +  sexual_satisfaction +  sex_freq, family = binomial, data = cccu_R1_SA_sens)
+
+summary(R1_sa_m3_lm)
+confint(R1_sa_m3_lm, method = "Wald", level = .997)
+plot(allEffects(R1_sa_m3_lm))
+
+#model 4 as linear model (did not converge otherwise)
+
+R1_sa_m4_lm <- glm(switch ~ contra_satis*hc_dur +  sexual_satisfaction +   sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
+              TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r + FEELPG_recode +
+              rel_dur_factor,
+            family = binomial,
+            data = cccu_R1_SA_sens)
+
+summary(R1_sa_m4_lm)
+confint(R1_sa_m4_lm, method = "Wald", level = .997)
+plot(allEffects(R1_sa_m4_lm))
+```
+
 ###R1_SA: Average marginal effects
+
+
 ####sa_m2
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R1_sa_m2)
 summary(ame)
 ```
+
+####sa_m3
+```{r}
+#average marginal effect
+ame <- marginaleffects(R1_sa_m3)
+summary(ame)
+```
+
+####sa_m4
+```{r}
+#average marginal effect
+ame <- marginaleffects(R1_sa_m3_lm)
+summary(ame)
+
+#average marginal effect
+ame <- marginaleffects(R1_sa_m4_lm)
+summary(ame)
+```
+
+
 
 
 #4. R2:Analysis of Robustness 2
@@ -243,9 +320,9 @@ summary(ame)
 
 
 
-## Sub Analysis
+## R2: Sub Analysis
 
-###4.2 Model 2: including directly with contraceptive method associated predictors
+###3.2 Model 2: including directly with contraceptive method associated predictors
 
 DURATION and satisfaction!
 
@@ -258,13 +335,88 @@ plot(allEffects(R2_sa_m2))
 ```
 
 
+###3.3 Model 3: including directly with contraceptive method associated predictors
+
+DURATION and satisfaction!
+
+```{r}
+R2_sa_m3 <- glmer(switch ~ contra_satis * hc_dur + +  sexual_satisfaction +  sex_freq (1| CASEID), family = binomial, data = cccu_R2_s, control=glmerControl(optimizer="bobyqa"))
+
+summary(R2_sa_m3)
+confint(R2_sa_m3, method = "Wald", level = .997)
+plot(allEffects(R2_sa_m3))
+```
+
+###3.3 Model 4: including directly with contraceptive method associated predictors
+
+DURATION and satisfaction!
+
+```{r}
+
+#filter for first measurement occasion
+length(unique(cccu_R2_s$CASEID))
+
+
+cccu_R2_SA_sens = cccu_R2_s %>%
+  group_by(CASEID) %>%
+  arrange(WAVE) %>%
+  mutate(count = row_number()) %>%
+  ungroup()
+
+cccu_R2_SA_sens = cccu_R2_SA_sens %>%
+  filter(count == 1)
+
+table(cccu_R2_SA_sens$WAVE)
+
+#repeating model 3 as linear model 
+R2_sa_m3_lm <- glm(switch ~ contra_satis* hc_dur  +  sexual_satisfaction +  sex_freq, family = binomial, data = cccu_R2_SA_sens)
+
+summary(R2_sa_m3_lm)
+confint(R2_sa_m3_lm, method = "Wald", level = .997)
+plot(allEffects(R2_sa_m3_lm))
+
+#model 4 as linear model (did not converge otherwise)
+
+R2_sa_m4_lm <- glm(switch ~ contra_satis*hc_dur +  sexual_satisfaction +   sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
+              TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r + FEELPG_recode +
+              rel_dur_factor,
+            family = binomial,
+            data = cccu_R2_SA_sens)
+
+summary(R2_sa_m4_lm)
+confint(R2_sa_m4_lm, method = "Wald", level = .997)
+plot(allEffects(R2_sa_m4_lm))
+```
+
 ###R2_SA: Average marginal effects
+
+
 ####sa_m2
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R2_sa_m2)
 summary(ame)
 ```
+
+####sa_m3
+```{r}
+#average marginal effect
+ame <- marginaleffects(R2_sa_m3)
+summary(ame)
+```
+
+####sa_m4
+```{r}
+#average marginal effect
+ame <- marginaleffects(R2_sa_m3_lm)
+summary(ame)
+
+#average marginal effect
+ame <- marginaleffects(R2_sa_m4_lm)
+summary(ame)
+```
+
+
 
 
 
@@ -369,7 +521,7 @@ summary(ame)
 
 ## Sub Analysis
 
-##5.2 Model 2: including directly with contraceptive method associated predictors
+###3.2 Model 2: including directly with contraceptive method associated predictors
 
 DURATION and satisfaction!
 
@@ -379,14 +531,86 @@ R3_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1| CASEID), family = binomia
 summary(R3_sa_m2)
 confint(R3_sa_m2, method = "Wald", level = .997)
 plot(allEffects(R3_sa_m2))
-
 ```
 
 
+###3.3 Model 3: including directly with contraceptive method associated predictors
+
+DURATION and satisfaction!
+
+```{r}
+R3_sa_m3 <- glmer(switch ~ contra_satis * hc_dur + +  sexual_satisfaction +  sex_freq (1| CASEID), family = binomial, data = cccu_R3_s, control=glmerControl(optimizer="bobyqa"))
+
+summary(R3_sa_m3)
+confint(R3_sa_m3, method = "Wald", level = .997)
+plot(allEffects(R3_sa_m3))
+```
+
+###3.3 Model 4: including directly with contraceptive method associated predictors
+
+DURATION and satisfaction!
+
+```{r}
+
+#filter for first measurement occasion
+length(unique(cccu_R3_s$CASEID))
+
+
+cccu_R3_SA_sens = cccu_R3_s %>%
+  group_by(CASEID) %>%
+  arrange(WAVE) %>%
+  mutate(count = row_number()) %>%
+  ungroup()
+
+cccu_R3_SA_sens = cccu_R3_SA_sens %>%
+  filter(count == 1)
+
+table(cccu_R3_SA_sens$WAVE)
+
+#repeating model 3 as linear model 
+R3_sa_m3_lm <- glm(switch ~ contra_satis* hc_dur  +  sexual_satisfaction +  sex_freq, family = binomial, data = cccu_R3_SA_sens)
+
+summary(R3_sa_m3_lm)
+confint(R3_sa_m3_lm, method = "Wald", level = .997)
+plot(allEffects(R3_sa_m3_lm))
+
+#model 4 as linear model (did not converge otherwise)
+
+R3_sa_m4_lm <- glm(switch ~ contra_satis*hc_dur +  sexual_satisfaction +   sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
+              TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r + FEELPG_recode +
+              rel_dur_factor,
+            family = binomial,
+            data = cccu_R3_SA_sens)
+
+summary(R3_sa_m4_lm)
+confint(R3_sa_m4_lm, method = "Wald", level = .997)
+plot(allEffects(R3_sa_m4_lm))
+```
+
 ###R3_SA: Average marginal effects
+
+
 ####sa_m2
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R3_sa_m2)
+summary(ame)
+```
+
+####sa_m3
+```{r}
+#average marginal effect
+ame <- marginaleffects(R3_sa_m3)
+summary(ame)
+```
+
+####sa_m4
+```{r}
+#average marginal effect
+ame <- marginaleffects(R3_sa_m3_lm)
+summary(ame)
+
+#average marginal effect
+ame <- marginaleffects(R3_sa_m4_lm)
 summary(ame)
 ```
