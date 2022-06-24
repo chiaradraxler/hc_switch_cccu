@@ -104,13 +104,7 @@ plot(allEffects(m4_lm))
 ###Average marginal effects
 ####m1
 ```{r}
-
-#add predicted values
-data_pred<-predictions(m1) |> head()
-#contrasts
-cmp <- comparisons(m1)
 #average marginal effect
-summary(cmp)
 ame <- marginaleffects(m1)
 summary(ame)
 
@@ -119,12 +113,7 @@ summary(ame)
 
 ####m2
 ```{r}
-#add predicted values
-predictions(m2) |> head()
-#contrasts
-cmp <- comparisons(m2)
 #average marginal effect
-summary(cmp)
 ame <- marginaleffects(m2)
 summary(ame)
 
@@ -145,12 +134,7 @@ summary(ame)
 
 ####m3
 ```{r}
-#add predicted values
-predictions(m3) |> head()
-#contrasts
-cmp <- comparisons(m3)
 #average marginal effect
-summary(cmp)
 ame <- marginaleffects(m3)
 summary(ame)
 
@@ -227,31 +211,18 @@ exp(confint(m3_lm, method = "Wald", level = .997))
 
 #model 4
 exp(m4_lm$coefficients)
-exp(confint(m4_lm, method = "boot", level = .997))
-
+exp(confint(m4_lm, parm = "contra_satis", method = "Wald", level = .997))
 
 #compute e-values
 
 #model 3
 
-#for hc vs. non-hc 
-evalue(OR(0.05881423,rare=FALSE),lo= 0.0038230611,  hi=0.7217084)
-
 #for contra_satis
 evalue(OR(0.53722164,rare=FALSE),lo= 0.392258135,  hi=0.7352011)
 
-#hc:contra_satis
-evalue(OR(1.65072757,rare=FALSE),lo= 0.949608761,  hi=2.9511087)
-
 #model 4
-#for hc vs. non-hc 
-evalue(OR(0.1305422699437,rare=FALSE),lo=,  hi=)
-
 #for contra_satis
-evalue(OR(0.5539576142243,rare=FALSE),lo= ,  hi=)
-
-#hc:contra_satis
-evalue(OR(1.3873215961381,rare=FALSE),lo= ,  hi=)
+evalue(OR(0.5539576142243,rare=FALSE),lo= 0.3927306,  hi=0.7802013)
 
 ```
 
