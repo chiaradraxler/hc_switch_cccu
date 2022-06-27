@@ -20,8 +20,17 @@ load("cccu_R3_s.RData")
 
 #2. Load Packages
 ```{r}
+library(formr)
+library(effects)
+library(EValue)
 library(lme4)
+library(psych)
+library(dplyr)
+library(tidyverse)
+library(patchwork)
 library(marginaleffects)
+
+options(scipen=999)
 ```
 
 #3. R1:Analysis of Robustness 1
@@ -60,23 +69,71 @@ plot(allEffects(R1_ma_3))
 
 ###3.4 Model 4: Controlling for observed selection effects
 ```{r}
-R1_ma_4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor, family = binomial, data = cccu_R1)
+
+#filter for first measurement occasion
+length(unique(cccu_R1$CASEID))
+
+
+cccu_R1_sens = cccu_R1 %>%
+  group_by(CASEID) %>%
+  arrange(WAVE) %>%
+  mutate(count = row_number()) %>%
+  ungroup()
+
+cccu_R1_sens = cccu_R1_sens %>%
+  filter(count == 1)
+
+table(cccu_R1_sens$WAVE)
+
+#repeat model 3 for sensitivity analyses
+R1_m3_lm = glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq,
+          family = binomial,
+          data = cccu_R1_sens)
+summary(R1_m3_lm)
+
+R1_ma_4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor, family = binomial, data = cccu_R1_sens)
 
 summary(R1_ma_4)
 confint(R1_ma_4, method = "Wald", level = .997)
 plot(allEffects(R1_ma_4))
 ```
+#4. Senstivity analysis after m4: controlling for unobserved selection effects
+```{r}
+#repeat models first
+
+summary(R1_m3_lm)
+
+summary(R1_ma4_lm)
+
+##compute OR and CI first
+
+#model 3 to compare e-value for unobserved / observed confounders
+exp(R1_m3_lm$coefficients)
+exp(confint(R1_m3_lm, parm = "contra_satis", method = "Wald", level = .997))
+
+#model 4
+exp(R1_ma_4$coefficients)
+exp(confint(R1_ma_4, parm = "contra_satis", method = "Wald", level = .997))
+
+#compute e-values
+
+#model 3
+
+#for contra_satis
+evalue(OR(0.5695895,rare=FALSE),lo= 0.4089545,  hi=0.7953670)
+
+#model 4
+#for contra_satis
+evalue(OR(0.5888840955041,rare=FALSE),lo= 0.4093921,  hi=0.8487387)
+
+```
+
 
 ###R1: Average marginal effects
 ####m1
 ```{r}
 
-#add predicted values
-data_pred<-predictions(R1_ma_1) |> head()
-#contrasts
-cmp <- comparisons(R1_ma_1)
 #average marginal effect
-summary(cmp)
 ame <- marginaleffects(R1_ma_1)
 summary(ame)
 
@@ -85,13 +142,24 @@ summary(ame)
 
 ####m2
 ```{r}
-#add predicted values
-predictions(R1_ma_2) |> head()
-#contrasts
-cmp <- comparisons(R1_ma_2)
 #average marginal effect
-summary(cmp)
 ame <- marginaleffects(R1_ma_2)
+summary(ame)
+
+
+
+R1_m2_hc_only <- glmer(switch ~ contra_satis + (1| CASEID),
+                    family = binomial,
+                    data = cccu_R1%>% filter(hc == "hc"),
+                    control=glmerControl(optimizer="bobyqa"))
+ame <- marginaleffects(R1_m2_hc_only)
+summary(ame)
+
+R1_m2_nonhc_only <- glmer(switch ~ contra_satis + (1| CASEID),
+                    family = binomial,
+                    data = cccu_R1 %>% filter(hc == "non_hc"),
+                    control=glmerControl(optimizer="bobyqa"))
+ame <- marginaleffects(R1_m2_nonhc_only)
 summary(ame)
 ```
 
@@ -109,14 +177,34 @@ summary(ame)
 
 ####m4
 ```{r}
-#add predicted values
-predictions(R1_ma_2) |> head()
-#contrasts
-cmp <- comparisons(R1_ma_2)
-#average marginal effect
-summary(cmp)
-ame <- marginaleffects(R1_ma_2, interactions)
+ame <- marginaleffects(R1_ma_4)
 summary(ame)
+
+
+R1_m4_hc_only <- glm(switch ~ contra_satis + sexual_satisfaction +  sex_freq +
+                    AGE + DEGREE_recode + POVRATE +
+                    HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+                    TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+                    had_baby_between_waves + Avoid_r + FEELPG_recode +
+                    rel_dur_factor,
+            family = binomial,
+            data = cccu_R1_sens %>% filter(hc == "hc"))
+
+ame <- marginaleffects(R1_m4_hc_only)
+summary(ame)
+
+R1_m4_nonhc_only <- glm(switch ~ contra_satis + sexual_satisfaction +  sex_freq +
+                    AGE + DEGREE_recode + POVRATE +
+                    HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+                    TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+                    had_baby_between_waves + Avoid_r + FEELPG_recode +
+                    rel_dur_factor,
+            family = binomial,
+            data = cccu_R1_sens %>% filter(hc == "non_hc"))
+
+ame <- marginaleffects(R1_m4_nonhc_only)
+summary(ame)
+
 
 ```
 
@@ -149,6 +237,7 @@ summary(R1_sa_m3)
 confint(R1_sa_m3, method = "Wald", level = .997)
 plot(allEffects(R1_sa_m3))
 ```
+
 
 ###3.3 Model 4: including directly with contraceptive method associated predictors
 
@@ -258,23 +347,75 @@ plot(allEffects(R2_ma_3))
 
 ###4.4 Model 4: Controlling for observed selection effects
 ```{r}
-R2_ma_4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor, family = binomial, data = cccu_R2)
+#filter for first measurement occasion
+length(unique(cccu_R2$CASEID))
+
+
+cccu_R2_sens = cccu_R2 %>%
+  group_by(CASEID) %>%
+  arrange(WAVE) %>%
+  mutate(count = row_number()) %>%
+  ungroup()
+
+cccu_R2_sens = cccu_R2_sens %>%
+  filter(count == 1)
+
+table(cccu_R2_sens$WAVE)
+
+#repeat model 3 for sensitivity analyses
+R2_m3_lm = glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq,
+          family = binomial,
+          data = cccu_R2_sens)
+summary(R2_m3_lm)
+
+R2_ma_4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor, family = binomial, data = cccu_R2_sens)
 
 summary(R2_ma_4)
 confint(R2_ma_4, method = "Wald", level = .997)
 plot(allEffects(R2_ma_4))
 ```
 
+#4. Senstivity analysis after m4: controlling for unobserved selection effects
+```{r}
+#repeat models first
+
+summary(R2_m3_lm)
+
+summary(R2_ma_4)
+
+##compute OR and CI first
+
+#model 3 to compare e-value for unobserved / observed confounders
+exp(R2_m3_lm$coefficients)
+exp(confint(R2_m3_lm, parm = "contra_satis", method = "Wald", level = .997))
+
+#model 4
+exp(R2_ma_4$coefficients)
+exp(confint(R2_ma_4, parm = "contra_satis", method = "Wald", level = .997))
+
+#compute e-values
+
+#model 3
+
+#for contra_satis
+evalue(OR(0.53722164,rare=FALSE),lo= 0.3922581,  hi=0.7352011)
+
+#model 4
+#for contra_satis
+evalue(OR(0.5539576142243,rare=FALSE),lo= 0.3927306,  hi=0.7802013)
+
+```
+
+
+
+
+
+
+
 ###R2: Average marginal effects
 ####m1
 ```{r}
-
-#add predicted values
-data_pred<-predictions(R2_ma_1) |> head()
-#contrasts
-cmp <- comparisons(R2_ma_1)
 #average marginal effect
-summary(cmp)
 ame <- marginaleffects(R2_ma_1)
 summary(ame)
 
@@ -283,37 +424,78 @@ summary(ame)
 
 ####m2
 ```{r}
-#add predicted values
-predictions(R2_ma_2) |> head()
-#contrasts
-cmp <- comparisons(R2_ma_2)
 #average marginal effect
-summary(cmp)
 ame <- marginaleffects(R2_ma_2)
+summary(ame)
+
+R2_m2_hc_only <- glmer(switch ~ contra_satis + (1| CASEID),
+                    family = binomial,
+                    data = cccu_R2%>% filter(hc == "hc"),
+                    control=glmerControl(optimizer="bobyqa"))
+ame <- marginaleffects(R2_m2_hc_only)
+summary(ame)
+
+R2_m2_nonhc_only <- glmer(switch ~ contra_satis + (1| CASEID),
+                    family = binomial,
+                    data = cccu_R2 %>% filter(hc == "non_hc"),
+                    control=glmerControl(optimizer="bobyqa"))
+ame <- marginaleffects(R2_m2_nonhc_only)
 summary(ame)
 ```
 
 ####m3
 ```{r}
-#add predicted values
-predictions(R2_ma_3) |> head()
-#contrasts
-cmp <- comparisons(R2_ma_2)
 #average marginal effect
-summary(cmp)
 ame <- marginaleffects(R2_ma_2)
+summary(ame)
+
+
+R2_m3_hc_only <- glmer(switch ~ contra_satis + sexual_satisfaction + sex_freq + 
+                      (1| CASEID),
+                    family = binomial,
+                    data = cccu_R2 %>% filter(hc == "hc"),
+                    control=glmerControl(optimizer="bobyqa"))
+ame <- marginaleffects(R2_m3_hc_only)
+summary(ame)
+
+
+R2_m3_nonhc_only <- glmer(switch ~ contra_satis + sexual_satisfaction + sex_freq + 
+                      (1| CASEID),
+                    family = binomial,
+                    data = cccu_R2 %>% filter(hc == "non_hc"),
+                    control=glmerControl(optimizer="bobyqa"))
+ame <- marginaleffects(R2_m3_nonhc_only)
 summary(ame)
 ```
 
 ####m4
 ```{r}
-#add predicted values
-predictions(R2_ma_2) |> head()
-#contrasts
-cmp <- comparisons(R2_ma_2)
 #average marginal effect
-summary(cmp)
-ame <- marginaleffects(R2_ma_2, interactions)
+ame <- marginaleffects(R2_ma_4)
+summary(ame)
+
+R2_m4_hc_only <- glm(switch ~ contra_satis + sexual_satisfaction +  sex_freq +
+                    AGE + DEGREE_recode + POVRATE +
+                    HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+                    TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+                    had_baby_between_waves + Avoid_r + FEELPG_recode +
+                    rel_dur_factor,
+            family = binomial,
+            data = cccu_R2_sens %>% filter(hc == "hc"))
+
+ame <- marginaleffects(R2_m4_hc_only)
+summary(ame)
+
+R2_m4_nonhc_only <- glm(switch ~ contra_satis + sexual_satisfaction +  sex_freq +
+                    AGE + DEGREE_recode + POVRATE +
+                    HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+                    TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+                    had_baby_between_waves + Avoid_r + FEELPG_recode +
+                    rel_dur_factor,
+            family = binomial,
+            data = cccu_R2_sens %>% filter(hc == "non_hc"))
+
+ame <- marginaleffects(R2_m4_nonhc_only)
 summary(ame)
 
 ```
@@ -456,23 +638,74 @@ plot(allEffects(R3_ma_3))
 
 ###5.4 Model 4: Controlling for observed selection effects
 ```{r}
-R3_ma_4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor, family = binomial, data = cccu_R3)
+#filter for first measurement occasion
+length(unique(cccu_R3$CASEID))
+
+
+cccu_R3_sens = cccu_R3 %>%
+  group_by(CASEID) %>%
+  arrange(WAVE) %>%
+  mutate(count = row_number()) %>%
+  ungroup()
+
+cccu_R3_sens = cccu_R3_sens %>%
+  filter(count == 1)
+
+table(cccu_R3_sens$WAVE)
+
+#repeat model 3 for sensitivity analyses
+R3_m3_lm = glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq,
+          family = binomial,
+          data = cccu_R3_sens)
+summary(R3_m3_lm)
+
+R3_ma_4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor, family = binomial, data = cccu_R3_sens)
 
 summary(R3_ma_4)
 confint(R3_ma_4, method = "Wald", level = .997)
 plot(allEffects(R3_ma_4))
 ```
 
+#4. Senstivity analysis after m4: controlling for unobserved selection effects
+```{r}
+#repeat models first
+
+summary(R3_m3_lm)
+
+summary(R3_ma_4)
+
+##compute OR and CI first
+
+#model 3 to compare e-value for unobserved / observed confounders
+exp(R3_m3_lm$coefficients)
+exp(confint(R3_m3_lm, parm = "contra_satis", method = "Wald", level = .997))
+
+#model 4
+exp(R3_ma_4$coefficients)
+exp(confint(R3_ma_4, parm = "contra_satis", method = "Wald", level = .997))
+
+#compute e-values
+
+#model 3
+
+#for contra_satis
+evalue(OR(0.53766126,rare=FALSE),lo= 0.3925749,  hi=0.7358179 )
+
+#model 4
+#for contra_satis
+evalue(OR(0.554386751904,rare=FALSE),lo= 0.3930361,  hi=0.7808085)
+
+```
+
+
+
+
+
+
 ###R3: Average marginal effects
 ####m1
 ```{r}
-
-#add predicted values
-data_pred<-predictions(R3_ma_1) |> head()
-#contrasts
-cmp <- comparisons(R3_ma_1)
 #average marginal effect
-summary(cmp)
 ame <- marginaleffects(R3_ma_1)
 summary(ame)
 
@@ -481,38 +714,79 @@ summary(ame)
 
 ####m2
 ```{r}
-#add predicted values
-predictions(R3_ma_2) |> head()
-#contrasts
-cmp <- comparisons(R3_ma_2)
 #average marginal effect
-summary(cmp)
 ame <- marginaleffects(R3_ma_2)
+summary(ame)
+
+
+R3_m2_hc_only <- glmer(switch ~ contra_satis + (1| CASEID),
+                    family = binomial,
+                    data = cccu_R3%>% filter(hc == "hc"),
+                    control=glmerControl(optimizer="bobyqa"))
+ame <- marginaleffects(R3_m2_hc_only)
+summary(ame)
+
+R3_m2_nonhc_only <- glmer(switch ~ contra_satis + (1| CASEID),
+                    family = binomial,
+                    data = cccu_R3 %>% filter(hc == "non_hc"),
+                    control=glmerControl(optimizer="bobyqa"))
+ame <- marginaleffects(R3_m2_nonhc_only)
 summary(ame)
 ```
 
 ####m3
 ```{r}
-#add predicted values
-predictions(R3_ma_3) |> head()
-#contrasts
-cmp <- comparisons(R3_ma_2)
 #average marginal effect
-summary(cmp)
 ame <- marginaleffects(R3_ma_2)
+summary(ame)
+
+R3_m3_hc_only <- glmer(switch ~ contra_satis + sexual_satisfaction + sex_freq + 
+                      (1| CASEID),
+                    family = binomial,
+                    data = cccu_R3 %>% filter(hc == "hc"),
+                    control=glmerControl(optimizer="bobyqa"))
+ame <- marginaleffects(R3_m3_hc_only)
+summary(ame)
+
+
+R3_m3_nonhc_only <- glmer(switch ~ contra_satis + sexual_satisfaction + sex_freq + 
+                      (1| CASEID),
+                    family = binomial,
+                    data = cccu_R3 %>% filter(hc == "non_hc"),
+                    control=glmerControl(optimizer="bobyqa"))
+ame <- marginaleffects(R3_m3_nonhc_only)
 summary(ame)
 ```
 
 ####m4
 ```{r}
-#add predicted values
-predictions(R3_ma_2) |> head()
-#contrasts
-cmp <- comparisons(R3_ma_2)
-#average marginal effect
-summary(cmp)
-ame <- marginaleffects(R3_ma_2, interactions)
+ame <- marginaleffects(R3_ma_4)
 summary(ame)
+
+R3_m4_hc_only <- glm(switch ~ contra_satis + sexual_satisfaction +  sex_freq +
+                    AGE + DEGREE_recode + POVRATE +
+                    HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+                    TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+                    had_baby_between_waves + Avoid_r + FEELPG_recode +
+                    rel_dur_factor,
+            family = binomial,
+            data = cccu_R3_sens %>% filter(hc == "hc"))
+
+ame <- marginaleffects(R3_m4_hc_only)
+summary(ame)
+
+R3_m4_nonhc_only <- glm(switch ~ contra_satis + sexual_satisfaction +  sex_freq +
+                    AGE + DEGREE_recode + POVRATE +
+                    HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+                    TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+                    had_baby_between_waves + Avoid_r + FEELPG_recode +
+                    rel_dur_factor,
+            family = binomial,
+            data = cccu_R3_sens %>% filter(hc == "non_hc"))
+
+ame <- marginaleffects(R3_m4_nonhc_only)
+summary(ame)
+
 
 ```
 
