@@ -97,36 +97,6 @@ summary(R1_ma_4)
 confint(R1_ma_4, method = "Wald", level = .997)
 plot(allEffects(R1_ma_4))
 ```
-#4. Senstivity analysis after m4: controlling for unobserved selection effects
-```{r}
-#repeat models first
-
-summary(R1_m3_lm)
-
-summary(R1_ma4_lm)
-
-##compute OR and CI first
-
-#model 3 to compare e-value for unobserved / observed confounders
-exp(R1_m3_lm$coefficients)
-exp(confint(R1_m3_lm, parm = "contra_satis", method = "Wald", level = .997))
-
-#model 4
-exp(R1_ma_4$coefficients)
-exp(confint(R1_ma_4, parm = "contra_satis", method = "Wald", level = .997))
-
-#compute e-values
-
-#model 3
-
-#for contra_satis
-evalue(OR(0.5695895,rare=FALSE),lo= 0.4089545,  hi=0.7953670)
-
-#model 4
-#for contra_satis
-evalue(OR(0.5888840955041,rare=FALSE),lo= 0.4093921,  hi=0.8487387)
-
-```
 
 
 ###R1: Average marginal effects
@@ -231,7 +201,7 @@ plot(allEffects(R1_sa_m2))
 DURATION and satisfaction!
 
 ```{r}
-R1_sa_m3 <- glmer(switch ~ contra_satis * hc_dur + +  sexual_satisfaction +  sex_freq (1| CASEID), family = binomial, data = cccu_R1_s, control=glmerControl(optimizer="bobyqa"))
+R1_sa_m3 <- glmer(switch ~ contra_satis * hc_dur +  sexual_satisfaction +  sex_freq + (1| CASEID), family = binomial, data = cccu_R1_s, control=glmerControl(optimizer="bobyqa"))
 
 summary(R1_sa_m3)
 confint(R1_sa_m3, method = "Wald", level = .997)
@@ -375,41 +345,6 @@ confint(R2_ma_4, method = "Wald", level = .997)
 plot(allEffects(R2_ma_4))
 ```
 
-#4. Senstivity analysis after m4: controlling for unobserved selection effects
-```{r}
-#repeat models first
-
-summary(R2_m3_lm)
-
-summary(R2_ma_4)
-
-##compute OR and CI first
-
-#model 3 to compare e-value for unobserved / observed confounders
-exp(R2_m3_lm$coefficients)
-exp(confint(R2_m3_lm, parm = "contra_satis", method = "Wald", level = .997))
-
-#model 4
-exp(R2_ma_4$coefficients)
-exp(confint(R2_ma_4, parm = "contra_satis", method = "Wald", level = .997))
-
-#compute e-values
-
-#model 3
-
-#for contra_satis
-evalue(OR(0.53722164,rare=FALSE),lo= 0.3922581,  hi=0.7352011)
-
-#model 4
-#for contra_satis
-evalue(OR(0.5539576142243,rare=FALSE),lo= 0.3927306,  hi=0.7802013)
-
-```
-
-
-
-
-
 
 
 ###R2: Average marginal effects
@@ -522,7 +457,7 @@ plot(allEffects(R2_sa_m2))
 DURATION and satisfaction!
 
 ```{r}
-R2_sa_m3 <- glmer(switch ~ contra_satis * hc_dur + +  sexual_satisfaction +  sex_freq (1| CASEID), family = binomial, data = cccu_R2_s, control=glmerControl(optimizer="bobyqa"))
+R2_sa_m3 <- glmer(switch ~ contra_satis * hc_dur +   sexual_satisfaction +  sex_freq + (1| CASEID), family = binomial, data = cccu_R2_s, control=glmerControl(optimizer="bobyqa"))
 
 summary(R2_sa_m3)
 confint(R2_sa_m3, method = "Wald", level = .997)
@@ -666,40 +601,6 @@ confint(R3_ma_4, method = "Wald", level = .997)
 plot(allEffects(R3_ma_4))
 ```
 
-#4. Senstivity analysis after m4: controlling for unobserved selection effects
-```{r}
-#repeat models first
-
-summary(R3_m3_lm)
-
-summary(R3_ma_4)
-
-##compute OR and CI first
-
-#model 3 to compare e-value for unobserved / observed confounders
-exp(R3_m3_lm$coefficients)
-exp(confint(R3_m3_lm, parm = "contra_satis", method = "Wald", level = .997))
-
-#model 4
-exp(R3_ma_4$coefficients)
-exp(confint(R3_ma_4, parm = "contra_satis", method = "Wald", level = .997))
-
-#compute e-values
-
-#model 3
-
-#for contra_satis
-evalue(OR(0.53766126,rare=FALSE),lo= 0.3925749,  hi=0.7358179 )
-
-#model 4
-#for contra_satis
-evalue(OR(0.554386751904,rare=FALSE),lo= 0.3930361,  hi=0.7808085)
-
-```
-
-
-
-
 
 
 ###R3: Average marginal effects
@@ -813,7 +714,7 @@ plot(allEffects(R3_sa_m2))
 DURATION and satisfaction!
 
 ```{r}
-R3_sa_m3 <- glmer(switch ~ contra_satis * hc_dur + +  sexual_satisfaction +  sex_freq (1| CASEID), family = binomial, data = cccu_R3_s, control=glmerControl(optimizer="bobyqa"))
+R3_sa_m3 <- glmer(switch ~ contra_satis * hc_dur +   sexual_satisfaction +  sex_freq + (1| CASEID), family = binomial, data = cccu_R3_s, control=glmerControl(optimizer="bobyqa"))
 
 summary(R3_sa_m3)
 confint(R3_sa_m3, method = "Wald", level = .997)
