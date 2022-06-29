@@ -7,6 +7,7 @@ date: '2022-06-28'
 ##1. Load Data
 ```{r}
 load("cccu_MA.RData")
+load("cccu_SA.RData")
 ```
 
 
@@ -22,6 +23,7 @@ library(tidyverse)
 library(patchwork)
 library(marginaleffects)
 library(ggpubr)
+library(RColorBrewer)
 
 
 
@@ -205,6 +207,93 @@ plot_sex_freq <- ggplot(data = eff_sex_freq_datplot,
 
 plot_sex_freq
 
+#for hc dur
+
+sa_m3 <- glmer(switch ~ contra_satis* hc_dur  +  sexual_satisfaction +  sex_freq + (1| CASEID), family = binomial, data = cccu_SA, control=glmerControl(optimizer="bobyqa"))
+summary(sa_m3)
+
+plot(effect(term = "contra_satis* hc_dur", mod = sa_m3, confidence.level = 0.997))
+
+eff = allEffects(mod = sa_m3, confidence.level = 0.997)
+
+#contraceptive satisfaction
+
+eff_hc_dur = eff$`contra_satis:hc_dur`
+
+eff_hc_dur_datplot = data.frame(
+  hc_dur = eff_hc_dur$x$hc_dur,
+  contra_satis = eff_hc_dur$x$contra_satis,
+  estimate = eff_hc_dur$fit,
+  lower = eff_hc_dur$lower,
+  upper = eff_hc_dur$upper)
+
+nickColors <- function(n, h = c(120,400), l = c(.40,.70), s = c(.8,1), alpha = 3){
+  require(colorspace)
+  require(scales)
+  return (alpha(hex(HLS(seq(h[1],h[2],length.out = n), seq(l[1],l[2],length.out = n), seq(s[1],s[2],length.out=n))), alpha))
+}
+barplot(rep(1,12), col = nickColors(12))
+
+
+plot_hc_dur <- ggplot(data = eff_hc_dur_datplot,
+                      aes(
+                        x = contra_satis,
+                        y = estimate,
+                        group = hc_dur,
+                        color = hc_dur,
+                        fill = hc_dur
+                      )) +
+  geom_line() +
+  geom_ribbon(aes(ymin = lower, ymax = upper, fill = hc_dur),
+              alpha = 0.03) +
+  labs(y = "Probability to Switch", color = "Contraceptive Duration", fill = "Contraceptive Duration") +
+  scale_x_discrete("Contraceptive Satisfaction",
+                   limits = c("1", "2", "3", "4")) +
+  scale_fill_gradientn(
+    colors = nickColors(12),
+    breaks = c(0, 10, 20, 30, 40),
+    labels = c("0 Months", "10 Months", "20 Months", "30 Months", "40 Months")
+  ) +
+  scale_color_gradientn(
+    colors = nickColors(12),
+    breaks = c(0, 10, 20, 30, 40),
+    labels = c("0 Months", "10 Months", "20 Months", "30 Months", "40 Months")
+  ) +
+  apatheme
+
+plot_hc_dur
+
+
+
+plot_hc_dur_separate <- ggplot(data = eff_hc_dur_datplot,
+                      aes(
+                        x = contra_satis,
+                        y = estimate,
+                        group = hc_dur,
+                        color = hc_dur,
+                        fill = hc_dur
+                      )) +
+  geom_line() +
+  geom_ribbon(aes(ymin = lower, ymax = upper, fill = hc_dur),
+              alpha = 0.07)+
+    facet_wrap(~hc_dur, nrow = 1)+
+  labs(y = "Probability to Switch", color = "Contraceptive Duration", fill = "Contraceptive Duration") +
+  scale_x_discrete("Contraceptive Satisfaction",
+                   limits = c("1", "2", "3", "4")) +
+  scale_fill_continuous(
+    breaks = c(0, 10, 20, 30, 40),
+    labels = c("0 Months", "10 Months", "20 Months", "30 Months", "40 Months")
+  ) +
+  scale_color_continuous(
+    breaks = c(0, 10, 20, 30, 40),
+    labels = c("0 Months", "10 Months", "20 Months", "30 Months", "40 Months")
+  ) +
+  apatheme
+
+
+plot_hc_dur_separate
+
+
 
 #join plots
 figure <-
@@ -212,11 +301,14 @@ figure <-
     plot_contra_satis,
     plot_sexual_satisfaction,
     plot_sex_freq,
-    labels = c("A", "B", "C"),common.legend = TRUE, legend = "right",
+    common.legend = TRUE,legend = "right",
+    labels = c("A", "B", "C"),
     ncol = 2,
     nrow = 2
   )
 figure
+
+
 ```
 
 
