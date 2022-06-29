@@ -94,7 +94,7 @@ summary(R1_m3_lm)
 R1_ma_4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor, family = binomial, data = cccu_R1_sens)
 
 summary(R1_ma_4)
-confint(R1_ma_4, method = "Wald", level = .997)
+#confint(R1_ma_4, method = "Wald", level = .997)
 plot(allEffects(R1_ma_4))
 ```
 
@@ -341,7 +341,7 @@ summary(R2_m3_lm)
 R2_ma_4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor, family = binomial, data = cccu_R2_sens)
 
 summary(R2_ma_4)
-confint(R2_ma_4, method = "Wald", level = .997)
+#confint(R2_ma_4, method = "Wald", level = .997)
 plot(allEffects(R2_ma_4))
 ```
 
@@ -597,7 +597,7 @@ summary(R3_m3_lm)
 R3_ma_4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor, family = binomial, data = cccu_R3_sens)
 
 summary(R3_ma_4)
-confint(R3_ma_4, method = "Wald", level = .997)
+#confint(R3_ma_4, method = "Wald", level = .997)
 plot(allEffects(R3_ma_4))
 ```
 

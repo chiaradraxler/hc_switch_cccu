@@ -4,13 +4,13 @@ output: html_document
 date: '2022-06-28'
 ---
 
-#1. Load Data
+##1. Load Data
 ```{r}
 load("cccu_MA.RData")
 ```
 
 
-#2. Load Packages
+##2. Load Packages
 ```{r}
 library(formr)
 library(effects)
@@ -33,7 +33,13 @@ apatheme=theme_bw()+
 ```
 
 
-##3.3 Model 3: including not directly with contraceptive method associated predictors
+## 3. Specific effects
+Plots for
+- hc*contra_satis
+- hc*sexual_satisfaction
+- hc*sex_freq
+- hc_dur*contra_satis
+based on multilevel model m3
 ```{r}
 m3 <- glmer(switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + (1| CASEID), family = binomial, data = cccu_MA, control=glmerControl(optimizer="bobyqa"))
 
@@ -71,3 +77,169 @@ eff_sexual_satisfaction_datplot = data.frame(
 
 eff_sex_freq = eff$`hc:sex_freq`
 ```
+
+## 4. Forest plot main effects
+for models m3, m3_lm, and m4_lm
+
+### Models
+```{r}
+m3 <- glmer(switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + (1| CASEID), family = binomial, data = cccu_MA, control=glmerControl(optimizer="bobyqa"))
+m3_sum = summary(m3)
+```
+
+```{r}
+#filter for first measurement occasion
+length(unique(cccu_MA$CASEID))
+
+
+cccu_MA_sens = cccu_MA %>%
+  group_by(CASEID) %>%
+  arrange(WAVE) %>%
+  mutate(count = row_number()) %>%
+  ungroup()
+
+cccu_MA_sens = cccu_MA_sens %>%
+  filter(count == 1)
+
+table(cccu_MA_sens$WAVE)
+
+#repeat model 3 for sensitivity analyses
+m3_lm = glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq,
+          family = binomial,
+          data = cccu_MA_sens)
+```
+
+```{r}
+m4_lm = glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq + hc *AGE + hc *DEGREE_recode +
+              hc *POVRATE +
+              hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode +
+              hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r +
+              hc *FEELPG_recode +
+              hc *rel_dur_factor,
+            family = binomial,
+            data = cccu_MA_sens)
+summary(m4_lm)
+```
+
+### Effects and CIs
+```{r}
+m3_confint = confint(m3, method = "Wald", level = .997) 
+
+rn = rownames(m3_confint)
+m3_confint = data.frame(m3_confint)
+
+colnames(m3_confint) = c("lower", "upper")
+m3_confint$predictor = rn
+
+
+m3_forest_plot = data.frame(
+  predictor = names(m3_sum$coefficients[,1]),
+  estimate = as.numeric(as.character(m3_sum$coefficients[,1])))
+
+m3_forest_plot = left_join(m3_forest_plot, m3_confint, by = "predictor")
+
+m3_forest_plot$group = rep("multilevel_model_3", 12)
+
+```
+
+```{r}
+m3_lm_confint = confint(m3_lm, method = "Wald", level = .997) 
+
+rn = rownames(m3_lm_confint)
+m3_lm_confint = data.frame(m3_lm_confint)
+
+colnames(m3_lm_confint) = c("lower", "upper")
+m3_lm_confint$predictor = rn
+
+
+m3_lm_forest_plot = data.frame(
+  predictor = names(m3_lm$coefficients),
+  estimate = as.numeric(as.character(m3_lm$coefficients)))
+
+m3_lm_forest_plot = left_join(m3_lm_forest_plot, m3_lm_confint, by = "predictor")
+
+m3_lm_forest_plot$group = rep("model_3", 12)
+```
+
+```{r}
+m4_lm_confint = confint(m4_lm, parm = c("(Intercept)",
+                                               "hcnon_hc",
+                                               "contra_satis",
+                                               "sexual_satisfaction",
+                                               "sex_freq2-5 times", "sex_freq6-10 times",
+                                               "sex_freq11 or more times", 
+                                               "hcnon_hc:contra_satis",
+                                               "hcnon_hc:sexual_satisfaction",
+                                               "hcnon_hc:sex_freq2-5 times",
+                                               "hcnon_hc:sex_freq6-10 times",
+                                               "hcnon_hc:sex_freq11 or more times"),
+                        method = "Wald", level = .997) 
+
+rn = rownames(m4_lm_confint)
+m4_lm_confint = data.frame(m4_lm_confint)
+
+colnames(m4_lm_confint) = c("lower", "upper")
+m4_lm_confint$predictor = rn
+
+
+m4_lm_forest_plot = data.frame(
+  predictor = names(m4_lm$coefficients),
+  estimate = as.numeric(as.character(m4_lm$coefficients)))
+
+m4_lm_forest_plot = left_join(m4_lm_forest_plot, m4_lm_confint, by = "predictor")
+
+m4_lm_forest_plot$group = rep("model_4", 12)
+```
+
+### Dataframe for plot
+```{r}
+forest_plot_data = rbind(m3_forest_plot, m3_lm_forest_plot, m4_lm_forest_plot)
+forest_plot_data$predictor = factor(forest_plot_data$predictor,
+                                    levels = c("(Intercept)",
+                                               "hcnon_hc",
+                                               "contra_satis",
+                                               "sexual_satisfaction",
+                                               "sex_freq2-5 times", "sex_freq6-10 times",
+                                               "sex_freq11 or more times", 
+                                               "hcnon_hc:contra_satis",
+                                               "hcnon_hc:sexual_satisfaction",
+                                               "hcnon_hc:sex_freq2-5 times",
+                                               "hcnon_hc:sex_freq6-10 times",
+                                               "hcnon_hc:sex_freq11 or more times"),
+                                    labels = c("(Intercept)",
+                                               "hcnon_hc",
+                                               "contra_satis",
+                                               "sexual_satisfaction",
+                                               "sex_freq2-5 times", "sex_freq6-10 times",
+                                               "sex_freq11 or more times", 
+                                               "hcnon_hc:contra_satis",
+                                               "hcnon_hc:sexual_satisfaction",
+                                               "hcnon_hc:sex_freq2-5 times",
+                                               "hcnon_hc:sex_freq6-10 times",
+                                               "hcnon_hc:sex_freq11 or more times"))
+
+forest_plot_data$group = factor(forest_plot_data$group,
+                                levels = c("multilevel_model_3", "model_3", "model_4"),
+                                labels = c("multilevel_model_3", "model_3", "model_4"))
+
+```
+
+### Plot
+```{r}
+ggplot(data = forest_plot_data %>%
+         filter(predictor != "(Intercept)"),
+       aes(x = predictor,
+           y = estimate,
+           group = group,
+           fill = group,
+           color = group)) +
+  geom_point(position = position_dodge(width=-0.3)) +
+  geom_pointrange(aes(ymin = lower, ymax = upper), position = position_dodge(width=-0.3)) +
+  scale_x_discrete(limits=rev) +
+  geom_hline(yintercept = 0) +
+  coord_flip() +
+  apatheme
+
+```
+
+
