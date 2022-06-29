@@ -21,6 +21,9 @@ library(dplyr)
 library(tidyverse)
 library(patchwork)
 library(marginaleffects)
+library(ggpubr)
+
+
 
 options(scipen=999)
 
@@ -47,6 +50,8 @@ plot(effect(term = "hc * contra_satis", mod = m3, confidence.level = 0.997))
 
 eff = allEffects(mod = m3, confidence.level = 0.997)
 
+#contraceptive satisfaction
+
 eff_contra_satis = eff$`hc:contra_satis`
 
 eff_contra_satis_datplot = data.frame(
@@ -57,13 +62,45 @@ eff_contra_satis_datplot = data.frame(
   upper = eff_contra_satis$upper)
 
 
-ggplot(data = eff_contra_satis_datplot,
-       aes(x = contra_satis, y = estimate, group = hc, color = hc, fill = hc)) +
+plot_contra_satis <- ggplot(data = eff_contra_satis_datplot,
+                            aes(
+                              x = contra_satis,
+                              y = estimate,
+                              group = hc,
+                              color = hc,
+                              fill = hc
+                            )) +
   geom_line() +
-  geom_ribbon(aes(ymin = lower, ymax = upper, fill = hc), 
-              alpha=0.1) +
+  geom_ribbon(aes(ymin = lower, ymax = upper, fill = hc),
+              alpha = 0.07) +
+  labs(color = "Group",  fill = "Group") +
+  scale_fill_manual(
+    values = c("red", "blue"),
+    name = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "Hormonal Contraceptive Users",
+      "Non-Hormonal Contraceptive Users"
+    ),
+  ) +
+  scale_colour_manual(
+    values = c("red", "blue"),
+    name  = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "Hormonal Contraceptive Users",
+      "Non-Hormonal Contraceptive Users"
+    )
+  ) +
+  labs(y = "Probability to Switch") +
+  scale_x_discrete("Contraceptive Satisfaction",
+                   limits = c("1", "2", "3", "4")) +
+  
   apatheme
 
+plot_contra_satis
+
+#sexual satisfaction
 
 eff_sexual_satisfaction = eff$`hc:sexual_satisfaction`
 
@@ -75,8 +112,114 @@ eff_sexual_satisfaction_datplot = data.frame(
   upper = eff_sexual_satisfaction$upper)
 
 
+
+plot_sexual_satisfaction <-
+  ggplot(data = eff_sexual_satisfaction_datplot,
+         aes(
+           x = sex_sat,
+           y = estimate,
+           group = hc,
+           color = hc,
+           fill = hc
+         )) +
+  geom_line() +
+  geom_ribbon(aes(ymin = lower, ymax = upper, fill = hc),
+              alpha = 0.07) +
+  labs(color = "Group",  fill = "Group") +
+  scale_fill_manual(
+    values = c("red", "blue"),
+    name = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "Hormonal Contraceptive Users",
+      "Non-Hormonal Contraceptive Users"
+    )
+  ) +
+  scale_colour_manual(
+    values = c("red", "blue"),
+    name  = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "Hormonal Contraceptive Users",
+      "Non-Hormonal Contraceptive Users"
+    )
+  ) +
+  labs(y = "Probability to Switch") +
+  scale_x_discrete("Sexual Satisfaction",
+                   limits = c("1", "2", "3", "4", "5", "6")) +
+  
+  apatheme
+
+
+    
+plot_sexual_satisfaction
+
+#sexual frequency 
+
 eff_sex_freq = eff$`hc:sex_freq`
+
+eff_sex_freq_datplot = data.frame(
+  hc = eff_sex_freq$x$hc,
+  sex_freq = eff_sex_freq$x$sex_freq,
+  estimate = eff_sex_freq$fit,
+  lower = eff_sex_freq$lower,
+  upper = eff_sex_freq$upper)
+
+
+plot_sex_freq <- ggplot(data = eff_sex_freq_datplot,
+                        aes(
+                          x = sex_freq,
+                          y = estimate,
+                          group = hc,
+                          color = hc,
+                          fill = hc
+                        )) +
+  geom_line() +
+  geom_ribbon(aes(ymin = lower, ymax = upper, fill = hc),
+              alpha = 0.07) +
+  labs(color = "Group",  fill = "Group") +
+  scale_fill_manual(
+    values = c("red", "blue"),
+    name = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "Hormonal Contraceptive Users",
+      "Non-Hormonal Contraceptive Users"
+    )
+  ) +
+  scale_colour_manual(
+    values = c("red", "blue"),
+    name  = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "Hormonal Contraceptive Users",
+      "Non-Hormonal Contraceptive Users"
+    )
+  ) +
+  labs(y = "Probability to Switch") +
+  scale_x_discrete(
+    "Sexual Frequency",
+    limits = c("11 or more times", "6-10 times", "2-5 times", "No sex or once")
+  ) +
+  apatheme
+
+plot_sex_freq
+
+
+#join plots
+figure <-
+  ggarrange(
+    plot_contra_satis,
+    plot_sexual_satisfaction,
+    plot_sex_freq,
+    labels = c("A", "B", "C"),common.legend = TRUE, legend = "right",
+    ncol = 2,
+    nrow = 2
+  )
+figure
 ```
+
+
 
 ## 4. Forest plot main effects
 for models m3, m3_lm, and m4_lm
