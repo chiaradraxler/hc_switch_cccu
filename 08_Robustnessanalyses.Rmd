@@ -94,7 +94,9 @@ summary(R1_m3_lm)
 R1_ma_4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor, family = binomial, data = cccu_R1_sens)
 
 summary(R1_ma_4)
-#confint(R1_ma_4, method = "Wald", level = .997)
+(confint(R1_ma_4, parm = "contra_satis", method = "Wald", level = .997))
+(confint(R1_ma_4, parm = "hcnon_hc:contra_satis", method = "Wald", level = .997))
+(confint(R1_ma_4, parm = "hcnon_hc", method = "Wald", level = .997))
 plot(allEffects(R1_ma_4))
 ```
 
@@ -135,18 +137,16 @@ summary(ame)
 
 ####m3
 ```{r}
-#add predicted values
-predictions(R1_ma_3) |> head()
-#contrasts
-cmp <- comparisons(R1_ma_2)
 #average marginal effect
-summary(cmp)
-ame <- marginaleffects(R1_ma_2)
+ame <- marginaleffects(R1_ma_3)
 summary(ame)
 ```
 
 ####m4
 ```{r}
+
+ame <- marginaleffects(R1_m3_lm)
+summary(ame)
 ame <- marginaleffects(R1_ma_4)
 summary(ame)
 
@@ -341,7 +341,9 @@ summary(R2_m3_lm)
 R2_ma_4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor, family = binomial, data = cccu_R2_sens)
 
 summary(R2_ma_4)
-#confint(R2_ma_4, method = "Wald", level = .997)
+(confint(R2_ma_4, parm = "contra_satis", method = "Wald", level = .997))
+(confint(R2_ma_4, parm = "hcnon_hc:contra_satis", method = "Wald", level = .997))
+(confint(R2_ma_4, parm = "hcnon_hc", method = "Wald", level = .997))
 plot(allEffects(R2_ma_4))
 ```
 
@@ -381,7 +383,7 @@ summary(ame)
 ####m3
 ```{r}
 #average marginal effect
-ame <- marginaleffects(R2_ma_2)
+ame <- marginaleffects(R2_ma_3)
 summary(ame)
 
 
@@ -406,6 +408,10 @@ summary(ame)
 ####m4
 ```{r}
 #average marginal effect
+ame <- marginaleffects(R2_m3_lm)
+summary(ame)
+
+
 ame <- marginaleffects(R2_ma_4)
 summary(ame)
 
@@ -597,7 +603,9 @@ summary(R3_m3_lm)
 R3_ma_4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor, family = binomial, data = cccu_R3_sens)
 
 summary(R3_ma_4)
-#confint(R3_ma_4, method = "Wald", level = .997)
+(confint(R3_ma_4, parm = "contra_satis", method = "Wald", level = .997))
+(confint(R3_ma_4, parm = "hcnon_hc:contra_satis", method = "Wald", level = .997))
+(confint(R3_ma_4, parm = "hcnon_hc", method = "Wald", level = .997))
 plot(allEffects(R3_ma_4))
 ```
 
@@ -638,7 +646,7 @@ summary(ame)
 ####m3
 ```{r}
 #average marginal effect
-ame <- marginaleffects(R3_ma_2)
+ame <- marginaleffects(R3_ma_3)
 summary(ame)
 
 R3_m3_hc_only <- glmer(switch ~ contra_satis + sexual_satisfaction + sex_freq + 
@@ -661,6 +669,10 @@ summary(ame)
 
 ####m4
 ```{r}
+
+ame <- marginaleffects(R3_m3_lm)
+summary(ame)
+
 ame <- marginaleffects(R3_ma_4)
 summary(ame)
 
