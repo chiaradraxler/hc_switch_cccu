@@ -98,6 +98,7 @@ summary(m4_lm)
 (m4_lm$coefficients)
 (confint(m4_lm, parm = "contra_satis", method = "Wald", level = .997))
 (confint(m4_lm, parm = "hcnon_hc:contra_satis", method = "Wald", level = .997))
+(confint(m4_lm, parm = "hcnon_hc", method = "Wald", level = .997))
 plot(allEffects(m4_lm))
 ```
 
@@ -197,6 +198,7 @@ summary(ame)
 ```
 
 
+lk+
 #4. Senstivity analysis after m4: controlling for unobserved selection effects
 ```{r}
 #repeat models first
@@ -214,10 +216,9 @@ exp(confint(m3_lm, method = "Wald", level = .997))
 #model 4
 exp(m4_lm$coefficients)
 exp(confint(m4_lm, parm = "contra_satis", method = "Wald", level = .997))
-
-exp(m4_lm$coefficients)
 exp(confint(m4_lm, parm = "hcnon_hc:contra_satis", method = "Wald", level = .997))
 
+exp(confint(m4_lm, parm = "hcnon_hc", method = "Wald", level = .997))
 #compute e-values
 
 #model 3
@@ -228,6 +229,8 @@ evalue(OR(0.53722164,rare=FALSE),lo= 0.392258135,  hi=0.7352011)
 #for contra_satis*hc
 evalue(OR(1.65072757,rare=FALSE),lo= 0.949608761,  hi=2.9511087)
 
+#for hc
+evalue(OR(0.05881423,rare=FALSE),lo= 0.003823061,  hi=0.7217084)
 
 #model 4
 #for contra_satis
@@ -235,6 +238,9 @@ evalue(OR(0.5539576142243,rare=FALSE),lo= 0.3927306,  hi=0.7802013)
 
 #for contra_satis * hc
 evalue(OR(1.387322e+00,rare=FALSE),lo= 0.7541431,  hi=2.1877624)
+
+#for hc
+evalue(OR(0.1305422699437,rare=FALSE),lo= 0.0001943709,  hi=77.8915992173)
 ```
 
 
