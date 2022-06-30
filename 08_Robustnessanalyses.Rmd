@@ -629,7 +629,7 @@ confint(R3_ma_4, parm = c("(Intercept)",
                                                "hcnon_hc:sexual_satisfaction",
                                                "hcnon_hc:sex_freq2-5 times",
                                                "hcnon_hc:sex_freq6-10 times",
-                                               "hcnon_hc:sex_freq11 or more times"), method = "Wald", level= .997))
+                                               "hcnon_hc:sex_freq11 or more times"), method = "Wald", level= .997)
 
 plot(allEffects(R3_ma_4))
 
