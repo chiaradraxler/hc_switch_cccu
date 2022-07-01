@@ -83,6 +83,10 @@ m3_lm = glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_fr
           data = cccu_MA_sens)
 summary(m3_lm)
 
+(m3_lm$coefficients)
+confint(m3_lm, method = "Wald", level = .997)
+
+
 m4_lm = glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq + hc *AGE + hc *DEGREE_recode +
               hc *POVRATE +
               hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode +
@@ -96,9 +100,17 @@ summary(m4_lm)
 
 
 (m4_lm$coefficients)
-(confint(m4_lm, parm = "contra_satis", method = "Wald", level = .997))
-(confint(m4_lm, parm = "hcnon_hc:contra_satis", method = "Wald", level = .997))
-(confint(m4_lm, parm = "hcnon_hc", method = "Wald", level = .997))
+(confint(m4_lm, parm = c("(Intercept)",
+                                               "hcnon_hc",
+                                               "contra_satis",
+                                               "sexual_satisfaction",
+                                               "sex_freq2-5 times", "sex_freq6-10 times",
+                                               "sex_freq11 or more times", 
+                                               "hcnon_hc:contra_satis",
+                                               "hcnon_hc:sexual_satisfaction",
+                                               "hcnon_hc:sex_freq2-5 times",
+                                               "hcnon_hc:sex_freq6-10 times",
+                                               "hcnon_hc:sex_freq11 or more times"), method = "Wald", level = .997))
 plot(allEffects(m4_lm))
 ```
 
