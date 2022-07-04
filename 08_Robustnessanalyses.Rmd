@@ -150,18 +150,18 @@ ame <- marginaleffects(R1_ma_3)
 summary(ame)
 
 
-R1_m3_hc_only <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq + (1| CASEID),
+R1_m3_hc_only <-glmer(switch ~ contra_satis + sexual_satisfaction + sex_freq + (1| CASEID),
                     family = binomial,
                     data = cccu_R1%>% filter(hc == "hc"),
                     control=glmerControl(optimizer="bobyqa"))
 ame <- marginaleffects(R1_m3_hc_only)
 summary(ame)
 
-R1_m3_nonhc_only <- glmer(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq + (1| CASEID),
+R1_m3_nonhc_only <- glmer(switch ~ contra_satis + sexual_satisfaction +   sex_freq + (1| CASEID),
                     family = binomial,
                     data = cccu_R1 %>% filter(hc == "non_hc"),
                     control=glmerControl(optimizer="bobyqa"))
-ame <- marginaleffects(R1_m2_nonhc_only)
+ame <- marginaleffects(R1_m3_nonhc_only)
 summary(ame)
 ```
 
