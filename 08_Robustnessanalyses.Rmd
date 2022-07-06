@@ -16,8 +16,11 @@ length(unique(cccu_R3$CASEID)) #women
 
 #SA
 load("cccu_R1_s.RData")
+length(unique(cccu_R1_s$CASEID)) #women
 load("cccu_R2_s.RData")
+length(unique(cccu_R2_s$CASEID)) #women
 load("cccu_R3_s.RData")
+length(unique(cccu_R3_s$CASEID)) #women
 ```
 
 
