@@ -8,8 +8,11 @@ output: html_document
 ```{r}
 #MA
 load("cccu_R1.RData")
+length(unique(cccu_R1$CASEID)) #women
 load("cccu_R2.RData")
+length(unique(cccu_R2$CASEID)) #women
 load("cccu_R3.RData")
+length(unique(cccu_R3$CASEID)) #women
 
 #SA
 load("cccu_R1_s.RData")
@@ -90,6 +93,8 @@ R1_m3_lm = glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex
           family = binomial,
           data = cccu_R1_sens)
 summary(R1_m3_lm)
+
+confint(R1_m3_lm, method = "Wald", level = .997)
 
 R1_ma_4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor, family = binomial, data = cccu_R1_sens)
 
@@ -630,6 +635,8 @@ R3_m3_lm = glm(switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex
           family = binomial,
           data = cccu_R3_sens)
 summary(R3_m3_lm)
+
+confint(R3_m3_lm, method = "Wald", level = .997)
 
 R3_ma_4 <- glm(switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc *AGE + hc *DEGREE_recode + hc *POVRATE + hc *HLTHPROB_recode + hc *MEDPROB_recode +  hc *GAPINS_recode + hc *TYPEINS_recode + hc *NKIDS_t1 +  hc *pregnant_between_waves + hc *had_baby_between_waves+ hc *Avoid_r + hc *FEELPG_recode + hc *rel_dur_factor, family = binomial, data = cccu_R3_sens)
 

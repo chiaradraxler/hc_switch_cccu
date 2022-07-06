@@ -204,7 +204,7 @@ plot_sex_freq <- ggplot(data = eff_sex_freq_datplot,
   labs(y = "Probability to Switch") +
   scale_x_discrete(
     "Sexual Frequency",
-    limits = c("11 or more times", "6-10 times", "2-5 times", "No sex or once")
+    limits = c("No sex or once", "2-5 times","6-10 times", "11 or more times")
   ) +
   apatheme
 
@@ -311,6 +311,90 @@ figure <-
   )
 figure
 
+
+#effect of avoidance
+#filter for first measurement occasion
+length(unique(cccu_MA$CASEID))
+
+
+cccu_MA_sens = cccu_MA %>%
+  group_by(CASEID) %>%
+  arrange(WAVE) %>%
+  mutate(count = row_number()) %>%
+  ungroup()
+
+cccu_MA_sens = cccu_MA_sens %>%
+  filter(count == 1)
+
+m4 = glm(
+  switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq + hc *
+    AGE + hc * DEGREE_recode +
+    hc * POVRATE +
+    hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
+    hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves + hc *
+    had_baby_between_waves + hc * Avoid_r +
+    hc * FEELPG_recode +
+    hc * rel_dur_factor,
+  family = binomial,
+  data = cccu_MA_sens
+)
+
+
+plot(effect(term = "hc * Avoid_r", mod = m4, confidence.level = 0.997))
+
+eff = allEffects(mod = m4, confidence.level = 0.997)
+
+
+
+
+eff_avoid = eff$`hc:Avoid_r`
+
+eff_avoid_datplot = data.frame(
+  hc = eff_avoid$x$hc,
+  avoid = eff_avoid$x$Avoid_r,
+  estimate = eff_avoid$fit,
+  lower = eff_avoid$lower,
+  upper = eff_avoid$upper)
+
+
+plot_avoid <- ggplot(data = eff_avoid_datplot,
+                        aes(
+                          x = avoid,
+                          y = estimate,
+                          group = hc,
+                          color = hc,
+                          fill = hc
+                        )) +
+  geom_line() +
+  geom_ribbon(aes(ymin = lower, ymax = upper, fill = hc),
+              alpha = 0.07) +
+  labs(color = "Group",  fill = "Group") +
+  scale_fill_manual(
+    values = c("red", "blue"),
+    name = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "Hormonal Contraceptive Users",
+      "Non-Hormonal Contraceptive Users"
+    )
+  ) +
+  scale_colour_manual(
+    values = c("red", "blue"),
+    name  = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "Hormonal Contraceptive Users",
+      "Non-Hormonal Contraceptive Users"
+    )
+  ) +
+  labs(y = "Probability to Switch") +
+  scale_x_discrete(
+    "Pregnancy Avoidance",
+    limits = c("1", "2", "3", "4", "5", "6")
+  ) +
+  apatheme
+
+plot_avoid
 
 ```
 

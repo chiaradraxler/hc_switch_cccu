@@ -110,7 +110,7 @@ summary(m4_lm)
                                                "hcnon_hc:sexual_satisfaction",
                                                "hcnon_hc:sex_freq2-5 times",
                                                "hcnon_hc:sex_freq6-10 times",
-                                               "hcnon_hc:sex_freq11 or more times"), method = "Wald", level = .997))
+                                               "hcnon_hc:sex_freq11 or more times", "hcnon_hc:Avoid_r", "Avoid_r"), method = "Wald", level = .997))
 plot(allEffects(m4_lm))
 ```
 
@@ -210,7 +210,6 @@ summary(ame)
 ```
 
 
-lk+
 #4. Senstivity analysis after m4: controlling for unobserved selection effects
 ```{r}
 #repeat models first
