@@ -119,37 +119,3 @@ summary(ame)
 ```
 
 
-#4. Senstivity analysis after m4: controlling for unobserved selection effects
-```{r}
-#repeat models first
-
-summary(sa_m3_lm)
-
-summary(sa_m4_lm)
-
-##compute OR and CI first
-
-#model 3 to compare e-value for unobserved / observed confounders
-exp(sa_m3_lm$coefficients)
-exp(confint(sa_m3_lm, method = "Wald", level = .997))
-
-#model 4
-exp(sa_m4_lm$coefficients)
-exp(confint(sa_m4_lm, method = "Wald", level = .997))
-
-
-#compute e-values
-
-#contraceptive satisfaction
-
-#model 3
-evalue(OR(0.5106508,rare=FALSE),lo= 0.3057875,  hi=0.8386828)
-
-
-#model 4
-
-evalue(OR(0.4827577906766,rare=FALSE),lo=0.280838541084514781154268803220475092530250549316406250 ,  hi=0.8191834098031136601747448366950266063213348388671875)
-
-```
-
-

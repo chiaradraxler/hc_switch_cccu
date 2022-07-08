@@ -8,13 +8,14 @@ date: '2022-06-28'
 ```{r}
 load("cccu_MA.RData")
 load("cccu_SA.RData")
+length(unique(cccu_SA$CASEID)) #women
 load("cccu_R1.RData")
 load("cccu_R2.RData")
 load("cccu_R3.RData")
 load("cccu_R1_s.RData")
 length(unique(cccu_R1_s$CASEID)) #women
 load("cccu_R2_s.RData")
-length(unique(cccu_R2_s$CASEID)) #women
+length(unique(cccu_R3_s$CASEID)) #women
 load("cccu_R3_s.RData")
 ```
 
@@ -224,7 +225,7 @@ plot(effect(term = "contra_satis* hc_dur", mod = sa_m3, confidence.level = 0.997
 
 eff = allEffects(mod = sa_m3, confidence.level = 0.997)
 
-#contraceptive satisfaction
+
 
 eff_hc_dur = eff$`contra_satis:hc_dur`
 
