@@ -26,6 +26,28 @@ library(marginaleffects)
 options(scipen=999)
 ```
 
+
+```{r}
+
+
+crosstabs( ~ sexual_satisfaction + rel_dur_factor, data = cccu_MA)
+
+
+crosstabs( ~ sex_inlast30days + hc_dur, data = cccu_MA)
+crosstabs( ~ NSEXMO + hc_dur, data = cccu_MA)
+crosstabs( ~ sex_freq + hc_dur, data = cccu_MA)
+
+crosstabs( ~ sex_inlast30days + contra_satis, data = cccu_MA)
+crosstabs( ~ NSEXMO + contra_satis, data = cccu_MA)
+crosstabs( ~ sex_freq + contra_satis, data = cccu_MA)
+
+
+crosstabs( ~ sex_inlast30days + hc, data = cccu_MA)
+crosstabs( ~ NSEXMO + hc, data = cccu_MA)
+crosstabs( ~ sex_freq + hc, data = cccu_MA)
+
+```
+
 #3. Models
 
 ##3.1 Model 1: basic model
