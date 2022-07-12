@@ -57,16 +57,6 @@ x = cccu_complete1 %>%
 
 ## 4.2 Missing Main Predictor: Satisfaction with HC
 
-###dealing with high missingness because of simulation (so that models in analyses run)
-
-!!!!NEEDS TO BE REMOVED!!
-```{r}
-
-#cccu_complete1$contra_satis = ifelse(is.na(cccu_complete1$contra_satis),1,cccu_complete1$contra_satis)
-
-#table(is.na(cccu_complete1$contra_satis))
-
-```
 
 ```{r}
 table(cccu_complete1$contra_satis) 
@@ -343,16 +333,6 @@ qplot(cccu_complete1$exclusion_used_non_hc)
 ```
 
 ### 4.8.2 unknow duration
-
-####dealing with high missingness because of simulation (so that models run)
-NEEDS TO BE REMOVED!
-```{r}
-#table(is.na(cccu_complete1$hc_dur))
-
-#cccu_complete1$hc_dur = ifelse(is.na(cccu_complete1$hc_dur),1,cccu_complete1$hc_dur)
-
-#table(is.na(cccu_complete1$hc_dur))
-```
 
 
 ```{r}

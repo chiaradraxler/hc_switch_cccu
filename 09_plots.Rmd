@@ -1,9 +1,9 @@
 ---
-title: "09_plots"
+title: "09_Plots"
+author: "Chiara Draxler"
+date: "24 1 2022"
 output: html_document
-date: '2022-06-28'
 ---
-
 ##1. Load Data
 ```{r}
 load("cccu_MA.RData")
@@ -15,7 +15,6 @@ load("cccu_R3.RData")
 load("cccu_R1_s.RData")
 length(unique(cccu_R1_s$CASEID)) #women
 load("cccu_R2_s.RData")
-length(unique(cccu_R3_s$CASEID)) #women
 load("cccu_R3_s.RData")
 ```
 
@@ -1784,7 +1783,7 @@ R2_sa_m4_lm_forest_plot$group = rep("R2_sa_model_4", 37)
 
 R3_sa_m4_lm_confint = confint(R3_sa_m4_lm, method = "Wald", level = .997) 
 
-rn = rownames(R4_sa_m4_lm_confint)
+rn = rownames(R3_sa_m4_lm_confint)
 R3_sa_m4_lm_confint = data.frame(R3_sa_m4_lm_confint)
 
 colnames(R3_sa_m4_lm_confint) = c("lower", "upper")

@@ -22,8 +22,6 @@ library(EValue)
 library(psych)
 library(dplyr)
 library(tidyverse)
-library(marginaleffects)
-
 options(scipen=999)
 ```
 
