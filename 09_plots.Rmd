@@ -56,6 +56,34 @@ based on multilevel model m3
 ```{r}
 m3 <- glmer(switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + (1| CASEID), family = binomial, data = cccu_MA, control=glmerControl(optimizer="bobyqa"))
 
+### @Chiara: neuer Plot
+library(sjPlot)
+plot_model(m3, type = "pred", terms = c("contra_satis", "hc"), ci.lvl = 0.997)  +
+  labs(color = "Group",  fill = "Group") +
+  scale_fill_manual(
+    values = c("red", "blue"),
+    name = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "Hormonal Contraceptive Users",
+      "Non-Hormonal Contraceptive Users"
+    ),
+  ) +
+  scale_colour_manual(
+    values = c("red", "blue"),
+    name  = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "Hormonal Contraceptive Users",
+      "Non-Hormonal Contraceptive Users"
+    )
+  ) +
+  labs(y = "Probability to Switch") +
+  scale_x_discrete("Contraceptive Satisfaction",
+                   limits = c("1", "2", "3", "4")) +
+  apatheme
+###
+
 plot(effect(term = "hc * contra_satis", mod = m3, confidence.level = 0.997))
 
 eff = allEffects(mod = m3, confidence.level = 0.997)
@@ -105,7 +133,7 @@ plot_contra_satis <- ggplot(data = eff_contra_satis_datplot,
   labs(y = "Probability to Switch") +
   scale_x_discrete("Contraceptive Satisfaction",
                    limits = c("1", "2", "3", "4")) +
-  
+  scale_y_continuous(breaks = exp(c(-4, -3, -2, -1, 0))) +
   apatheme
 
 plot_contra_satis
