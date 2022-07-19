@@ -43,7 +43,12 @@ apatheme=theme_bw()+
           panel.grid.minor=element_blank(),
           panel.border=element_blank(),
           axis.line=element_line(),
-          text=element_text(family='Times'))
+          text=element_text(family='Times'))+
+theme(axis.text=element_text(size=12),axis.title=element_text(size=12), legend.text=element_text(size=12),legend.title=element_text(size=12) )
+
+
+
+
 ```
 
 
@@ -59,15 +64,15 @@ m3 <- glmer(switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_fr
 
 ### contra_satis
 
-plot_model(m3, type = "pred", terms = c("contra_satis", "hc"), ci.lvl = 0.997)  +
+ contra_satis<- plot_model(m3, type = "pred", terms = c("contra_satis", "hc"), ci.lvl = 0.997)  +
   labs(color = "Group",  fill = "Group") +
   scale_fill_manual(
     values = c("red", "blue"),
     name = "Group",
     breaks = c("hc", "non_hc"),
     labels = c(
-      "Hormonal Contraceptive Users",
-      "Non-Hormonal Contraceptive Users"
+      "HC",
+      "Non-HC"
     ),
   ) +
   scale_colour_manual(
@@ -75,8 +80,8 @@ plot_model(m3, type = "pred", terms = c("contra_satis", "hc"), ci.lvl = 0.997)  
     name  = "Group",
     breaks = c("hc", "non_hc"),
     labels = c(
-      "Hormonal Contraceptive Users",
-      "Non-Hormonal Contraceptive Users"
+      "HC",
+      "Non-HC"
     )
   ) +
   labs(y = "Probability to Switch", title = "") +
@@ -84,16 +89,19 @@ plot_model(m3, type = "pred", terms = c("contra_satis", "hc"), ci.lvl = 0.997)  
                    limits = c("1", "2", "3", "4")) +
   apatheme
 
+ggsave("contra_satis.pdf", contra_satis)
+
+ggsave("contra_satis.png", contra_satis)
 ###sexual satisfaction
 
-plot_model(m3, type = "pred", terms = c("sexual_satisfaction", "hc"), ci.lvl = 0.997)  +  labs(color = "Group",  fill = "Group") +
+sex_sat <- plot_model(m3, type = "pred", terms = c("sexual_satisfaction", "hc"), ci.lvl = 0.997)  +  labs(color = "Group",  fill = "Group") +
   scale_fill_manual(
     values = c("red", "blue"),
     name = "Group",
     breaks = c("hc", "non_hc"),
-    labels = c(
-      "Hormonal Contraceptive Users",
-      "Non-Hormonal Contraceptive Users"
+     labels = c(
+      "HC",
+      "Non-HC"
     ),
   ) +
   scale_colour_manual(
@@ -101,15 +109,17 @@ plot_model(m3, type = "pred", terms = c("sexual_satisfaction", "hc"), ci.lvl = 0
     name  = "Group",
     breaks = c("hc", "non_hc"),
     labels = c(
-      "Hormonal Contraceptive Users",
-      "Non-Hormonal Contraceptive Users"
+      "HC",
+      "Non-HC"
     )
   ) +
   labs(y = "Probability to Switch", title = "") +
   scale_x_discrete("Sexual Satisfaction",
                    limits = c("1", "2", "3", "4", "5", "6")) +
   apatheme
+ggsave("sexual_satis.pdf", sex_sat)
 
+ggsave("sexual_satis.png", sex_sat)
 
 ###sexual frequency
 
@@ -138,7 +148,9 @@ plot_model(m3, type = "pred", terms = c("sex_freq", "hc"), ci.lvl = 0.997)  +
                    limits = c("No sex or once", "2-5 times","6-10 times", "11 or more times")) +
   apatheme
 
+ggsave("sexual_freq.pdf", sex_freq)
 
+ggsave("sexual_freq.png", sex_freq)
 
 #for hc dur
 
@@ -225,6 +237,10 @@ plot_hc_dur_separate <- ggplot(data = eff_hc_dur_datplot,
 
 
 plot_hc_dur_separate
+
+ggsave("hc_dur.pdf", plot_hc_dur_separate)
+
+ggsave("hc_dur.png", plot_hc_dur_separate)
 
 
 
