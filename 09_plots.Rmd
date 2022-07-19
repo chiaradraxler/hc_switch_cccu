@@ -88,6 +88,7 @@ m3 <- glmer(switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_fr
   scale_x_discrete("Contraceptive Satisfaction",
                    limits = c("1", "2", "3", "4")) +
   apatheme
+ contra_satis
 
 ggsave("contra_satis.pdf", contra_satis)
 
@@ -117,13 +118,15 @@ sex_sat <- plot_model(m3, type = "pred", terms = c("sexual_satisfaction", "hc"),
   scale_x_discrete("Sexual Satisfaction",
                    limits = c("1", "2", "3", "4", "5", "6")) +
   apatheme
+sex_sat
+
 ggsave("sexual_satis.pdf", sex_sat)
 
 ggsave("sexual_satis.png", sex_sat)
 
 ###sexual frequency
 
-plot_model(m3, type = "pred", terms = c("sex_freq", "hc"), ci.lvl = 0.997)  +
+sex_freq <- plot_model(m3, type = "pred", terms = c("sex_freq", "hc"), ci.lvl = 0.997)  +
   labs(color = "Group",  fill = "Group") +
   scale_fill_manual(
     values = c("red", "blue"),
@@ -145,8 +148,10 @@ plot_model(m3, type = "pred", terms = c("sex_freq", "hc"), ci.lvl = 0.997)  +
   ) +
   labs(y = "Probability to Switch", title = "") +
   scale_x_discrete("Sexual Frequency",
-                   limits = c("No sex or once", "2-5 times","6-10 times", "11 or more times")) +
+                   limits = c("No sex or once", "2-5 times","6-10 times", "11 or more times"),
+                   expand = c(0.2, 0)) +
   apatheme
+sex_freq
 
 ggsave("sexual_freq.pdf", sex_freq)
 
