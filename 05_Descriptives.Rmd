@@ -624,7 +624,8 @@ cccu_MA_t1_correlations <- cccu_MA_t1 %>%
     sexual_satisfaction,
     AGE, POVRATE, Avoid_r, FEELPG_recode)
 
-rcorr(as.matrix(cccu_MA_t1_correlations))
+out <- corr.test(cccu_MA_t1_correlations)
+print(out, short = FALSE)
 
 
 #for t2
@@ -634,9 +635,8 @@ cccu_MA_t2_correlations <- cccu_MA_t2 %>%
   select(contra_satis, hc_dur,
     sexual_satisfaction,
     AGE, POVRATE, Avoid_r, FEELPG_recode)
-
-rcorr(as.matrix(cccu_MA_t2_correlations))
-
+out <- corr.test(cccu_MA_t2_correlations)
+print(out, short = FALSE)
 #t3
 
 
@@ -645,7 +645,8 @@ cccu_MA_t3_correlations <- cccu_MA_t3 %>%
     sexual_satisfaction,
     AGE, POVRATE, Avoid_r, FEELPG_recode)
 
-rcorr(as.matrix(cccu_MA_t3_correlations))
+out <- corr.test(cccu_MA_t3_correlations)
+print(out, short = FALSE)
 
 ```
 

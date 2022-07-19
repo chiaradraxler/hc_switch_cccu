@@ -611,7 +611,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.36</code></pre>
 <pre class="r"><code>confIntV(t1_comp_inex$hc,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .36):  
-## Bootstrapped: [.34; .39]  
+## Bootstrapped: [.34; .38]  
 ## Using Fisher&#39;s z: [.34; .39]</code></pre>
 <pre class="r"><code>table(cccu_MA_t1$hc)</code></pre>
 <pre><code>## 
@@ -651,7 +651,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.          group1 group2 effsize    n1    n2 conf.low conf.high magnitude 
 ## * &lt;chr&gt;        &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;     
-## 1 contra_satis no     yes     0.0583  1723  2911  -0.0088      0.13 negligible</code></pre>
+## 1 contra_satis no     yes     0.0583  1723  2911    -0.02      0.13 negligible</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA_t1$contra_satis)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed mad min max range  skew kurtosis   se
 ## X1    1 1723 3.44 0.73      4    3.58   0   1   4     3 -1.29     1.44 0.02</code></pre>
@@ -719,7 +719,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.             group1 group2 effsize    n1    n2 conf.low conf.high magnitude
 ## * &lt;chr&gt;           &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;    
-## 1 sexual_satisfa~ no     yes     0.0624  1723  2911  -0.0046      0.12 negligib~</code></pre>
+## 1 sexual_satisfa~ no     yes     0.0624  1723  2911  -0.0018      0.12 negligib~</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA_t1$sexual_satisfaction)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
 ## X1    1 1723 5.04 1.17      5    5.24 1.48   1   6     5 -1.24     1.12 0.03</code></pre>
@@ -746,7 +746,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.   group1 group2 effsize    n1    n2 conf.low conf.high magnitude 
 ## * &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;     
-## 1 AGE   no     yes    -0.0528  1723  2911    -0.11    0.0095 negligible</code></pre>
+## 1 AGE   no     yes    -0.0528  1723  2911    -0.11    0.0084 negligible</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA_t1$AGE)</code></pre>
 <pre><code>##    vars    n  mean   sd median trimmed  mad min max range skew kurtosis   se
 ## X1    1 1723 28.15 5.18     28   27.92 5.93  18  39    21 0.36    -0.73 0.12</code></pre>
@@ -766,7 +766,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.13</code></pre>
 <pre class="r"><code>confIntV(t1_comp_inex$DEGREE_recode,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .13):  
-## Bootstrapped: [.12; .17]  
+## Bootstrapped: [.11; .17]  
 ## Using Fisher&#39;s z: [.1; .16]</code></pre>
 <pre class="r"><code>table(cccu_MA_t1$DEGREE_recode)</code></pre>
 <pre><code>## 
@@ -956,7 +956,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.058</code></pre>
 <pre class="r"><code>confIntV(t1_comp_inex$GAPINS_recode,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .06):  
-## Bootstrapped: [.03; .09]  
+## Bootstrapped: [.03; .08]  
 ## Using Fisher&#39;s z: [.03; .09]</code></pre>
 <pre class="r"><code>table(cccu_MA_t1$GAPINS_recode)</code></pre>
 <pre><code>## 
@@ -1055,7 +1055,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.06</code></pre>
 <pre class="r"><code>confIntV(t1_comp_inex$pregnant_between_waves,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .06):  
-## Bootstrapped: [.03; .08]  
+## Bootstrapped: [.04; .08]  
 ## Using Fisher&#39;s z: [.03; .09]</code></pre>
 <pre class="r"><code>table(cccu_MA_t1$pregnant_between_waves)</code></pre>
 <pre><code>## 
@@ -1084,7 +1084,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.06</code></pre>
 <pre class="r"><code>confIntV(t1_comp_inex$had_baby_between_waves,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .06):  
-## Bootstrapped: [.03; .09]  
+## Bootstrapped: [.04; .09]  
 ## Using Fisher&#39;s z: [.03; .09]</code></pre>
 <pre class="r"><code>table(cccu_MA_t1$had_baby_between_waves)</code></pre>
 <pre><code>## 
@@ -1145,7 +1145,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.           group1 group2 effsize    n1    n2 conf.low conf.high magnitude 
 ## * &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;     
-## 1 FEELPG_recode no     yes    -0.0657  1723  2911    -0.12   -0.0091 negligible</code></pre>
+## 1 FEELPG_recode no     yes    -0.0657  1723  2911    -0.12   -0.0069 negligible</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA_t1$FEELPG_recode)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed  mad min max range skew kurtosis   se
 ## X1    1 1723 3.41 1.67      3    3.38 1.48   1   6     5    0    -1.18 0.04</code></pre>
@@ -1479,8 +1479,11 @@ cccu_MA_t1_correlations &lt;- cccu_MA_t1 %&gt;%
     sexual_satisfaction,
     AGE, POVRATE, Avoid_r, FEELPG_recode)
 
-rcorr(as.matrix(cccu_MA_t1_correlations))</code></pre>
-<pre><code>##                     contra_satis hc_dur sexual_satisfaction   AGE POVRATE
+out &lt;- corr.test(cccu_MA_t1_correlations)
+print(out, short = FALSE)</code></pre>
+<pre><code>## Call:corr.test(x = cccu_MA_t1_correlations)
+## Correlation matrix 
+##                     contra_satis hc_dur sexual_satisfaction   AGE POVRATE
 ## contra_satis                1.00   0.15                0.16  0.02    0.06
 ## hc_dur                      0.15   1.00                0.01  0.25    0.15
 ## sexual_satisfaction         0.16   0.01                1.00 -0.03   -0.01
@@ -1496,8 +1499,7 @@ rcorr(as.matrix(cccu_MA_t1_correlations))</code></pre>
 ## POVRATE               -0.02         -0.04
 ## Avoid_r                1.00         -0.61
 ## FEELPG_recode         -0.61          1.00
-## 
-## n
+## Sample Size 
 ##                     contra_satis hc_dur sexual_satisfaction  AGE POVRATE
 ## contra_satis                1723   1032                1723 1723    1723
 ## hc_dur                      1032   1032                1032 1032    1032
@@ -1514,24 +1516,47 @@ rcorr(as.matrix(cccu_MA_t1_correlations))</code></pre>
 ## POVRATE                1723          1723
 ## Avoid_r                1723          1723
 ## FEELPG_recode          1723          1723
+## Probability values (Entries above the diagonal are adjusted for multiple tests.) 
+##                     contra_satis hc_dur sexual_satisfaction AGE POVRATE Avoid_r
+## contra_satis                0.00   0.00                0.00   1    0.18       0
+## hc_dur                      0.00   0.00                1.00   0    0.00       1
+## sexual_satisfaction         0.00   0.83                0.00   1    1.00       1
+## AGE                         0.50   0.00                0.19   0    0.00       0
+## POVRATE                     0.02   0.00                0.62   0    0.00       1
+## Avoid_r                     0.00   0.58                0.18   0    0.40       0
+## FEELPG_recode               0.01   0.29                0.00   0    0.13       0
+##                     FEELPG_recode
+## contra_satis                 0.09
+## hc_dur                       1.00
+## sexual_satisfaction          0.00
+## AGE                          0.00
+## POVRATE                      1.00
+## Avoid_r                      0.00
+## FEELPG_recode                0.00
 ## 
-## P
-##                     contra_satis hc_dur sexual_satisfaction AGE    POVRATE
-## contra_satis                     0.0000 0.0000              0.4981 0.0177 
-## hc_dur              0.0000              0.8285              0.0000 0.0000 
-## sexual_satisfaction 0.0000       0.8285                     0.1895 0.6176 
-## AGE                 0.4981       0.0000 0.1895                     0.0000 
-## POVRATE             0.0177       0.0000 0.6176              0.0000        
-## Avoid_r             0.0000       0.5793 0.1834              0.0000 0.4026 
-## FEELPG_recode       0.0084       0.2867 0.0000              0.0000 0.1272 
-##                     Avoid_r FEELPG_recode
-## contra_satis        0.0000  0.0084       
-## hc_dur              0.5793  0.2867       
-## sexual_satisfaction 0.1834  0.0000       
-## AGE                 0.0000  0.0000       
-## POVRATE             0.4026  0.1272       
-## Avoid_r                     0.0000       
-## FEELPG_recode       0.0000</code></pre>
+##  Confidence intervals based upon normal theory.  To get bootstrapped values, try cor.ci
+##             raw.lower raw.r raw.upper raw.p lower.adj upper.adj
+## cntr_-hc_dr      0.09  0.15      0.21  0.00      0.06      0.24
+## cntr_-sxl_s      0.11  0.16      0.21  0.00      0.09      0.23
+## cntr_-AGE       -0.03  0.02      0.06  0.50     -0.04      0.07
+## cntr_-POVRA      0.01  0.06      0.10  0.02     -0.01      0.12
+## cntr_-Avd_r      0.08  0.13      0.17  0.00      0.06      0.20
+## cntr_-FEELP     -0.11 -0.06     -0.02  0.01     -0.13      0.00
+## hc_dr-sxl_s     -0.05  0.01      0.07  0.83     -0.05      0.07
+## hc_dr-AGE        0.19  0.25      0.31  0.00      0.16      0.34
+## hc_dr-POVRA      0.09  0.15      0.21  0.00      0.06      0.24
+## hc_dr-Avd_r     -0.04  0.02      0.08  0.58     -0.06      0.09
+## hc_dr-FEELP     -0.09 -0.03      0.03  0.29     -0.12      0.05
+## sxl_s-AGE       -0.08 -0.03      0.02  0.19     -0.09      0.03
+## sxl_s-POVRA     -0.06 -0.01      0.04  0.62     -0.07      0.04
+## sxl_s-Avd_r     -0.08 -0.03      0.02  0.18     -0.10      0.03
+## sxl_s-FEELP      0.08  0.12      0.17  0.00      0.06      0.19
+## AGE-POVRA        0.14  0.18      0.23  0.00      0.11      0.25
+## AGE-Avd_r       -0.18 -0.14     -0.09  0.00     -0.21     -0.07
+## AGE-FEELP        0.16  0.20      0.25  0.00      0.13      0.27
+## POVRA-Avd_r     -0.07 -0.02      0.03  0.40     -0.08      0.04
+## POVRA-FEELP     -0.08 -0.04      0.01  0.13     -0.10      0.03
+## Avd_r-FEELP     -0.64 -0.61     -0.58  0.00     -0.65     -0.56</code></pre>
 <pre class="r"><code>#for t2
 
 
@@ -1539,9 +1564,11 @@ cccu_MA_t2_correlations &lt;- cccu_MA_t2 %&gt;%
   select(contra_satis, hc_dur,
     sexual_satisfaction,
     AGE, POVRATE, Avoid_r, FEELPG_recode)
-
-rcorr(as.matrix(cccu_MA_t2_correlations))</code></pre>
-<pre><code>##                     contra_satis hc_dur sexual_satisfaction   AGE POVRATE
+out &lt;- corr.test(cccu_MA_t2_correlations)
+print(out, short = FALSE)</code></pre>
+<pre><code>## Call:corr.test(x = cccu_MA_t2_correlations)
+## Correlation matrix 
+##                     contra_satis hc_dur sexual_satisfaction   AGE POVRATE
 ## contra_satis                1.00   0.15                0.14  0.01    0.06
 ## hc_dur                      0.15   1.00                0.04  0.20    0.16
 ## sexual_satisfaction         0.14   0.04                1.00 -0.05   -0.01
@@ -1557,8 +1584,7 @@ rcorr(as.matrix(cccu_MA_t2_correlations))</code></pre>
 ## POVRATE                0.00         -0.04
 ## Avoid_r                1.00         -0.62
 ## FEELPG_recode         -0.62          1.00
-## 
-## n
+## Sample Size 
 ##                     contra_satis hc_dur sexual_satisfaction  AGE POVRATE
 ## contra_satis                1181    717                1181 1181    1181
 ## hc_dur                       717    717                 717  717     717
@@ -1575,24 +1601,47 @@ rcorr(as.matrix(cccu_MA_t2_correlations))</code></pre>
 ## POVRATE                1181          1181
 ## Avoid_r                1181          1181
 ## FEELPG_recode          1181          1181
+## Probability values (Entries above the diagonal are adjusted for multiple tests.) 
+##                     contra_satis hc_dur sexual_satisfaction AGE POVRATE Avoid_r
+## contra_satis                0.00   0.00                0.00   1    0.58    1.00
+## hc_dur                      0.00   0.00                1.00   0    0.00    1.00
+## sexual_satisfaction         0.00   0.29                0.00   1    1.00    0.12
+## AGE                         0.66   0.00                0.10   0    0.00    0.00
+## POVRATE                     0.05   0.00                0.78   0    0.00    1.00
+## Avoid_r                     0.15   0.19                0.01   0    0.91    0.00
+## FEELPG_recode               0.90   0.88                0.00   0    0.20    0.00
+##                     FEELPG_recode
+## contra_satis                    1
+## hc_dur                          1
+## sexual_satisfaction             0
+## AGE                             0
+## POVRATE                         1
+## Avoid_r                         0
+## FEELPG_recode                   0
 ## 
-## P
-##                     contra_satis hc_dur sexual_satisfaction AGE    POVRATE
-## contra_satis                     0.0000 0.0000              0.6556 0.0531 
-## hc_dur              0.0000              0.2944              0.0000 0.0000 
-## sexual_satisfaction 0.0000       0.2944                     0.1034 0.7755 
-## AGE                 0.6556       0.0000 0.1034                     0.0000 
-## POVRATE             0.0531       0.0000 0.7755              0.0000        
-## Avoid_r             0.1471       0.1944 0.0098              0.0000 0.9078 
-## FEELPG_recode       0.8963       0.8778 0.0000              0.0000 0.2005 
-##                     Avoid_r FEELPG_recode
-## contra_satis        0.1471  0.8963       
-## hc_dur              0.1944  0.8778       
-## sexual_satisfaction 0.0098  0.0000       
-## AGE                 0.0000  0.0000       
-## POVRATE             0.9078  0.2005       
-## Avoid_r                     0.0000       
-## FEELPG_recode       0.0000</code></pre>
+##  Confidence intervals based upon normal theory.  To get bootstrapped values, try cor.ci
+##             raw.lower raw.r raw.upper raw.p lower.adj upper.adj
+## cntr_-hc_dr      0.07  0.15      0.22  0.00      0.04      0.25
+## cntr_-sxl_s      0.08  0.14      0.19  0.00      0.05      0.22
+## cntr_-AGE       -0.04  0.01      0.07  0.66     -0.06      0.09
+## cntr_-POVRA      0.00  0.06      0.11  0.05     -0.03      0.14
+## cntr_-Avd_r     -0.01  0.04      0.10  0.15     -0.04      0.12
+## cntr_-FEELP     -0.05  0.00      0.06  0.90     -0.06      0.07
+## hc_dr-sxl_s     -0.03  0.04      0.11  0.29     -0.06      0.14
+## hc_dr-AGE        0.13  0.20      0.27  0.00      0.09      0.30
+## hc_dr-POVRA      0.09  0.16      0.23  0.00      0.05      0.27
+## hc_dr-Avd_r     -0.02  0.05      0.12  0.19     -0.06      0.15
+## hc_dr-FEELP     -0.07  0.01      0.08  0.88     -0.08      0.10
+## sxl_s-AGE       -0.10 -0.05      0.01  0.10     -0.13      0.03
+## sxl_s-POVRA     -0.07 -0.01      0.05  0.78     -0.08      0.06
+## sxl_s-Avd_r     -0.13 -0.08     -0.02  0.01     -0.16      0.01
+## sxl_s-FEELP      0.12  0.18      0.23  0.00      0.09      0.26
+## AGE-POVRA        0.11  0.16      0.22  0.00      0.08      0.25
+## AGE-Avd_r       -0.20 -0.14     -0.08  0.00     -0.22     -0.06
+## AGE-FEELP        0.14  0.19      0.25  0.00      0.11      0.28
+## POVRA-Avd_r     -0.06  0.00      0.05  0.91     -0.06      0.05
+## POVRA-FEELP     -0.09 -0.04      0.02  0.20     -0.11      0.04
+## Avd_r-FEELP     -0.65 -0.62     -0.58  0.00     -0.67     -0.56</code></pre>
 <pre class="r"><code>#t3
 
 
@@ -1601,8 +1650,11 @@ cccu_MA_t3_correlations &lt;- cccu_MA_t3 %&gt;%
     sexual_satisfaction,
     AGE, POVRATE, Avoid_r, FEELPG_recode)
 
-rcorr(as.matrix(cccu_MA_t3_correlations))</code></pre>
-<pre><code>##                     contra_satis hc_dur sexual_satisfaction   AGE POVRATE
+out &lt;- corr.test(cccu_MA_t3_correlations)
+print(out, short = FALSE)</code></pre>
+<pre><code>## Call:corr.test(x = cccu_MA_t3_correlations)
+## Correlation matrix 
+##                     contra_satis hc_dur sexual_satisfaction   AGE POVRATE
 ## contra_satis                1.00   0.17                0.14 -0.02    0.06
 ## hc_dur                      0.17   1.00                0.03  0.11    0.12
 ## sexual_satisfaction         0.14   0.03                1.00 -0.01   -0.02
@@ -1618,8 +1670,7 @@ rcorr(as.matrix(cccu_MA_t3_correlations))</code></pre>
 ## POVRATE               -0.02         -0.06
 ## Avoid_r                1.00         -0.64
 ## FEELPG_recode         -0.64          1.00
-## 
-## n
+## Sample Size 
 ##                     contra_satis hc_dur sexual_satisfaction AGE POVRATE Avoid_r
 ## contra_satis                 883    536                 883 883     883     883
 ## hc_dur                       536    536                 536 536     536     536
@@ -1636,24 +1687,47 @@ rcorr(as.matrix(cccu_MA_t3_correlations))</code></pre>
 ## POVRATE                       883
 ## Avoid_r                       883
 ## FEELPG_recode                 883
-## 
-## P
-##                     contra_satis hc_dur sexual_satisfaction AGE    POVRATE
-## contra_satis                     0.0000 0.0000              0.6369 0.0580 
-## hc_dur              0.0000              0.4937              0.0095 0.0059 
-## sexual_satisfaction 0.0000       0.4937                     0.8171 0.5747 
-## AGE                 0.6369       0.0095 0.8171                     0.0000 
-## POVRATE             0.0580       0.0059 0.5747              0.0000        
-## Avoid_r             0.1777       0.9037 0.0373              0.0004 0.5264 
-## FEELPG_recode       0.7616       0.6797 0.0000              0.0000 0.0715 
+## Probability values (Entries above the diagonal are adjusted for multiple tests.) 
+##                     contra_satis hc_dur sexual_satisfaction  AGE POVRATE
+## contra_satis                0.00   0.00                0.00 1.00    0.64
+## hc_dur                      0.00   0.00                1.00 0.12    0.08
+## sexual_satisfaction         0.00   0.49                0.00 1.00    1.00
+## AGE                         0.64   0.01                0.82 0.00    0.00
+## POVRATE                     0.06   0.01                0.57 0.00    0.00
+## Avoid_r                     0.18   0.90                0.04 0.00    0.53
+## FEELPG_recode               0.76   0.68                0.00 0.00    0.07
 ##                     Avoid_r FEELPG_recode
-## contra_satis        0.1777  0.7616       
-## hc_dur              0.9037  0.6797       
-## sexual_satisfaction 0.0373  0.0000       
-## AGE                 0.0004  0.0000       
-## POVRATE             0.5264  0.0715       
-## Avoid_r                     0.0000       
-## FEELPG_recode       0.0000</code></pre>
+## contra_satis           1.00          1.00
+## hc_dur                 1.00          1.00
+## sexual_satisfaction    0.45          0.00
+## AGE                    0.01          0.00
+## POVRATE                1.00          0.71
+## Avoid_r                0.00          0.00
+## FEELPG_recode          0.00          0.00
+## 
+##  Confidence intervals based upon normal theory.  To get bootstrapped values, try cor.ci
+##             raw.lower raw.r raw.upper raw.p lower.adj upper.adj
+## cntr_-hc_dr      0.09  0.17      0.25  0.00      0.04      0.30
+## cntr_-sxl_s      0.08  0.14      0.21  0.00      0.04      0.24
+## cntr_-AGE       -0.08 -0.02      0.05  0.64     -0.10      0.07
+## cntr_-POVRA      0.00  0.06      0.13  0.06     -0.03      0.16
+## cntr_-Avd_r     -0.02  0.05      0.11  0.18     -0.05      0.14
+## cntr_-FEELP     -0.06  0.01      0.08  0.76     -0.07      0.09
+## hc_dr-sxl_s     -0.06  0.03      0.11  0.49     -0.09      0.15
+## hc_dr-AGE        0.03  0.11      0.19  0.01     -0.01      0.23
+## hc_dr-POVRA      0.03  0.12      0.20  0.01     -0.01      0.24
+## hc_dr-Avd_r     -0.08  0.01      0.09  0.90     -0.08      0.09
+## hc_dr-FEELP     -0.10 -0.02      0.07  0.68     -0.13      0.09
+## sxl_s-AGE       -0.07 -0.01      0.06  0.82     -0.08      0.07
+## sxl_s-POVRA     -0.08 -0.02      0.05  0.57     -0.11      0.07
+## sxl_s-Avd_r     -0.14 -0.07      0.00  0.04     -0.17      0.03
+## sxl_s-FEELP      0.09  0.16      0.22  0.00      0.06      0.25
+## AGE-POVRA        0.09  0.16      0.22  0.00      0.06      0.25
+## AGE-Avd_r       -0.18 -0.12     -0.05  0.00     -0.21     -0.02
+## AGE-FEELP        0.10  0.16      0.23  0.00      0.06      0.26
+## POVRA-Avd_r     -0.09 -0.02      0.04  0.53     -0.11      0.07
+## POVRA-FEELP     -0.13 -0.06      0.01  0.07     -0.15      0.03
+## Avd_r-FEELP     -0.68 -0.64     -0.60  0.00     -0.70     -0.58</code></pre>
 <p>#6. Checks for normality</p>
 <pre class="r"><code>#hc use
 table(cccu_MA$hc)</code></pre>
