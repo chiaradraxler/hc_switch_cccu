@@ -32,6 +32,7 @@ library(patchwork)
 library(marginaleffects)
 library(ggpubr)
 library(RColorBrewer)
+library(sjPlot)
 
 
 
@@ -56,8 +57,8 @@ based on multilevel model m3
 ```{r}
 m3 <- glmer(switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + (1| CASEID), family = binomial, data = cccu_MA, control=glmerControl(optimizer="bobyqa"))
 
-### @Chiara: neuer Plot
-library(sjPlot)
+### contra_satis
+
 plot_model(m3, type = "pred", terms = c("contra_satis", "hc"), ci.lvl = 0.997)  +
   labs(color = "Group",  fill = "Group") +
   scale_fill_manual(
@@ -78,39 +79,41 @@ plot_model(m3, type = "pred", terms = c("contra_satis", "hc"), ci.lvl = 0.997)  
       "Non-Hormonal Contraceptive Users"
     )
   ) +
-  labs(y = "Probability to Switch") +
+  labs(y = "Probability to Switch", title = "") +
   scale_x_discrete("Contraceptive Satisfaction",
                    limits = c("1", "2", "3", "4")) +
   apatheme
-###
 
-plot(effect(term = "hc * contra_satis", mod = m3, confidence.level = 0.997))
+###sexual satisfaction
 
-eff = allEffects(mod = m3, confidence.level = 0.997)
+plot_model(m3, type = "pred", terms = c("sexual_satisfaction", "hc"), ci.lvl = 0.997)  +  labs(color = "Group",  fill = "Group") +
+  scale_fill_manual(
+    values = c("red", "blue"),
+    name = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "Hormonal Contraceptive Users",
+      "Non-Hormonal Contraceptive Users"
+    ),
+  ) +
+  scale_colour_manual(
+    values = c("red", "blue"),
+    name  = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "Hormonal Contraceptive Users",
+      "Non-Hormonal Contraceptive Users"
+    )
+  ) +
+  labs(y = "Probability to Switch", title = "") +
+  scale_x_discrete("Sexual Satisfaction",
+                   limits = c("1", "2", "3", "4", "5", "6")) +
+  apatheme
 
-#contraceptive satisfaction
 
-eff_contra_satis = eff$`hc:contra_satis`
+###sexual frequency
 
-eff_contra_satis_datplot = data.frame(
-  hc = eff_contra_satis$x$hc,
-  contra_satis = eff_contra_satis$x$contra_satis,
-  estimate = eff_contra_satis$fit,
-  lower = eff_contra_satis$lower,
-  upper = eff_contra_satis$upper)
-
-
-plot_contra_satis <- ggplot(data = eff_contra_satis_datplot,
-                            aes(
-                              x = contra_satis,
-                              y = estimate,
-                              group = hc,
-                              color = hc,
-                              fill = hc
-                            )) +
-  geom_line() +
-  geom_ribbon(aes(ymin = lower, ymax = upper, fill = hc),
-              alpha = 0.07) +
+plot_model(m3, type = "pred", terms = c("sex_freq", "hc"), ci.lvl = 0.997)  +
   labs(color = "Group",  fill = "Group") +
   scale_fill_manual(
     values = c("red", "blue"),
@@ -130,118 +133,12 @@ plot_contra_satis <- ggplot(data = eff_contra_satis_datplot,
       "Non-Hormonal Contraceptive Users"
     )
   ) +
-  labs(y = "Probability to Switch") +
-  scale_x_discrete("Contraceptive Satisfaction",
-                   limits = c("1", "2", "3", "4")) +
-  scale_y_continuous(breaks = exp(c(-4, -3, -2, -1, 0))) +
-  apatheme
-
-plot_contra_satis
-
-#sexual satisfaction
-
-eff_sexual_satisfaction = eff$`hc:sexual_satisfaction`
-
-eff_sexual_satisfaction_datplot = data.frame(
-  hc = eff_sexual_satisfaction$x$hc,
-  sex_sat = eff_sexual_satisfaction$x$sexual_satisfaction,
-  estimate = eff_sexual_satisfaction$fit,
-  lower = eff_sexual_satisfaction$lower,
-  upper = eff_sexual_satisfaction$upper)
-
-
-
-plot_sexual_satisfaction <-
-  ggplot(data = eff_sexual_satisfaction_datplot,
-         aes(
-           x = sex_sat,
-           y = estimate,
-           group = hc,
-           color = hc,
-           fill = hc
-         )) +
-  geom_line() +
-  geom_ribbon(aes(ymin = lower, ymax = upper, fill = hc),
-              alpha = 0.07) +
-  labs(color = "Group",  fill = "Group") +
-  scale_fill_manual(
-    values = c("red", "blue"),
-    name = "Group",
-    breaks = c("hc", "non_hc"),
-    labels = c(
-      "Hormonal Contraceptive Users",
-      "Non-Hormonal Contraceptive Users"
-    )
-  ) +
-  scale_colour_manual(
-    values = c("red", "blue"),
-    name  = "Group",
-    breaks = c("hc", "non_hc"),
-    labels = c(
-      "Hormonal Contraceptive Users",
-      "Non-Hormonal Contraceptive Users"
-    )
-  ) +
-  labs(y = "Probability to Switch") +
-  scale_x_discrete("Sexual Satisfaction",
-                   limits = c("1", "2", "3", "4", "5", "6")) +
-  
+  labs(y = "Probability to Switch", title = "") +
+  scale_x_discrete("Sexual Frequency",
+                   limits = c("No sex or once", "2-5 times","6-10 times", "11 or more times")) +
   apatheme
 
 
-    
-plot_sexual_satisfaction
-
-#sexual frequency 
-
-eff_sex_freq = eff$`hc:sex_freq`
-
-eff_sex_freq_datplot = data.frame(
-  hc = eff_sex_freq$x$hc,
-  sex_freq = eff_sex_freq$x$sex_freq,
-  estimate = eff_sex_freq$fit,
-  lower = eff_sex_freq$lower,
-  upper = eff_sex_freq$upper)
-
-
-plot_sex_freq <- ggplot(data = eff_sex_freq_datplot,
-                        aes(
-                          x = sex_freq,
-                          y = estimate,
-                          group = hc,
-                          color = hc,
-                          fill = hc
-                        )) +
-  geom_line() +
-  geom_ribbon(aes(ymin = lower, ymax = upper, fill = hc),
-              alpha = 0.07) +
-  labs(color = "Group",  fill = "Group") +
-  scale_fill_manual(
-    values = c("red", "blue"),
-    name = "Group",
-    breaks = c("hc", "non_hc"),
-    labels = c(
-      "Hormonal Contraceptive Users",
-      "Non-Hormonal Contraceptive Users"
-    )
-  ) +
-  scale_colour_manual(
-    values = c("red", "blue"),
-    name  = "Group",
-    breaks = c("hc", "non_hc"),
-    labels = c(
-      "Hormonal Contraceptive Users",
-      "Non-Hormonal Contraceptive Users"
-    )
-  ) +
-  labs(y = "Probability to Switch") +
-  scale_x_discrete(
-    "Sexual Frequency",
-    limits = c("No sex or once", "2-5 times","6-10 times", "11 or more times")
-  ) +
-  apatheme
-
-plot_sex_freq
 
 #for hc dur
 
@@ -344,90 +241,6 @@ figure <-
   )
 figure
 
-
-#effect of avoidance
-#filter for first measurement occasion
-length(unique(cccu_MA$CASEID))
-
-
-cccu_MA_sens = cccu_MA %>%
-  group_by(CASEID) %>%
-  arrange(WAVE) %>%
-  mutate(count = row_number()) %>%
-  ungroup()
-
-cccu_MA_sens = cccu_MA_sens %>%
-  filter(count == 1)
-
-m4 = glm(
-  switch ~ hc * contra_satis + hc * sexual_satisfaction +  hc * sex_freq + hc *
-    AGE + hc * DEGREE_recode +
-    hc * POVRATE +
-    hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
-    hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves + hc *
-    had_baby_between_waves + hc * Avoid_r +
-    hc * FEELPG_recode +
-    hc * rel_dur_factor,
-  family = binomial,
-  data = cccu_MA_sens
-)
-
-
-plot(effect(term = "hc * Avoid_r", mod = m4, confidence.level = 0.997))
-
-eff = allEffects(mod = m4, confidence.level = 0.997)
-
-
-
-
-eff_avoid = eff$`hc:Avoid_r`
-
-eff_avoid_datplot = data.frame(
-  hc = eff_avoid$x$hc,
-  avoid = eff_avoid$x$Avoid_r,
-  estimate = eff_avoid$fit,
-  lower = eff_avoid$lower,
-  upper = eff_avoid$upper)
-
-
-plot_avoid <- ggplot(data = eff_avoid_datplot,
-                        aes(
-                          x = avoid,
-                          y = estimate,
-                          group = hc,
-                          color = hc,
-                          fill = hc
-                        )) +
-  geom_line() +
-  geom_ribbon(aes(ymin = lower, ymax = upper, fill = hc),
-              alpha = 0.07) +
-  labs(color = "Group",  fill = "Group") +
-  scale_fill_manual(
-    values = c("red", "blue"),
-    name = "Group",
-    breaks = c("hc", "non_hc"),
-    labels = c(
-      "Hormonal Contraceptive Users",
-      "Non-Hormonal Contraceptive Users"
-    )
-  ) +
-  scale_colour_manual(
-    values = c("red", "blue"),
-    name  = "Group",
-    breaks = c("hc", "non_hc"),
-    labels = c(
-      "Hormonal Contraceptive Users",
-      "Non-Hormonal Contraceptive Users"
-    )
-  ) +
-  labs(y = "Probability to Switch") +
-  scale_x_discrete(
-    "Pregnancy Avoidance",
-    limits = c("1", "2", "3", "4", "5", "6")
-  ) +
-  apatheme
-
-plot_avoid
 
 ```
 
