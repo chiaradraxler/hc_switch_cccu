@@ -123,15 +123,15 @@ ggsave("sexual_satis.png", sex_sat)
 
 ###sexual frequency
 
-plot_model(m3, type = "pred", terms = c("sex_freq", "hc"), ci.lvl = 0.997)  +
+sex_freq <- plot_model(m3, type = "pred", terms = c("sex_freq", "hc"), ci.lvl = 0.997)  +
   labs(color = "Group",  fill = "Group") +
   scale_fill_manual(
     values = c("red", "blue"),
     name = "Group",
     breaks = c("hc", "non_hc"),
     labels = c(
-      "Hormonal Contraceptive Users",
-      "Non-Hormonal Contraceptive Users"
+      "HC",
+      "Non-HC"
     ),
   ) +
   scale_colour_manual(
@@ -139,13 +139,13 @@ plot_model(m3, type = "pred", terms = c("sex_freq", "hc"), ci.lvl = 0.997)  +
     name  = "Group",
     breaks = c("hc", "non_hc"),
     labels = c(
-      "Hormonal Contraceptive Users",
-      "Non-Hormonal Contraceptive Users"
+      "HC",
+      "Non-HC"
     )
   ) +
   labs(y = "Probability to Switch", title = "") +
   scale_x_discrete("Sexual Frequency",
-                   limits = c("No sex or once", "2-5 times","6-10 times", "11 or more times")) +
+                   limits = c("0-1", "2-5","6-10", "11+")) +
   apatheme
 
 ggsave("sexual_freq.pdf", sex_freq)
@@ -157,105 +157,24 @@ ggsave("sexual_freq.png", sex_freq)
 sa_m3 <- glmer(switch ~ contra_satis* hc_dur  +  sexual_satisfaction +  sex_freq + (1| CASEID), family = binomial, data = cccu_SA, control=glmerControl(optimizer="bobyqa"))
 summary(sa_m3)
 
-plot(effect(term = "contra_satis* hc_dur", mod = sa_m3, confidence.level = 0.997))
 
-eff = allEffects(mod = sa_m3, confidence.level = 0.997)
+hc_dur<-
+  plot_model(sa_m3, type = "pred",  grid = TRUE, show.legend = TRUE, terms = c("contra_satis","hc_dur[0, 10,20,30,40]"), ci.lvl = 0.997)  +
+  labs(color = "Group",  fill = "Group") +
 
-
-
-eff_hc_dur = eff$`contra_satis:hc_dur`
-
-eff_hc_dur_datplot = data.frame(
-  hc_dur = eff_hc_dur$x$hc_dur,
-  contra_satis = eff_hc_dur$x$contra_satis,
-  estimate = eff_hc_dur$fit,
-  lower = eff_hc_dur$lower,
-  upper = eff_hc_dur$upper)
-
-nickColors <- function(n, h = c(120,400), l = c(.40,.70), s = c(.8,1), alpha = 3){
-  require(colorspace)
-  require(scales)
-  return (alpha(hex(HLS(seq(h[1],h[2],length.out = n), seq(l[1],l[2],length.out = n), seq(s[1],s[2],length.out=n))), alpha))
-}
-barplot(rep(1,12), col = nickColors(12))
-
-
-plot_hc_dur <- ggplot(data = eff_hc_dur_datplot,
-                      aes(
-                        x = contra_satis,
-                        y = estimate,
-                        group = hc_dur,
-                        color = hc_dur,
-                        fill = hc_dur
-                      )) +
-  geom_line() +
-  geom_ribbon(aes(ymin = lower, ymax = upper, fill = hc_dur),
-              alpha = 0.03) +
-  labs(y = "Probability to Switch", color = "Contraceptive Duration", fill = "Contraceptive Duration") +
+  labs(y = "Probability to Switch", title = "") +
   scale_x_discrete("Contraceptive Satisfaction",
-                   limits = c("1", "2", "3", "4")) +
-  scale_fill_gradientn(
-    colors = nickColors(12),
-    breaks = c(0, 10, 20, 30, 40),
-    labels = c("0 Months", "10 Months", "20 Months", "30 Months", "40 Months")
-  ) +
-  scale_color_gradientn(
-    colors = nickColors(12),
-    breaks = c(0, 10, 20, 30, 40),
-    labels = c("0 Months", "10 Months", "20 Months", "30 Months", "40 Months")
-  ) +
-  apatheme
+                   limits = c("1", "2", "3", "4"))+
+  legend_style(inside = TRUE, pos = "right")+
+    apatheme
 
-plot_hc_dur
+hc_dur
 
 
 
-plot_hc_dur_separate <- ggplot(data = eff_hc_dur_datplot,
-                      aes(
-                        x = contra_satis,
-                        y = estimate,
-                        group = hc_dur,
-                        color = hc_dur,
-                        fill = hc_dur
-                      )) +
-  geom_line() +
-  geom_ribbon(aes(ymin = lower, ymax = upper, fill = hc_dur),
-              alpha = 0.07)+
-    facet_wrap(~hc_dur, nrow = 1)+
-  labs(y = "Probability to Switch", color = "Contraceptive Duration", fill = "Contraceptive Duration") +
-  scale_x_discrete("Contraceptive Satisfaction",
-                   limits = c("1", "2", "3", "4")) +
-  scale_fill_continuous(
-    breaks = c(0, 10, 20, 30, 40),
-    labels = c("0 Months", "10 Months", "20 Months", "30 Months", "40 Months")
-  ) +
-  scale_color_continuous(
-    breaks = c(0, 10, 20, 30, 40),
-    labels = c("0 Months", "10 Months", "20 Months", "30 Months", "40 Months")
-  ) +
-  apatheme
+ggsave("hc_dur.pdf", hc_dur)
 
-
-plot_hc_dur_separate
-
-ggsave("hc_dur.pdf", plot_hc_dur_separate)
-
-ggsave("hc_dur.png", plot_hc_dur_separate)
-
-
-
-#join plots
-figure <-
-  ggarrange(
-    plot_contra_satis,
-    plot_sexual_satisfaction,
-    plot_sex_freq,
-    common.legend = TRUE,legend = "right",
-    labels = c("A", "B", "C"),
-    ncol = 2,
-    nrow = 2
-  )
-figure
+ggsave("hc_dur.png", hc_dur)
 
 
 ```
@@ -983,16 +902,16 @@ forest_plot_data2$predictor = factor(forest_plot_data2$predictor,
                                                "hcnon_hc:sex_freq6-10 times",
                                                "hcnon_hc:sex_freq11 or more times"),
                                     labels = c("(Intercept)",
-                                               "Hormonal Contraceptive Use",
+                                               "HC",
                                                "Contraceptive Satisfaction",
-                                               "Hormonal Contraceptive Use : Contraceptive Satisfaction",
+                                               "HC: Contraceptive Satisfaction",
                                                "Sexual Satisfaction",
-                                               "Sexual Frequency -5 times", "Sexual Frequency 6-10 times",
-                                               "Sexual Frequency 11 or more times",
-                                               "Hormonal Contraceptive Use : Sexual Satisfaction",
-                                               "Hormonal Contraceptive Use : Sexual Frequency 2-5 times",
-                                               "Hormonal Contraceptive Use : Sexual Frequency 6-10 times",
-                                               "Hormonal Contraceptive Use : Sexual Frequency 11 or more times"))
+                                               "Sexual Frequency 2-5", "Sexual Frequency 6-10",
+                                               "Sexual Frequency 11+",
+                                               "HC: Sexual Satisfaction",
+                                               "HC: Sexual Frequency 2-5",
+                                               "HC: Sexual Frequency 6-10",
+                                               "HC: Sexual Frequency 11+"))
 
 forest_plot_data2$group = factor(
   forest_plot_data2$group,
@@ -1104,8 +1023,8 @@ forest_ma_ra <- ggplot(
       "Multilevel Model 1",
       "Multilevel Model 2",
       "Multilevel Model 3",
-      "Model 3",
-      "Model 4"
+      "Simple Regression Model 3",
+      "Simple Regression Model 4"
     ),
     values = group.color
   ) +
@@ -1117,16 +1036,16 @@ forest_ma_ra <- ggplot(
       "Multilevel Model 1",
       "Multilevel Model 2",
       "Multilevel Model 3",
-      "Model 3",
-      "Model 4"
+      "Simple Regression Model 3",
+      "Simple Regression Model 4"
     ),
     values = group.color
   ) +
   scale_shape_manual(
     name = "Analyses",
-    values = c(2, 0, 1, 5),
+    values = c(21,22,24,25),
     labels = c(
-      "Normal Analyses",
+      "Main Analyses",
       "Robustness Analyses 1",
       "Robustness Analyses 2",
       "Robustness Analyses 3"
@@ -1137,6 +1056,8 @@ forest_ma_ra <- ggplot(
 
 forest_ma_ra
 
+ggsave("forest_ma.pdf", forest_ma_ra, width = 23, height = 12, units = "cm", dpi = 300)
+ggsave("forest_ma.png", forest_ma_ra, width = 23, height = 12, units = "cm", dpi = 300)
 
 ```
 
@@ -1672,11 +1593,11 @@ sa_forest_plot_data$predictor = factor(sa_forest_plot_data$predictor,
                                                "sex_freq2-5 times", "sex_freq6-10 times",
                                                "sex_freq11 or more times", 
                                                "contra_satis:hc_dur"),
-                                    labels = c("(Intercept)",                                               "Contraceptive Satisfaction", "Contraceptive Duration",
+                                    labels = c("(Intercept)",                                               "Contraceptive Satisfaction", "HC-Dur",
                                                "Sexual Satisfaction",
-                                               "Sexual Frequency 2-5 times", "Sexual Frequency 6-10 times",
-                                               "Sexual Frequency 11 or more times", 
-                                               "Contraceptive Satisfaction : Contraceptive Duration"))
+                                               "Sexual Frequency 2-5", "Sexual Frequency 6-10",
+                                               "Sexual Frequency 11+", 
+                                               "Contraceptive Satisfaction : HC-Dur"))
 
 sa_forest_plot_data$group = factor(
   sa_forest_plot_data$group,
@@ -1735,6 +1656,9 @@ forest_sa <- ggplot(
     group = grouping,
     fill = grouping,
     color = grouping,
+    group = forcats::fct_rev(grouping),
+    fill = forcats::fct_rev(grouping),
+    color = forcats::fct_rev(grouping),
     shape = shape
   )
 ) +
@@ -1753,8 +1677,8 @@ forest_sa <- ggplot(
     labels = c(
       "Multilevel Model 2",
       "Multilevel Model 3",
-      "Model 3",
-      "Model 4"
+      "Simple Regression Model 3",
+      "Simple Regression Model 4"
     ),
     values = group.color
   ) +
@@ -1764,14 +1688,14 @@ forest_sa <- ggplot(
     labels = c(
       "Multilevel Model 2",
       "Multilevel Model 3",
-      "Model 3",
-      "Model 4"
+      "Simple Regression Model 3",
+      "Simple Regression Model 4"
     ),
     values = group.color
   ) +
   scale_shape_manual(
     name = "Analyses",
-    values = c(2, 0, 1, 5),
+    values = c(21,22,24,25),
     labels = c(
       "Normal Analyses",
       "Robustness Analyses 1",
@@ -1784,6 +1708,10 @@ forest_sa <- ggplot(
   apatheme
 
 forest_sa
+
+
+ggsave("forest_sa.pdf", forest_sa,  width = 23, height = 12, units = "cm", dpi = 300)
+ggsave("forest_sa.png", forest_sa,  width = 23, height = 12, units = "cm", dpi = 300)
 
 ```
 
