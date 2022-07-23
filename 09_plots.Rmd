@@ -31,7 +31,6 @@ library(tidyverse)
 library(patchwork)
 library(marginaleffects)
 library(ggpubr)
-library(RColorBrewer)
 library(sjPlot)
 
 
@@ -148,9 +147,7 @@ sex_freq <- plot_model(m3, type = "pred", terms = c("sex_freq", "hc"), ci.lvl = 
   ) +
   labs(y = "Probability to Switch", title = "") +
   scale_x_discrete("Sexual Frequency",
-                   limits = c("0-1", "2-5","6-10", "11+")) +
-                   limits = c("No sex or once", "2-5 times","6-10 times", "11 or more times")
-                   expand = c(0.2, 0)) +
+                   limits = c("No sex or once", "2-5 times","6-10 times", "11 or more times"), guide = guide_axis(n.dodge=2)) +
   apatheme
 sex_freq
 
@@ -165,16 +162,21 @@ summary(sa_m3)
 
 
 hc_dur<-
-  plot_model(sa_m3, type = "pred",  grid = TRUE, show.legend = TRUE, terms = c("contra_satis","hc_dur[0, 10,20,30,40]"), ci.lvl = 0.997)  +
-  labs(color = "Group",  fill = "Group") +
-
+  plot_model(sa_m3, type = "pred",  show.legend = TRUE,
+             terms = c("contra_satis","hc_dur[0, 12,24,36,48]"), ci.lvl = 0.997) +
   labs(y = "Probability to Switch", title = "") +
   scale_x_discrete("Contraceptive Satisfaction",
                    limits = c("1", "2", "3", "4"))+
-  legend_style(inside = TRUE, pos = "right")+
-    apatheme
+  scale_color_discrete(name = "Duration", labels = c("< 1 year",
+                                                     "1-2 years",
+                                                     "2-3 years",
+                                                     "3-4 years",
+                                                     ">4 years")) +
+  apatheme
 
 hc_dur
+
+
 
 
 
@@ -912,12 +914,12 @@ forest_plot_data2$predictor = factor(forest_plot_data2$predictor,
                                                "Contraceptive Satisfaction",
                                                "HC: Contraceptive Satisfaction",
                                                "Sexual Satisfaction",
-                                               "Sexual Frequency 2-5", "Sexual Frequency 6-10",
-                                               "Sexual Frequency 11+",
+                                               "Sexual Frequency 2-5 times", "Sexual Frequency 6-10 times",
+                                               "Sexual Frequency 11 or more times",
                                                "HC: Sexual Satisfaction",
-                                               "HC: Sexual Frequency 2-5",
-                                               "HC: Sexual Frequency 6-10",
-                                               "HC: Sexual Frequency 11+"))
+                                               "HC: Sexual Frequency 2-5 times",
+                                               "HC: Sexual Frequency 6-10 times",
+                                               "HC: Sexual Frequency 11 or more times"))
 
 forest_plot_data2$group = factor(
   forest_plot_data2$group,
@@ -1601,8 +1603,8 @@ sa_forest_plot_data$predictor = factor(sa_forest_plot_data$predictor,
                                                "contra_satis:hc_dur"),
                                     labels = c("(Intercept)",                                               "Contraceptive Satisfaction", "HC-Dur",
                                                "Sexual Satisfaction",
-                                               "Sexual Frequency 2-5", "Sexual Frequency 6-10",
-                                               "Sexual Frequency 11+", 
+                                               "Sexual Frequency 2-5 times", "Sexual Frequency 6-10 times",
+                                               "Sexual Frequency 11 or more times", 
                                                "Contraceptive Satisfaction : HC-Dur"))
 
 sa_forest_plot_data$group = factor(
