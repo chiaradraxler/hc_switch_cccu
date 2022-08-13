@@ -171,10 +171,31 @@ pre code {
 </div>
 
 
-<div id="codebook" class="section level1 tabset">
-<h1 class="tabset">Codebook</h1>
-<div id="packages-and-df" class="section level2">
-<h2>1. Packages and df</h2>
+<p>#Introduction for working code:</p>
+<ol start="0" style="list-style-type: decimal">
+<li>Download the Code from Github. The new downloaded folder hc_switch_cccu-main contains the R project, Rmd Code, created data frames, knitted Html Code, Figures as .pdf and.jpg, Preregistered synthetic Code, and a folder to store the downloaded RData called RData.</li>
+</ol>
+<p>Name the folder appropriately (when downloading the code from GitHub the folder will be hc_switch_cccu-main).</p>
+<ol style="list-style-type: decimal">
+<li>Download data from <a href="https://www.icpsr.umich.edu/web/DSDR/studies/37067/datadocumentation" class="uri">https://www.icpsr.umich.edu/web/DSDR/studies/37067/datadocumentation</a></li>
+</ol>
+<p>Attention! The downloaded project from GitHub does not contain any data files!</p>
+<p>–&gt; Click on Download, then select R, then follow the login –&gt; store data in the folder specific to the R project in an extra sub-folder called RData (i.e., hc_switch_cccu-main - &gt; RData). If you downloaded the code from GitHub, the RData folder will be already in the hc_switch_cccu-main projects folder.</p>
+<p>–&gt; Within the RData folder store data for wave 1 in DS0001, for wave 2 in DS0002 and so on (i.e., hc_switch_cccu-main - &gt; RData -&gt; DS0001 ). If you downloaded the code from GitHub, the relevant folders will be already there.</p>
+<p>–&gt; name the Rdata files according to the wave:</p>
+<p>Wave 1: 37067-0001-Data (i.e., hc_switch_cccu-main - &gt; RData -&gt; DS0001 -&gt; 37067-0001-Data.rda )</p>
+<p>Wave 2: 37067-0002-Data (i.e., hc_switch_cccu-main - &gt; RData -&gt; DS0002 -&gt; 37067-0002-Data.rda )</p>
+<p>Wave 3: 37067-0003-Data (i.e., hc_switch_cccu-main - &gt; RData -&gt; DS0003 -&gt; 37067-0003-Data.rda )</p>
+<p>Wave 4: 37067-0004-Data (i.e., hc_switch_cccu-main - &gt; RData -&gt; DS0004 -&gt; 37067-0004-Data.rda )</p>
+<p>–&gt; attention to the .rda ending when loading the data into R!</p>
+<ol start="2" style="list-style-type: decimal">
+<li>make sure to install all relevant packages before running the code!</li>
+</ol>
+<p>All relevant packages and versions can be seen in the section “Analyses”</p>
+<ol start="3" style="list-style-type: decimal">
+<li><p>run the code according to the defined order beginning with 01_ (or 0 if you want to have a look at the synthetic data) and ending with 09_ so that all data frames are created appropriately</p></li>
+<li><p>Run the Code :) # Codebook {.tabset} ## 1. Packages and df</p></li>
+</ol>
 <pre class="r"><code>library(ggplot2)
 theme_set(theme_bw())
 library(codebook)</code></pre>
@@ -188,6 +209,8 @@ library(codebook)</code></pre>
 <pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(future)</code></pre>
+<pre><code>## Warning: Paket &#39;future&#39; wurde unter R Version 4.1.3 erstellt</code></pre>
 <pre class="r"><code>library(psych)</code></pre>
 <pre><code>## 
 ## Attache Paket: &#39;psych&#39;</code></pre>
@@ -201,6 +224,11 @@ library(codebook)</code></pre>
 <pre><code>## Warning: Paket &#39;Hmisc&#39; wurde unter R Version 4.1.3 erstellt</code></pre>
 <pre><code>## Lade nötiges Paket: lattice</code></pre>
 <pre><code>## Lade nötiges Paket: survival</code></pre>
+<pre><code>## 
+## Attache Paket: &#39;survival&#39;</code></pre>
+<pre><code>## Das folgende Objekt ist maskiert &#39;package:future&#39;:
+## 
+##     cluster</code></pre>
 <pre><code>## Lade nötiges Paket: Formula</code></pre>
 <pre><code>## 
 ## Attache Paket: &#39;Hmisc&#39;</code></pre>
@@ -214,14 +242,13 @@ library(codebook)</code></pre>
 ## 
 ##     format.pval, units</code></pre>
 <pre class="r"><code>load(&quot;cccu_MA.RData&quot;)</code></pre>
-</div>
 <div id="select-data" class="section level2">
 <h2>2. Select data</h2>
 <pre class="r"><code>cccu_MA = cccu_MA %&gt;%
   select(WAVE, switch, hc, contra_satis, hc_dur, sexual_satisfaction, sex_freq,
          AGE, DEGREE_recode, POVRATE, HLTHPROB_recode, MEDPROB_recode, GAPINS_recode, TYPEINS_recode, NKIDS_t1, pregnant_between_waves, had_baby_between_waves, Avoid_r, FEELPG_recode, rel_dur_factor)</code></pre>
 </div>
-<div id="codebook-1" class="section level2">
+<div id="codebook" class="section level2">
 <h2>3. Codebook</h2>
 <pre class="r"><code>codebook(cccu_MA, missingness_report = FALSE, indent = &quot;###&quot;)</code></pre>
 <div id="metadata" class="section level3">
@@ -235,7 +262,7 @@ library(codebook)</code></pre>
 Metadata for search engines
 </summary>
 <ul>
-<li><strong>Date published</strong>: 2022-06-08</li>
+<li><strong>Date published</strong>: 2022-08-13</li>
 </ul>
 <table class="kable_wrapper">
 <tbody>
@@ -1850,7 +1877,7 @@ Distribution of values for rel_dur_factor
 <script type="application/ld+json">
 {
   "name": "cccu_MA",
-  "datePublished": "2022-06-08",
+  "datePublished": "2022-08-13",
   "description": "The dataset has N=3787 rows and 20 columns.\n2285 rows have no missing values on any column.\n\n\n## Table of variables\nThis table contains variable names, labels, and number of missing values.\nSee the complete codebook for more.\n\n|name                   |label | n_missing|\n|:----------------------|:-----|---------:|\n|WAVE                   |NA    |         0|\n|switch                 |NA    |         0|\n|hc                     |NA    |         0|\n|contra_satis           |NA    |         0|\n|hc_dur                 |NA    |      1502|\n|sexual_satisfaction    |NA    |         0|\n|sex_freq               |NA    |         0|\n|AGE                    |NA    |         0|\n|DEGREE_recode          |NA    |         0|\n|POVRATE                |NA    |         0|\n|HLTHPROB_recode        |NA    |         0|\n|MEDPROB_recode         |NA    |         0|\n|GAPINS_recode          |NA    |         0|\n|TYPEINS_recode         |NA    |         0|\n|NKIDS_t1               |NA    |         0|\n|pregnant_between_waves |NA    |         0|\n|had_baby_between_waves |NA    |         0|\n|Avoid_r                |NA    |         0|\n|FEELPG_recode          |NA    |         0|\n|rel_dur_factor         |NA    |         0|\n\n### Note\nThis dataset was automatically described using the [codebook R package](https://rubenarslan.github.io/codebook/) (version 0.9.2).",
   "keywords": ["WAVE", "switch", "hc", "contra_satis", "hc_dur", "sexual_satisfaction", "sex_freq", "AGE", "DEGREE_recode", "POVRATE", "HLTHPROB_recode", "MEDPROB_recode", "GAPINS_recode", "TYPEINS_recode", "NKIDS_t1", "pregnant_between_waves", "had_baby_between_waves", "Avoid_r", "FEELPG_recode", "rel_dur_factor"],
   "@context": "http://schema.org/",
@@ -1958,7 +1985,7 @@ JSON-LD metadata
 <p>The following JSON-LD can be found by search engines, if you share this codebook publicly on the web.</p>
 <pre class="json"><code>{
   &quot;name&quot;: &quot;cccu_MA&quot;,
-  &quot;datePublished&quot;: &quot;2022-06-08&quot;,
+  &quot;datePublished&quot;: &quot;2022-08-13&quot;,
   &quot;description&quot;: &quot;The dataset has N=3787 rows and 20 columns.\n2285 rows have no missing values on any column.\n\n\n## Table of variables\nThis table contains variable names, labels, and number of missing values.\nSee the complete codebook for more.\n\n|name                   |label | n_missing|\n|:----------------------|:-----|---------:|\n|WAVE                   |NA    |         0|\n|switch                 |NA    |         0|\n|hc                     |NA    |         0|\n|contra_satis           |NA    |         0|\n|hc_dur                 |NA    |      1502|\n|sexual_satisfaction    |NA    |         0|\n|sex_freq               |NA    |         0|\n|AGE                    |NA    |         0|\n|DEGREE_recode          |NA    |         0|\n|POVRATE                |NA    |         0|\n|HLTHPROB_recode        |NA    |         0|\n|MEDPROB_recode         |NA    |         0|\n|GAPINS_recode          |NA    |         0|\n|TYPEINS_recode         |NA    |         0|\n|NKIDS_t1               |NA    |         0|\n|pregnant_between_waves |NA    |         0|\n|had_baby_between_waves |NA    |         0|\n|Avoid_r                |NA    |         0|\n|FEELPG_recode          |NA    |         0|\n|rel_dur_factor         |NA    |         0|\n\n### Note\nThis dataset was automatically described using the [codebook R package](https://rubenarslan.github.io/codebook/) (version 0.9.2).&quot;,
   &quot;keywords&quot;: [&quot;WAVE&quot;, &quot;switch&quot;, &quot;hc&quot;, &quot;contra_satis&quot;, &quot;hc_dur&quot;, &quot;sexual_satisfaction&quot;, &quot;sex_freq&quot;, &quot;AGE&quot;, &quot;DEGREE_recode&quot;, &quot;POVRATE&quot;, &quot;HLTHPROB_recode&quot;, &quot;MEDPROB_recode&quot;, &quot;GAPINS_recode&quot;, &quot;TYPEINS_recode&quot;, &quot;NKIDS_t1&quot;, &quot;pregnant_between_waves&quot;, &quot;had_baby_between_waves&quot;, &quot;Avoid_r&quot;, &quot;FEELPG_recode&quot;, &quot;rel_dur_factor&quot;],
   &quot;@context&quot;: &quot;http://schema.org/&quot;,
@@ -2252,7 +2279,6 @@ pairs.panels(cccu_MA_t3_correlations, cex.cor = 10)</code></pre>
 ## POVRATE             0.5264  0.0715       
 ## Avoid_r                     0.0000       
 ## FEELPG_recode       0.0000</code></pre>
-</div>
 </div>
 </div>
 </div>

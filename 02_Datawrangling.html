@@ -171,6 +171,31 @@ pre code {
 </div>
 
 
+<p>#Introduction for working code:</p>
+<ol start="0" style="list-style-type: decimal">
+<li>Download the Code from Github. The new downloaded folder hc_switch_cccu-main contains the R project, Rmd Code, created data frames, knitted Html Code, Figures as .pdf and.jpg, Preregistered synthetic Code, and a folder to store the downloaded RData called RData.</li>
+</ol>
+<p>Name the folder appropriately (when downloading the code from GitHub the folder will be hc_switch_cccu-main).</p>
+<ol style="list-style-type: decimal">
+<li>Download data from <a href="https://www.icpsr.umich.edu/web/DSDR/studies/37067/datadocumentation" class="uri">https://www.icpsr.umich.edu/web/DSDR/studies/37067/datadocumentation</a></li>
+</ol>
+<p>Attention! The downloaded project from GitHub does not contain any data files!</p>
+<p>–&gt; Click on Download, then select R, then follow the login –&gt; store data in the folder specific to the R project in an extra sub-folder called RData (i.e., hc_switch_cccu-main - &gt; RData). If you downloaded the code from GitHub, the RData folder will be already in the hc_switch_cccu-main projects folder.</p>
+<p>–&gt; Within the RData folder store data for wave 1 in DS0001, for wave 2 in DS0002 and so on (i.e., hc_switch_cccu-main - &gt; RData -&gt; DS0001 ). If you downloaded the code from GitHub, the relevant folders will be already there.</p>
+<p>–&gt; name the Rdata files according to the wave:</p>
+<p>Wave 1: 37067-0001-Data (i.e., hc_switch_cccu-main - &gt; RData -&gt; DS0001 -&gt; 37067-0001-Data.rda )</p>
+<p>Wave 2: 37067-0002-Data (i.e., hc_switch_cccu-main - &gt; RData -&gt; DS0002 -&gt; 37067-0002-Data.rda )</p>
+<p>Wave 3: 37067-0003-Data (i.e., hc_switch_cccu-main - &gt; RData -&gt; DS0003 -&gt; 37067-0003-Data.rda )</p>
+<p>Wave 4: 37067-0004-Data (i.e., hc_switch_cccu-main - &gt; RData -&gt; DS0004 -&gt; 37067-0004-Data.rda )</p>
+<p>–&gt; attention to the .rda ending when loading the data into R!</p>
+<ol start="2" style="list-style-type: decimal">
+<li>make sure to install all relevant packages before running the code!</li>
+</ol>
+<p>All relevant packages and versions can be seen in the section “Analyses”</p>
+<ol start="3" style="list-style-type: decimal">
+<li><p>run the code according to the defined order beginning with 01_ (or 0 if you want to have a look at the synthetic data) and ending with 09_ so that all data frames are created appropriately</p></li>
+<li><p>Run the Code :)</p></li>
+</ol>
 <p>#1.Load Data</p>
 <pre class="r"><code>load(&quot;cccu_complete.RData&quot;)</code></pre>
 <p>#2.Load Packages</p>

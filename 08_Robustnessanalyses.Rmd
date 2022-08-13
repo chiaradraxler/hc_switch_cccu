@@ -1,20 +1,24 @@
 ---
-title: "08_Robustnessanalysis"
+title: "08_Robustnessanalyses"
 author: "Chiara Draxler"
 date: "24 1 2022"
 output: html_document
 ---
-##Introduction for working code:
+#Introduction for working code:
 
-0. Select a folder specific for the R project and define to use the folder for the R project constantly (when downloading the code from GitHub the folder will be hc_switch_cccu-main)
+0. Download the Code from Github. The new downloaded folder hc_switch_cccu-main contains the R project, Rmd Code, created data frames, knitted Html Code, Figures as .pdf and.jpg, Preregistered synthetic Code, and a folder to store the downloaded RData called RData.
+
+Name the folder appropriately (when downloading the code from GitHub the folder will be hc_switch_cccu-main).
 
 1. Download data from 
 https://www.icpsr.umich.edu/web/DSDR/studies/37067/datadocumentation
 
---> Click on Download, then select R, then follow the login
---> store data in the folder specific to the R project in an extra sub-folder called RData (i.e., hc_switch_cccu-main - > RData)
+Attention! The downloaded project from GitHub does not contain any data files!
 
---> Within the RData folder store data for wave 1 in DS0001, for wave 2 in DS0002 and so on  (i.e., hc_switch_cccu-main - > RData -> DS0001 )
+--> Click on Download, then select R, then follow the login
+--> store data in the folder specific to the R project in an extra sub-folder called RData (i.e., hc_switch_cccu-main - > RData). If you downloaded the code from GitHub, the RData folder will be already in the hc_switch_cccu-main projects folder.  
+
+--> Within the RData folder store data for wave 1 in DS0001, for wave 2 in DS0002 and so on  (i.e., hc_switch_cccu-main - > RData -> DS0001 ). If you downloaded the code from GitHub, the relevant folders will be already there.
 
 --> name the Rdata files according to the wave: 
 
