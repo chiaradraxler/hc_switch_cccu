@@ -1317,7 +1317,12 @@ cccu_R3_s&lt;-cccu_SA %&gt;%
 <p>#6 Save df</p>
 <pre class="r"><code>#Main Analysis 
 
-save(cccu_MA,file = &quot;cccu_MA.RData&quot;)
+
+nrow(cccu_MA) #timepoints</code></pre>
+<pre><code>## [1] 3787</code></pre>
+<pre class="r"><code>length(unique(cccu_MA$CASEID)) #women</code></pre>
+<pre><code>## [1] 1993</code></pre>
+<pre class="r"><code>save(cccu_MA,file = &quot;cccu_MA.RData&quot;)
 
 load(&quot;cccu_MA.RData&quot;)
 ##excluded sample
@@ -1330,38 +1335,68 @@ save(cccu_SA,file = &quot;cccu_SA.RData&quot;)
 
 load(&quot;cccu_SA.RData&quot;)
 
-#R1
+nrow(cccu_SA) #timepoints</code></pre>
+<pre><code>## [1] 2284</code></pre>
+<pre class="r"><code>length(unique(cccu_SA$CASEID)) #women</code></pre>
+<pre><code>## [1] 1226</code></pre>
+<pre class="r"><code>#R1
 ##MA
 save(cccu_R1,file = &quot;cccu_R1.RData&quot;)
 
 load(&quot;cccu_R1.RData&quot;)
 
-##SA
+nrow(cccu_R1) #timepoints</code></pre>
+<pre><code>## [1] 3556</code></pre>
+<pre class="r"><code>length(unique(cccu_R1$CASEID)) #women</code></pre>
+<pre><code>## [1] 1907</code></pre>
+<pre class="r"><code>##SA
 save(cccu_R1_s,file = &quot;cccu_R1_s.RData&quot;)
 
 load(&quot;cccu_R1_s.RData&quot;)
 
-#R2
+nrow(cccu_R1_s) #timepoints</code></pre>
+<pre><code>## [1] 2054</code></pre>
+<pre class="r"><code>length(unique(cccu_R1_s$CASEID)) #women</code></pre>
+<pre><code>## [1] 1131</code></pre>
+<pre class="r"><code>#R2
 ##MA
 save(cccu_R2,file = &quot;cccu_R2.RData&quot;)
 
 load(&quot;cccu_R2.RData&quot;)
-##SA
+
+
+nrow(cccu_R2) #timepoints</code></pre>
+<pre><code>## [1] 3787</code></pre>
+<pre class="r"><code>length(unique(cccu_R2$CASEID)) #women</code></pre>
+<pre><code>## [1] 1993</code></pre>
+<pre class="r"><code>##SA
 
 save(cccu_R2_s,file = &quot;cccu_R2_s.RData&quot;)
 
 load(&quot;cccu_R2_s.RData&quot;)
-
-#R3
+nrow(cccu_R2_s) #timepoints</code></pre>
+<pre><code>## [1] 2284</code></pre>
+<pre class="r"><code>length(unique(cccu_R2_s$CASEID)) #women</code></pre>
+<pre><code>## [1] 1226</code></pre>
+<pre class="r"><code>#R3
 ##MA
 save(cccu_R3,file = &quot;cccu_R3.RData&quot;)
 
 load(&quot;cccu_R3.RData&quot;)
 
-##SA
+nrow(cccu_R3) #timepoints</code></pre>
+<pre><code>## [1] 3750</code></pre>
+<pre class="r"><code>length(unique(cccu_R3$CASEID)) #women</code></pre>
+<pre><code>## [1] 1984</code></pre>
+<pre class="r"><code>##SA
 save(cccu_R3_s,file = &quot;cccu_R3_s.RData&quot;)
 
-load(&quot;cccu_R3_s.RData&quot;)</code></pre>
+load(&quot;cccu_R3_s.RData&quot;)
+
+nrow(cccu_R3_s) #timepoints</code></pre>
+<pre><code>## [1] 2278</code></pre>
+<pre class="r"><code>length(unique(cccu_R3_s$CASEID)) #women</code></pre>
+<pre><code>## [1] 1224</code></pre>
 </div>
 </div>
 </div>

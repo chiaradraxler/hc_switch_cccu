@@ -20,7 +20,6 @@ library(lme4)
 library(psych)
 library(dplyr)
 library(tidyverse)
-library(patchwork)
 library(marginaleffects)
 
 options(scipen=999)

@@ -249,7 +249,7 @@ cccu_excluded_t1 &lt;- cccu_excluded %&gt;%
          NFPR != &quot;(1) yes&quot; | is.na(NFPR),
          SPERMR != &quot;(1) yes&quot; | is.na(SPERMR))
 
-table(cccu_MA_t1_only_hc$PILL)</code></pre>
+table(cccu_MA_t1_only_hc$PILL) # sum is 630 = hormonal users only</code></pre>
 <pre><code>## 
 ##  (0) No (1) Yes 
 ##     137     493</code></pre>
@@ -308,7 +308,7 @@ table(cccu_MA_t1_combi_hc$PILL)</code></pre>
 <pre class="r"><code>cccu_MA_t1_non_hc &lt;- cccu_MA_t1 %&gt;%
   filter(hc == &quot;non_hc&quot;)
 
-table(cccu_MA_t1_non_hc$CONDOMR)</code></pre>
+table(cccu_MA_t1_non_hc$CONDOMR) # sum is n of non-hc users = 691</code></pre>
 <pre><code>## 
 ##  (0) no (1) yes 
 ##     297     394</code></pre>
@@ -445,14 +445,9 @@ table(cccu_MA_t1$rel_dur)</code></pre>
 ##   3   2   7   1   2   2   2   1   2   8   2   4   3   2   2   2   1   7   1   2 
 ## 226 228 232 233 238 240 245 246 250 252 258 261 264 265 273 276 277 292 324 542 
 ##   2   6   1   1   1   5   1   1   1   2   1   1   1   3   1   1   1   1   1   1</code></pre>
-<pre class="r"><code>describe(cccu_MA_t1$rel_dur)</code></pre>
-<pre><code>## cccu_MA_t1$rel_dur 
-##        n  missing distinct     Info     Mean      Gmd      .05      .10 
-##     1293      430      220        1    91.37    64.73       14       24 
-##      .25      .50      .75      .90      .95 
-##       48       82      128      173      204 
-## 
-## lowest :   0   1   2   3   4, highest: 276 277 292 324 542</code></pre>
+<pre class="r"><code>psych::describe(cccu_MA_t1$rel_dur)</code></pre>
+<pre><code>##    vars    n  mean    sd median trimmed   mad min max range skew kurtosis   se
+## X1    1 1293 91.37 58.84     82   86.26 56.34   0 542   542 1.03     2.54 1.64</code></pre>
 <pre class="r"><code>describe(cccu_MA_t1$rel_dur_years)</code></pre>
 <pre><code>## cccu_MA_t1$rel_dur_years 
 ##        n  missing distinct     Info     Mean      Gmd      .05      .10 
@@ -651,7 +646,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.          group1 group2 effsize    n1    n2 conf.low conf.high magnitude 
 ## * &lt;chr&gt;        &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;     
-## 1 contra_satis no     yes     0.0583  1723  2911    -0.02      0.13 negligible</code></pre>
+## 1 contra_satis no     yes     0.0583  1723  2911    -0.01      0.12 negligible</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA_t1$contra_satis)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed mad min max range  skew kurtosis   se
 ## X1    1 1723 3.44 0.73      4    3.58   0   1   4     3 -1.29     1.44 0.02</code></pre>
@@ -675,8 +670,8 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## 
 ##   No sex or once        2-5 times       6-10 times 11 or more times 
 ##              222              760              466              275</code></pre>
-<pre class="r"><code>97/1723</code></pre>
-<pre><code>## [1] 0.05629716</code></pre>
+<pre class="r"><code>222/1723</code></pre>
+<pre><code>## [1] 0.128845</code></pre>
 <pre class="r"><code>125/1723</code></pre>
 <pre><code>## [1] 0.07254788</code></pre>
 <pre class="r"><code>760/1723</code></pre>
@@ -689,8 +684,8 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## 
 ##   No sex or once        2-5 times       6-10 times 11 or more times 
 ##             1034              864              548              418</code></pre>
-<pre class="r"><code>866/2911</code></pre>
-<pre><code>## [1] 0.2974923</code></pre>
+<pre class="r"><code>1034/2911</code></pre>
+<pre><code>## [1] 0.3552044</code></pre>
 <pre class="r"><code>168/2911</code></pre>
 <pre><code>## [1] 0.05771213</code></pre>
 <pre class="r"><code>864/2911</code></pre>
@@ -719,7 +714,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.             group1 group2 effsize    n1    n2 conf.low conf.high magnitude
 ## * &lt;chr&gt;           &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;    
-## 1 sexual_satisfa~ no     yes     0.0624  1723  2911  -0.0018      0.12 negligib~</code></pre>
+## 1 sexual_satisfa~ no     yes     0.0624  1723  2911  0.00079      0.12 negligib~</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA_t1$sexual_satisfaction)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
 ## X1    1 1723 5.04 1.17      5    5.24 1.48   1   6     5 -1.24     1.12 0.03</code></pre>
@@ -746,7 +741,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.   group1 group2 effsize    n1    n2 conf.low conf.high magnitude 
 ## * &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;     
-## 1 AGE   no     yes    -0.0528  1723  2911    -0.11    0.0084 negligible</code></pre>
+## 1 AGE   no     yes    -0.0528  1723  2911    -0.12      0.01 negligible</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA_t1$AGE)</code></pre>
 <pre><code>##    vars    n  mean   sd median trimmed  mad min max range skew kurtosis   se
 ## X1    1 1723 28.15 5.18     28   27.92 5.93  18  39    21 0.36    -0.73 0.12</code></pre>
@@ -956,7 +951,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.058</code></pre>
 <pre class="r"><code>confIntV(t1_comp_inex$GAPINS_recode,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .06):  
-## Bootstrapped: [.03; .08]  
+## Bootstrapped: [.03; .09]  
 ## Using Fisher&#39;s z: [.03; .09]</code></pre>
 <pre class="r"><code>table(cccu_MA_t1$GAPINS_recode)</code></pre>
 <pre><code>## 
@@ -985,7 +980,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.056</code></pre>
 <pre class="r"><code>confIntV(t1_comp_inex$TYPEINS_recode,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .06):  
-## Bootstrapped: [.03; .08]  
+## Bootstrapped: [.03; .09]  
 ## Using Fisher&#39;s z: [.03; .08]</code></pre>
 <pre class="r"><code>table(cccu_MA_t1$TYPEINS_recode)</code></pre>
 <pre><code>## 
@@ -1014,7 +1009,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.08</code></pre>
 <pre class="r"><code>confIntV(t1_comp_inex$NKIDS_t1,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .08):  
-## Bootstrapped: [.06; .11]  
+## Bootstrapped: [.05; .11]  
 ## Using Fisher&#39;s z: [.05; .11]</code></pre>
 <pre class="r"><code>table(cccu_MA_t1$NKIDS_t1)</code></pre>
 <pre><code>## 
@@ -1055,7 +1050,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.06</code></pre>
 <pre class="r"><code>confIntV(t1_comp_inex$pregnant_between_waves,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .06):  
-## Bootstrapped: [.04; .08]  
+## Bootstrapped: [.03; .09]  
 ## Using Fisher&#39;s z: [.03; .09]</code></pre>
 <pre class="r"><code>table(cccu_MA_t1$pregnant_between_waves)</code></pre>
 <pre><code>## 
@@ -1084,7 +1079,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.06</code></pre>
 <pre class="r"><code>confIntV(t1_comp_inex$had_baby_between_waves,t1_comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .06):  
-## Bootstrapped: [.04; .09]  
+## Bootstrapped: [.03; .08]  
 ## Using Fisher&#39;s z: [.03; .09]</code></pre>
 <pre class="r"><code>table(cccu_MA_t1$had_baby_between_waves)</code></pre>
 <pre><code>## 
@@ -1118,7 +1113,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.     group1 group2 effsize    n1    n2 conf.low conf.high magnitude
 ## * &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;    
-## 1 Avoid_r no     yes      0.214  1723  2911     0.16      0.27 small</code></pre>
+## 1 Avoid_r no     yes      0.214  1723  2911     0.16      0.28 small</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA_t1$Avoid_r)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed mad min max range  skew kurtosis   se
 ## X1    1 1723 4.81 1.52      6    5.08   0   1   6     5 -1.14     0.23 0.04</code></pre>
@@ -1145,7 +1140,7 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 x 9
 ##   .y.           group1 group2 effsize    n1    n2 conf.low conf.high magnitude 
 ## * &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;     
-## 1 FEELPG_recode no     yes    -0.0657  1723  2911    -0.12   -0.0069 negligible</code></pre>
+## 1 FEELPG_recode no     yes    -0.0657  1723  2911    -0.12   -0.0074 negligible</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA_t1$FEELPG_recode)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed  mad min max range skew kurtosis   se
 ## X1    1 1723 3.41 1.67      3    3.38 1.48   1   6     5    0    -1.18 0.04</code></pre>
@@ -1179,6 +1174,20 @@ table(t1_comp_inex$exclude)</code></pre>
 <pre><code>## [1] 0.1857226</code></pre>
 <pre class="r"><code>292/1723</code></pre>
 <pre><code>## [1] 0.1694719</code></pre>
+<pre class="r"><code>table(cccu_excluded_t1$rel_dur_factor)</code></pre>
+<pre><code>## 
+##   Single   0q-25q  26q-50q  51q-75q 76q-100q 
+##     1117      475      467      444      408</code></pre>
+<pre class="r"><code>1117/(1117+475+467+444+408)</code></pre>
+<pre><code>## [1] 0.3837169</code></pre>
+<pre class="r"><code>475/(1117+475+467+444+408)</code></pre>
+<pre><code>## [1] 0.1631742</code></pre>
+<pre class="r"><code>467/(1117+475+467+444+408)</code></pre>
+<pre><code>## [1] 0.160426</code></pre>
+<pre class="r"><code>444/(1117+475+467+444+408)</code></pre>
+<pre><code>## [1] 0.1525249</code></pre>
+<pre class="r"><code>408/(1117+475+467+444+408)</code></pre>
+<pre><code>## [1] 0.140158</code></pre>
 <p>#4. Descriptives of Variables ##t1</p>
 <pre class="r"><code>cccu_MA_t1_descriptives &lt;- cccu_MA_t1 %&gt;%
   select(

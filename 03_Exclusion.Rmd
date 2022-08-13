@@ -903,6 +903,10 @@ cccu_R3_s<-cccu_SA %>%
 
 #Main Analysis 
 
+
+nrow(cccu_MA) #timepoints
+length(unique(cccu_MA$CASEID)) #women
+
 save(cccu_MA,file = "cccu_MA.RData")
 
 load("cccu_MA.RData")
@@ -916,37 +920,63 @@ save(cccu_SA,file = "cccu_SA.RData")
 
 load("cccu_SA.RData")
 
+nrow(cccu_SA) #timepoints
+length(unique(cccu_SA$CASEID)) #women
+
+
+
 #R1
 ##MA
 save(cccu_R1,file = "cccu_R1.RData")
 
 load("cccu_R1.RData")
 
+nrow(cccu_R1) #timepoints
+length(unique(cccu_R1$CASEID)) #women
+
+
 ##SA
 save(cccu_R1_s,file = "cccu_R1_s.RData")
 
 load("cccu_R1_s.RData")
+
+nrow(cccu_R1_s) #timepoints
+length(unique(cccu_R1_s$CASEID)) #women
 
 #R2
 ##MA
 save(cccu_R2,file = "cccu_R2.RData")
 
 load("cccu_R2.RData")
+
+
+nrow(cccu_R2) #timepoints
+length(unique(cccu_R2$CASEID)) #women
+
 ##SA
 
 save(cccu_R2_s,file = "cccu_R2_s.RData")
 
 load("cccu_R2_s.RData")
-
+nrow(cccu_R2_s) #timepoints
+length(unique(cccu_R2_s$CASEID)) #women
 #R3
 ##MA
 save(cccu_R3,file = "cccu_R3.RData")
 
 load("cccu_R3.RData")
 
+nrow(cccu_R3) #timepoints
+length(unique(cccu_R3$CASEID)) #women
+
+
+
 ##SA
 save(cccu_R3_s,file = "cccu_R3_s.RData")
 
 load("cccu_R3_s.RData")
+
+nrow(cccu_R3_s) #timepoints
+length(unique(cccu_R3_s$CASEID)) #women
 ```
 
