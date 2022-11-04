@@ -37,6 +37,7 @@ rsconnect/
 
 #Personal GitIgnore
 *.RData
+/models/
 BA___Code for Analysis.R
 RSAT1.docx
 01_RData
