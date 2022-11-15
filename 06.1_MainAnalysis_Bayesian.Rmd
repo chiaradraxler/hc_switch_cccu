@@ -36,7 +36,7 @@ m1 <- brm(switch ~ hc + (1 | CASEID),
           data = cccu_MA,
           file = "models/m1.Rds")
 
-summary(m1)
+summary(m1, prob = .997)
 ```
 
 
@@ -47,7 +47,7 @@ m2 <- brm(switch ~ hc * contra_satis + (1 | CASEID),
           data = cccu_MA,
           file = "models/m2.Rds")
 
-summary(m2)
+summary(m2, prob = .997)
 ```
 
 
@@ -61,7 +61,7 @@ m3 <-
     file = "models/m3.Rds"
   )
 
-summary(m3)
+summary(m3, prob = .997)
 
 m3_sexual_satisfaction <-
   brm(
@@ -71,7 +71,7 @@ m3_sexual_satisfaction <-
     file = "models/m3_sexual_satisfaction.Rds"
   )
 
-summary(m3_sexual_satisfaction)
+summary(m3_sexual_satisfaction, prob = .997)
 
 m3_sex_freq <-
   brm(
@@ -81,7 +81,7 @@ m3_sex_freq <-
     file = "models/m3_sex_freq.Rds"
   )
 
-summary(m3_sex_freq)
+summary(m3_sex_freq, prob = .997)
 ```
 
 ##3.4 Model 4: Controlling for observed selection effects
@@ -102,7 +102,7 @@ m4 <-
     file = "models/m4.Rds"
   )
 
-summary(m4)
+summary(m4, prob = .997)
 ```
 
 
@@ -112,7 +112,7 @@ summary(m4)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(m1)
-summary(ame)
+summary(ame, conf_level = .997)
 ```
 
 ####m2
@@ -128,7 +128,7 @@ m2_hc_only <- brm(
   file = "models/m2_hc_only.Rds"
 )
 ame <- marginaleffects(m2_hc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 
 m2_nonhc_only <- brm(
   switch ~ contra_satis + (1 | CASEID),
@@ -137,14 +137,14 @@ m2_nonhc_only <- brm(
   file = "models/m2_nonhc_only.Rds"
 )
 ame <- marginaleffects(m2_nonhc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 ```
 
 ####m3
 ```{r}
 #average marginal effect
 ame <- marginaleffects(m3)
-summary(ame)
+summary(ame, conf_level = .997)
 
 m3_hc_only <-
   brm(
@@ -155,7 +155,7 @@ m3_hc_only <-
   file = "models/m3_hc_only.Rds"
   )
 ame <- marginaleffects(m3_hc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 
 
 m3_nonhc_only <-
@@ -167,14 +167,14 @@ m3_nonhc_only <-
   file = "models/m3_nonhc_only.Rds"
   )
 ame <- marginaleffects(m3_nonhc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 ```
 
 ####m4
 ```{r}
 #model 4
 ame <- marginaleffects(m4)
-summary(ame)
+summary(ame, conf_level = .997)
 
 m4_hc_only <-
   brm(
@@ -190,7 +190,7 @@ m4_hc_only <-
   )
 
 ame <- marginaleffects(m4_hc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 
 m4_nonhc_only <-
   brm(
@@ -206,6 +206,6 @@ m4_nonhc_only <-
   )
 
 ame <- marginaleffects(m4_nonhc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 ```
 
