@@ -68,22 +68,23 @@ summary(sa_m4, prob = .997)
 ```
 
 
-###Average marginal effects
-####m2
+#Average marginal effects
+
+##m2
 ```{r}
 #average marginal effect
 ame <- marginaleffects(sa_m2)
 summary(ame)
 ```
 
-####m3
+##m3
 ```{r}
 #average marginal effect
 ame <- marginaleffects(sa_m3)
 summary(ame)
 ```
 
-####m4
+##m4
 ```{r}
 #average marginal effect
 ame <- marginaleffects(sa_m4)
