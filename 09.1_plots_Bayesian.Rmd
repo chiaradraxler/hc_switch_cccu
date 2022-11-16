@@ -104,7 +104,7 @@ ggsave("contra_satis.pdf", contra_satis)
 ggsave("contra_satis.png", contra_satis)
 ###sexual satisfaction
 
-sex_sat <- plot_model(m3, type = "pred", terms = c("sexual_satisfaction", "hc"), ci.lvl = 0.997)  +  labs(color = "Group",  fill = "Group") +
+sex_sat <- plot_model(m3, type = "pred", terms = c("sexual_satisfaction", "hc"), ci.lvl = 0.997)  +  
   scale_fill_manual(
     values = c("red", "blue"),
     name = "Group",
@@ -136,7 +136,6 @@ ggsave("sexual_satis.png", sex_sat)
 ###sexual frequency
 
 sex_freq <- plot_model(m3, type = "pred", terms = c("sex_freq", "hc"), ci.lvl = 0.997)  +
-  labs(color = "Group",  fill = "Group") +
   scale_fill_manual(
     values = c("red", "blue"),
     name = "Group",

@@ -1,0 +1,94 @@
+---
+title: "07.1_SA_Bayesian"
+author: "Chiara Draxler"
+date: "16 11 2022"
+output: html_document
+---
+
+#1. Load Data
+```{r}
+
+load("cccu_SA.RData")
+```
+
+
+#2. Load Packages
+```{r}
+library(brms)
+library(marginaleffects)
+library(tidyverse)
+
+
+options(scipen = 999)
+```
+
+```{r}
+cccu_SA <- cccu_SA %>%
+  arrange(CASEID)
+```
+
+#3. Models
+
+
+##3.2 Model 2: including directly with contraceptive method associated predictors
+
+DURATION and satisfaction!
+
+```{r}
+sa_m2 <- brm(switch ~ contra_satis * hc_dur + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_SA,
+          file = "models/sa_m2.Rds")
+
+summary(sa_m2, prob = .997)
+```
+
+
+##3.3 Model 3: including not directly with contraceptive method associated predictors
+```{r}
+sa_m3 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq +(1 | CASEID),
+          family = bernoulli(),
+          data = cccu_SA,
+          file = "models/sa_m3.Rds")
+
+summary(sa_m3, prob = .997)
+```
+
+##3.4 Model 4: Controlling for observed selection effects
+```{r}
+
+sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
+              TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r + FEELPG_recode +
+              rel_dur_factor + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_SA,
+          file = "models/sa_m4.Rds")
+
+summary(sa_m4, prob = .997)
+```
+
+
+###Average marginal effects
+####m2
+```{r}
+#average marginal effect
+ame <- marginaleffects(sa_m2)
+summary(ame)
+```
+
+####m3
+```{r}
+#average marginal effect
+ame <- marginaleffects(sa_m3)
+summary(ame)
+```
+
+####m4
+```{r}
+#average marginal effect
+ame <- marginaleffects(sa_m4)
+summary(ame)
+
+```
+
+
