@@ -356,9 +356,12 @@ display: none;
 </div>
 
 
-<p>#1. Load Data</p>
+<div id="load-data" class="section level1">
+<h1>1. Load Data</h1>
 <pre class="r"><code>load(&quot;cccu_SA.RData&quot;)</code></pre>
-<p>#2. Load Packages</p>
+</div>
+<div id="load-packages" class="section level1">
+<h1>2. Load Packages</h1>
 <pre class="r"><code>library(brms)</code></pre>
 <pre><code>## Lade nötiges Paket: Rcpp</code></pre>
 <pre><code>## Loading &#39;brms&#39; package (version 2.17.0). Useful instructions
@@ -388,9 +391,12 @@ display: none;
 <pre class="r"><code>options(scipen = 999)</code></pre>
 <pre class="r"><code>cccu_SA &lt;- cccu_SA %&gt;%
   arrange(CASEID)</code></pre>
-<p>#3. Models</p>
-<p>##3.2 Model 2: including directly with contraceptive method
-associated predictors</p>
+</div>
+<div id="models" class="section level1">
+<h1>3. Models</h1>
+<div id="model-2-including-directly-with-contraceptive-method-associated-predictors" class="section level2">
+<h2>3.2 Model 2: including directly with contraceptive method associated
+predictors</h2>
 <p>DURATION and satisfaction!</p>
 <pre class="r"><code>sa_m2 &lt;- brm(switch ~ contra_satis * hc_dur + (1 | CASEID),
           family = bernoulli(),
@@ -428,125 +434,16 @@ summary(sa_m2, prob = .997)</code></pre>
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
 ## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
-<p>##3.3 Model 3: including not directly with contraceptive method
-associated predictors</p>
+</div>
+<div id="model-3-including-not-directly-with-contraceptive-method-associated-predictors" class="section level2">
+<h2>3.3 Model 3: including not directly with contraceptive method
+associated predictors</h2>
 <pre class="r"><code>sa_m3 &lt;- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq +(1 | CASEID),
           family = bernoulli(),
           data = cccu_SA,
-          file = &quot;models/sa_m3.Rds&quot;)</code></pre>
-<pre><code>## Compiling Stan program...</code></pre>
-<pre><code>## Start sampling</code></pre>
-<pre><code>## 
-## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
-## Chain 1: 
-## Chain 1: Gradient evaluation took 0.000254 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2.54 seconds.
-## Chain 1: Adjust your expectations accordingly!
-## Chain 1: 
-## Chain 1: 
-## Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 1: 
-## Chain 1:  Elapsed Time: 23.927 seconds (Warm-up)
-## Chain 1:                12.832 seconds (Sampling)
-## Chain 1:                36.759 seconds (Total)
-## Chain 1: 
-## 
-## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
-## Chain 2: 
-## Chain 2: Gradient evaluation took 0.000205 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 2.05 seconds.
-## Chain 2: Adjust your expectations accordingly!
-## Chain 2: 
-## Chain 2: 
-## Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 2: 
-## Chain 2:  Elapsed Time: 24.639 seconds (Warm-up)
-## Chain 2:                6.519 seconds (Sampling)
-## Chain 2:                31.158 seconds (Total)
-## Chain 2: 
-## 
-## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
-## Chain 3: 
-## Chain 3: Gradient evaluation took 0.000188 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.88 seconds.
-## Chain 3: Adjust your expectations accordingly!
-## Chain 3: 
-## Chain 3: 
-## Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 3: 
-## Chain 3:  Elapsed Time: 25.439 seconds (Warm-up)
-## Chain 3:                7.289 seconds (Sampling)
-## Chain 3:                32.728 seconds (Total)
-## Chain 3: 
-## 
-## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
-## Chain 4: 
-## Chain 4: Gradient evaluation took 0.00028 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 2.8 seconds.
-## Chain 4: Adjust your expectations accordingly!
-## Chain 4: 
-## Chain 4: 
-## Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 4: 
-## Chain 4:  Elapsed Time: 28.092 seconds (Warm-up)
-## Chain 4:                6.841 seconds (Sampling)
-## Chain 4:                34.933 seconds (Total)
-## Chain 4:</code></pre>
-<pre><code>## Warning: There were 86 divergent transitions after warmup. See
-## https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
-## to find out why this is a problem and how to eliminate them.</code></pre>
-<pre><code>## Warning: Examine the pairs() plot to diagnose sampling problems</code></pre>
-<pre><code>## Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
-## Running the chains for more iterations may help. See
-## https://mc-stan.org/misc/warnings.html#bulk-ess</code></pre>
-<pre><code>## Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
-## Running the chains for more iterations may help. See
-## https://mc-stan.org/misc/warnings.html#tail-ess</code></pre>
-<pre class="r"><code>summary(sa_m3, prob = .997)</code></pre>
+          file = &quot;models/sa_m3.Rds&quot;)
+
+summary(sa_m3, prob = .997)</code></pre>
 <pre><code>## Warning: There were 86 divergent transitions after warmup. Increasing
 ## adapt_delta above 0.8 may help. See http://mc-stan.org/misc/
 ## warnings.html#divergent-transitions-after-warmup</code></pre>
@@ -585,128 +482,17 @@ associated predictors</p>
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
 ## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
-<p>##3.4 Model 4: Controlling for observed selection effects</p>
+</div>
+<div id="model-4-controlling-for-observed-selection-effects" class="section level2">
+<h2>3.4 Model 4: Controlling for observed selection effects</h2>
 <pre class="r"><code>sa_m4 &lt;- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
               TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r + FEELPG_recode +
               rel_dur_factor + (1 | CASEID),
           family = bernoulli(),
           data = cccu_SA,
-          file = &quot;models/sa_m4.Rds&quot;)</code></pre>
-<pre><code>## Compiling Stan program...</code></pre>
-<pre><code>## Start sampling</code></pre>
-<pre><code>## 
-## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
-## Chain 1: 
-## Chain 1: Gradient evaluation took 0.000311 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.11 seconds.
-## Chain 1: Adjust your expectations accordingly!
-## Chain 1: 
-## Chain 1: 
-## Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 1: 
-## Chain 1:  Elapsed Time: 48.731 seconds (Warm-up)
-## Chain 1:                120.408 seconds (Sampling)
-## Chain 1:                169.139 seconds (Total)
-## Chain 1: 
-## 
-## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
-## Chain 2: 
-## Chain 2: Gradient evaluation took 0.000222 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 2.22 seconds.
-## Chain 2: Adjust your expectations accordingly!
-## Chain 2: 
-## Chain 2: 
-## Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 2: 
-## Chain 2:  Elapsed Time: 68.167 seconds (Warm-up)
-## Chain 2:                244.683 seconds (Sampling)
-## Chain 2:                312.85 seconds (Total)
-## Chain 2: 
-## 
-## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
-## Chain 3: 
-## Chain 3: Gradient evaluation took 0.00026 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 2.6 seconds.
-## Chain 3: Adjust your expectations accordingly!
-## Chain 3: 
-## Chain 3: 
-## Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 3: 
-## Chain 3:  Elapsed Time: 56.481 seconds (Warm-up)
-## Chain 3:                124.332 seconds (Sampling)
-## Chain 3:                180.813 seconds (Total)
-## Chain 3: 
-## 
-## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
-## Chain 4: 
-## Chain 4: Gradient evaluation took 0.000205 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 2.05 seconds.
-## Chain 4: Adjust your expectations accordingly!
-## Chain 4: 
-## Chain 4: 
-## Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 4: 
-## Chain 4:  Elapsed Time: 53.375 seconds (Warm-up)
-## Chain 4:                252.439 seconds (Sampling)
-## Chain 4:                305.814 seconds (Total)
-## Chain 4:</code></pre>
-<pre><code>## Warning: There were 19 divergent transitions after warmup. See
-## https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
-## to find out why this is a problem and how to eliminate them.</code></pre>
-<pre><code>## Warning: There were 2007 transitions after warmup that exceeded the maximum treedepth. Increase max_treedepth above 10. See
-## https://mc-stan.org/misc/warnings.html#maximum-treedepth-exceeded</code></pre>
-<pre><code>## Warning: Examine the pairs() plot to diagnose sampling problems</code></pre>
-<pre><code>## Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
-## Running the chains for more iterations may help. See
-## https://mc-stan.org/misc/warnings.html#bulk-ess</code></pre>
-<pre><code>## Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
-## Running the chains for more iterations may help. See
-## https://mc-stan.org/misc/warnings.html#tail-ess</code></pre>
-<pre class="r"><code>summary(sa_m4, prob = .997)</code></pre>
+          file = &quot;models/sa_m4.Rds&quot;)
+
+summary(sa_m4, prob = .997)</code></pre>
 <pre><code>## Warning: There were 19 divergent transitions after warmup. Increasing
 ## adapt_delta above 0.8 may help. See http://mc-stan.org/misc/
 ## warnings.html#divergent-transitions-after-warmup</code></pre>
@@ -803,8 +589,11 @@ associated predictors</p>
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
 ## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
-<p>#Average marginal effects</p>
-<p>##m2</p>
+</div>
+</div>
+<div id="average-marginal-effects" class="section level1">
+<h1>Average marginal effects</h1>
+<p>##m 2</p>
 <pre class="r"><code>#average marginal effect
 ame &lt;- marginaleffects(sa_m2)
 summary(ame)</code></pre>
@@ -814,7 +603,8 @@ summary(ame)</code></pre>
 ## 
 ## Model type:  brmsfit 
 ## Prediction type:  response</code></pre>
-<p>##m3</p>
+<div id="m3" class="section level2">
+<h2>m3</h2>
 <pre class="r"><code>#average marginal effect
 ame &lt;- marginaleffects(sa_m3)
 summary(ame)</code></pre>
@@ -835,7 +625,9 @@ summary(ame)</code></pre>
 ## 
 ## Model type:  brmsfit 
 ## Prediction type:  response</code></pre>
-<p>##m4</p>
+</div>
+<div id="m4" class="section level2">
+<h2>m4</h2>
 <pre class="r"><code>#average marginal effect
 ame &lt;- marginaleffects(sa_m4)
 summary(ame)</code></pre>
@@ -914,6 +706,8 @@ summary(ame)</code></pre>
 ## 
 ## Model type:  brmsfit 
 ## Prediction type:  response</code></pre>
+</div>
+</div>
 
 
 
