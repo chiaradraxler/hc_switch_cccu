@@ -1,0 +1,804 @@
+---
+title: "08_RA_Bayesian"
+author: "Chiara Draxler"
+date: "19 11 2022"
+output: html_document
+---
+
+# 1. Load Data
+```{r}
+#MA
+load("cccu_R1.RData")
+
+load("cccu_R2.RData")
+
+load("cccu_R3.RData")
+
+
+#SA
+load("cccu_R1_s.RData")
+
+load("cccu_R2_s.RData")
+
+load("cccu_R3_s.RData")
+
+```
+
+
+# 2. Load Packages
+```{r}
+library(brms)
+library(marginaleffects)
+library(tidyverse)
+
+
+options(scipen = 999)
+```
+
+```{r}
+cccu_R1 <- cccu_R1 %>%
+  arrange(CASEID)
+
+cccu_R2 <- cccu_R2 %>%
+  arrange(CASEID)
+
+cccu_R3 <- cccu_R3 %>%
+  arrange(CASEID)
+
+
+cccu_R1_s <- cccu_R1_s %>%
+  arrange(CASEID)
+
+cccu_R2_s <- cccu_R2_s %>%
+  arrange(CASEID)
+
+cccu_R3_s <- cccu_R3_s %>%
+  arrange(CASEID)
+```
+
+
+# 3. Models of main analyses in robustness analyses
+
+## 3.1 Model 1: basic model
+
+###R1
+```{r}
+R1_ma_1 <- brm(switch ~ hc + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R1,
+          file = "models/R1_ma_1.Rds")
+
+summary(R1_ma_1, prob = .997)
+
+```
+
+###R2
+```{r}
+R2_ma_1 <- brm(switch ~ hc + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R2,
+          file = "models/R2_ma_1.Rds")
+
+summary(R2_ma_1, prob = .997)
+
+```
+
+
+###R3
+```{r}
+R3_ma_1 <- brm(switch ~ hc + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R3,
+          file = "models/R3_ma_1.Rds")
+
+summary(R3_ma_1, prob = .997)
+
+```
+
+
+## 3.2 Model 2: including directly with contraceptive method associated predictors
+
+###R1
+```{r}
+R1_ma_2 <- brm(switch ~ hc * contra_satis + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R1,
+          file = "models/R1_ma_2.Rds")
+
+summary(R1_ma_2, prob = .997)
+
+```
+###R2
+```{r}
+R2_ma_2 <- brm(switch ~ hc * contra_satis + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R2,
+          file = "models/R2_ma_2.Rds")
+
+summary(R2_ma_2, prob = .997)
+
+```
+
+
+###R3
+```{r}
+R3_ma_2 <- brm(switch ~ hc * contra_satis + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R3,
+          file = "models/R3_ma_2.Rds")
+
+summary(R3_ma_2, prob = .997)
+
+```
+
+
+## 3.3 Model 3: including not directly with contraceptive method associated predictors
+
+###R1
+```{r}
+R1_ma_3 <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R1,
+    file = "models/R1_ma_3.Rds"
+  )
+
+summary(R1_ma_3, prob = .997)
+
+
+
+R1_ma_3_sexual_satisfaction <-
+  brm(
+    switch ~  hc * sexual_satisfaction  + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R1,
+    file = "models/R1_ma_3_sexual_satisfaction.Rds"
+  )
+
+summary(R1_ma_3_sexual_satisfaction, prob = .997)
+
+R1_ma_3_sex_freq <-
+  brm(
+    switch ~  hc * sex_freq  + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R1,
+    file = "models/R1_ma_3_sex_freq.Rds"
+  )
+
+summary(R1_ma_3_sex_freq, prob = .997)
+```
+
+###R2
+```{r}
+R2_ma_3 <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R2,
+    file = "models/R2_ma_3.Rds"
+  )
+
+summary(R2_ma_3, prob = .997)
+
+
+
+R2_ma_3_sexual_satisfaction <-
+  brm(
+    switch ~  hc * sexual_satisfaction  + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R2,
+    file = "models/R2_ma_3_sexual_satisfaction.Rds"
+  )
+
+summary(R2_ma_3_sexual_satisfaction, prob = .997)
+
+R2_ma_3_sex_freq <-
+  brm(
+    switch ~  hc * sex_freq  + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R2,
+    file = "models/R2_ma_3_sex_freq.Rds"
+  )
+
+summary(R2_ma_3_sex_freq, prob = .997)
+```
+
+###R3
+```{r}
+R3_ma_3 <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R3,
+    file = "models/R3_ma_3.Rds"
+  )
+
+summary(R3_ma_3, prob = .997)
+
+
+
+R3_ma_3_sexual_satisfaction <-
+  brm(
+    switch ~  hc * sexual_satisfaction  + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R3,
+    file = "models/R3_ma_3_sexual_satisfaction.Rds"
+  )
+
+summary(R3_ma_3_sexual_satisfaction, prob = .997)
+
+R3_ma_3_sex_freq <-
+  brm(
+    switch ~  hc * sex_freq  + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R3,
+    file = "models/R3_ma_3_sex_freq.Rds"
+  )
+
+summary(R3_ma_3_sex_freq, prob = .997)
+```
+
+
+
+
+## 3.4 Model 4: Controlling for observed selection effects
+
+###R1
+```{r}
+R1_ma_4 <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
+      hc * AGE + hc * DEGREE_recode +
+      hc * POVRATE +
+      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
+      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
+      hc * had_baby_between_waves + hc * Avoid_r +
+      hc * FEELPG_recode +
+      hc * rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R1,
+    file = "models/R1_ma_4.Rds"
+  )
+
+summary(R1_ma_4, prob = .997)
+
+```
+
+###R2
+```{r}
+R2_ma_4 <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
+      hc * AGE + hc * DEGREE_recode +
+      hc * POVRATE +
+      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
+      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
+      hc * had_baby_between_waves + hc * Avoid_r +
+      hc * FEELPG_recode +
+      hc * rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R2,
+    file = "models/R2_ma_4.Rds"
+  )
+
+summary(R2_ma_4, prob = .997)
+
+```
+
+
+###R3
+```{r}
+R3_ma_4 <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
+      hc * AGE + hc * DEGREE_recode +
+      hc * POVRATE +
+      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
+      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
+      hc * had_baby_between_waves + hc * Avoid_r +
+      hc * FEELPG_recode +
+      hc * rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R3,
+    file = "models/R3_ma_4.Rds"
+  )
+
+summary(R3_ma_4, prob = .997)
+
+```
+
+
+#4. Average marginal effects for models in main analyses for robustness analyses
+
+##Model1
+###R1
+```{r}
+
+#average marginal effect
+ame <- marginaleffects(R1_ma_1)
+summary(ame)
+
+
+```
+
+###R2
+```{r}
+#average marginal effect
+ame <- marginaleffects(R2_ma_1)
+summary(ame)
+
+
+```
+###R3
+```{r}
+#average marginal effect
+ame <- marginaleffects(R3_ma_1)
+summary(ame)
+
+
+```
+##Model 2
+###R1
+```{r}
+#average marginal effect
+ame <- marginaleffects(R1_ma_2)
+summary(ame)
+
+
+R1_m2_hc_only  <- brm(switch ~ hc * contra_satis + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R1%>% filter(hc == "hc"),
+          file = "models/R1_m2_hc_only.Rds")
+
+ame <- marginaleffects(R1_m2_hc_only)
+summary(ame)
+
+R1_m2_nonhc_only <- brm(switch ~ contra_satis + (1| CASEID),
+                    family = bernoulli(),
+                    data = cccu_R1 %>% filter(hc == "non_hc"), file = "models/R1_m2_nonhc_only.Rds")
+
+ame <- marginaleffects(R1_m2_nonhc_only)
+summary(ame)
+```
+###R2
+```{r}
+#average marginal effect
+ame <- marginaleffects(R2_ma_2)
+summary(ame)
+
+R2_m2_hc_only  <- brm(switch ~ hc * contra_satis + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R2%>% filter(hc == "hc"),
+          file = "models/R2_m2_hc_only.Rds")
+ame <- marginaleffects(R2_m2_hc_only)
+summary(ame)
+
+R2_m2_nonhc_only <- brm(switch ~ contra_satis + (1| CASEID),
+                    family = bernoulli(),
+                    data = cccu_R2 %>% filter(hc == "non_hc"), file = "models/R2_m2_nonhc_only.Rds")
+ame <- marginaleffects(R2_m2_nonhc_only)
+summary(ame)
+```
+###R3
+```{r}
+#average marginal effect
+ame <- marginaleffects(R3_ma_2)
+summary(ame)
+
+
+R3_m2_hc_only  <- brm(switch ~ hc * contra_satis + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R3%>% filter(hc == "hc"),
+          file = "models/R3_m2_hc_only.Rds")
+ame <- marginaleffects(R3_m2_hc_only)
+summary(ame)
+
+R3_m2_nonhc_only <- brm(switch ~ contra_satis + (1| CASEID),
+                    family = bernoulli(),
+                    data = cccu_R3 %>% filter(hc == "non_hc"), file = "models/R3_m2_nonhc_only.Rds")
+ame <- marginaleffects(R3_m2_nonhc_only)
+summary(ame)
+```
+
+##Model 3
+###R1
+
+```{r}
+#average marginal effect
+ame <- marginaleffects(R1_ma_3)
+summary(ame)
+
+
+R1_m3_hc_only  <- brm(switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R1%>% filter(hc == "hc"),
+          file = "models/R1_m3_hc_only.Rds")
+ame <- marginaleffects(R1_m3_hc_only)
+summary(ame)
+
+R1_m3_nonhc_only <- brm( switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +  (1| CASEID),
+                    family = bernoulli(),
+                    data = cccu_R1 %>% filter(hc == "non_hc"), file = "models/R1_m3_nonhc_only.Rds")
+ame <- marginaleffects(R1_m3_nonhc_only)
+summary(ame)
+```
+
+
+
+###R2
+```{r}
+#average marginal effect
+ame <- marginaleffects(R2_ma_3)
+summary(ame)
+
+
+R2_m3_hc_only  <- brm( switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +  (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R2%>% filter(hc == "hc"),
+          file = "models/R2_m3_hc_only.Rds")
+ame <- marginaleffects(R2_m3_hc_only)
+summary(ame)
+
+R2_m3_nonhc_only <- brm( switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +  (1| CASEID),
+                    family = bernoulli(),
+                    data = cccu_R2 %>% filter(hc == "non_hc"), file = "models/R2_m3_nonhc_only.Rds")
+ame <- marginaleffects(R2_m3_nonhc_only)
+summary(ame)
+```
+
+###R3
+```{r}
+#average marginal effect
+ame <- marginaleffects(R3_ma_3)
+summary(ame)
+
+R3_m3_hc_only  <- brm( switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R3%>% filter(hc == "hc"),
+          file = "models/R3_m3_hc_only.Rds")
+ame <- marginaleffects(R3_m3_hc_only)
+summary(ame)
+
+R3_m3_nonhc_only <- brm( switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +  (1| CASEID),
+                    family = bernoulli(),
+                    data = cccu_R3 %>% filter(hc == "non_hc"), file = "models/R3_m3_nonhc_only.Rds")
+ame <- marginaleffects(R3_m3_nonhc_only)
+summary(ame)
+```
+##Model 4
+###R1
+```{r}
+
+ame <- marginaleffects(R1_ma_4)
+summary(ame)
+
+R1_m4_hc_only <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
+      hc * AGE + hc * DEGREE_recode +
+      hc * POVRATE +
+      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
+      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
+      hc * had_baby_between_waves + hc * Avoid_r +
+      hc * FEELPG_recode +
+      hc * rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R1%>% filter(hc == "hc"),
+    file = "models/R1_m4_hc_only.Rds"
+  )
+
+
+ame <- marginaleffects(R1_m4_hc_only)
+summary(ame)
+
+
+R1_m4_nonhc_only <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
+      hc * AGE + hc * DEGREE_recode +
+      hc * POVRATE +
+      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
+      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
+      hc * had_baby_between_waves + hc * Avoid_r +
+      hc * FEELPG_recode +
+      hc * rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R1%>% filter(hc == "non_hc"),
+    file = "models/R1_m4_nonhc_only.Rds"
+  )
+
+
+ame <- marginaleffects(R1_m4_nonhc_only)
+summary(ame)
+
+
+```
+
+###R2
+```{r}
+#average marginal effect
+ame <- marginaleffects(R2_ma_4)
+summary(ame)
+
+R2_m4_hc_only <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
+      hc * AGE + hc * DEGREE_recode +
+      hc * POVRATE +
+      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
+      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
+      hc * had_baby_between_waves + hc * Avoid_r +
+      hc * FEELPG_recode +
+      hc * rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R2%>% filter(hc == "hc"),
+    file = "models/R2_m4_hc_only.Rds"
+  )
+
+
+ame <- marginaleffects(R2_m4_hc_only)
+summary(ame)
+
+
+R2_m4_nonhc_only <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
+      hc * AGE + hc * DEGREE_recode +
+      hc * POVRATE +
+      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
+      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
+      hc * had_baby_between_waves + hc * Avoid_r +
+      hc * FEELPG_recode +
+      hc * rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R2%>% filter(hc == "non_hc"),
+    file = "models/R2_m4_nonhc_only.Rds"
+  )
+
+
+ame <- marginaleffects(R2_m4_nonhc_only)
+summary(ame)
+
+
+```
+###R3
+```{r}
+
+ame <- marginaleffects(R3_ma_4)
+summary(ame)
+
+R3_m4_hc_only <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
+      hc * AGE + hc * DEGREE_recode +
+      hc * POVRATE +
+      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
+      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
+      hc * had_baby_between_waves + hc * Avoid_r +
+      hc * FEELPG_recode +
+      hc * rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R3%>% filter(hc == "hc"),
+    file = "models/R3_m4_hc_only.Rds"
+  )
+
+
+ame <- marginaleffects(R3_m4_hc_only)
+summary(ame)
+
+
+R3_m4_nonhc_only <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
+      hc * AGE + hc * DEGREE_recode +
+      hc * POVRATE +
+      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
+      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
+      hc * had_baby_between_waves + hc * Avoid_r +
+      hc * FEELPG_recode +
+      hc * rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R3%>% filter(hc == "non_hc"),
+    file = "models/R3_m4_nonhc_only.Rds"
+  )
+
+
+ame <- marginaleffects(R3_m4_nonhc_only)
+summary(ame)
+
+```
+
+
+#5. Models of Sub Analyses in robustness analyses
+
+##5.1 Model 2
+###R1
+```{r}
+R1_sa_m2 <- brm(switch ~ contra_satis * hc_dur + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R1_s,
+          file = "models/R1_sa_m2.Rds")
+
+summary(R1_sa_m2, prob = .997)
+```
+
+###R2
+```{r}
+R2_sa_m2 <- brm(switch ~ contra_satis * hc_dur + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R2_s,
+          file = "models/R2_sa_m2.Rds")
+
+summary(R2_sa_m2, prob = .997)
+```
+
+###R3
+```{r}
+R3_sa_m2 <- brm(switch ~ contra_satis * hc_dur + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R3_s,
+          file = "models/R3_sa_m2.Rds")
+
+summary(R3_sa_m2, prob = .997)
+```
+
+
+##5.2 Model 3
+###R1
+```{r}
+R1_sa_m3 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq +(1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R1_s,
+          file = "models/R1_sa_m3.Rds")
+
+summary(R1_sa_m3, prob = .997)
+```
+
+###R2
+```{r}
+R2_sa_m3 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq +(1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R2_s,
+          file = "models/R2_sa_m3.Rds")
+
+summary(R2_sa_m3, prob = .997)
+```
+
+###R3
+```{r}
+R3_sa_m3 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq +(1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R3_s,
+          file = "models/R3_sa_m3.Rds")
+
+summary(R3_sa_m3, prob = .997)
+```
+
+
+##5.3 Model 4
+###R1
+```{r}
+
+R1_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
+              TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r + FEELPG_recode +
+              rel_dur_factor + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R1_s,
+          file = "models/R1_sa_m4.Rds")
+
+summary(R1_sa_m4, prob = .997)
+```
+###R2
+```{r}
+
+R2_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
+              TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r + FEELPG_recode +
+              rel_dur_factor + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R2_s,
+          file = "models/R2_sa_m4.Rds")
+
+summary(R2_sa_m4, prob = .997)
+```
+###R3
+```{r}
+
+R3_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
+              TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r + FEELPG_recode +
+              rel_dur_factor + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R3_s,
+          file = "models/R3_sa_m4.Rds")
+
+summary(R3_sa_m4, prob = .997)
+```
+
+#6. Average marginal effects for models of sub analyses in robustnessanalyses
+
+##Model 2
+
+###R1
+```{r}
+#average marginal effect
+ame <- marginaleffects(R1_sa_m2)
+summary(ame)
+```
+
+
+###R2
+```{r}
+#average marginal effect
+ame <- marginaleffects(R2_sa_m2)
+summary(ame)
+```
+
+
+###R3
+```{r}
+#average marginal effect
+ame <- marginaleffects(R3_sa_m2)
+summary(ame)
+```
+
+##Model 3
+###R1
+```{r}
+#average marginal effect
+ame <- marginaleffects(R1_sa_m3)
+summary(ame)
+```
+
+
+###R2
+```{r}
+#average marginal effect
+ame <- marginaleffects(R2_sa_m3)
+summary(ame)
+```
+
+###R3
+```{r}
+#average marginal effect
+ame <- marginaleffects(R3_sa_m3)
+summary(ame)
+```
+
+##Model 4
+###R1
+```{r}
+#average marginal effect
+ame <- marginaleffects(R1_sa_m4)
+summary(ame)
+
+```
+
+
+###R2
+```{r}
+#average marginal effect
+ame <- marginaleffects(R2_sa_m4)
+summary(ame)
+
+```
+
+
+###R3
+```{r}
+#average marginal effect
+ame <- marginaleffects(R3_sa_m4)
+summary(ame)
+
+```
+
+
+
