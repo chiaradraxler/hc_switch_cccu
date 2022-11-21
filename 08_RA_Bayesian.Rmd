@@ -349,7 +349,7 @@ ame <- marginaleffects(R1_ma_2)
 summary(ame)
 
 
-R1_m2_hc_only  <- brm(switch ~ hc * contra_satis + (1 | CASEID),
+R1_m2_hc_only  <- brm(switch ~ contra_satis + (1 | CASEID),
           family = bernoulli(),
           data = cccu_R1%>% filter(hc == "hc"),
           file = "models/R1_m2_hc_only.Rds")
@@ -370,7 +370,7 @@ summary(ame)
 ame <- marginaleffects(R2_ma_2)
 summary(ame)
 
-R2_m2_hc_only  <- brm(switch ~ hc * contra_satis + (1 | CASEID),
+R2_m2_hc_only  <- brm(switch ~ contra_satis + (1 | CASEID),
           family = bernoulli(),
           data = cccu_R2%>% filter(hc == "hc"),
           file = "models/R2_m2_hc_only.Rds")
@@ -390,7 +390,7 @@ ame <- marginaleffects(R3_ma_2)
 summary(ame)
 
 
-R3_m2_hc_only  <- brm(switch ~ hc * contra_satis + (1 | CASEID),
+R3_m2_hc_only  <- brm(switch ~ contra_satis + (1 | CASEID),
           family = bernoulli(),
           data = cccu_R3%>% filter(hc == "hc"),
           file = "models/R3_m2_hc_only.Rds")
@@ -413,14 +413,14 @@ ame <- marginaleffects(R1_ma_3)
 summary(ame)
 
 
-R1_m3_hc_only  <- brm(switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + (1 | CASEID),
+R1_m3_hc_only  <- brm(switch ~ contra_satis +  sexual_satisfaction + sex_freq + (1 | CASEID),
           family = bernoulli(),
           data = cccu_R1%>% filter(hc == "hc"),
           file = "models/R1_m3_hc_only.Rds")
 ame <- marginaleffects(R1_m3_hc_only)
 summary(ame)
 
-R1_m3_nonhc_only <- brm( switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +  (1| CASEID),
+R1_m3_nonhc_only <- brm( switch ~ contra_satis +  sexual_satisfaction + sex_freq +  (1| CASEID),
                     family = bernoulli(),
                     data = cccu_R1 %>% filter(hc == "non_hc"), file = "models/R1_m3_nonhc_only.Rds")
 ame <- marginaleffects(R1_m3_nonhc_only)
@@ -436,14 +436,14 @@ ame <- marginaleffects(R2_ma_3)
 summary(ame)
 
 
-R2_m3_hc_only  <- brm( switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +  (1 | CASEID),
+R2_m3_hc_only  <- brm( switch ~ contra_satis +  sexual_satisfaction + sex_freq +  (1 | CASEID),
           family = bernoulli(),
           data = cccu_R2%>% filter(hc == "hc"),
           file = "models/R2_m3_hc_only.Rds")
 ame <- marginaleffects(R2_m3_hc_only)
 summary(ame)
 
-R2_m3_nonhc_only <- brm( switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +  (1| CASEID),
+R2_m3_nonhc_only <- brm(switch ~ contra_satis +  sexual_satisfaction + sex_freq +  (1| CASEID),
                     family = bernoulli(),
                     data = cccu_R2 %>% filter(hc == "non_hc"), file = "models/R2_m3_nonhc_only.Rds")
 ame <- marginaleffects(R2_m3_nonhc_only)
@@ -456,14 +456,14 @@ summary(ame)
 ame <- marginaleffects(R3_ma_3)
 summary(ame)
 
-R3_m3_hc_only  <- brm( switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + (1 | CASEID),
+R3_m3_hc_only  <- brm( switch ~ contra_satis +  sexual_satisfaction + sex_freq + (1 | CASEID),
           family = bernoulli(),
           data = cccu_R3%>% filter(hc == "hc"),
           file = "models/R3_m3_hc_only.Rds")
 ame <- marginaleffects(R3_m3_hc_only)
 summary(ame)
 
-R3_m3_nonhc_only <- brm( switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +  (1| CASEID),
+R3_m3_nonhc_only <- brm(switch ~ contra_satis +  sexual_satisfaction + sex_freq +  (1| CASEID),
                     family = bernoulli(),
                     data = cccu_R3 %>% filter(hc == "non_hc"), file = "models/R3_m3_nonhc_only.Rds")
 ame <- marginaleffects(R3_m3_nonhc_only)
@@ -478,14 +478,14 @@ summary(ame)
 
 R1_m4_hc_only <-
   brm(
-    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
-      hc * AGE + hc * DEGREE_recode +
-      hc * POVRATE +
-      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
-      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
-      hc * had_baby_between_waves + hc * Avoid_r +
-      hc * FEELPG_recode +
-      hc * rel_dur_factor +
+    switch ~ contra_satis +  sexual_satisfaction + sex_freq +
+      AGE + DEGREE_recode +
+      POVRATE +
+      HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+      TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+      had_baby_between_waves + Avoid_r +
+      FEELPG_recode +
+      rel_dur_factor +
       (1 | CASEID),
     family = bernoulli(),
     data = cccu_R1%>% filter(hc == "hc"),
@@ -499,14 +499,14 @@ summary(ame)
 
 R1_m4_nonhc_only <-
   brm(
-    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
-      hc * AGE + hc * DEGREE_recode +
-      hc * POVRATE +
-      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
-      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
-      hc * had_baby_between_waves + hc * Avoid_r +
-      hc * FEELPG_recode +
-      hc * rel_dur_factor +
+    switch ~ contra_satis +  sexual_satisfaction + sex_freq +
+      AGE + DEGREE_recode +
+      POVRATE +
+      HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+      TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+      had_baby_between_waves + Avoid_r +
+      FEELPG_recode +
+      rel_dur_factor +
       (1 | CASEID),
     family = bernoulli(),
     data = cccu_R1%>% filter(hc == "non_hc"),
@@ -528,14 +528,14 @@ summary(ame)
 
 R2_m4_hc_only <-
   brm(
-    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
-      hc * AGE + hc * DEGREE_recode +
-      hc * POVRATE +
-      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
-      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
-      hc * had_baby_between_waves + hc * Avoid_r +
-      hc * FEELPG_recode +
-      hc * rel_dur_factor +
+    switch ~ contra_satis +  sexual_satisfaction + sex_freq +
+      AGE + DEGREE_recode +
+      POVRATE +
+      HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+      TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+      had_baby_between_waves + Avoid_r +
+      FEELPG_recode +
+      rel_dur_factor +
       (1 | CASEID),
     family = bernoulli(),
     data = cccu_R2%>% filter(hc == "hc"),
@@ -549,14 +549,14 @@ summary(ame)
 
 R2_m4_nonhc_only <-
   brm(
-    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
-      hc * AGE + hc * DEGREE_recode +
-      hc * POVRATE +
-      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
-      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
-      hc * had_baby_between_waves + hc * Avoid_r +
-      hc * FEELPG_recode +
-      hc * rel_dur_factor +
+    switch ~ contra_satis +  sexual_satisfaction + sex_freq +
+      AGE + DEGREE_recode +
+      POVRATE +
+      HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+      TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+      had_baby_between_waves + Avoid_r +
+      FEELPG_recode +
+      rel_dur_factor +
       (1 | CASEID),
     family = bernoulli(),
     data = cccu_R2%>% filter(hc == "non_hc"),
@@ -569,6 +569,7 @@ summary(ame)
 
 
 ```
+
 ###R3
 ```{r}
 
@@ -577,14 +578,14 @@ summary(ame)
 
 R3_m4_hc_only <-
   brm(
-    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
-      hc * AGE + hc * DEGREE_recode +
-      hc * POVRATE +
-      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
-      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
-      hc * had_baby_between_waves + hc * Avoid_r +
-      hc * FEELPG_recode +
-      hc * rel_dur_factor +
+    switch ~ contra_satis +  sexual_satisfaction + sex_freq +
+      AGE + DEGREE_recode +
+      POVRATE +
+      HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+      TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+      had_baby_between_waves + Avoid_r +
+      FEELPG_recode +
+      rel_dur_factor +
       (1 | CASEID),
     family = bernoulli(),
     data = cccu_R3%>% filter(hc == "hc"),
@@ -598,14 +599,14 @@ summary(ame)
 
 R3_m4_nonhc_only <-
   brm(
-    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
-      hc * AGE + hc * DEGREE_recode +
-      hc * POVRATE +
-      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
-      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
-      hc * had_baby_between_waves + hc * Avoid_r +
-      hc * FEELPG_recode +
-      hc * rel_dur_factor +
+    switch ~ contra_satis +  sexual_satisfaction + sex_freq +
+      AGE + DEGREE_recode +
+      POVRATE +
+      HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+      TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+      had_baby_between_waves + Avoid_r +
+      FEELPG_recode +
+      rel_dur_factor +
       (1 | CASEID),
     family = bernoulli(),
     data = cccu_R3%>% filter(hc == "non_hc"),
