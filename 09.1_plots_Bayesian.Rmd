@@ -204,24 +204,24 @@ for models m1, m2, m3, m4
 ```{r}
 m1 <- brm(file = "models/m1.Rds")
 
-m1_sum = summary(m1)
+m1_sum = summary(m1, prob = .997)
 ```
 
 ####m1 in robustness analyses
 ```{r}
 ####1 Robustness analyses : m1 
 R1_ma_1 <- brm(file = "models/R1_ma_1.Rds")
-R1_m1_sum = summary(R1_ma_1)
+R1_m1_sum = summary(R1_ma_1, prob = .997)
 
 ####2 Robustness analyses: m1 
 R2_ma_1 <- brm(file = "models/R2_ma_1.Rds")
 
-R2_m1_sum = summary(R2_ma_1)
+R2_m1_sum = summary(R2_ma_1, prob = .997)
 
 #### 3Robustness analyses: m1 
 R3_ma_1 <- brm(file = "models/R3_ma_1.Rds")
 
-R3_m1_sum = summary(R3_ma_1)
+R3_m1_sum = summary(R3_ma_1, prob = .997)
 
 ```
 
@@ -302,6 +302,8 @@ R3_m4_sum = summary(R3_ma_4)
 ### Effects and CIs
 ####m1
 ```{r}
+m1_sum$fixed[2,]
+
 m1_confint = confint(m1, method = "Wald", level = .997) 
 
 rn = rownames(m1_confint)
