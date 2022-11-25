@@ -229,7 +229,7 @@ R3_m1_sum = summary(R3_ma_1, prob = .997)
 ####m2
 ```{r}
 m2 <- brm(file = "models/m2.Rds")
-m2_sum = summary(m2)
+m2_sum = summary(m2, prob = .997)
 ```
 
 ####m2 in robustness analyses 
@@ -237,22 +237,22 @@ m2_sum = summary(m2)
 #r1
 R1_ma_2 <- brm(file = "models/R1_ma_2.Rds")
 
-R1_m2_sum = summary(R1_ma_2)
+R1_m2_sum = summary(R1_ma_2, prob = .997)
 
 #r2
 R2_ma_2 <- brm(file = "models/R2_ma_2.Rds")
-R2_m2_sum = summary(R2_ma_2)
+R2_m2_sum = summary(R2_ma_2, prob = .997)
 
 
 #r3
 R3_ma_2 <- brm(file = "models/R3_ma_2.Rds")
-R3_m2_sum = summary(R3_ma_2)
+R3_m2_sum = summary(R3_ma_2, prob = .997)
 ```
 
 ####m3
 ```{r}
 m3 <- brm(file = "models/m3.Rds")
-m3_sum = summary(m3)
+m3_sum = summary(m3, prob = .997)
 ```
 
 ####m3 in robustness analyses 
@@ -260,16 +260,16 @@ m3_sum = summary(m3)
 #r1
 R1_ma_3 <- brm(file = "models/R1_ma_3.Rds")
 
-R1_m3_sum = summary(R1_ma_3)
+R1_m3_sum = summary(R1_ma_3, prob = .997)
 
 #r2
 R2_ma_3 <- brm(file = "models/R2_ma_3.Rds")
-R2_m3_sum = summary(R2_ma_3)
+R2_m3_sum = summary(R2_ma_3, prob = .997)
 
 #r3
 R3_ma_3 <- brm(file = "models/R3_ma_3.Rds")
 
-R3_m3_sum = summary(R3_ma_3)
+R3_m3_sum = summary(R3_ma_3, prob = .997)
 ```
 
 
@@ -277,7 +277,7 @@ R3_m3_sum = summary(R3_ma_3)
 ####m4
 ```{r}
 m4 = brm(file = "models/m4.Rds")
-m4_sum <- summary(m4)
+m4_sum <- summary(m4, prob = .997)
 ```
 
 ####m4 in robustness analysis 
@@ -285,42 +285,34 @@ m4_sum <- summary(m4)
 #r1
 R1_ma_4 <- brm(file = "models/R1_ma_4.Rds")
 
-R1_m4_sum = summary(R1_ma_4)
+R1_m4_sum = summary(R1_ma_4, prob = .997)
 
 #r2
 R2_ma_4 <- brm(file = "models/R2_ma_4.Rds")
 
-R2_m4_sum = summary(R2_ma_4)
+R2_m4_sum = summary(R2_ma_4, prob = .997)
 
 #r3
 R3_ma_4 <- brm(file = "models/R3_ma_4.Rds")
 
-R3_m4_sum = summary(R3_ma_4)
+R3_m4_sum = summary(R3_ma_4, prob = .997)
 ```
 
 
 ### Effects and CIs
 ####m1
 ```{r}
-m1_sum$fixed[2,]
+m1_forest_plot = m1_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("model_1", 2)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
 
-m1_confint = confint(m1, method = "Wald", level = .997) 
-
-rn = rownames(m1_confint)
-m1_confint = data.frame(m1_confint)
-
-colnames(m1_confint) = c("lower", "upper")
-m1_confint$predictor = rn
-
-
-m1_forest_plot = data.frame(
-  predictor = names(m1_sum$coefficients[,1]),
-  estimate = as.numeric(as.character(m1_sum$coefficients[,1])))
-
-m1_forest_plot = left_join(m1_forest_plot, m1_confint, by = "predictor")
-
-m1_forest_plot$group = rep("model_1", 2)
-
+rownames(m1_forest_plot) = c()
 ```
 
 ####m1 in Robustnessanalyses
