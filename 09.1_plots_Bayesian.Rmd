@@ -564,6 +564,7 @@ forest_plot_data2 = rbind(
   R2_m4_forest_plot,
   R3_m4_forest_plot
 )
+
 forest_plot_data2$predictor = factor(forest_plot_data2$predictor,
                                     levels = c("(Intercept)",
                                                "hcnon_hc",
@@ -571,11 +572,11 @@ forest_plot_data2$predictor = factor(forest_plot_data2$predictor,
                                                "hcnon_hc:contra_satis",
                                                "sexual_satisfaction","hcnon_hc:sexual_satisfaction",
                                   
-                                               "sex_freq2-5 times", "sex_freq6-10 times",
-                                               "sex_freq11 or more times", 
-                                                            "hcnon_hc:sex_freq2-5 times",
-                                               "hcnon_hc:sex_freq6-10 times",
-                                               "hcnon_hc:sex_freq11 or more times"),
+                                               "sex_freq2M5times", "sex_freq6M10times",
+                                               "sex_freq11ormoretimes", 
+                                                            "hcnon_hc:sex_freq2M5times",
+                                               "hcnon_hc:sex_freq6M10times",
+                                               "hcnon_hc:sex_freq11ormoretimes"),
                                     labels = c("(Intercept)",
                                                "HC",
                                                "Contraceptive Satisfaction",
