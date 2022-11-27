@@ -551,10 +551,10 @@ forest_plot_data2 = rbind(
   R1_m1_forest_plot,
   R2_m1_forest_plot,
   R3_m1_forest_plot,
+  m2_forest_plot,
   R1_m2_forest_plot,
   R2_m2_forest_plot,
   R3_m2_forest_plot,
-  m2_forest_plot,
   m3_forest_plot,
   R1_m3_forest_plot,
   R2_m3_forest_plot,
@@ -566,7 +566,7 @@ forest_plot_data2 = rbind(
 )
 
 forest_plot_data2$predictor = factor(forest_plot_data2$predictor,
-                                    levels = c("(Intercept)",
+                                    levels = c("Intercept",
                                                "hcnon_hc",
                                                "contra_satis",
                                                "hcnon_hc:contra_satis",
@@ -677,8 +677,9 @@ forest_ma_ra <- ggplot(
   geom_pointrange(aes(ymin = lower, ymax = upper),
                   alpha = 0.5,
                   position = position_dodge(width = 0.9)) +
-  scale_x_discrete(limits = rev, expand = c(0.002, 0)) +scale_y_continuous(limits = c(-8,8),
-                     breaks = seq(-8,8,2)) +
+  scale_x_discrete(limits = rev, expand = c(0.002, 0)) +
+  # scale_y_continuous(limits = c(-8,8),
+  #                    breaks = seq(-8,8,2)) +
   geom_hline(yintercept = 0) +
   coord_flip() +
   scale_fill_manual(
