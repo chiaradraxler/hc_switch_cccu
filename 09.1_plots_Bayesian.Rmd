@@ -22,17 +22,11 @@ output: html_document
 
 ##2. Load Packages
 ```{r}
-# library(formr)
 # library(effects)
-# library(EValue)
-# library(lme4)
 # library(psych)
-# library(dplyr)
-# library(tidyverse)
 # library(patchwork)
-# library(marginaleffects)
 # library(ggpubr)
-# library(sjPlot)
+library(formr)
 library(brms)
 library(marginaleffects)
 library(sjPlot)
