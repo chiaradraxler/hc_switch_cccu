@@ -735,594 +735,367 @@ ggsave("forest_ma.png", forest_ma_ra, width = 23, height = 12, units = "cm", dpi
 ### Model
 ####m2
 ```{r}
-sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1| CASEID), family = binomial, data = cccu_SA, control=glmerControl(optimizer="bobyqa"))
+sa_m2 <- brm(file = "models/sa_m2.Rds")
 
-sa_m2_sum<- summary(sa_m2)
+sa_m2_sum<- summary(sa_m2, prob = .997)
 ```
 
 ####m2 in robustness analyses 
 ```{r}
-R1_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1| CASEID), family = binomial, data = cccu_R1_s, control=glmerControl(optimizer="bobyqa"))
+R1_sa_m2 <- brm(file = "models/R1_sa_m2.Rds")
 
-R1_sa_m2_sum <- summary(R1_sa_m2)
+R1_sa_m2_sum<- summary(R1_sa_m2, prob = .997)
 
+R2_sa_m2 <- brm(file = "models/R2_sa_m2.Rds")
 
-R2_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1| CASEID), family = binomial, data = cccu_R2_s, control=glmerControl(optimizer="bobyqa"))
+R2_sa_m2_sum<- summary(R2_sa_m2, prob = .997)
 
-R2_sa_m2_sum <- summary(R2_sa_m2)
+R3_sa_m2 <- brm(file = "models/R3_sa_m2.Rds")
 
+R3_sa_m2_sum<- summary(R3_sa_m2, prob = .997)
 
-R3_sa_m2 <- glmer(switch ~ contra_satis * hc_dur + (1| CASEID), family = binomial, data = cccu_R3_s, control=glmerControl(optimizer="bobyqa"))
-
-R3_sa_m2_sum <- summary(R3_sa_m2)
 ```
 
 
 
 ####m3
 ```{r}
-sa_m3 <- glmer(switch ~ contra_satis* hc_dur  +  sexual_satisfaction +  sex_freq + (1| CASEID), family = binomial, data = cccu_SA, control=glmerControl(optimizer="bobyqa"))
+sa_m3 <- brm(file = "models/sa_m3.Rds")
 
-sa_m3_sum <- summary(sa_m3)
+sa_m3_sum<- summary(sa_m3, prob = .997)
+
 ```
 
 
 ####m3 in robustness analyses 
 ```{r}
-R1_sa_m3 <- glmer(switch ~ contra_satis * hc_dur +  sexual_satisfaction +  sex_freq + (1| CASEID), family = binomial, data = cccu_R1_s, control=glmerControl(optimizer="bobyqa"))
+R1_sa_m3 <- brm(file = "models/R1_sa_m3.Rds")
 
-R1_sa_m3_sum <- summary(R1_sa_m3)
+R1_sa_m3_sum<- summary(R1_sa_m3, prob = .997)
 
+R2_sa_m3 <- brm(file = "models/R2_sa_m3.Rds")
 
-R2_sa_m3 <- glmer(switch ~ contra_satis * hc_dur +  sexual_satisfaction +  sex_freq + (1| CASEID), family = binomial, data = cccu_R2_s, control=glmerControl(optimizer="bobyqa"))
+R2_sa_m3_sum<- summary(R2_sa_m3, prob = .997)
 
-R2_sa_m3_sum <- summary(R2_sa_m3)
+R3_sa_m3 <- brm(file = "models/R3_sa_m3.Rds")
 
-
-R3_sa_m3 <- glmer(switch ~ contra_satis * hc_dur +  sexual_satisfaction +  sex_freq + (1| CASEID), family = binomial, data = cccu_R3_s, control=glmerControl(optimizer="bobyqa"))
-
-R3_sa_m3_sum <- summary(R3_sa_m3)
+R3_sa_m3_sum<- summary(R3_sa_m3, prob = .997)
 ```
 
 
 
 ####m4
 ```{r}
-#filter for first measurement occasion
-length(unique(cccu_SA$CASEID))
+sa_m4 <- brm(file = "models/sa_m4.Rds")
 
-
-cccu_SA_sens = cccu_SA %>%
-  group_by(CASEID) %>%
-  arrange(WAVE) %>%
-  mutate(count = row_number()) %>%
-  ungroup()
-
-cccu_SA_sens = cccu_SA_sens %>%
-  filter(count == 1)
-
-
-#repeating model 3 as linear model 
-sa_m3_lm <- glm(switch ~ contra_satis* hc_dur  +  sexual_satisfaction +  sex_freq, family = binomial, data = cccu_SA_sens)
-
-sa_m3_lm_sum <- summary(sa_m3_lm)
-
-#model 4 as linear model (did not converge otherwise)
-
-sa_m4_lm <- glm(switch ~ contra_satis*hc_dur +  sexual_satisfaction +   sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
-              TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r + FEELPG_recode +
-              rel_dur_factor,
-            family = binomial,
-            data = cccu_SA_sens)
-
-sa_m4_lm_sum <- summary(sa_m4_lm)
+sa_m4_sum<- summary(sa_m4, prob = .997)
 ```
 
-####m3lm and m4lm in robustnessanalyses
+####m4 in robustnessanalyses
 ```{r}
-#filter for first measurement occasion
-length(unique(cccu_R1_s$CASEID))
+R1_sa_m4 <- brm(file = "models/R1_sa_m4.Rds")
 
+R1_sa_m4_sum<- summary(R1_sa_m4, prob = .997)
 
-cccu_R1_SA_sens = cccu_R1_s %>%
-  group_by(CASEID) %>%
-  arrange(WAVE) %>%
-  mutate(count = row_number()) %>%
-  ungroup()
+R2_sa_m4 <- brm(file = "models/R2_sa_m4.Rds")
 
-cccu_R1_SA_sens = cccu_R1_SA_sens %>%
-  filter(count == 1)
+R2_sa_m4_sum<- summary(R2_sa_m4, prob = .997)
 
+R3_sa_m4 <- brm(file = "models/R3_sa_m4.Rds")
 
-
-#filter for first measurement occasion
-length(unique(cccu_R2_s$CASEID))
-
-
-cccu_R2_SA_sens = cccu_R1_s %>%
-  group_by(CASEID) %>%
-  arrange(WAVE) %>%
-  mutate(count = row_number()) %>%
-  ungroup()
-
-cccu_R2_SA_sens = cccu_R2_SA_sens %>%
-  filter(count == 1)
-
-
-#filter for first measurement occasion
-length(unique(cccu_R3_s$CASEID))
-
-
-cccu_R3_SA_sens = cccu_R3_s %>%
-  group_by(CASEID) %>%
-  arrange(WAVE) %>%
-  mutate(count = row_number()) %>%
-  ungroup()
-
-cccu_R3_SA_sens = cccu_R3_SA_sens %>%
-  filter(count == 1)
-
-
-
-R1_sa_m3_lm <- glm(switch ~ contra_satis* hc_dur  +  sexual_satisfaction +  sex_freq, family = binomial, data = cccu_R1_SA_sens)
-
-R1_sa_m3_lm_sum <- summary(R1_sa_m3_lm)
-
-
-
-R2_sa_m3_lm <- glm(switch ~ contra_satis* hc_dur  +  sexual_satisfaction +  sex_freq, family = binomial, data = cccu_R2_SA_sens)
-
-R2_sa_m3_lm_sum <-summary(R2_sa_m3_lm)
-
-
-R3_sa_m3_lm <- glm(switch ~ contra_satis* hc_dur  +  sexual_satisfaction +  sex_freq, family = binomial, data = cccu_R3_SA_sens)
-
-R3_sa_m3_lm_sum <-summary(R3_sa_m3_lm)
-
-
-
-
-
-#model 4
-R1_sa_m4_lm <- glm(switch ~ contra_satis*hc_dur +  sexual_satisfaction +   sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
-              TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r + FEELPG_recode +
-              rel_dur_factor,
-            family = binomial,
-            data = cccu_R1_SA_sens)
-
-R1_sa_m4_lm_sum <- summary(R1_sa_m4_lm)
-
-
-
-R2_sa_m4_lm <- glm(switch ~ contra_satis*hc_dur +  sexual_satisfaction +   sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
-              TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r + FEELPG_recode +
-              rel_dur_factor,
-            family = binomial,
-            data = cccu_R2_SA_sens)
-
-R2_sa_m4_lm_sum <- summary(R2_sa_m4_lm)
-
-
-
-R3_sa_m4_lm <- glm(switch ~ contra_satis*hc_dur +  sexual_satisfaction +   sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
-              TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r + FEELPG_recode +
-              rel_dur_factor,
-            family = binomial,
-            data = cccu_R3_SA_sens)
-
-R3_sa_m4_lm_sum <- summary(R3_sa_m4_lm)
-
+R3_sa_m4_sum<- summary(R3_sa_m4, prob = .997)
 
 ```
 
 
 
 ### Effects and CIs
+
 ####m2
 ```{r}
-sa_m2_confint = confint(sa_m2, method = "Wald", level = .997) 
+sa_m2_forest_plot = sa_m2_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("sa_model_2", 4)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
 
-rn = rownames(sa_m2_confint)
-sa_m2_confint = data.frame(sa_m2_confint)
-
-colnames(sa_m2_confint) = c("lower", "upper")
-sa_m2_confint$predictor = rn
-
-
-sa_m2_forest_plot = data.frame(
-  predictor = names(sa_m2_sum$coefficients[,1]),
-  estimate = as.numeric(as.character(sa_m2_sum$coefficients[,1])))
-
-sa_m2_forest_plot = left_join(sa_m2_forest_plot, sa_m2_confint, by = "predictor")
-
-sa_m2_forest_plot$group = rep("sa_multilevel_model_2", 2)
-
+rownames(sa_m2_forest_plot) = c()
 ```
 
 
-#m2 in Robustnessanalyses
+####m2 in robustness analyses
 ```{r}
-#r1
-R1_sa_m2_confint = confint(R1_sa_m2, method = "Wald", level = .997) 
+#R1
+R1_sa_m2_forest_plot = R1_sa_m2_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("R1_sa_model_2", 4)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
 
-rn = rownames(R1_sa_m2_confint)
-R1_sa_m2_confint = data.frame(R1_sa_m2_confint)
-
-colnames(R1_sa_m2_confint) = c("lower", "upper")
-R1_sa_m2_confint$predictor = rn
-
-
-R1_sa_m2_forest_plot = data.frame(
-  predictor = names(R1_sa_m2_sum$coefficients[,1]),
-  estimate = as.numeric(as.character(R1_sa_m2_sum$coefficients[,1])))
-
-R1_sa_m2_forest_plot = left_join(R1_sa_m2_forest_plot, R1_sa_m2_confint, by = "predictor")
-
-R1_sa_m2_forest_plot$group = rep("R1_sa_multilevel_model_2", 2)
+rownames(R1_sa_m2_forest_plot) = c()
 
 
-#r2
 #R2
-R2_sa_m2_confint = confint(R2_sa_m2, method = "Wald", level = .997) 
+R2_sa_m2_forest_plot = R2_sa_m2_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("R2_sa_model_2", 4)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
 
-rn = rownames(R2_sa_m2_confint)
-R2_sa_m2_confint = data.frame(R2_sa_m2_confint)
+rownames(R2_sa_m2_forest_plot) = c()
 
-colnames(R2_sa_m2_confint) = c("lower", "upper")
-R2_sa_m2_confint$predictor = rn
-
-
-R2_sa_m2_forest_plot = data.frame(
-  predictor = names(R2_sa_m2_sum$coefficients[,1]),
-  estimate = as.numeric(as.character(R2_sa_m2_sum$coefficients[,1])))
-
-R2_sa_m2_forest_plot = left_join(R2_sa_m2_forest_plot, R2_sa_m2_confint, by = "predictor")
-
-R2_sa_m2_forest_plot$group = rep("R2_sa_multilevel_model_2", 2)
-
-
-#r3
 #R3
-R3_sa_m2_confint = confint(R3_sa_m2, method = "Wald", level = .997) 
+R3_sa_m2_forest_plot = R3_sa_m2_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("R3_sa_model_2", 4)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
 
-rn = rownames(R3_sa_m2_confint)
-R3_sa_m2_confint = data.frame(R3_sa_m2_confint)
-
-colnames(R3_sa_m2_confint) = c("lower", "upper")
-R3_sa_m2_confint$predictor = rn
-
-
-R3_sa_m2_forest_plot = data.frame(
-  predictor = names(R3_sa_m2_sum$coefficients[,1]),
-  estimate = as.numeric(as.character(R3_sa_m2_sum$coefficients[,1])))
-
-R3_sa_m2_forest_plot = left_join(R3_sa_m2_forest_plot, R3_sa_m2_confint, by = "predictor")
-
-R3_sa_m2_forest_plot$group = rep("R3_sa_multilevel_model_2", 2)
-
+rownames(R3_sa_m2_forest_plot) = c()
 ```
+
+
+
 
 ####m3
 ```{r}
-sa_m3_confint = confint(sa_m3, method = "Wald", level = .997) 
+sa_m3_forest_plot = sa_m3_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("sa_model_3", 8)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
 
-rn = rownames(sa_m3_confint)
-sa_m3_confint = data.frame(sa_m3_confint)
-
-
-colnames(sa_m3_confint) = c("lower", "upper")
-sa_m3_confint$predictor <- rn
-
-
-sa_m3_forest_plot = data.frame(
-  predictor = names(sa_m3_sum$coefficients[,1]),
-  estimate = as.numeric(as.character(sa_m3_sum$coefficients[,1])))
-
-sa_m3_forest_plot = left_join(sa_m3_forest_plot, sa_m3_confint, by = "predictor")
-
-sa_m3_forest_plot$group = rep("sa_multilevel_model_3", 2)
-
+rownames(sa_m3_forest_plot) = c()
 ```
 
-#m3 in robustness analyses
+####m3 in Robustnessanalyses
 ```{r}
-#r1
-R1_sa_m3_confint = confint(R1_sa_m3, method = "Wald", level = .997) 
+#R1
+R1_sa_m3_forest_plot = R1_sa_m3_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("R1_sa_model_3", 8)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
 
-rn = rownames(R1_sa_m3_confint)
-R1_sa_m3_confint = data.frame(R1_sa_m3_confint)
+rownames(R1_sa_m3_forest_plot) = c()
 
-colnames(R1_sa_m3_confint) = c("lower", "upper")
-R1_sa_m3_confint$predictor = rn
-
-
-R1_sa_m3_forest_plot = data.frame(
-  predictor = names(R1_sa_m3_sum$coefficients[,1]),
-  estimate = as.numeric(as.character(R1_sa_m3_sum$coefficients[,1])))
-
-R1_sa_m3_forest_plot = left_join(R1_sa_m3_forest_plot, R1_sa_m3_confint, by = "predictor")
-
-R1_sa_m3_forest_plot$group = rep("R1_sa_multilevel_model_3", 2)
-
-
-#r2
 #R2
-R2_sa_m3_confint = confint(R2_sa_m3, method = "Wald", level = .997) 
+R2_sa_m3_forest_plot = R2_sa_m3_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("R2_sa_model_3", 8)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
 
-rn = rownames(R2_sa_m3_confint)
-R2_sa_m3_confint = data.frame(R2_sa_m3_confint)
-
-colnames(R2_sa_m3_confint) = c("lower", "upper")
-R2_sa_m3_confint$predictor = rn
-
-
-R2_sa_m3_forest_plot = data.frame(
-  predictor = names(R2_sa_m3_sum$coefficients[,1]),
-  estimate = as.numeric(as.character(R2_sa_m3_sum$coefficients[,1])))
-
-R2_sa_m3_forest_plot = left_join(R2_sa_m3_forest_plot, R2_sa_m3_confint, by = "predictor")
-
-R2_sa_m3_forest_plot$group = rep("R2_sa_multilevel_model_3", 2)
+rownames(R2_sa_m3_forest_plot) = c()
 
 
-#r3
 #R3
-R3_sa_m3_confint = confint(R3_sa_m3, method = "Wald", level = .997) 
+R3_sa_m3_forest_plot = R3_sa_m3_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("R3_sa_model_3", 8)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
 
-rn = rownames(R3_sa_m3_confint)
-R3_sa_m3_confint = data.frame(R3_sa_m3_confint)
-
-colnames(R3_sa_m3_confint) = c("lower", "upper")
-R3_sa_m3_confint$predictor = rn
-
-
-R3_sa_m3_forest_plot = data.frame(
-  predictor = names(R3_sa_m3_sum$coefficients[,1]),
-  estimate = as.numeric(as.character(R3_sa_m3_sum$coefficients[,1])))
-
-R3_sa_m3_forest_plot = left_join(R3_sa_m3_forest_plot, R3_sa_m3_confint, by = "predictor")
-
-R3_sa_m3_forest_plot$group = rep("R3_sa_multilevel_model_3", 2)
+rownames(R3_sa_m3_forest_plot) = c()
 
 ```
 
 
-####m3 linear
+
+
+
+
+####m3
 ```{r}
-sa_m3_lm_confint = confint(sa_m3_lm, method = "Wald", level = .997) 
+sa_m4_forest_plot = sa_m4_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("sa_model_4", 37)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
 
-rn = rownames(sa_m3_lm_confint)
-sa_m3_lm_confint = data.frame(sa_m3_lm_confint)
-
-colnames(sa_m3_lm_confint) = c("lower", "upper")
-sa_m3_lm_confint$predictor = rn
-
-
-sa_m3_lm_forest_plot = data.frame(
-  predictor = names(sa_m3_lm_sum$coefficients[,1]),
-  estimate = as.numeric(as.character(sa_m3_lm_sum$coefficients[,1])))
-
-sa_m3_lm_forest_plot = left_join(sa_m3_lm_forest_plot, sa_m3_lm_confint, by = "predictor")
-
-sa_m3_lm_forest_plot$group = rep("sa_model_3", 2)
-
+rownames(sa_m4_forest_plot) = c()
 ```
-####linear model 3 in robustenss analyses
+
+####m3 in Robustnessanalyses
 ```{r}
-#r1
-R1_sa_m3_lm_confint = confint(R1_sa_m3_lm, method = "Wald", level = .997) 
+#R1
+R1_sa_m4_forest_plot = R1_sa_m4_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("sa_R1_model_4", 37)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
 
-rn = rownames(R1_sa_m3_lm_confint)
-R1_sa_m3_lm_confint = data.frame(R1_sa_m3_lm_confint)
+rownames(R1_sa_m4_forest_plot) = c()
 
-colnames(R1_sa_m3_lm_confint) = c("lower", "upper")
-R1_sa_m3_lm_confint$predictor = rn
-
-
-R1_sa_m3_lm_forest_plot = data.frame(
-  predictor = names(R1_sa_m3_lm_sum$coefficients[,1]),
-  estimate = as.numeric(as.character(R1_sa_m3_lm_sum$coefficients[,1])))
-
-R1_sa_m3_lm_forest_plot = left_join(R1_sa_m3_lm_forest_plot, R1_sa_m3_lm_confint, by = "predictor")
-
-R1_sa_m3_lm_forest_plot$group = rep("R1_sa_model_3", 2)
-
-
-#r2
 #R2
-R2_sa_m3_lm_confint = confint(R2_sa_m3_lm, method = "Wald", level = .997) 
+R2_sa_m4_forest_plot = R2_sa_m4_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("R2_sa_model_4", 37)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
 
-rn = rownames(R2_sa_m3_lm_confint)
-R2_sa_m3_lm_confint = data.frame(R2_sa_m3_lm_confint)
-
-colnames(R2_sa_m3_lm_confint) = c("lower", "upper")
-R2_sa_m3_lm_confint$predictor = rn
-
-
-R2_sa_m3_lm_forest_plot = data.frame(
-  predictor = names(R2_sa_m3_lm_sum$coefficients[,1]),
-  estimate = as.numeric(as.character(R2_sa_m3_lm_sum$coefficients[,1])))
-
-R2_sa_m3_lm_forest_plot = left_join(R2_sa_m3_lm_forest_plot, R2_sa_m3_lm_confint, by = "predictor")
-
-R2_sa_m3_lm_forest_plot$group = rep("R2_sa_model_3", 2)
+rownames(R2_sa_m4_forest_plot) = c()
 
 
-#r3
 #R3
-R3_sa_m3_lm_confint = confint(R3_sa_m3_lm, method = "Wald", level = .997) 
+R3_sa_m4_forest_plot = R3_sa_m4_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("R3_sa_model_4", 37)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
 
-rn = rownames(R3_sa_m3_lm_confint)
-R3_sa_m3_lm_confint = data.frame(R3_sa_m3_lm_confint)
-
-colnames(R3_sa_m3_lm_confint) = c("lower", "upper")
-R3_sa_m3_lm_confint$predictor = rn
-
-
-R3_sa_m3_lm_forest_plot = data.frame(
-  predictor = names(R3_sa_m3_lm_sum$coefficients[,1]),
-  estimate = as.numeric(as.character(R3_sa_m3_lm_sum$coefficients[,1])))
-
-R3_sa_m3_lm_forest_plot = left_join(R3_sa_m3_lm_forest_plot, R3_sa_m3_lm_confint, by = "predictor")
-
-R3_sa_m3_lm_forest_plot$group = rep("R3_sa_model_3", 2)
+rownames(R3_sa_m4_forest_plot) = c()
 
 ```
 
-####m4 linear
+### Dataframe for plot
 ```{r}
-sa_m4_lm_confint = confint(sa_m4_lm, method = "Wald", level = .997) 
+#for robustness analyses
+sa_forest_plot_data2 = rbind(
+  sa_m2_forest_plot,
+  R1_sa_m2_forest_plot,
+  R2_sa_m2_forest_plot,
+  R3_sa_m2_forest_plot,
+  sa_m3_forest_plot,
+  R1_sa_m3_forest_plot,
+  R2_sa_m3_forest_plot,
+  R3_sa_m3_forest_plot,
+  sa_m4_forest_plot,
+  R1_sa_m4_forest_plot,
+  R2_sa_m4_forest_plot,
+  R3_sa_m4_forest_plot
+)
 
-rn = rownames(sa_m4_lm_confint)
-sa_m4_lm_confint = data.frame(sa_m4_lm_confint)
-
-colnames(sa_m4_lm_confint) = c("lower", "upper")
-sa_m4_lm_confint$predictor = rn
-
-
-sa_m4_lm_forest_plot = data.frame(
-  predictor = names(sa_m4_lm_sum$coefficients[,1]),
-  estimate = as.numeric(as.character(sa_m4_lm_sum$coefficients[,1])))
-
-sa_m4_lm_forest_plot = left_join(sa_m4_lm_forest_plot, sa_m4_lm_confint, by = "predictor", copy = TRUE)
-
-sa_m4_lm_forest_plot$group = rep("sa_model_4", 37)
-
-```
-
-###lm4 in robustnessanalyses
-```{r}
-#r1
-R1_sa_m4_lm_confint = confint(R1_sa_m4_lm, method = "Wald", level = .997) 
-
-rn = rownames(R1_sa_m4_lm_confint)
-R1_sa_m4_lm_confint = data.frame(R1_sa_m4_lm_confint)
-
-colnames(R1_sa_m4_lm_confint) = c("lower", "upper")
-R1_sa_m4_lm_confint$predictor = rn
-
-
-R1_sa_m4_lm_forest_plot = data.frame(
-  predictor = names(R1_sa_m4_lm_sum$coefficients[,1]),
-  estimate = as.numeric(as.character(R1_sa_m4_lm_sum$coefficients[,1])))
-
-R1_sa_m4_lm_forest_plot = left_join(R1_sa_m4_lm_forest_plot, R1_sa_m4_lm_confint, by = "predictor")
-
-R1_sa_m4_lm_forest_plot$group = rep("R1_sa_model_4", 37)
-
-
-#r2
-#R2
-R2_sa_m4_lm_confint = confint(R2_sa_m4_lm, method = "Wald", level = .997) 
-
-rn = rownames(R2_sa_m4_lm_confint)
-R2_sa_m4_lm_confint = data.frame(R2_sa_m4_lm_confint)
-
-colnames(R2_sa_m4_lm_confint) = c("lower", "upper")
-R2_sa_m4_lm_confint$predictor = rn
-
-
-R2_sa_m4_lm_forest_plot = data.frame(
-  predictor = names(R2_sa_m4_lm_sum$coefficients[,1]),
-  estimate = as.numeric(as.character(R2_sa_m4_lm_sum$coefficients[,1])))
-
-R2_sa_m4_lm_forest_plot = left_join(R2_sa_m4_lm_forest_plot, R2_sa_m4_lm_confint, by = "predictor")
-
-R2_sa_m4_lm_forest_plot$group = rep("R2_sa_model_4", 37)
-
-
-
-R3_sa_m4_lm_confint = confint(R3_sa_m4_lm, method = "Wald", level = .997) 
-
-rn = rownames(R3_sa_m4_lm_confint)
-R3_sa_m4_lm_confint = data.frame(R3_sa_m4_lm_confint)
-
-colnames(R3_sa_m4_lm_confint) = c("lower", "upper")
-R3_sa_m4_lm_confint$predictor = rn
-
-
-R3_sa_m4_lm_forest_plot = data.frame(
-  predictor = names(R3_sa_m4_lm_sum$coefficients[,1]),
-  estimate = as.numeric(as.character(R3_sa_m4_lm_sum$coefficients[,1])))
-
-R3_sa_m4_lm_forest_plot = left_join(R3_sa_m4_lm_forest_plot, R3_sa_m4_lm_confint, by = "predictor")
-
-R3_sa_m4_lm_forest_plot$group = rep("R3_sa_model_4", 37)
-
-```
-
-
-##Dataframe
-```{r}
-sa_forest_plot_data = rbind(sa_m2_forest_plot,R1_sa_m2_forest_plot, R2_sa_m2_forest_plot, R3_sa_m2_forest_plot, sa_m3_forest_plot,R1_sa_m3_forest_plot, R2_sa_m3_forest_plot, R3_sa_m3_forest_plot, sa_m3_lm_forest_plot,R1_sa_m3_lm_forest_plot, R2_sa_m3_lm_forest_plot, R3_sa_m3_lm_forest_plot, sa_m4_lm_forest_plot, R1_sa_m4_lm_forest_plot, R2_sa_m4_lm_forest_plot, R3_sa_m4_lm_forest_plot)
-
-sa_forest_plot_data$predictor = factor(sa_forest_plot_data$predictor,
-                                    levels = c("(Intercept)",                                               "contra_satis", "hc_dur","contra_satis:hc_dur",
+sa_forest_plot_data2$predictor = factor(sa_forest_plot_data2$predictor,
+                                    levels = c("Intercept",
+                                               "contra_satis",
                                                "sexual_satisfaction",
-                                               "sex_freq2-5 times", "sex_freq6-10 times",
-                                               "sex_freq11 or more times"),
-                                    labels = c("(Intercept)",                                               "Contraceptive Satisfaction", "HC-Dur","Contraceptive Satisfaction:HC-Dur",
-                                               "Sexual Satisfaction",
+                                  
+                                               "sex_freq2M5times", "sex_freq6M10times",
+                                               "sex_freq11ormoretimes"),
+                                    labels = c("(Intercept)",
+                                               
+                                               "Contraceptive Satisfaction",
+                                               
+                                               "Sexual Satisfaction",  
                                                "Sexual Frequency 2-5 times", "Sexual Frequency 6-10 times",
-                                               "Sexual Frequency 11 or more times"))
+                                               "Sexual Frequency 11 or more times")) 
 
-sa_forest_plot_data$group = factor(
-  sa_forest_plot_data$group,
-  levels = c(
-    "sa_multilevel_model_2","R1_sa_multilevel_model_2","R2_sa_multilevel_model_2","R3_sa_multilevel_model_2",
-    "sa_multilevel_model_3","R1_sa_multilevel_model_3","R2_sa_multilevel_model_3","R3_sa_multilevel_model_3",
-    "sa_model_3","R1_sa_model_3","R2_sa_model_3","R3_sa_model_3",
-    "sa_model_4","R1_sa_model_4","R2_sa_model_4","R3_sa_model_4"
+sa_forest_plot_data2$group = factor(
+  sa_forest_plot_data2$group,
+  levels = 
+    c(
+    "sa_model_2",
+    "R1_sa_model_2",
+    "R2_sa_model_2",
+    "R3_sa_model_2",
+    "sa_model_3",
+    "R1_sa_model_3",
+    "R2_sa_model_3",
+    "R3_sa_model_3",
+    "sa_model_4",
+    "R1_sa_model_4",
+    "R2_sa_model_4",
+    "R3_sa_model_4"
   ),
-  labels = c(
-    "sa_multilevel_model_2","R1_sa_multilevel_model_2","R2_sa_multilevel_model_2","R3_sa_multilevel_model_2",
-    "sa_multilevel_model_3","R1_sa_multilevel_model_3","R2_sa_multilevel_model_3","R3_sa_multilevel_model_3",
-    "sa_model_3","R1_sa_model_3","R2_sa_model_3","R3_sa_model_3",
-    "sa_model_4","R1_sa_model_4","R2_sa_model_4","R3_sa_model_4"
+  labels = 
+    c(
+    "sa_model_2",
+    "R1_sa_model_2",
+    "R2_sa_model_2",
+    "R3_sa_model_2",
+    "sa_model_3",
+    "R1_sa_model_3",
+    "R2_sa_model_3",
+    "R3_sa_model_3",
+    "sa_model_4",
+    "R1_sa_model_4",
+    "R2_sa_model_4",
+    "R3_sa_model_4"
   )
 )
 
 
-
 #give group for color:
-sa_forest_plot_data <- sa_forest_plot_data %>%
-  mutate(grouping = ifelse(group == "sa_multilevel_model_2" |group == "R1_sa_multilevel_model_2" | group == "R2_sa_multilevel_model_2" | group == "R3_sa_multilevel_model_2", "color_2",
-         ifelse(group == "sa_multilevel_model_3" |group == "R1_sa_multilevel_model_3" | group == "R2_sa_multilevel_model_3" | group == "R3_sa_multilevel_model_3" ,"color_3",
-                
-                ifelse(group == "sa_model_3" |group == "R1_sa_model_3" | group == "R2_sa_model_3" | group == "R3_sa_model_3", "color_4", ifelse(group == "sa_model_4" |group == "R1_sa_model_4" | group == "R2_sa_model_4" | group == "R3_sa_model_4", "color_5",NA))))) 
+sa_forest_plot_data2 <- sa_forest_plot_data2 %>%
+  mutate(grouping =   ifelse(group == "sa_model_2" |group == "R1_sa_model_2" | group == "R2_sa_model_2" | group == "R3_sa_model_2", "color_2",
+         ifelse(group == "sa_model_3" |group == "R1_sa_model_3" | group == "R2_sa_model_3" | group == "R3_sa_model_3" ,"color_3",
+                 ifelse(group == "sa_model_4" |group == "R1_sa_model_4" | group == "R2_sa_model_4" | group == "R3_sa_model_4", "color_4",NA)))) 
 
 
 #give group for shape:
-sa_forest_plot_data <- sa_forest_plot_data %>%
-  mutate(shape = ifelse(group ==  "sa_multilevel_model_1"|
-  group == "sa_multilevel_model_2" |
-    group == "sa_multilevel_model_3"|
-    group == "sa_model_3" |
+sa_forest_plot_data2 <- sa_forest_plot_data2 %>%
+  mutate(shape = ifelse(group == "sa_model_2" |
+    group == "sa_model_3"|
     group == "sa_model_4", "shape_1",
   ifelse(group %contains% "R1", "shape_2",
          ifelse(group %contains% "R2", "shape_3",
                 ifelse(group %contains% "R3", "shape_4", NA)))))
 
-
 ```
 
-##forest plot
+### Plot
 ```{r}
+
 #forest plot including robustness analyses
 
 #set colors
-group.color <- c("yellow","green", "blue", "red")
+group.color <- c("green", "blue", "red")
 
-
-forest_sa <- ggplot(
-  data = sa_forest_plot_data %>%
+forest_sa_ra <- ggplot(
+  data = sa_forest_plot_data2 %>%
     filter(predictor != "(Intercept)"),
   aes(
     x = predictor,
     y = estimate,
-    group = grouping,
-    fill = grouping,
-    color = grouping,
     group = forcats::fct_rev(grouping),
     fill = forcats::fct_rev(grouping),
     color = forcats::fct_rev(grouping),
@@ -1335,29 +1108,30 @@ forest_sa <- ggplot(
   geom_pointrange(aes(ymin = lower, ymax = upper),
                   alpha = 0.5,
                   position = position_dodge(width = 0.9)) +
-  scale_x_discrete(limits = rev, expand = c(0.002, 0)) + scale_y_continuous(limits = c(-2,2),
-                     breaks = seq(-2,2,1)) +
+  scale_x_discrete(limits = rev, expand = c(0.002, 0)) +
+  # scale_y_continuous(limits = c(-8,8),
+  #                    breaks = seq(-8,8,2)) +
   geom_hline(yintercept = 0) +
   coord_flip() +
   scale_fill_manual(
     name = "Model",
-    breaks = c("color_2", "color_3", "color_4", "color_5"),
-    labels = c(
-      "Multilevel Model 2",
-      "Multilevel Model 3",
-      "Simple Regression Model 3",
-      "Simple Regression Model 4"
+    breaks = c("color_2", "color_3", "color_4"),
+    labels = 
+      c(
+      "Model 2",
+      "Model 3",
+      "Model 4"
     ),
     values = group.color
   ) +
   scale_colour_manual(
     name = "Model",
-    breaks = c("color_2", "color_3", "color_4", "color_5"),
-    labels = c(
-      "Multilevel Model 2",
-      "Multilevel Model 3",
-      "Simple Regression Model 3",
-      "Simple Regression Model 4"
+    breaks = c("color_2", "color_3", "color_4"),
+    labels = 
+      c(
+      "Model 2",
+      "Model 3",
+      "Model 4"
     ),
     values = group.color
   ) +
@@ -1365,21 +1139,22 @@ forest_sa <- ggplot(
     name = "Analyses",
     values = c(21,22,24,25),
     labels = c(
-      "Normal Analyses",
+      "Main Analyses",
       "Robustness Analyses 1",
       "Robustness Analyses 2",
       "Robustness Analyses 3"
     )
   ) +
   labs(y = "Effect Size", x = "Predictor") +
-  
   apatheme
 
-forest_sa
+forest_sa_ra
 
-
-ggsave("forest_sa.pdf", forest_sa,  width = 23, height = 12, units = "cm", dpi = 300)
-ggsave("forest_sa.png", forest_sa,  width = 23, height = 12, units = "cm", dpi = 300)
+ggsave("forest_sa.pdf", forest_sa_ra, width = 23, height = 12, units = "cm", dpi = 300)
+ggsave("forest_sa.png", forest_sa_ra, width = 23, height = 12, units = "cm", dpi = 300)
 
 ```
+
+
+
 
