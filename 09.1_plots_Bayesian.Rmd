@@ -678,8 +678,8 @@ forest_ma_ra <- ggplot(
                   alpha = 0.5,
                   position = position_dodge(width = 0.9)) +
   scale_x_discrete(limits = rev, expand = c(0.002, 0)) +
-  # scale_y_continuous(limits = c(-8,8),
-  #                    breaks = seq(-8,8,2)) +
+  scale_y_continuous(limits = c(-8,8),
+                     breaks = seq(-8,8,2)) +
   geom_hline(yintercept = 0) +
   coord_flip() +
   scale_fill_manual(

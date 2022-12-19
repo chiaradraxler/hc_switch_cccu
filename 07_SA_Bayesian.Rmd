@@ -4,15 +4,7 @@ author: "Chiara Draxler"
 date: "16 11 2022"
 output: html_document
 ---
-
-# 1. Load Data
-```{r}
-
-load("cccu_SA.RData")
-```
-
-
-# 2. Load Packages
+# 1. Load Packages
 ```{r}
 library(brms)
 library(marginaleffects)
@@ -20,9 +12,15 @@ library(tidyverse)
 
 
 options(scipen = 999)
+
+set_priors <- c(prior(normal(0, 1), class = b),
+                prior(normal(0, 1), class = sd))
 ```
 
+# 2. Load Data
 ```{r}
+load("cccu_SA.RData")
+
 cccu_SA <- cccu_SA %>%
   arrange(CASEID)
 ```
@@ -38,6 +36,7 @@ DURATION and satisfaction!
 sa_m2 <- brm(switch ~ contra_satis * hc_dur + (1 | CASEID),
           family = bernoulli(),
           data = cccu_SA,
+          prior = set_priors,
           file = "models/sa_m2.Rds")
 
 summary(sa_m2, prob = .997)
@@ -49,6 +48,7 @@ summary(sa_m2, prob = .997)
 sa_m3 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq +(1 | CASEID),
           family = bernoulli(),
           data = cccu_SA,
+          prior = set_priors,
           file = "models/sa_m3.Rds")
 
 summary(sa_m3, prob = .997)
@@ -62,6 +62,7 @@ sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq + 
               rel_dur_factor + (1 | CASEID),
           family = bernoulli(),
           data = cccu_SA,
+          prior = set_priors,
           file = "models/sa_m4.Rds")
 
 summary(sa_m4, prob = .997)

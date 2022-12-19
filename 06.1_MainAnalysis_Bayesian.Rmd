@@ -5,13 +5,8 @@ date: "18 08 2022"
 output: html_document
 ---
 
-# 1. Load Data
-```{r}
-load("cccu_MA.RData")
-```
 
-
-# 2. Load Packages
+# 1. Load Packages
 ```{r}
 library(brms)
 library(marginaleffects)
@@ -19,13 +14,18 @@ library(tidyverse)
 
 
 options(scipen = 999)
+
+set_priors <- c(prior(normal(0, 1), class = b),
+                prior(normal(0, 1), class = sd))
 ```
 
+# 2. Load Data
 ```{r}
+load("cccu_MA.RData")
+
 cccu_MA <- cccu_MA %>%
   arrange(CASEID)
 ```
-
 
 # 3. Models
 
@@ -34,6 +34,7 @@ cccu_MA <- cccu_MA %>%
 m1 <- brm(switch ~ hc + (1 | CASEID),
           family = bernoulli(),
           data = cccu_MA,
+          prior = set_priors,
           file = "models/m1.Rds")
 
 summary(m1, prob = .997)
@@ -45,6 +46,7 @@ summary(m1, prob = .997)
 m2 <- brm(switch ~ hc * contra_satis + (1 | CASEID),
           family = bernoulli(),
           data = cccu_MA,
+          prior = set_priors,
           file = "models/m2.Rds")
 
 summary(m2, prob = .997)
@@ -58,6 +60,7 @@ m3 <-
     switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + (1 | CASEID),
     family = bernoulli(),
     data = cccu_MA,
+    prior = set_priors,
     file = "models/m3.Rds"
   )
 
@@ -68,6 +71,7 @@ m3_sexual_satisfaction <-
     switch ~  hc * sexual_satisfaction  + (1 | CASEID),
     family = bernoulli(),
     data = cccu_MA,
+    prior = set_priors,
     file = "models/m3_sexual_satisfaction.Rds"
   )
 
@@ -78,6 +82,7 @@ m3_sex_freq <-
     switch ~  hc * sex_freq  + (1 | CASEID),
     family = bernoulli(),
     data = cccu_MA,
+    prior = set_priors,
     file = "models/m3_sex_freq.Rds"
   )
 
@@ -99,6 +104,7 @@ m4 <-
       (1 | CASEID),
     family = bernoulli(),
     data = cccu_MA,
+    prior = set_priors,
     file = "models/m4.Rds"
   )
 
@@ -126,6 +132,7 @@ m2_hc_only <- brm(
   switch ~ contra_satis + (1 | CASEID),
   family = bernoulli(),
   data = cccu_MA %>% filter(hc == "hc"),
+  prior = set_priors,
   file = "models/m2_hc_only.Rds"
 )
 ame <- marginaleffects(m2_hc_only)
@@ -135,6 +142,7 @@ m2_nonhc_only <- brm(
   switch ~ contra_satis + (1 | CASEID),
   family = bernoulli(),
   data = cccu_MA %>% filter(hc == "non_hc"),
+  prior = set_priors,
   file = "models/m2_nonhc_only.Rds"
 )
 ame <- marginaleffects(m2_nonhc_only)
@@ -153,6 +161,7 @@ m3_hc_only <-
       (1 | CASEID),
     family = bernoulli(),
     data = cccu_MA %>% filter(hc == "hc"),
+  prior = set_priors,
   file = "models/m3_hc_only.Rds"
   )
 ame <- marginaleffects(m3_hc_only)
@@ -165,6 +174,7 @@ m3_nonhc_only <-
       (1 | CASEID),
     family = bernoulli(),
     data = cccu_MA %>% filter(hc == "non_hc"),
+  prior = set_priors,
   file = "models/m3_nonhc_only.Rds"
   )
 ame <- marginaleffects(m3_nonhc_only)
@@ -187,6 +197,7 @@ m4_hc_only <-
       rel_dur_factor + (1 | CASEID),
     family = bernoulli(),
     data = cccu_MA %>% filter(hc == "hc"),
+  prior = set_priors,
   file = "models/m4_hc_only.Rds"
   )
 
@@ -203,6 +214,7 @@ m4_nonhc_only <-
       rel_dur_factor + (1 | CASEID),
     family = bernoulli(),
     data = cccu_MA %>% filter(hc == "non_hc"),
+  prior = set_priors,
   file = "models/m4_nonhc_only.Rds"
   )
 
