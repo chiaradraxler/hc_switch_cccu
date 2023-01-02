@@ -75,21 +75,21 @@ summary(sa_m4, prob = .997)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(sa_m2)
-summary(ame)
+summary(ame, conf_level = .997)
 ```
 
 ## m3
 ```{r}
 #average marginal effect
 ame <- marginaleffects(sa_m3)
-summary(ame)
+summary(ame, conf_level = .997)
 ```
 
 ## m4
 ```{r}
 #average marginal effect
 ame <- marginaleffects(sa_m4)
-summary(ame)
+summary(ame, conf_level = .997)
 
 ```
 

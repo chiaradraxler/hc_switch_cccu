@@ -341,7 +341,7 @@ summary(R3_ma_4, prob = .997)
 
 #average marginal effect
 ame <- marginaleffects(R1_ma_1)
-summary(ame)
+summary(ame, conf_level = .997)
 
 
 ```
@@ -350,7 +350,7 @@ summary(ame)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R2_ma_1)
-summary(ame)
+summary(ame, conf_level = .997)
 
 
 ```
@@ -358,7 +358,7 @@ summary(ame)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R3_ma_1)
-summary(ame)
+summary(ame, conf_level = .997)
 
 
 ```
@@ -367,7 +367,7 @@ summary(ame)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R1_ma_2)
-summary(ame)
+summary(ame, conf_level = .997)
 
 
 R1_m2_hc_only  <- brm(switch ~ contra_satis + (1 | CASEID),
@@ -377,7 +377,7 @@ R1_m2_hc_only  <- brm(switch ~ contra_satis + (1 | CASEID),
           file = "models/R1_m2_hc_only.Rds")
 
 ame <- marginaleffects(R1_m2_hc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 
 R1_m2_nonhc_only <- brm(switch ~ contra_satis + (1| CASEID),
                     family = bernoulli(),
@@ -386,13 +386,13 @@ R1_m2_nonhc_only <- brm(switch ~ contra_satis + (1| CASEID),
                     file = "models/R1_m2_nonhc_only.Rds")
 
 ame <- marginaleffects(R1_m2_nonhc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 ```
 ###R2
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R2_ma_2)
-summary(ame)
+summary(ame, conf_level = .997)
 
 R2_m2_hc_only  <- brm(switch ~ contra_satis + (1 | CASEID),
           family = bernoulli(),
@@ -400,7 +400,7 @@ R2_m2_hc_only  <- brm(switch ~ contra_satis + (1 | CASEID),
           prior = set_priors,
           file = "models/R2_m2_hc_only.Rds")
 ame <- marginaleffects(R2_m2_hc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 
 R2_m2_nonhc_only <- brm(switch ~ contra_satis + (1| CASEID),
                     family = bernoulli(),
@@ -408,13 +408,13 @@ R2_m2_nonhc_only <- brm(switch ~ contra_satis + (1| CASEID),
                     prior = set_priors,
                     file = "models/R2_m2_nonhc_only.Rds")
 ame <- marginaleffects(R2_m2_nonhc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 ```
 ###R3
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R3_ma_2)
-summary(ame)
+summary(ame, conf_level = .997)
 
 
 R3_m2_hc_only  <- brm(switch ~ contra_satis + (1 | CASEID),
@@ -423,7 +423,7 @@ R3_m2_hc_only  <- brm(switch ~ contra_satis + (1 | CASEID),
           prior = set_priors,
           file = "models/R3_m2_hc_only.Rds")
 ame <- marginaleffects(R3_m2_hc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 
 R3_m2_nonhc_only <- brm(switch ~ contra_satis + (1| CASEID),
                     family = bernoulli(),
@@ -431,7 +431,7 @@ R3_m2_nonhc_only <- brm(switch ~ contra_satis + (1| CASEID),
                     prior = set_priors,
                     file = "models/R3_m2_nonhc_only.Rds")
 ame <- marginaleffects(R3_m2_nonhc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 ```
 
 ##Model 3
@@ -440,7 +440,7 @@ summary(ame)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R1_ma_3)
-summary(ame)
+summary(ame, conf_level = .997)
 
 
 R1_m3_hc_only  <- brm(switch ~ contra_satis +  sexual_satisfaction + sex_freq + (1 | CASEID),
@@ -449,7 +449,7 @@ R1_m3_hc_only  <- brm(switch ~ contra_satis +  sexual_satisfaction + sex_freq + 
           prior = set_priors,
           file = "models/R1_m3_hc_only.Rds")
 ame <- marginaleffects(R1_m3_hc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 
 R1_m3_nonhc_only <- brm( switch ~ contra_satis +  sexual_satisfaction + sex_freq +
                            (1| CASEID),
@@ -458,7 +458,7 @@ R1_m3_nonhc_only <- brm( switch ~ contra_satis +  sexual_satisfaction + sex_freq
                     prior = set_priors,
                     file = "models/R1_m3_nonhc_only.Rds")
 ame <- marginaleffects(R1_m3_nonhc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 ```
 
 
@@ -467,7 +467,7 @@ summary(ame)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R2_ma_3)
-summary(ame)
+summary(ame, conf_level = .997)
 
 
 R2_m3_hc_only  <- brm( switch ~ contra_satis +  sexual_satisfaction + sex_freq +  (1 | CASEID),
@@ -476,7 +476,7 @@ R2_m3_hc_only  <- brm( switch ~ contra_satis +  sexual_satisfaction + sex_freq +
           prior = set_priors,
           file = "models/R2_m3_hc_only.Rds")
 ame <- marginaleffects(R2_m3_hc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 
 R2_m3_nonhc_only <- brm(switch ~ contra_satis +  sexual_satisfaction + sex_freq +  (1| CASEID),
                     family = bernoulli(),
@@ -484,14 +484,14 @@ R2_m3_nonhc_only <- brm(switch ~ contra_satis +  sexual_satisfaction + sex_freq 
                     prior = set_priors,
                     file = "models/R2_m3_nonhc_only.Rds")
 ame <- marginaleffects(R2_m3_nonhc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 ```
 
 ###R3
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R3_ma_3)
-summary(ame)
+summary(ame, conf_level = .997)
 
 R3_m3_hc_only  <- brm( switch ~ contra_satis +  sexual_satisfaction + sex_freq + (1 | CASEID),
           family = bernoulli(),
@@ -499,7 +499,7 @@ R3_m3_hc_only  <- brm( switch ~ contra_satis +  sexual_satisfaction + sex_freq +
           prior = set_priors,
           file = "models/R3_m3_hc_only.Rds")
 ame <- marginaleffects(R3_m3_hc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 
 R3_m3_nonhc_only <- brm(switch ~ contra_satis +  sexual_satisfaction + sex_freq +  (1| CASEID),
                     family = bernoulli(),
@@ -507,14 +507,14 @@ R3_m3_nonhc_only <- brm(switch ~ contra_satis +  sexual_satisfaction + sex_freq 
                     prior = set_priors,
                     file = "models/R3_m3_nonhc_only.Rds")
 ame <- marginaleffects(R3_m3_nonhc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 ```
 ##Model 4
 ###R1
 ```{r}
 
 ame <- marginaleffects(R1_ma_4)
-summary(ame)
+summary(ame, conf_level = .997)
 
 R1_m4_hc_only <-
   brm(
@@ -535,7 +535,7 @@ R1_m4_hc_only <-
 
 
 ame <- marginaleffects(R1_m4_hc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 
 
 R1_m4_nonhc_only <-
@@ -557,7 +557,7 @@ R1_m4_nonhc_only <-
 
 
 ame <- marginaleffects(R1_m4_nonhc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 
 
 ```
@@ -566,7 +566,7 @@ summary(ame)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R2_ma_4)
-summary(ame)
+summary(ame, conf_level = .997)
 
 R2_m4_hc_only <-
   brm(
@@ -587,7 +587,7 @@ R2_m4_hc_only <-
 
 
 ame <- marginaleffects(R2_m4_hc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 
 
 R2_m4_nonhc_only <-
@@ -609,7 +609,7 @@ R2_m4_nonhc_only <-
 
 
 ame <- marginaleffects(R2_m4_nonhc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 
 
 ```
@@ -618,7 +618,7 @@ summary(ame)
 ```{r}
 
 ame <- marginaleffects(R3_ma_4)
-summary(ame)
+summary(ame, conf_level = .997)
 
 R3_m4_hc_only <-
   brm(
@@ -639,7 +639,7 @@ R3_m4_hc_only <-
 
 
 ame <- marginaleffects(R3_m4_hc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 
 
 R3_m4_nonhc_only <-
@@ -661,7 +661,7 @@ R3_m4_nonhc_only <-
 
 
 ame <- marginaleffects(R3_m4_nonhc_only)
-summary(ame)
+summary(ame, conf_level = .997)
 
 ```
 
@@ -787,7 +787,7 @@ summary(R3_sa_m4, prob = .997)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R1_sa_m2)
-summary(ame)
+summary(ame, conf_level = .997)
 ```
 
 
@@ -795,7 +795,7 @@ summary(ame)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R2_sa_m2)
-summary(ame)
+summary(ame, conf_level = .997)
 ```
 
 
@@ -803,7 +803,7 @@ summary(ame)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R3_sa_m2)
-summary(ame)
+summary(ame, conf_level = .997)
 ```
 
 ##Model 3
@@ -811,7 +811,7 @@ summary(ame)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R1_sa_m3)
-summary(ame)
+summary(ame, conf_level = .997)
 ```
 
 
@@ -819,14 +819,14 @@ summary(ame)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R2_sa_m3)
-summary(ame)
+summary(ame, conf_level = .997)
 ```
 
 ###R3
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R3_sa_m3)
-summary(ame)
+summary(ame, conf_level = .997)
 ```
 
 ##Model 4
@@ -834,7 +834,7 @@ summary(ame)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R1_sa_m4)
-summary(ame)
+summary(ame, conf_level = .997)
 
 ```
 
@@ -843,7 +843,7 @@ summary(ame)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R2_sa_m4)
-summary(ame)
+summary(ame, conf_level = .997)
 
 ```
 
@@ -852,7 +852,7 @@ summary(ame)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R3_sa_m4)
-summary(ame)
+summary(ame, conf_level = .997)
 
 ```
 

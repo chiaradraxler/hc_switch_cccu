@@ -126,7 +126,7 @@ summary(ame, conf_level = .997)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(m2)
-summary(ame)
+summary(ame, conf_level = .997)
 
 m2_hc_only <- brm(
   switch ~ contra_satis + (1 | CASEID),
