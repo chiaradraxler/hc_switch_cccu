@@ -64,7 +64,7 @@ cccu_R3_s <- cccu_R3_s %>%
 
 ## 3.1 Model 1: basic model
 
-###R1
+### R1
 ```{r}
 R1_ma_1 <- brm(switch ~ hc + (1 | CASEID),
           family = bernoulli(),
@@ -76,7 +76,7 @@ summary(R1_ma_1, prob = .997)
 
 ```
 
-###R2
+### R2
 ```{r}
 R2_ma_1 <- brm(switch ~ hc + (1 | CASEID),
           family = bernoulli(),
@@ -89,7 +89,7 @@ summary(R2_ma_1, prob = .997)
 ```
 
 
-###R3
+### R3
 ```{r}
 R3_ma_1 <- brm(switch ~ hc + (1 | CASEID),
           family = bernoulli(),
@@ -104,7 +104,7 @@ summary(R3_ma_1, prob = .997)
 
 ## 3.2 Model 2: including directly with contraceptive method associated predictors
 
-###R1
+### R1
 ```{r}
 R1_ma_2 <- brm(switch ~ hc * contra_satis + (1 | CASEID),
           family = bernoulli(),
@@ -115,7 +115,8 @@ R1_ma_2 <- brm(switch ~ hc * contra_satis + (1 | CASEID),
 summary(R1_ma_2, prob = .997)
 
 ```
-###R2
+
+### R2
 ```{r}
 R2_ma_2 <- brm(switch ~ hc * contra_satis + (1 | CASEID),
           family = bernoulli(),
@@ -128,7 +129,7 @@ summary(R2_ma_2, prob = .997)
 ```
 
 
-###R3
+### R3
 ```{r}
 R3_ma_2 <- brm(switch ~ hc * contra_satis + (1 | CASEID),
           family = bernoulli(),
@@ -143,7 +144,7 @@ summary(R3_ma_2, prob = .997)
 
 ## 3.3 Model 3: including not directly with contraceptive method associated predictors
 
-###R1
+### R1
 ```{r}
 R1_ma_3 <-
   brm(
@@ -181,7 +182,7 @@ R1_ma_3_sex_freq <-
 summary(R1_ma_3_sex_freq, prob = .997)
 ```
 
-###R2
+### R2
 ```{r}
 R2_ma_3 <-
   brm(
@@ -219,7 +220,7 @@ R2_ma_3_sex_freq <-
 summary(R2_ma_3_sex_freq, prob = .997)
 ```
 
-###R3
+### R3
 ```{r}
 R3_ma_3 <-
   brm(
@@ -262,7 +263,7 @@ summary(R3_ma_3_sex_freq, prob = .997)
 
 ## 3.4 Model 4: Controlling for observed selection effects
 
-###R1
+### R1
 ```{r}
 R1_ma_4 <-
   brm(
@@ -285,7 +286,7 @@ summary(R1_ma_4, prob = .997)
 
 ```
 
-###R2
+### R2
 ```{r}
 R2_ma_4 <-
   brm(
@@ -309,7 +310,7 @@ summary(R2_ma_4, prob = .997)
 ```
 
 
-###R3
+### R3
 ```{r}
 R3_ma_4 <-
   brm(
@@ -333,10 +334,10 @@ summary(R3_ma_4, prob = .997)
 ```
 
 
-#4. Average marginal effects for models in main analyses for robustness analyses
+# 4. Average marginal effects for models in main analyses for robustness analyses
 
-##Model1
-###R1
+## Model1
+### R1
 ```{r}
 
 #average marginal effect
@@ -346,7 +347,7 @@ summary(ame, conf_level = .997)
 
 ```
 
-###R2
+### R2
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R2_ma_1)
@@ -354,7 +355,8 @@ summary(ame, conf_level = .997)
 
 
 ```
-###R3
+
+### R3
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R3_ma_1)
@@ -362,8 +364,9 @@ summary(ame, conf_level = .997)
 
 
 ```
-##Model 2
-###R1
+
+## Model 2
+### R1
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R1_ma_2)
@@ -388,7 +391,8 @@ R1_m2_nonhc_only <- brm(switch ~ contra_satis + (1| CASEID),
 ame <- marginaleffects(R1_m2_nonhc_only)
 summary(ame, conf_level = .997)
 ```
-###R2
+
+### R2
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R2_ma_2)
@@ -410,7 +414,8 @@ R2_m2_nonhc_only <- brm(switch ~ contra_satis + (1| CASEID),
 ame <- marginaleffects(R2_m2_nonhc_only)
 summary(ame, conf_level = .997)
 ```
-###R3
+
+### R3
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R3_ma_2)
@@ -434,8 +439,9 @@ ame <- marginaleffects(R3_m2_nonhc_only)
 summary(ame, conf_level = .997)
 ```
 
-##Model 3
-###R1
+## Model 3
+
+### R1
 
 ```{r}
 #average marginal effect
@@ -463,7 +469,7 @@ summary(ame, conf_level = .997)
 
 
 
-###R2
+### R2
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R2_ma_3)
@@ -487,7 +493,7 @@ ame <- marginaleffects(R2_m3_nonhc_only)
 summary(ame, conf_level = .997)
 ```
 
-###R3
+### R3
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R3_ma_3)
@@ -509,8 +515,9 @@ R3_m3_nonhc_only <- brm(switch ~ contra_satis +  sexual_satisfaction + sex_freq 
 ame <- marginaleffects(R3_m3_nonhc_only)
 summary(ame, conf_level = .997)
 ```
-##Model 4
-###R1
+
+## Model 4
+### R1
 ```{r}
 
 ame <- marginaleffects(R1_ma_4)
@@ -562,7 +569,7 @@ summary(ame, conf_level = .997)
 
 ```
 
-###R2
+### R2
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R2_ma_4)
@@ -614,7 +621,7 @@ summary(ame, conf_level = .997)
 
 ```
 
-###R3
+### R3
 ```{r}
 
 ame <- marginaleffects(R3_ma_4)
@@ -666,10 +673,10 @@ summary(ame, conf_level = .997)
 ```
 
 
-#5. Models of Sub Analyses in robustness analyses
+# 5. Models of Sub Analyses in robustness analyses
 
-##5.1 Model 2
-###R1
+## 5.1 Model 2
+### R1
 ```{r}
 R1_sa_m2 <- brm(switch ~ contra_satis * hc_dur + (1 | CASEID),
           family = bernoulli(),
@@ -680,7 +687,7 @@ R1_sa_m2 <- brm(switch ~ contra_satis * hc_dur + (1 | CASEID),
 summary(R1_sa_m2, prob = .997)
 ```
 
-###R2
+### R2
 ```{r}
 R2_sa_m2 <- brm(switch ~ contra_satis * hc_dur + (1 | CASEID),
           family = bernoulli(),
@@ -691,7 +698,7 @@ R2_sa_m2 <- brm(switch ~ contra_satis * hc_dur + (1 | CASEID),
 summary(R2_sa_m2, prob = .997)
 ```
 
-###R3
+### R3
 ```{r}
 R3_sa_m2 <- brm(switch ~ contra_satis * hc_dur + (1 | CASEID),
           family = bernoulli(),
@@ -703,8 +710,8 @@ summary(R3_sa_m2, prob = .997)
 ```
 
 
-##5.2 Model 3
-###R1
+## 5.2 Model 3
+### R1
 ```{r}
 R1_sa_m3 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq +(1 | CASEID),
           family = bernoulli(),
@@ -715,7 +722,7 @@ R1_sa_m3 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
 summary(R1_sa_m3, prob = .997)
 ```
 
-###R2
+### R2
 ```{r}
 R2_sa_m3 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq +(1 | CASEID),
           family = bernoulli(),
@@ -726,7 +733,7 @@ R2_sa_m3 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
 summary(R2_sa_m3, prob = .997)
 ```
 
-###R3
+### R3
 ```{r}
 R3_sa_m3 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq +(1 | CASEID),
           family = bernoulli(),
@@ -738,8 +745,8 @@ summary(R3_sa_m3, prob = .997)
 ```
 
 
-##5.3 Model 4
-###R1
+## 5.3 Model 4
+### R1
 ```{r}
 
 R1_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
@@ -752,7 +759,8 @@ R1_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
 
 summary(R1_sa_m4, prob = .997)
 ```
-###R2
+
+### R2
 ```{r}
 
 R2_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
@@ -765,7 +773,8 @@ R2_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
 
 summary(R2_sa_m4, prob = .997)
 ```
-###R3
+
+### R3
 ```{r}
 
 R3_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
@@ -779,11 +788,11 @@ R3_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
 summary(R3_sa_m4, prob = .997)
 ```
 
-#6. Average marginal effects for models of sub analyses in robustnessanalyses
+# 6. Average marginal effects for models of sub analyses in robustnessanalyses
 
-##Model 2
+## Model 2
 
-###R1
+### R1
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R1_sa_m2)
@@ -791,7 +800,7 @@ summary(ame, conf_level = .997)
 ```
 
 
-###R2
+### R2
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R2_sa_m2)
@@ -799,15 +808,15 @@ summary(ame, conf_level = .997)
 ```
 
 
-###R3
+### R3
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R3_sa_m2)
 summary(ame, conf_level = .997)
 ```
 
-##Model 3
-###R1
+## Model 3
+### R1
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R1_sa_m3)
@@ -815,22 +824,22 @@ summary(ame, conf_level = .997)
 ```
 
 
-###R2
+### R2
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R2_sa_m3)
 summary(ame, conf_level = .997)
 ```
 
-###R3
+### R3
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R3_sa_m3)
 summary(ame, conf_level = .997)
 ```
 
-##Model 4
-###R1
+## Model 4
+### R1
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R1_sa_m4)
@@ -839,7 +848,7 @@ summary(ame, conf_level = .997)
 ```
 
 
-###R2
+### R2
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R2_sa_m4)
@@ -848,7 +857,7 @@ summary(ame, conf_level = .997)
 ```
 
 
-###R3
+### R3
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R3_sa_m4)
