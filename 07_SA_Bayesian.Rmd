@@ -37,7 +37,11 @@ sa_m2 <- brm(switch ~ contra_satis * hc_dur + (1 | CASEID),
           family = bernoulli(),
           data = cccu_SA,
           prior = set_priors,
-          file = "models/sa_m2.Rds")
+          file = "models/sa_m2.Rds",
+          warmup = 1000,
+          iter = 4000,
+          control = list(adapt_delta = 0.99)
+          )
 
 summary(sa_m2, prob = .997)
 ```
@@ -49,7 +53,10 @@ sa_m3 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq +(
           family = bernoulli(),
           data = cccu_SA,
           prior = set_priors,
-          file = "models/sa_m3.Rds")
+          file = "models/sa_m3.Rds",
+          warmup = 1000,
+          iter = 4000,
+          control = list(adapt_delta = 0.99))
 
 summary(sa_m3, prob = .997)
 ```
@@ -63,7 +70,10 @@ sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq + 
           family = bernoulli(),
           data = cccu_SA,
           prior = set_priors,
-          file = "models/sa_m4.Rds")
+          file = "models/sa_m4.Rds",
+          warmup = 1000,
+          iter = 4000,
+          control = list(adapt_delta = 0.99))
 
 summary(sa_m4, prob = .997)
 ```

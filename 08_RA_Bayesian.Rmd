@@ -682,7 +682,10 @@ R1_sa_m2 <- brm(switch ~ contra_satis * hc_dur + (1 | CASEID),
           family = bernoulli(),
           data = cccu_R1_s,
           prior = set_priors,
-          file = "models/R1_sa_m2.Rds")
+          file = "models/R1_sa_m2.Rds",
+          warmup = 1000,
+          iter = 4000,
+          control = list(adapt_delta = 0.99))
 
 summary(R1_sa_m2, prob = .997)
 ```
@@ -693,7 +696,10 @@ R2_sa_m2 <- brm(switch ~ contra_satis * hc_dur + (1 | CASEID),
           family = bernoulli(),
           data = cccu_R2_s,
           prior = set_priors,
-          file = "models/R2_sa_m2.Rds")
+          file = "models/R2_sa_m2.Rds",
+          warmup = 1000,
+          iter = 4000,
+          control = list(adapt_delta = 0.99))
 
 summary(R2_sa_m2, prob = .997)
 ```
@@ -704,7 +710,10 @@ R3_sa_m2 <- brm(switch ~ contra_satis * hc_dur + (1 | CASEID),
           family = bernoulli(),
           data = cccu_R3_s,
           prior = set_priors,
-          file = "models/R3_sa_m2.Rds")
+          file = "models/R3_sa_m2.Rds",
+          warmup = 1000,
+          iter = 4000,
+          control = list(adapt_delta = 0.99))
 
 summary(R3_sa_m2, prob = .997)
 ```
@@ -717,7 +726,10 @@ R1_sa_m3 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
           family = bernoulli(),
           data = cccu_R1_s,
           prior = set_priors,
-          file = "models/R1_sa_m3.Rds")
+          file = "models/R1_sa_m3.Rds",
+          warmup = 1000,
+          iter = 4000,
+          control = list(adapt_delta = 0.99))
 
 summary(R1_sa_m3, prob = .997)
 ```
@@ -728,7 +740,10 @@ R2_sa_m3 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
           family = bernoulli(),
           data = cccu_R2_s,
           prior = set_priors,
-          file = "models/R2_sa_m3.Rds")
+          file = "models/R2_sa_m3.Rds",
+          warmup = 1000,
+          iter = 4000,
+          control = list(adapt_delta = 0.99))
 
 summary(R2_sa_m3, prob = .997)
 ```
@@ -739,7 +754,10 @@ R3_sa_m3 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
           family = bernoulli(),
           data = cccu_R3_s,
           prior = set_priors,
-          file = "models/R3_sa_m3.Rds")
+          file = "models/R3_sa_m3.Rds",
+          warmup = 1000,
+          iter = 4000,
+          control = list(adapt_delta = 0.99))
 
 summary(R3_sa_m3, prob = .997)
 ```
@@ -755,7 +773,10 @@ R1_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
           family = bernoulli(),
           data = cccu_R1_s,
           prior = set_priors,
-          file = "models/R1_sa_m4.Rds")
+          file = "models/R1_sa_m4.Rds",
+          warmup = 1000,
+          iter = 4000,
+          control = list(adapt_delta = 0.99))
 
 summary(R1_sa_m4, prob = .997)
 ```
@@ -769,7 +790,10 @@ R2_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
           family = bernoulli(),
           data = cccu_R2_s,
           prior = set_priors,
-          file = "models/R2_sa_m4.Rds")
+          file = "models/R2_sa_m4.Rds",
+          warmup = 1000,
+          iter = 4000,
+          control = list(adapt_delta = 0.99))
 
 summary(R2_sa_m4, prob = .997)
 ```
@@ -783,7 +807,10 @@ R3_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
           family = bernoulli(),
           data = cccu_R3_s,
           prior = set_priors,
-          file = "models/R3_sa_m4.Rds")
+          file = "models/R3_sa_m4.Rds",
+          warmup = 1000,
+          iter = 4000,
+          control = list(adapt_delta = 0.99))
 
 summary(R3_sa_m4, prob = .997)
 ```
