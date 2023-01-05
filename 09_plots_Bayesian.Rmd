@@ -5,7 +5,7 @@ date: "24 1 2022"
 output: html_document
 ---
 
-##1. Load Data
+## 1. Load Data
 ```{r}
 # load("cccu_MA.RData")
 # load("cccu_SA.RData")
@@ -20,7 +20,7 @@ output: html_document
 ```
 
 
-##2. Load Packages
+## 2. Load Packages
 ```{r}
 # library(effects)
 # library(psych)
@@ -194,14 +194,14 @@ ggsave("hc_dur.png", hc_dur)
 for models m1, m2, m3, m4
 
 ### Models
-####m1
+#### m1
 ```{r}
 m1 <- brm(file = "models/m1.Rds")
 
 m1_sum = summary(m1, prob = .997)
 ```
 
-####m1 in robustness analyses
+#### m1 in robustness analyses
 ```{r}
 ####1 Robustness analyses : m1 
 R1_ma_1 <- brm(file = "models/R1_ma_1.Rds")
@@ -220,13 +220,13 @@ R3_m1_sum = summary(R3_ma_1, prob = .997)
 ```
 
 
-####m2
+#### m2
 ```{r}
 m2 <- brm(file = "models/m2.Rds")
 m2_sum = summary(m2, prob = .997)
 ```
 
-####m2 in robustness analyses 
+#### m2 in robustness analyses 
 ```{r}
 #r1
 R1_ma_2 <- brm(file = "models/R1_ma_2.Rds")
@@ -243,13 +243,13 @@ R3_ma_2 <- brm(file = "models/R3_ma_2.Rds")
 R3_m2_sum = summary(R3_ma_2, prob = .997)
 ```
 
-####m3
+#### m3
 ```{r}
 m3 <- brm(file = "models/m3.Rds")
 m3_sum = summary(m3, prob = .997)
 ```
 
-####m3 in robustness analyses 
+#### m3 in robustness analyses 
 ```{r}
 #r1
 R1_ma_3 <- brm(file = "models/R1_ma_3.Rds")
@@ -268,13 +268,13 @@ R3_m3_sum = summary(R3_ma_3, prob = .997)
 
 
 
-####m4
+#### m4
 ```{r}
 m4 = brm(file = "models/m4.Rds")
 m4_sum <- summary(m4, prob = .997)
 ```
 
-####m4 in robustness analysis 
+#### m4 in robustness analysis 
 ```{r}
 #r1
 R1_ma_4 <- brm(file = "models/R1_ma_4.Rds")
@@ -294,7 +294,7 @@ R3_m4_sum = summary(R3_ma_4, prob = .997)
 
 
 ### Effects and CIs
-####m1
+#### m1
 ```{r}
 m1_forest_plot = m1_sum$fixed %>%
   data.frame() %>%
@@ -309,7 +309,7 @@ m1_forest_plot = m1_sum$fixed %>%
 rownames(m1_forest_plot) = c()
 ```
 
-####m1 in Robustnessanalyses
+#### m1 in Robustnessanalyses
 ```{r}
 #R1
 R1_m1_forest_plot = R1_m1_sum$fixed %>%
@@ -354,7 +354,7 @@ rownames(R3_m1_forest_plot) = c()
 ```
 
 
-####m2
+#### m2
 ```{r}
 m2_forest_plot = m2_sum$fixed %>%
   data.frame() %>%
@@ -370,7 +370,7 @@ rownames(m2_forest_plot) = c()
 ```
 
 
-####m2 in robustness analyses
+#### m2 in robustness analyses
 ```{r}
 #R1
 R1_m2_forest_plot = R1_m2_sum$fixed %>%
@@ -416,7 +416,7 @@ rownames(R3_m2_forest_plot) = c()
 
 
 
-####m3
+#### m3
 ```{r}
 m3_forest_plot = m3_sum$fixed %>%
   data.frame() %>%
@@ -431,7 +431,7 @@ m3_forest_plot = m3_sum$fixed %>%
 rownames(m3_forest_plot) = c()
 ```
 
-####m3 in Robustnessanalyses
+#### m3 in Robustnessanalyses
 ```{r}
 #R1
 R1_m3_forest_plot = R1_m3_sum$fixed %>%
@@ -480,7 +480,7 @@ rownames(R3_m3_forest_plot) = c()
 
 
 
-####m3
+#### m4
 ```{r}
 m4_forest_plot = m4_sum$fixed %>%
   data.frame() %>%
@@ -495,7 +495,7 @@ m4_forest_plot = m4_sum$fixed %>%
 rownames(m4_forest_plot) = c()
 ```
 
-####m3 in Robustnessanalyses
+#### m3 in Robustnessanalyses
 ```{r}
 #R1
 R1_m4_forest_plot = R1_m4_sum$fixed %>%
@@ -653,7 +653,6 @@ forest_plot_data2 <- forest_plot_data2 %>%
 
 ### Plot
 ```{r}
-
 #forest plot including robustness analyses
 
 #set colors
@@ -678,8 +677,8 @@ forest_ma_ra <- ggplot(
                   alpha = 0.5,
                   position = position_dodge(width = 0.9)) +
   scale_x_discrete(limits = rev, expand = c(0.002, 0)) +
-  scale_y_continuous(limits = c(-8,8),
-                     breaks = seq(-8,8,2)) +
+  #scale_y_continuous(limits = c(-8,8),
+  #                   breaks = seq(-8,8,2)) +
   geom_hline(yintercept = 0) +
   coord_flip() +
   scale_fill_manual(
@@ -733,14 +732,14 @@ ggsave("forest_ma.png", forest_ma_ra, width = 23, height = 12, units = "cm", dpi
 #5. Forest Plot Sub Analyses
 
 ### Model
-####m2
+#### m2
 ```{r}
 sa_m2 <- brm(file = "models/sa_m2.Rds")
 
 sa_m2_sum<- summary(sa_m2, prob = .997)
 ```
 
-####m2 in robustness analyses 
+#### m2 in robustness analyses 
 ```{r}
 R1_sa_m2 <- brm(file = "models/R1_sa_m2.Rds")
 
@@ -758,7 +757,7 @@ R3_sa_m2_sum<- summary(R3_sa_m2, prob = .997)
 
 
 
-####m3
+#### m3
 ```{r}
 sa_m3 <- brm(file = "models/sa_m3.Rds")
 
@@ -767,7 +766,7 @@ sa_m3_sum<- summary(sa_m3, prob = .997)
 ```
 
 
-####m3 in robustness analyses 
+#### m3 in robustness analyses 
 ```{r}
 R1_sa_m3 <- brm(file = "models/R1_sa_m3.Rds")
 
@@ -784,14 +783,14 @@ R3_sa_m3_sum<- summary(R3_sa_m3, prob = .997)
 
 
 
-####m4
+#### m4
 ```{r}
 sa_m4 <- brm(file = "models/sa_m4.Rds")
 
 sa_m4_sum <- summary(sa_m4, prob = .997)
 ```
 
-####m4 in robustnessanalyses
+#### m4 in robustnessanalyses
 ```{r}
 R1_sa_m4 <- brm(file = "models/R1_sa_m4.Rds")
 
@@ -811,7 +810,7 @@ R3_sa_m4_sum<- summary(R3_sa_m4, prob = .997)
 
 ### Effects and CIs
 
-####m2
+#### m2
 ```{r}
 sa_m2_forest_plot = sa_m2_sum$fixed %>%
   data.frame() %>%
@@ -827,7 +826,7 @@ rownames(sa_m2_forest_plot) = c()
 ```
 
 
-####m2 in robustness analyses
+#### m2 in robustness analyses
 ```{r}
 #R1
 R1_sa_m2_forest_plot = R1_sa_m2_sum$fixed %>%
@@ -873,7 +872,7 @@ rownames(R3_sa_m2_forest_plot) = c()
 
 
 
-####m3
+#### m3
 ```{r}
 sa_m3_forest_plot = sa_m3_sum$fixed %>%
   data.frame() %>%
@@ -888,7 +887,7 @@ sa_m3_forest_plot = sa_m3_sum$fixed %>%
 rownames(sa_m3_forest_plot) = c()
 ```
 
-####m3 in Robustnessanalyses
+#### m3 in Robustnessanalyses
 ```{r}
 #R1
 R1_sa_m3_forest_plot = R1_sa_m3_sum$fixed %>%
@@ -937,7 +936,7 @@ rownames(R3_sa_m3_forest_plot) = c()
 
 
 
-####m3
+#### m3
 ```{r}
 sa_m4_forest_plot = sa_m4_sum$fixed %>%
   data.frame() %>%
@@ -952,7 +951,7 @@ sa_m4_forest_plot = sa_m4_sum$fixed %>%
 rownames(sa_m4_forest_plot) = c()
 ```
 
-####m3 in Robustnessanalyses
+#### m3 in Robustnessanalyses
 ```{r}
 #R1
 R1_sa_m4_forest_plot = R1_sa_m4_sum$fixed %>%
