@@ -222,3 +222,40 @@ ame <- marginaleffects(m4_nonhc_only)
 summary(ame, conf_level = .997)
 ```
 
+#4. Senstivity analysis after m4: controlling for unobserved selection effects
+```{r}
+#repeat models first
+
+summary(m3, prob = .997)
+
+summary(m4, prob = .997)
+
+##compute OR and CI first
+
+#model 3 to compare e-value for unobserved / observed confounders
+exp(m3$coefficients)
+exp(confint(m3, method = "Wald", level = .997))
+
+#model 4
+exp(m4$coefficients)
+exp(confint(m4, parm = "contra_satis", method = "Wald", level = .997))
+exp(confint(m4, parm = "hcnon_hc:contra_satis", method = "Wald", level = .997))
+
+exp(confint(m4, parm = "hcnon_hc", method = "Wald", level = .997))
+#compute e-values
+
+#model 3
+
+#for contra_satis
+evalue(OR(,rare=FALSE),lo= ,  hi=)
+
+
+
+#model 4
+#for contra_satis
+evalue(OR(,rare=FALSE),lo= ,  hi=)
+
+
+```
+
+
