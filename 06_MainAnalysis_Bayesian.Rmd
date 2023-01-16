@@ -247,13 +247,13 @@ exp(confint(m4, parm = "hcnon_hc", method = "Wald", level = .997))
 #model 3
 
 #for contra_satis
-evalue(OR(,rare=FALSE),lo= ,  hi=)
+#evalue(OR(,rare=FALSE),lo= ,  hi=)
 
 
 
 #model 4
 #for contra_satis
-evalue(OR(,rare=FALSE),lo= ,  hi=)
+#evalue(OR(,rare=FALSE),lo= ,  hi=)
 
 
 ```
