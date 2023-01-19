@@ -71,7 +71,7 @@ sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq + 
           data = cccu_SA,
           prior = set_priors,
           file = "models/sa_m4.Rds",
-          warmup = 1000,
+          warmup = 1500,
           iter = 4000,
           control = list(adapt_delta = 0.99))
 
@@ -81,7 +81,7 @@ summary(sa_m4, prob = .997)
 
 # Average marginal effects
 
-##m 2
+## m2
 ```{r}
 #average marginal effect
 ame <- marginaleffects(sa_m2)
@@ -100,7 +100,6 @@ summary(ame, conf_level = .997)
 #average marginal effect
 ame <- marginaleffects(sa_m4)
 summary(ame, conf_level = .997)
-
 ```
 
 
