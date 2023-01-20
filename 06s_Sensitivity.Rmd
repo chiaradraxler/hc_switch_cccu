@@ -1,0 +1,95 @@
+---
+title: "06.1_MainAnalysis_Bayesian"
+author: "Chiara Draxler & Laura Botzet"
+date: "18 08 2022"
+output: html_document
+---
+
+
+# 1. Load Packages
+```{r}
+library(brms)
+library(marginaleffects)
+library(EValue)
+library(tidyverse)
+
+
+options(scipen = 999)
+
+set_priors <- c(prior(normal(0, 1), class = b),
+                prior(normal(0, 1), class = sd))
+```
+
+# 2. Load Data
+```{r}
+load("cccu_MA.RData")
+
+cccu_MA <- cccu_MA %>%
+  arrange(CASEID)
+```
+
+# 3. Models
+
+
+## 3.3 Model 3: including not directly with contraceptive method associated predictors
+```{r}
+m3 <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_MA,
+    prior = set_priors,
+    file = "models/m3.Rds"
+  )
+```
+
+## 3.4 Model 4: Controlling for observed selection effects
+```{r}
+m4 <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
+      hc * AGE + hc * DEGREE_recode +
+      hc * POVRATE +
+      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
+      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
+      hc * had_baby_between_waves + hc * Avoid_r +
+      hc * FEELPG_recode +
+      hc * rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_MA,
+    prior = set_priors,
+    file = "models/m4.Rds"
+  )
+```
+
+# 4. Senstivity analysis after m4: controlling for unobserved selection effects
+```{r}
+#repeat models first
+m3_summary = summary(m3, prob = .997)
+
+m4_summary = summary(m4, prob = .997)
+
+##compute OR and CI first
+
+#model 3 to compare e-value for unobserved / observed confounders
+exp(m3_summary$fixed)
+
+#model 4
+exp(m4_summary$fixed)
+
+#compute e-values
+
+#model 3
+#for contra_satis
+evalue(OR(0.5230542 ,rare = FALSE),lo = 0.39115745,  hi = 0.6851051)
+
+
+#model 4
+#for contra_satis
+evalue(OR(0.4843065, rare = FALSE), lo = 0.33492794,  hi = 0.6813288)
+
+
+```
+
+

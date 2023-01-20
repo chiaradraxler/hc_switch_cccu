@@ -222,7 +222,7 @@ ame <- marginaleffects(m4_nonhc_only)
 summary(ame, conf_level = .997)
 ```
 
-#4. Senstivity analysis after m4: controlling for unobserved selection effects
+# 5. Senstivity analysis after m4: controlling for unobserved selection effects
 ```{r}
 #repeat models first
 
