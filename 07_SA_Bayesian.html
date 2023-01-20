@@ -499,8 +499,8 @@ summary(sa_m3, prob = .997)</code></pre>
           data = cccu_SA,
           prior = set_priors,
           file = &quot;models/sa_m4.Rds&quot;,
-          warmup = 2000,
-          iter = 8000,
+          warmup = 1500,
+          iter = 4000,
           control = list(adapt_delta = 0.99))
 
 summary(sa_m4, prob = .997)</code></pre>
@@ -508,91 +508,91 @@ summary(sa_m4, prob = .997)</code></pre>
 ##   Links: mu = logit 
 ## Formula: switch ~ contra_satis * hc_dur + sexual_satisfaction + sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode + TYPEINS_recode + NKIDS_t1 + pregnant_between_waves + had_baby_between_waves + Avoid_r + FEELPG_recode + rel_dur_factor + (1 | CASEID) 
 ##    Data: cccu_SA (Number of observations: 2284) 
-##   Draws: 4 chains, each with iter = 8000; warmup = 2000; thin = 1;
-##          total post-warmup draws = 24000
+##   Draws: 4 chains, each with iter = 4000; warmup = 1500; thin = 1;
+##          total post-warmup draws = 10000
 ## 
 ## Group-Level Effects: 
 ## ~CASEID (Number of levels: 1226) 
 ##               Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
-## sd(Intercept)     0.95      0.38       0.00       2.06 1.01     1027     1699
+## sd(Intercept)     0.95      0.38       0.00       2.03 1.01      422      490
 ## 
 ## Population-Level Effects: 
 ##                                            Estimate Est.Error l-99.7% CI
-## Intercept                                      1.25      1.03      -1.82
-## contra_satis                                  -0.81      0.17      -1.37
+## Intercept                                      1.24      1.03      -1.85
+## contra_satis                                  -0.81      0.17      -1.36
 ## hc_dur                                        -0.12      0.06      -0.30
-## sexual_satisfaction                            0.10      0.07      -0.10
-## sex_freq2M5times                              -0.16      0.20      -0.76
-## sex_freq6M10times                             -0.23      0.23      -0.93
+## sexual_satisfaction                            0.10      0.07      -0.11
+## sex_freq2M5times                              -0.16      0.21      -0.78
+## sex_freq6M10times                             -0.23      0.23      -0.94
 ## sex_freq11ormoretimes                         -0.55      0.26      -1.36
 ## AGE                                            0.02      0.02      -0.04
-## DEGREE_recode7thD8thgrade                      0.60      0.74      -1.59
-## DEGREE_recode9thgrade                         -1.31      0.76      -3.63
-## DEGREE_recode10thgrade                         0.81      0.63      -1.03
-## DEGREE_recode11thgrade                        -0.37      0.69      -2.58
-## DEGREE_recode12thgradeDnodiploma               0.37      0.61      -1.56
-## DEGREE_recodehighschooldiplomaorequivalent     0.10      0.38      -1.00
-## DEGREE_recodesomecollegenodegree               0.11      0.35      -0.95
-## DEGREE_recodeassociatedegree                  -0.33      0.39      -1.55
-## DEGREE_recodebachelorsdegree                  -0.02      0.35      -1.07
-## DEGREE_recodemastersdegree                    -0.08      0.39      -1.24
-## DEGREE_recodeprofessionalordoctoraldegree      0.42      0.48      -1.04
+## DEGREE_recode7thD8thgrade                      0.60      0.73      -1.63
+## DEGREE_recode9thgrade                         -1.31      0.76      -3.66
+## DEGREE_recode10thgrade                         0.81      0.62      -1.07
+## DEGREE_recode11thgrade                        -0.37      0.70      -2.52
+## DEGREE_recode12thgradeDnodiploma               0.36      0.61      -1.38
+## DEGREE_recodehighschooldiplomaorequivalent     0.09      0.38      -1.01
+## DEGREE_recodesomecollegenodegree               0.11      0.35      -0.92
+## DEGREE_recodeassociatedegree                  -0.34      0.39      -1.54
+## DEGREE_recodebachelorsdegree                  -0.03      0.35      -1.08
+## DEGREE_recodemastersdegree                    -0.09      0.38      -1.26
+## DEGREE_recodeprofessionalordoctoraldegree      0.42      0.48      -1.02
 ## POVRATE                                       -0.00      0.00      -0.00
-## HLTHPROB_recodeYes                             0.23      0.19      -0.34
-## MEDPROB_recodeYes                             -0.00      0.24      -0.73
-## GAPINS_recodeYes                               0.24      0.32      -0.73
-## TYPEINS_recodeYes                              0.25      0.36      -0.87
-## NKIDS_t11                                      0.16      0.21      -0.44
-## NKIDS_t12                                      0.11      0.24      -0.59
-## NKIDS_t13                                     -0.14      0.38      -1.27
-## NKIDS_t14ormore                                0.02      0.53      -1.58
-## pregnant_between_wavesYes                     -0.15      0.57      -1.90
-## had_baby_between_wavesYes                     -0.20      0.63      -2.07
-## Avoid_r                                       -0.33      0.06      -0.55
-## FEELPG_recode                                  0.17      0.06      -0.00
-## rel_dur_factor0qM25q                           0.29      0.21      -0.31
-## rel_dur_factor26qM50q                          0.17      0.22      -0.47
-## rel_dur_factor51qM75q                          0.22      0.24      -0.52
-## rel_dur_factor76qM100q                         0.08      0.29      -0.84
-## contra_satis:hc_dur                            0.02      0.02      -0.03
+## HLTHPROB_recodeYes                             0.23      0.19      -0.35
+## MEDPROB_recodeYes                             -0.00      0.23      -0.70
+## GAPINS_recodeYes                               0.24      0.32      -0.68
+## TYPEINS_recodeYes                              0.25      0.37      -0.84
+## NKIDS_t11                                      0.16      0.20      -0.43
+## NKIDS_t12                                      0.11      0.24      -0.58
+## NKIDS_t13                                     -0.15      0.37      -1.27
+## NKIDS_t14ormore                                0.02      0.54      -1.66
+## pregnant_between_wavesYes                     -0.15      0.58      -1.86
+## had_baby_between_wavesYes                     -0.19      0.64      -2.11
+## Avoid_r                                       -0.33      0.06      -0.53
+## FEELPG_recode                                  0.17      0.06      -0.01
+## rel_dur_factor0qM25q                           0.30      0.21      -0.31
+## rel_dur_factor26qM50q                          0.17      0.22      -0.50
+## rel_dur_factor51qM75q                          0.23      0.24      -0.51
+## rel_dur_factor76qM100q                         0.08      0.30      -0.81
+## contra_satis:hc_dur                            0.02      0.02      -0.02
 ##                                            u-99.7% CI Rhat Bulk_ESS Tail_ESS
-## Intercept                                        4.49 1.00    20634    16354
-## contra_satis                                    -0.32 1.00     7289    11550
-## hc_dur                                           0.06 1.00    17591    16355
-## sexual_satisfaction                              0.30 1.00    31916    19860
-## sex_freq2M5times                                 0.45 1.00    21466    17405
-## sex_freq6M10times                                0.43 1.00    21042    18763
-## sex_freq11ormoretimes                            0.19 1.00    21719    18647
-## AGE                                              0.08 1.00    28569    19644
-## DEGREE_recode7thD8thgrade                        2.77 1.00    29652    17184
-## DEGREE_recode9thgrade                            0.88 1.00    40776    17439
-## DEGREE_recode10thgrade                           2.65 1.00    26474    19591
-## DEGREE_recode11thgrade                           1.57 1.00    31079    19658
-## DEGREE_recode12thgradeDnodiploma                 2.23 1.00    24674    17634
-## DEGREE_recodehighschooldiplomaorequivalent       1.23 1.00    10623    14173
-## DEGREE_recodesomecollegenodegree                 1.17 1.00    10099    13184
-## DEGREE_recodeassociatedegree                     0.86 1.00    10522    14991
-## DEGREE_recodebachelorsdegree                     1.01 1.00     9646    14124
-## DEGREE_recodemastersdegree                       1.08 1.00    10805    15385
-## DEGREE_recodeprofessionalordoctoraldegree        1.86 1.00    14639    16877
-## POVRATE                                          0.00 1.00    15736    17921
-## HLTHPROB_recodeYes                               0.81 1.00    28207    16087
-## MEDPROB_recodeYes                                0.68 1.00    42429    18565
-## GAPINS_recodeYes                                 1.15 1.00    28017    19363
-## TYPEINS_recodeYes                                1.33 1.00    27482    18442
-## NKIDS_t11                                        0.81 1.00    22542    16897
-## NKIDS_t12                                        0.87 1.00    18823    17903
-## NKIDS_t13                                        1.00 1.00    29286    17823
-## NKIDS_t14ormore                                  1.61 1.00    33694    17401
-## pregnant_between_wavesYes                        1.47 1.00    31408    19576
-## had_baby_between_wavesYes                        1.68 1.00    30867    20092
-## Avoid_r                                         -0.16 1.00     4873    11309
-## FEELPG_recode                                    0.36 1.00     7776    12290
-## rel_dur_factor0qM25q                             0.94 1.00    21211    16699
-## rel_dur_factor26qM50q                            0.83 1.00    19843    18484
-## rel_dur_factor51qM75q                            0.95 1.00    20663    18025
-## rel_dur_factor76qM100q                           0.94 1.00    20446    17989
-## contra_satis:hc_dur                              0.07 1.00    17885    16077
+## Intercept                                        4.43 1.00     9799     7725
+## contra_satis                                    -0.33 1.00     2575     4571
+## hc_dur                                           0.06 1.00     7219     7165
+## sexual_satisfaction                              0.30 1.00    13480     6296
+## sex_freq2M5times                                 0.48 1.00    10127     7939
+## sex_freq6M10times                                0.45 1.00     9395     8015
+## sex_freq11ormoretimes                            0.21 1.00     8661     7882
+## AGE                                              0.08 1.00    13312     8047
+## DEGREE_recode7thD8thgrade                        2.73 1.00    14329     7778
+## DEGREE_recode9thgrade                            0.79 1.00    16325     7724
+## DEGREE_recode10thgrade                           2.73 1.00    12223     7937
+## DEGREE_recode11thgrade                           1.68 1.00    13574     7500
+## DEGREE_recode12thgradeDnodiploma                 2.24 1.00    10783     7194
+## DEGREE_recodehighschooldiplomaorequivalent       1.19 1.00     4409     6550
+## DEGREE_recodesomecollegenodegree                 1.20 1.00     4240     6490
+## DEGREE_recodeassociatedegree                     0.78 1.00     4759     6019
+## DEGREE_recodebachelorsdegree                     1.03 1.00     4059     6034
+## DEGREE_recodemastersdegree                       1.01 1.00     4434     6823
+## DEGREE_recodeprofessionalordoctoraldegree        1.84 1.00     6888     7365
+## POVRATE                                          0.00 1.00     8490     7994
+## HLTHPROB_recodeYes                               0.81 1.00    11289     6479
+## MEDPROB_recodeYes                                0.65 1.00    16868     7594
+## GAPINS_recodeYes                                 1.17 1.00    11888     7993
+## TYPEINS_recodeYes                                1.31 1.00    12330     8055
+## NKIDS_t11                                        0.82 1.00     9274     7548
+## NKIDS_t12                                        0.87 1.00     9612     7634
+## NKIDS_t13                                        0.97 1.00    13498     6898
+## NKIDS_t14ormore                                  1.64 1.00    15045     8036
+## pregnant_between_wavesYes                        1.53 1.00    12517     8384
+## had_baby_between_wavesYes                        1.61 1.00    12990     8190
+## Avoid_r                                         -0.16 1.00     2005     4902
+## FEELPG_recode                                    0.35 1.00     3652     4998
+## rel_dur_factor0qM25q                             0.96 1.00     9617     7977
+## rel_dur_factor26qM50q                            0.86 1.00     9360     7432
+## rel_dur_factor51qM75q                            0.93 1.00     9315     7526
+## rel_dur_factor76qM100q                           0.94 1.00     9618     8404
+## contra_satis:hc_dur                              0.07 1.00     7314     7001
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -601,7 +601,8 @@ summary(sa_m4, prob = .997)</code></pre>
 </div>
 <div id="average-marginal-effects" class="section level1">
 <h1>Average marginal effects</h1>
-<p>##m 2</p>
+<div id="m2" class="section level2">
+<h2>m2</h2>
 <pre class="r"><code>#average marginal effect
 ame &lt;- marginaleffects(sa_m2)
 summary(ame, conf_level = .997)</code></pre>
@@ -611,6 +612,7 @@ summary(ame, conf_level = .997)</code></pre>
 ## 
 ## Model type:  brmsfit 
 ## Prediction type:  response</code></pre>
+</div>
 <div id="m3" class="section level2">
 <h2>m3</h2>
 <pre class="r"><code>#average marginal effect
@@ -637,8 +639,83 @@ summary(ame, conf_level = .997)</code></pre>
 <div id="m4" class="section level2">
 <h2>m4</h2>
 <pre class="r"><code>#average marginal effect
-#ame &lt;- marginaleffects(sa_m4)
-#summary(ame, conf_level = .997)</code></pre>
+ame &lt;- marginaleffects(sa_m4)
+summary(ame, conf_level = .997)</code></pre>
+<pre><code>##                      Term                                          Contrast
+## 1                     AGE                                             dY/dX
+## 2                 Avoid_r                                             dY/dX
+## 3           DEGREE_recode                        10th grade - 5th/6th grade
+## 4           DEGREE_recode                        11th grade - 5th/6th grade
+## 5           DEGREE_recode           12th grade / no diploma - 5th/6th grade
+## 6           DEGREE_recode                     7th/8th grade - 5th/6th grade
+## 7           DEGREE_recode                         9th grade - 5th/6th grade
+## 8           DEGREE_recode                  associate degree - 5th/6th grade
+## 9           DEGREE_recode                  bachelors degree - 5th/6th grade
+## 10          DEGREE_recode high school diploma or equivalent - 5th/6th grade
+## 11          DEGREE_recode                    masters degree - 5th/6th grade
+## 12          DEGREE_recode   professional or doctoral degree - 5th/6th grade
+## 13          DEGREE_recode           some college, no degree - 5th/6th grade
+## 14          FEELPG_recode                                             dY/dX
+## 15          GAPINS_recode                                          Yes - No
+## 16        HLTHPROB_recode                                          Yes - No
+## 17         MEDPROB_recode                                          Yes - No
+## 18               NKIDS_t1                                             1 - 0
+## 19               NKIDS_t1                                             2 - 0
+## 20               NKIDS_t1                                             3 - 0
+## 21               NKIDS_t1                                     4 or more - 0
+## 22                POVRATE                                             dY/dX
+## 23         TYPEINS_recode                                          Yes - No
+## 24           contra_satis                                             dY/dX
+## 25 had_baby_between_waves                                          Yes - No
+## 26                 hc_dur                                             dY/dX
+## 27 pregnant_between_waves                                          Yes - No
+## 28         rel_dur_factor                                   0q-25q - Single
+## 29         rel_dur_factor                                  26q-50q - Single
+## 30         rel_dur_factor                                  51q-75q - Single
+## 31         rel_dur_factor                                 76q-100q - Single
+## 32               sex_freq                 11 or more times - No sex or once
+## 33               sex_freq                        2-5 times - No sex or once
+## 34               sex_freq                       6-10 times - No sex or once
+## 35    sexual_satisfaction                                             dY/dX
+##         Effect      0.2 %      99.8 %
+## 1   0.00208655 -0.0039240  0.00814992
+## 2  -0.03394639 -0.0511482 -0.01768931
+## 3   0.10093900 -0.1068821  0.41071106
+## 4  -0.03387179 -0.1884089  0.21719644
+## 5   0.04128603 -0.1270945  0.31737245
+## 6   0.07269758 -0.1338710  0.42639456
+## 7  -0.09433157 -0.2285445  0.08906710
+## 8  -0.03273455 -0.1621192  0.06775696
+## 9  -0.00280749 -0.1339547  0.08789241
+## 10  0.00997294 -0.1214365  0.11827662
+## 11 -0.00938683 -0.1418160  0.09822867
+## 12  0.04713855 -0.1161839  0.22841388
+## 13  0.01151477 -0.1196755  0.10925007
+## 14  0.01715782 -0.0010282  0.03500119
+## 15  0.02606065 -0.0619231  0.14012894
+## 16  0.02411171 -0.0330070  0.08743956
+## 17 -0.00019776 -0.0624321  0.07916810
+## 18  0.01644674 -0.0413970  0.08751867
+## 19  0.01151216 -0.0566586  0.09391040
+## 20 -0.01474555 -0.0978368  0.11389990
+## 21  0.00291473 -0.1136848  0.21157733
+## 22 -0.00006945 -0.0001886  0.00004355
+## 23  0.02455832 -0.1006962  0.10466089
+## 24 -0.06142111 -0.0926373 -0.02886267
+## 25 -0.01908474 -0.1302911  0.24294670
+## 26 -0.00442099 -0.0084847 -0.00005745
+## 27 -0.01401335 -0.1263412  0.21727461
+## 28  0.03077363 -0.0345021  0.09610123
+## 29  0.01650438 -0.0489428  0.08354421
+## 30  0.02343559 -0.0517600  0.09627169
+## 31  0.00786540 -0.0712813  0.10013000
+## 32 -0.05665822 -0.1380555  0.02096066
+## 33 -0.01875062 -0.0895369  0.04837029
+## 34 -0.02546990 -0.1048066  0.04836418
+## 35  0.01005796 -0.0105640  0.03084823
+## 
+## Model type:  brmsfit 
+## Prediction type:  response</code></pre>
 </div>
 </div>
 
