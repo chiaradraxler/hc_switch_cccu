@@ -1,0 +1,141 @@
+---
+title: "14_SubAnalysis_Robust_Models_AME"
+output: html_document
+date: "2023-02-03"
+---
+
+# 1. Load Packages
+```{r}
+library(brms)
+library(marginaleffects)
+library(tidyverse)
+
+
+options(scipen = 999)
+
+set_priors <- c(prior(normal(0, 1), class = b),
+                prior(normal(0, 1), class = sd))
+```
+
+# 2. Load Data
+```{r}
+#SA
+load("cccu_R1_s.RData")
+
+load("cccu_R2_s.RData")
+
+load("cccu_R3_s.RData")
+
+```
+
+```{r}
+
+cccu_R1_s <- cccu_R1_s %>%
+  arrange(CASEID)
+
+cccu_R2_s <- cccu_R2_s %>%
+  arrange(CASEID)
+
+cccu_R3_s <- cccu_R3_s %>%
+  arrange(CASEID)
+```
+
+
+#3. Load models of main analysis
+```{r}
+
+
+R1_sa_2 <- brm(file = "models/R1_sa_2.Rds")
+R2_sa_2 <- brm(file = "models/R2_sa_2.Rds")
+R3_sa_2 <- brm(file = "models/R3_sa_2.Rds")
+
+R1_sa_3 <- brm(file = "models/R1_sa_3.Rds")
+R2_sa_3 <- brm(file = "models/R2_sa_3.Rds")
+R3_sa_3 <- brm(file = "models/R3_sa_3.Rds")
+
+R1_sa_4 <- brm(file = "models/R1_sa_4.Rds")
+R2_sa_4 <- brm(file = "models/R2_sa_4.Rds")
+R3_sa_4 <- brm(file = "models/R3_sa_4.Rds")
+```
+
+
+
+# 4. Average marginal effects for models of sub analyses in robustnessanalyses
+
+## Model 2
+
+### R1
+```{r}
+#average marginal effect
+ame <- marginaleffects(R1_sa_m2)
+summary(ame, conf_level = .997)
+```
+
+
+### R2
+```{r}
+#average marginal effect
+ame <- marginaleffects(R2_sa_m2)
+summary(ame, conf_level = .997)
+```
+
+
+### R3
+```{r}
+#average marginal effect
+ame <- marginaleffects(R3_sa_m2)
+summary(ame, conf_level = .997)
+```
+
+## Model 3
+### R1
+```{r}
+#average marginal effect
+ame <- marginaleffects(R1_sa_m3)
+summary(ame, conf_level = .997)
+```
+
+
+### R2
+```{r}
+#average marginal effect
+ame <- marginaleffects(R2_sa_m3)
+summary(ame, conf_level = .997)
+```
+
+### R3
+```{r}
+#average marginal effect
+ame <- marginaleffects(R3_sa_m3)
+summary(ame, conf_level = .997)
+```
+
+## Model 4
+### R1
+```{r}
+#average marginal effect
+ame <- marginaleffects(R1_sa_m4)
+summary(ame, conf_level = .997)
+
+```
+
+
+### R2
+```{r}
+#average marginal effect
+ame <- marginaleffects(R2_sa_m4)
+summary(ame, conf_level = .997)
+
+```
+
+
+### R3
+```{r}
+#average marginal effect
+ame <- marginaleffects(R3_sa_m4)
+summary(ame, conf_level = .997)
+
+```
+
+
+

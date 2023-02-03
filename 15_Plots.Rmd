@@ -1,5 +1,5 @@
 ---
-title: "09.1_plots_Bayesian"
+title: "15_Plots"
 author: "Chiara Draxler & Laura Botzet"
 date: "24 1 2022"
 output: html_document

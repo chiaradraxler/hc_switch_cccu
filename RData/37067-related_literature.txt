@@ -1,0 +1,67 @@
+Bibliography
+Continuity and Change in Contraceptive Use, United States, 2012-2014
+
+This bibliography includes published and unpublished works that are related 
+to ICPSR study 37067. It includes works that are based on primary
+or secondary analysis of the data, or which describe or critique those
+data or the collection methodology. 
+
+If you publish a work or know of other works that are based on these data,
+please send the complete citation and name of the ICPSR study used to:
+icpsr-biblio-notify@umich.edu 
+
+
+1. Arreola, Elsa Vazquez; Wilson, Jeffrey R., "Partitioned GMM marginal
+model for time dependent covariates: Applications to survey data." In
+Computational and Methodological Statistics and Biostatistics: Contemporary
+Essays in Advancement. Emerging Topics in Statistics and Biostatistics. 511
+- 528, Cham, Switzerland: Springer International Publishing,2020. DOI:
+10.1007/978-3-030-42196-0_22
+
+2. Finer, Lawrence B.; Sonfield, Adam; Jones, Rachel K., "Changes in out-
+of-pocket payments for contraception by privately insured women during
+implementation of the federal contraceptive coverage requirement."
+Contraception. Feb 2014, 89, (2), 97 - 102. DOI:
+10.1016/j.contraception.2013.11.015
+
+3. Jones, Rachel K., "Are uncertain fertility intentions a temporary or
+long-term outlook? Findings from a panel study." Women's Health Issues.
+Jan-Feb 2017, 27, (1), 21 - 28. DOI: 10.1016/j.whi.2016.10.001
+
+4. Jones, Rachel K., "Change and consistency in US women's pregnancy
+attitudes and associations with contraceptive use." Contraception. May
+2017, 95, (5), 485 - 490. DOI: 10.1016/j.contraception.2017.01.009
+
+5. Jones, Rachel K., "Is pregnancy fatalism normal? An attitudinal
+assessment among women trying to get pregnant and those not using
+contraception." Contraception. Oct 2018, 98, (4), 255 - 259. DOI:
+10.1016/j.contraception.2018.05.015
+
+6. Jones, Rachel K.; Lindberg, Laura D.; Higgins, Jenny A., "Pull and pray
+or extra protection? Contraceptive strategies involving withdrawal among US
+adult women." Contraception. Oct 2014, 90, (4), 416 - 421. DOI:
+10.1016/j.contraception.2014.04.016
+
+7. Jones, Rachel K.; Tapales, Athena; Lindberg, Laura D.; Frost, Jennifer,
+"Using longitudinal data to understand changes in consistent contraceptive
+use." Perspectives on Sexual and Reproductive Health. Sep 2015, 47, (3),
+131 - 139. DOI: 10.1363/47e4615
+
+8. Lindberg, Laura; Jones, Rachel; Higgins, Jenny, "Use of withdrawal among
+young adults in the U.S.: Pulling out all the stops?." Journal of
+Adolescent Health. Feb 2014, 54, (2), S61. DOI:
+10.1016/j.jadohealth.2013.10.135
+
+9. Nitkowski, Jenna, "Exploring the Accessibility, Affordability, and
+Equitability of Telecontraception Platforms and Their Implications for
+Reproductive Health Care." Dissertation, University of Wisconsin,
+Milwaukee, 2021.
+
+10. Sonfield, Adam; Tapales, Athena; Jones, Rachel K.; Finer, Lawrence B.,
+"Impact of the federal contraceptive coverage guarantee on out-of-pocket
+payments for contraceptives: 2014 update." Contraception. Jan 2015, 91,
+(1), 44 - 48. DOI: 10.1016/j.contraception.2014.09.006
+
+11. Vaisanen, Heini; Jones, Rachel K., "Using panel data to examine
+pregnancy attitudes over time." International Journal of Population
+Studies. 2015, 1, (1),.

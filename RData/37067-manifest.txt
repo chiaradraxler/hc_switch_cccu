@@ -1,0 +1,157 @@
+File Manifest for ICPSR 37067
+
+Jones, Rachel. Continuity and Change in Contraceptive Use, United States,
+2012-2014. ICPSR37067-v1. Ann Arbor, MI: Inter-university Consortium for
+Political and Social Research [distributor], 2018-05-09.
+http://doi.org/10.3886/ICPSR37067.v1
+
+
+Study-level Documentation
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    37067-descriptioncitation.pdf       -       -         -       2018-05-09  -
+
+    37067-related_literature.txt        -       -         -       daily       -
+
+    37067-manifest.txt                  -       -         -       daily       -
+
+    37067-User_guide.pdf                -       -         -       2018-05-09  9b1d5df7d8393f7d9a915a18cb6be192
+
+
+DS0001 Wave 1
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    37067-0001-Codebook-Wave1.pdf       -       -         -       2018-05-09  416c7c8e35b0c005aad7077ed6d9ffdb
+
+    37067-0001-Data.dta                 -       4,634     470     2018-05-09  05097a0faa071b91de1d33beb604fd11
+
+    37067-0001-Data.rda                 -       4,634     470     2018-05-09  fab3f15a173a31f0742acacfc0bc6267
+
+    37067-0001-Data.sav                 -       4,634     470     2018-05-09  6d26fb80c998b972dcf3a34caf82f26f
+
+    37067-0001-Data.stc                 -       4,634     470     2018-05-09  11bbd420aea00ac122645e552b76dfa0
+
+    37067-0001-Data.tsv                 -       4,634     470     2018-05-09  4949b1bfa35341baec278e2bd897f59f
+
+    37067-0001-Data.txt                 924     4,634     470     2018-05-09  fa28ecf32f23b3694c44c24db3a61e6f
+
+    37067-0001-Questionnaire.pdf        -       -         -       2018-05-09  8091254949571b03ef1f7fe072706e3f
+
+    37067-0001-Setup.dct                -       -         -       2018-05-09  6f0c238e1360f6bcdc9944393ef27b07
+
+    37067-0001-Setup.do                 -       -         -       2018-05-09  8965a6d6ee9d6573503bb85eb56295a5
+
+    37067-0001-Setup.sas                -       -         -       2018-05-09  1f571df58544887ce851fd3cbe970d30
+
+    37067-0001-Setup.sps                -       -         -       2018-05-09  84ac7b64cd2c2a98e90abd24d361086b
+
+    37067-0001-Supplemental_syntax.do   -       -         -       2018-05-09  72d54640b5734741ca8d606c4f74bea1
+
+    37067-0001-Supplemental_syntax.sas  -       -         -       2018-05-09  c60627341df783ec082a89e154c63881
+
+
+DS0002 Wave 2
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    37067-0002-Codebook-Wave2.pdf       -       -         -       2018-05-09  f25dbeaf6beade4feb10d6c137799e27
+
+    37067-0002-Data.dta                 -       3,207     460     2018-05-09  994902b7e47e60e6968852f85b15c44c
+
+    37067-0002-Data.rda                 -       3,207     460     2018-05-09  9a966e141360533e33686f0aa162d679
+
+    37067-0002-Data.sav                 -       3,207     460     2018-05-09  420141631a8667d2bd1df8aaaccce020
+
+    37067-0002-Data.stc                 -       3,207     460     2018-05-09  b4233ca35deb3ae09a693380dfb99f46
+
+    37067-0002-Data.tsv                 -       3,207     460     2018-05-09  136de7f522a867d11213dc59d1be097d
+
+    37067-0002-Data.txt                 902     3,207     460     2018-05-09  9b113cce0b5453faa70cdeb8e294c1e5
+
+    37067-0002-Questionnaire.pdf        -       -         -       2018-05-09  9a07ef6f6559b117d70267f0d659e641
+
+    37067-0002-Setup.dct                -       -         -       2018-05-09  193b0c6833622e675c372b61d0927d74
+
+    37067-0002-Setup.do                 -       -         -       2018-05-09  bb289122b8fe93cd24b66deed6622c02
+
+    37067-0002-Setup.sas                -       -         -       2018-05-09  258b7404633f68254310741657575646
+
+    37067-0002-Setup.sps                -       -         -       2018-05-09  1894dcae3cbec50dcd3bfb89b80155fe
+
+    37067-0002-Supplemental_syntax.do   -       -         -       2018-05-09  23c09e6abdb577f55c88de4e168883d7
+
+    37067-0002-Supplemental_syntax.sas  -       -         -       2018-05-09  0ca96ac0217c93bf07c06eaa90629569
+
+
+DS0003 Wave 3
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    37067-0003-Codebook-Wave3.pdf       -       -         -       2018-05-09  cd01407ff56b42df035b386d566b09e4
+
+    37067-0003-Data.dta                 -       2,398     394     2018-05-09  695c7a52930eac941e77e468a9097381
+
+    37067-0003-Data.rda                 -       2,398     394     2018-05-09  dbb90330090c47964f0bb8b0609aab8f
+
+    37067-0003-Data.sav                 -       2,398     394     2018-05-09  b82ba6c15287ed6f3e104d63fbf56c4e
+
+    37067-0003-Data.stc                 -       2,398     394     2018-05-09  2f7fe6d8d935ef71b93c09274ebd7e05
+
+    37067-0003-Data.tsv                 -       2,398     394     2018-05-09  7d98761e48df6e57fb86332e5982272f
+
+    37067-0003-Data.txt                 740     2,398     394     2018-05-09  3370e08c2d30355f8b8213f277be942f
+
+    37067-0003-Questionnaire.pdf        -       -         -       2018-05-09  ccf805e9972be873c01f51f93aeb8c8d
+
+    37067-0003-Setup.dct                -       -         -       2018-05-09  15f3cbd00737b44a0d0d047db38176da
+
+    37067-0003-Setup.do                 -       -         -       2018-05-09  fb7b368a92ba6a966a3993056d3e67c3
+
+    37067-0003-Setup.sas                -       -         -       2018-05-09  981275fddbe0602d9499326523fa5a75
+
+    37067-0003-Setup.sps                -       -         -       2018-05-09  a4ffccac61fad2a547e1f2c3e14aeb41
+
+    37067-0003-Supplemental_syntax.do   -       -         -       2018-05-09  6cde3511e3f0b5fb304e1fc563f93fbe
+
+    37067-0003-Supplemental_syntax.sas  -       -         -       2018-05-09  91ff7ef1acc2a2529c3a6c4e0a9917ff
+
+
+DS0004 Wave 4
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    37067-0004-Codebook-Wave4.pdf       -       -         -       2018-05-09  c37e864829756e6c066be7164f4e6b63
+
+    37067-0004-Data.dta                 -       1,842     385     2018-05-09  95e68712d8b5e08014e43db115180a32
+
+    37067-0004-Data.rda                 -       1,842     385     2018-05-09  f875c41b2d006f80253649544e6bf769
+
+    37067-0004-Data.sav                 -       1,842     385     2018-05-09  bd9bfb881e93fd640b8abc2bed8e6aa2
+
+    37067-0004-Data.stc                 -       1,842     385     2018-05-09  983cda8d7d9a36eaafb98a1586270fec
+
+    37067-0004-Data.tsv                 -       1,842     385     2018-05-09  bebcfd438bf34ec4b05b592cc897a806
+
+    37067-0004-Data.txt                 728     1,842     385     2018-05-09  99b0fa3b8fae94e55623eeddcef7ee67
+
+    37067-0004-Questionnaire.pdf        -       -         -       2018-05-09  5404e7ab3e8b82180f869310310e76f8
+
+    37067-0004-Setup.dct                -       -         -       2018-05-09  6298aec1c45046cf6f41b85df306ff23
+
+    37067-0004-Setup.do                 -       -         -       2018-05-09  96d3d4345a7feabc62906fe159e231ce
+
+    37067-0004-Setup.sas                -       -         -       2018-05-09  611120f18ad422ccd97056c8494a46a9
+
+    37067-0004-Setup.sps                -       -         -       2018-05-09  5d52a49a28a4899bd89d1896cbc62ab5
+
+    37067-0004-Supplemental_syntax.do   -       -         -       2018-05-09  32c28a51dd41c4465abdc466e4f8f285
+
+    37067-0004-Supplemental_syntax.sas  -       -         -       2018-05-09  ddd2505dd63d51e69c4ce4e0a0d8212c
+

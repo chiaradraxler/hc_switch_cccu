@@ -1,5 +1,5 @@
 ---
-title: "07.1_SA_Bayesian"
+title: "11_SubAnalysis_Models"
 author: "Chiara Draxler"
 date: "16 11 2022"
 output: html_document
@@ -76,30 +76,6 @@ sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq + 
           control = list(adapt_delta = 0.99))
 
 summary(sa_m4, prob = .997)
-```
-
-
-# Average marginal effects
-
-## m2
-```{r}
-#average marginal effect
-ame <- marginaleffects(sa_m2)
-summary(ame, conf_level = .997)
-```
-
-## m3
-```{r}
-#average marginal effect
-ame <- marginaleffects(sa_m3)
-summary(ame, conf_level = .997)
-```
-
-## m4
-```{r}
-#average marginal effect
-ame <- marginaleffects(sa_m4)
-summary(ame, conf_level = .997)
 ```
 
 

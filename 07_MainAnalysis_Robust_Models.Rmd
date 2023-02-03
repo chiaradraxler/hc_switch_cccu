@@ -1,0 +1,317 @@
+---
+title: "07_MainAnalysis_Robust_Models"
+output: html_document
+date: "2023-02-03"
+---
+
+# 1. Load Packages
+```{r}
+library(brms)
+library(marginaleffects)
+library(tidyverse)
+
+
+options(scipen = 999)
+
+set_priors <- c(prior(normal(0, 1), class = b),
+                prior(normal(0, 1), class = sd))
+```
+
+# 2. Load Data
+```{r}
+#MA
+load("cccu_R1.RData")
+
+load("cccu_R2.RData")
+
+load("cccu_R3.RData")
+
+```
+
+
+```{r}
+cccu_R1 <- cccu_R1 %>%
+  arrange(CASEID)
+
+cccu_R2 <- cccu_R2 %>%
+  arrange(CASEID)
+
+cccu_R3 <- cccu_R3 %>%
+  arrange(CASEID)
+
+```
+
+# 3. Models of main analyses in robustness analyses
+
+## 3.1 Model 1: basic model
+
+### R1
+```{r}
+R1_ma_1 <- brm(switch ~ hc + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R1,
+          prior = set_priors,
+          file = "models/R1_ma_1.Rds")
+
+summary(R1_ma_1, prob = .997)
+
+```
+
+### R2
+```{r}
+R2_ma_1 <- brm(switch ~ hc + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R2,
+          prior = set_priors,
+          file = "models/R2_ma_1.Rds")
+
+summary(R2_ma_1, prob = .997)
+
+```
+
+
+### R3
+```{r}
+R3_ma_1 <- brm(switch ~ hc + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R3,
+          prior = set_priors,
+          file = "models/R3_ma_1.Rds")
+
+summary(R3_ma_1, prob = .997)
+
+```
+
+
+## 3.2 Model 2: including directly with contraceptive method associated predictors
+
+### R1
+```{r}
+R1_ma_2 <- brm(switch ~ hc * contra_satis + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R1,
+          prior = set_priors,
+          file = "models/R1_ma_2.Rds")
+
+summary(R1_ma_2, prob = .997)
+
+```
+
+### R2
+```{r}
+R2_ma_2 <- brm(switch ~ hc * contra_satis + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R2,
+          prior = set_priors,
+          file = "models/R2_ma_2.Rds")
+
+summary(R2_ma_2, prob = .997)
+
+```
+
+
+### R3
+```{r}
+R3_ma_2 <- brm(switch ~ hc * contra_satis + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R3,
+          prior = set_priors,
+          file = "models/R3_ma_2.Rds")
+
+summary(R3_ma_2, prob = .997)
+
+```
+
+
+## 3.3 Model 3: including not directly with contraceptive method associated predictors
+
+### R1
+```{r}
+R1_ma_3 <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R1,
+    prior = set_priors,
+    file = "models/R1_ma_3.Rds"
+  )
+
+summary(R1_ma_3, prob = .997)
+
+
+
+R1_ma_3_sexual_satisfaction <-
+  brm(
+    switch ~  hc * sexual_satisfaction  + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R1,
+    prior = set_priors,
+    file = "models/R1_ma_3_sexual_satisfaction.Rds"
+  )
+
+summary(R1_ma_3_sexual_satisfaction, prob = .997)
+
+R1_ma_3_sex_freq <-
+  brm(
+    switch ~  hc * sex_freq  + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R1,
+    prior = set_priors,
+    file = "models/R1_ma_3_sex_freq.Rds"
+  )
+
+summary(R1_ma_3_sex_freq, prob = .997)
+```
+
+### R2
+```{r}
+R2_ma_3 <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R2,
+    prior = set_priors,
+    file = "models/R2_ma_3.Rds"
+  )
+
+summary(R2_ma_3, prob = .997)
+
+
+
+R2_ma_3_sexual_satisfaction <-
+  brm(
+    switch ~  hc * sexual_satisfaction  + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R2,
+    prior = set_priors,
+    file = "models/R2_ma_3_sexual_satisfaction.Rds"
+  )
+
+summary(R2_ma_3_sexual_satisfaction, prob = .997)
+
+R2_ma_3_sex_freq <-
+  brm(
+    switch ~  hc * sex_freq  + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R2,
+    prior = set_priors,
+    file = "models/R2_ma_3_sex_freq.Rds"
+  )
+
+summary(R2_ma_3_sex_freq, prob = .997)
+```
+
+### R3
+```{r}
+R3_ma_3 <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R3,
+    prior = set_priors,
+    file = "models/R3_ma_3.Rds"
+  )
+
+summary(R3_ma_3, prob = .997)
+
+
+
+R3_ma_3_sexual_satisfaction <-
+  brm(
+    switch ~  hc * sexual_satisfaction  + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R3,
+    prior = set_priors,
+    file = "models/R3_ma_3_sexual_satisfaction.Rds"
+  )
+
+summary(R3_ma_3_sexual_satisfaction, prob = .997)
+
+R3_ma_3_sex_freq <-
+  brm(
+    switch ~  hc * sex_freq  + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R3,
+    prior = set_priors,
+    file = "models/R3_ma_3_sex_freq.Rds"
+  )
+
+summary(R3_ma_3_sex_freq, prob = .997)
+```
+
+
+
+
+## 3.4 Model 4: Controlling for observed selection effects
+
+### R1
+```{r}
+R1_ma_4 <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
+      hc * AGE + hc * DEGREE_recode +
+      hc * POVRATE +
+      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
+      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
+      hc * had_baby_between_waves + hc * Avoid_r +
+      hc * FEELPG_recode +
+      hc * rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R1,
+    prior = set_priors,
+    file = "models/R1_ma_4.Rds"
+  )
+
+summary(R1_ma_4, prob = .997)
+
+```
+
+### R2
+```{r}
+R2_ma_4 <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
+      hc * AGE + hc * DEGREE_recode +
+      hc * POVRATE +
+      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
+      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
+      hc * had_baby_between_waves + hc * Avoid_r +
+      hc * FEELPG_recode +
+      hc * rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R2,
+    prior = set_priors,
+    file = "models/R2_ma_4.Rds"
+  )
+
+summary(R2_ma_4, prob = .997)
+
+```
+
+
+### R3
+```{r}
+R3_ma_4 <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
+      hc * AGE + hc * DEGREE_recode +
+      hc * POVRATE +
+      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
+      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
+      hc * had_baby_between_waves + hc * Avoid_r +
+      hc * FEELPG_recode +
+      hc * rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R3,
+    prior = set_priors,
+    file = "models/R3_ma_4.Rds"
+  )
+
+summary(R3_ma_4, prob = .997)
+
+```
+
+

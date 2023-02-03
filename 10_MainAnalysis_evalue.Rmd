@@ -1,0 +1,64 @@
+---
+title: "10_MainAnalysis_evalue"
+output: html_document
+date: "2023-02-03"
+---
+
+# 1. Load Packages
+```{r}
+library(brms)
+library(marginaleffects)
+library(tidyverse)
+library(EValue)
+
+
+options(scipen = 999)
+
+set_priors <- c(prior(normal(0, 1), class = b),
+                prior(normal(0, 1), class = sd))
+```
+
+# 2. Load Data
+```{r}
+load("cccu_MA.RData")
+
+cccu_MA <- cccu_MA %>%
+  arrange(CASEID)
+```
+
+#3. Load models of main analysis
+```{r}
+m3 <- brm(file = "models/m3.Rds")
+m4 <- brm(file = "models/m4.Rds")
+```
+
+# 4. Senstivity analysis after m4: controlling for unobserved selection effects
+```{r}
+#repeat models first
+m3_summary = summary(m3, prob = .997)
+
+m4_summary = summary(m4, prob = .997)
+
+##compute OR and CI first
+
+#model 3 to compare e-value for unobserved / observed confounders
+exp(m3_summary$fixed)
+
+#model 4
+exp(m4_summary$fixed)
+
+#compute e-values
+
+#model 3
+#for contra_satis
+evalue(OR(0.5230542 ,rare = FALSE),lo = 0.39115745,  hi = 0.6851051)
+
+
+#model 4
+#for contra_satis
+evalue(OR(0.4843065, rare = FALSE), lo = 0.33492794,  hi = 0.6813288)
+
+
+```
+
+
