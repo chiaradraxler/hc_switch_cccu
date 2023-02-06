@@ -45,17 +45,17 @@ cccu_R3_s <- cccu_R3_s %>%
 ```{r}
 
 
-R1_sa_2 <- brm(file = "models/R1_sa_2.Rds")
-R2_sa_2 <- brm(file = "models/R2_sa_2.Rds")
-R3_sa_2 <- brm(file = "models/R3_sa_2.Rds")
+R1_sa_m2 <- brm(file = "models/R1_sa_m2.Rds")
+R2_sa_m2 <- brm(file = "models/R2_sa_m2.Rds")
+R3_sa_m2 <- brm(file = "models/R3_sa_m2.Rds")
 
-R1_sa_3 <- brm(file = "models/R1_sa_3.Rds")
-R2_sa_3 <- brm(file = "models/R2_sa_3.Rds")
-R3_sa_3 <- brm(file = "models/R3_sa_3.Rds")
+R1_sa_m3 <- brm(file = "models/R1_sa_m3.Rds")
+R2_sa_m3 <- brm(file = "models/R2_sa_m3.Rds")
+R3_sa_m3 <- brm(file = "models/R3_sa_m3.Rds")
 
-R1_sa_4 <- brm(file = "models/R1_sa_4.Rds")
-R2_sa_4 <- brm(file = "models/R2_sa_4.Rds")
-R3_sa_4 <- brm(file = "models/R3_sa_4.Rds")
+R1_sa_m4 <- brm(file = "models/R1_sa_m4.Rds")
+R2_sa_m4 <- brm(file = "models/R2_sa_m4.Rds")
+R3_sa_m4 <- brm(file = "models/R3_sa_m4.Rds")
 ```
 
 
