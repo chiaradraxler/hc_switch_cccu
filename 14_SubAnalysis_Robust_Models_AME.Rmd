@@ -114,8 +114,8 @@ summary(ame, conf_level = .997)
 ### R1
 ```{r}
 #average marginal effect
-ame <- marginaleffects(R1_sa_m4)
-summary(ame, conf_level = .997)
+# ame <- marginaleffects(R1_sa_m4)
+# summary(ame, conf_level = .997)
 
 ```
 
@@ -123,8 +123,8 @@ summary(ame, conf_level = .997)
 ### R2
 ```{r}
 #average marginal effect
-ame <- marginaleffects(R2_sa_m4)
-summary(ame, conf_level = .997)
+# ame <- marginaleffects(R2_sa_m4)
+# summary(ame, conf_level = .997)
 
 ```
 
@@ -132,8 +132,8 @@ summary(ame, conf_level = .997)
 ### R3
 ```{r}
 #average marginal effect
-ame <- marginaleffects(R3_sa_m4)
-summary(ame, conf_level = .997)
+# ame <- marginaleffects(R3_sa_m4)
+# summary(ame, conf_level = .997)
 
 ```
 
