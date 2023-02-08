@@ -114,8 +114,8 @@ summary(ame, conf_level = .997)
 ### R1
 ```{r}
 #average marginal effect
-# ame <- marginaleffects(R1_sa_m4)
-# summary(ame, conf_level = .997)
+ame <- marginaleffects(R1_sa_m4)
+summary(ame, conf_level = .997)
 
 ```
 

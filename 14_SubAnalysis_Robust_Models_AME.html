@@ -536,8 +536,83 @@ summary(ame, conf_level = .997)</code></pre>
 <div id="r1-2" class="section level3">
 <h3>R1</h3>
 <pre class="r"><code>#average marginal effect
-# ame &lt;- marginaleffects(R1_sa_m4)
-# summary(ame, conf_level = .997)</code></pre>
+ame &lt;- marginaleffects(R1_sa_m4)
+summary(ame, conf_level = .997)</code></pre>
+<pre><code>##                      Term                                          Contrast
+## 1                     AGE                                             dY/dX
+## 2                 Avoid_r                                             dY/dX
+## 3           DEGREE_recode                        10th grade - 5th/6th grade
+## 4           DEGREE_recode                        11th grade - 5th/6th grade
+## 5           DEGREE_recode           12th grade / no diploma - 5th/6th grade
+## 6           DEGREE_recode                     7th/8th grade - 5th/6th grade
+## 7           DEGREE_recode                         9th grade - 5th/6th grade
+## 8           DEGREE_recode                  associate degree - 5th/6th grade
+## 9           DEGREE_recode                  bachelors degree - 5th/6th grade
+## 10          DEGREE_recode high school diploma or equivalent - 5th/6th grade
+## 11          DEGREE_recode                    masters degree - 5th/6th grade
+## 12          DEGREE_recode   professional or doctoral degree - 5th/6th grade
+## 13          DEGREE_recode           some college, no degree - 5th/6th grade
+## 14          FEELPG_recode                                             dY/dX
+## 15          GAPINS_recode                                          Yes - No
+## 16        HLTHPROB_recode                                          Yes - No
+## 17         MEDPROB_recode                                          Yes - No
+## 18               NKIDS_t1                                             1 - 0
+## 19               NKIDS_t1                                             2 - 0
+## 20               NKIDS_t1                                             3 - 0
+## 21               NKIDS_t1                                     4 or more - 0
+## 22                POVRATE                                             dY/dX
+## 23         TYPEINS_recode                                          Yes - No
+## 24           contra_satis                                             dY/dX
+## 25 had_baby_between_waves                                          Yes - No
+## 26                 hc_dur                                             dY/dX
+## 27 pregnant_between_waves                                          Yes - No
+## 28         rel_dur_factor                                   0q-25q - Single
+## 29         rel_dur_factor                                  26q-50q - Single
+## 30         rel_dur_factor                                  51q-75q - Single
+## 31         rel_dur_factor                                 76q-100q - Single
+## 32               sex_freq                 11 or more times - No sex or once
+## 33               sex_freq                        2-5 times - No sex or once
+## 34               sex_freq                       6-10 times - No sex or once
+## 35    sexual_satisfaction                                             dY/dX
+##         Effect     0.2 %      99.8 %
+## 1   0.00329875 -0.002690  0.00944587
+## 2  -0.03553818 -0.054054 -0.01745736
+## 3   0.11353221 -0.093149  0.43151261
+## 4  -0.01521325 -0.176141  0.25048210
+## 5   0.02284646 -0.146200  0.29275206
+## 6   0.07420005 -0.131703  0.42679794
+## 7  -0.08995680 -0.219057  0.10198853
+## 8  -0.02813994 -0.161760  0.08001948
+## 9   0.00457803 -0.126428  0.09964106
+## 10  0.00777240 -0.120763  0.12154671
+## 11 -0.01280695 -0.151813  0.09755559
+## 12  0.04685354 -0.116323  0.22220930
+## 13  0.01742421 -0.115781  0.11518549
+## 14  0.01650669 -0.002528  0.03555380
+## 15  0.02920605 -0.073807  0.15461659
+## 16  0.02506294 -0.036868  0.09250898
+## 17 -0.02871642 -0.093650  0.05345048
+## 18  0.01124629 -0.054505  0.08602184
+## 19  0.01213321 -0.060984  0.09876068
+## 20 -0.04573937 -0.119783  0.07053292
+## 21  0.00123119 -0.117542  0.21940725
+## 22 -0.00004634 -0.000168  0.00007398
+## 23  0.01932218 -0.122298  0.10675206
+## 24 -0.05327088 -0.086214 -0.01813568
+## 25  0.02791407 -0.119921  0.34443720
+## 26 -0.00433729 -0.008429  0.00026508
+## 27 -0.02746274 -0.135112  0.20446252
+## 28  0.01980671 -0.043643  0.08216821
+## 29  0.01174255 -0.053409  0.07992401
+## 30  0.01432198 -0.059861  0.09311567
+## 31 -0.00250184 -0.088053  0.09844074
+## 32 -0.03895589 -0.149830  0.05087461
+## 33  0.00098911 -0.104078  0.08262724
+## 34 -0.01141368 -0.119303  0.07496248
+## 35  0.01893305 -0.004601  0.04421800
+## 
+## Model type:  brmsfit 
+## Prediction type:  response</code></pre>
 </div>
 <div id="r2-2" class="section level3">
 <h3>R2</h3>
