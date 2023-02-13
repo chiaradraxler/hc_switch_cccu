@@ -153,7 +153,6 @@ summary(R1_sa_m4, prob = .997)
 
 ### R2
 ```{r}
-
 R2_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
               TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r + FEELPG_recode +
               rel_dur_factor + (1 | CASEID),
@@ -162,7 +161,7 @@ R2_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
           prior = set_priors,
           file = "models/R2_sa_m4.Rds",
           warmup = 1500,
-          iter = 5000,
+          iter = 4000,
           control = list(adapt_delta = 0.99))
 
 summary(R2_sa_m4, prob = .997)
@@ -170,7 +169,6 @@ summary(R2_sa_m4, prob = .997)
 
 ### R3
 ```{r}
-
 R3_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
               TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r + FEELPG_recode +
               rel_dur_factor + (1 | CASEID),
@@ -179,7 +177,7 @@ R3_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
           prior = set_priors,
           file = "models/R3_sa_m4.Rds",
           warmup = 1500,
-          iter = 5000,
+          iter = 4000,
           control = list(adapt_delta = 0.99))
 
 summary(R3_sa_m4, prob = .997)
