@@ -161,7 +161,7 @@ R2_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
           prior = set_priors,
           file = "models/R2_sa_m4.Rds",
           warmup = 1500,
-          iter = 4000,
+          iter = 4500,
           control = list(adapt_delta = 0.99))
 
 summary(R2_sa_m4, prob = .997)
@@ -177,7 +177,7 @@ R3_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
           prior = set_priors,
           file = "models/R3_sa_m4.Rds",
           warmup = 1500,
-          iter = 4000,
+          iter = 4500,
           control = list(adapt_delta = 0.99))
 
 summary(R3_sa_m4, prob = .997)
