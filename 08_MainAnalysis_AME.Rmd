@@ -25,10 +25,11 @@ set_priors <- c(prior(normal(0, 1), class = b),
 load("cccu_MA.RData")
 
 cccu_MA <- cccu_MA %>%
-  arrange(CASEID)
+  arrange(CASEID) %>%
+  mutate(hc = droplevels(hc))
 ```
 
-#3. Load models of main analysis
+# 3. Load models of main analysis
 ```{r}
 m1 <- brm(file = "models/m1.Rds")
 m2 <- brm(file = "models/m2.Rds")
@@ -36,7 +37,7 @@ m3 <- brm(file = "models/m3.Rds")
 m4 <- brm(file = "models/m4.Rds")
 ```
 
-#4. Compute Average marginal effects
+# 4. Compute Average marginal effects
 
 ## m1
 ```{r}
