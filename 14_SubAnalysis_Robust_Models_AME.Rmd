@@ -41,10 +41,8 @@ cccu_R3_s <- cccu_R3_s %>%
 ```
 
 
-#3. Load models of main analysis
+# 3. Load models of robustness analysis
 ```{r}
-
-
 R1_sa_m2 <- brm(file = "models/R1_sa_m2.Rds")
 R2_sa_m2 <- brm(file = "models/R2_sa_m2.Rds")
 R3_sa_m2 <- brm(file = "models/R3_sa_m2.Rds")
@@ -123,8 +121,8 @@ summary(ame, conf_level = .997)
 ### R2
 ```{r}
 #average marginal effect
-# ame <- marginaleffects(R2_sa_m4)
-# summary(ame, conf_level = .997)
+ame <- marginaleffects(R2_sa_m4)
+summary(ame, conf_level = .997)
 
 ```
 
