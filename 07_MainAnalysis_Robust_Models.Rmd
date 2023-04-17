@@ -33,13 +33,16 @@ load("cccu_R3.RData")
 
 ```{r}
 cccu_R1 <- cccu_R1 %>%
-  arrange(CASEID)
+  arrange(CASEID) %>%
+  mutate(hc = droplevels(hc))
 
 cccu_R2 <- cccu_R2 %>%
-  arrange(CASEID)
+  arrange(CASEID) %>%
+  mutate(hc = droplevels(hc))
 
 cccu_R3 <- cccu_R3 %>%
-  arrange(CASEID)
+  arrange(CASEID) %>%
+  mutate(hc = droplevels(hc))
 
 ```
 

@@ -24,7 +24,8 @@ set_priors <- c(prior(normal(0, 1), class = b),
 load("cccu_SA.RData")
 
 cccu_SA <- cccu_SA %>%
-  arrange(CASEID)
+  arrange(CASEID) %>%
+  mutate(hc = droplevels(hc))
 ```
 
 # 3. Models
