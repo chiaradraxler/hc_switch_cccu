@@ -22,11 +22,14 @@ set_priors <- c(prior(normal(0, 1), class = b),
 # 2. Load Data
 ```{r}
 #MA
-load("cccu_R1.RData")
+load("cccu_R1.RData") %>%
+  mutate(hc = droplevels(hc))
 
-load("cccu_R2.RData")
+load("cccu_R2.RData") %>%
+  mutate(hc = droplevels(hc))
 
-load("cccu_R3.RData")
+load("cccu_R3.RData") %>%
+  mutate(hc = droplevels(hc))
 
 ```
 
