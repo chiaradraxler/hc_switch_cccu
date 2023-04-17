@@ -14,6 +14,8 @@ library(EValue)
 
 options(scipen = 999)
 
+set.seed(180822)
+
 set_priors <- c(prior(normal(0, 1), class = b),
                 prior(normal(0, 1), class = sd))
 ```
