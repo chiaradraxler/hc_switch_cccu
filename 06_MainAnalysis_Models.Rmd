@@ -27,6 +27,14 @@ load("cccu_MA.RData")
 
 cccu_MA <- cccu_MA %>%
   arrange(CASEID) %>%
+  mutate_if(is.factor, droplevels)
+
+cccu_MA_hc_only <- cccu_MA %>%
+  filter(hc == "hc") %>%
+  mutate(hc = droplevels(hc))
+
+cccu_MA_nonhc_only <- cccu_MA %>%
+  filter(hc == "non_hc") %>%
   mutate(hc = droplevels(hc))
 ```
 
@@ -50,11 +58,45 @@ m2 <- brm(switch ~ hc * contra_satis + (1 | CASEID),
           family = bernoulli(),
           data = cccu_MA,
           prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
           file = "models/m2.Rds")
 
 summary(m2, prob = .997)
 ```
 
+### hc only
+```{r}
+m2_hc_only <- brm(
+  switch ~ contra_satis + (1 | CASEID),
+  family = bernoulli(),
+  data = cccu_MA_hc_only,
+  prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+  file = "models/m2_hc_only.Rds"
+)
+
+summary(m2_hc_only, prob = .997)
+```
+
+### non-hc only
+```{r}
+m2_nonhc_only <- brm(
+  switch ~ contra_satis + (1 | CASEID),
+  family = bernoulli(),
+  data = cccu_MA_nonhc_only,
+  prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+  file = "models/m2_nonhc_only.Rds"
+)
+
+summary(m2_nonhc_only, prob = .997)
+```
 
 ## 3.3 Model 3: including not directly with contraceptive method associated predictors
 ```{r}
@@ -92,6 +134,42 @@ m3_sex_freq <-
 summary(m3_sex_freq, prob = .997)
 ```
 
+### hc only
+```{r}
+m3_hc_only <-
+  brm(
+    switch ~ contra_satis + sexual_satisfaction + sex_freq +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_MA_hc_only,
+  prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+  file = "models/m3_hc_only.Rds"
+  )
+
+summary(m3_hc_only, prob = .997)
+```
+
+### non-hc only
+```{r}
+m3_nonhc_only <-
+  brm(
+    switch ~ contra_satis + sexual_satisfaction + sex_freq +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_MA_nonhc_only,
+  prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+  file = "models/m3_nonhc_only.Rds"
+  )
+
+summary(m3_nonhc_only, prob = .997)
+```
+
 ## 3.4 Model 4: Controlling for observed selection effects
 ```{r}
 m4 <-
@@ -114,6 +192,49 @@ m4 <-
 summary(m4, prob = .997)
 ```
 
+### hc only
+```{r}
+m4_hc_only <-
+  brm(
+    switch ~ contra_satis + sexual_satisfaction +  sex_freq +
+      AGE + DEGREE_recode + POVRATE +
+      HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+      TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+      had_baby_between_waves + Avoid_r + FEELPG_recode +
+      rel_dur_factor + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_MA_hc_only,
+  prior = set_priors,
+  warmup = 1500,
+  iter = 4500,
+  control = list(adapt_delta = 0.99),
+  file = "models/m4_hc_only.Rds"
+  )
+
+summary(m4_hc_only, prob = .997)
+```
+
+### non-hc only
+```{r}
+m4_nonhc_only <-
+  brm(
+    switch ~ contra_satis + sexual_satisfaction +  sex_freq +
+      AGE + DEGREE_recode + POVRATE +
+      HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+      TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+      had_baby_between_waves + Avoid_r + FEELPG_recode +
+      rel_dur_factor + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_MA_nonhc_only,
+  prior = set_priors,
+  warmup = 1500,
+  iter = 4500,
+  control = list(adapt_delta = 0.99),
+  file = "models/m4_nonhc_only.Rds"
+  )
+
+summary(m4_nonhc_only, prob = .997)
+```
 
 
 

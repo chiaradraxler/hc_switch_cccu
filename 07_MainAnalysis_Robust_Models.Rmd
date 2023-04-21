@@ -34,15 +34,39 @@ load("cccu_R3.RData")
 ```{r}
 cccu_R1 <- cccu_R1 %>%
   arrange(CASEID) %>%
-  mutate(hc = droplevels(hc))
+  mutate_if(is.factor, droplevels)
+
+cccu_R1_hc_only <- cccu_R1 %>%
+  filter(hc == "hc") %>%
+  mutate_if(is.factor, droplevels)
+
+cccu_R1_nonhc_only <- cccu_R1 %>%
+  filter(hc == "non_hc") %>%
+  mutate_if(is.factor, droplevels)
 
 cccu_R2 <- cccu_R2 %>%
   arrange(CASEID) %>%
-  mutate(hc = droplevels(hc))
+  mutate_if(is.factor, droplevels)
+
+cccu_R2_hc_only <- cccu_R2 %>%
+  filter(hc == "hc") %>%
+  mutate_if(is.factor, droplevels)
+
+cccu_R2_nonhc_only <- cccu_R2 %>%
+  filter(hc == "non_hc") %>%
+  mutate_if(is.factor, droplevels)
 
 cccu_R3 <- cccu_R3 %>%
   arrange(CASEID) %>%
-  mutate(hc = droplevels(hc))
+  mutate_if(is.factor, droplevels)
+
+cccu_R3_hc_only <- cccu_R3 %>%
+  filter(hc == "hc") %>%
+  mutate_if(is.factor, droplevels)
+
+cccu_R3_nonhc_only <- cccu_R3 %>%
+  filter(hc == "non_hc") %>%
+  mutate_if(is.factor, droplevels)
 
 ```
 
@@ -100,6 +124,27 @@ R1_ma_2 <- brm(switch ~ hc * contra_satis + (1 | CASEID),
 
 summary(R1_ma_2, prob = .997)
 
+R1_m2_hc_only  <- brm(switch ~ contra_satis + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R1_hc_only,
+          prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+          file = "models/R1_m2_hc_only.Rds")
+
+summary(R1_m2_hc_only, prob = .997)
+
+R1_m2_nonhc_only <- brm(switch ~ contra_satis + (1| CASEID),
+                    family = bernoulli(),
+                    data = cccu_R1_nonhc_only,
+                    prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+                    file = "models/R1_m2_nonhc_only.Rds")
+
+summary(R1_m2_nonhc_only, prob = .997)
 ```
 
 ### R2
@@ -112,6 +157,27 @@ R2_ma_2 <- brm(switch ~ hc * contra_satis + (1 | CASEID),
 
 summary(R2_ma_2, prob = .997)
 
+R2_m2_hc_only  <- brm(switch ~ contra_satis + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R2_hc_only,
+          prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+          file = "models/R2_m2_hc_only.Rds")
+
+summary(R2_m2_hc_only, prob = .997)
+
+R2_m2_nonhc_only <- brm(switch ~ contra_satis + (1| CASEID),
+                    family = bernoulli(),
+                    data = cccu_R2_nonhc_only,
+                    prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+                    file = "models/R2_m2_nonhc_only.Rds")
+
+summary(R2_m2_nonhc_only, prob = .997)
 ```
 
 
@@ -124,6 +190,28 @@ R3_ma_2 <- brm(switch ~ hc * contra_satis + (1 | CASEID),
           file = "models/R3_ma_2.Rds")
 
 summary(R3_ma_2, prob = .997)
+
+R3_m2_hc_only  <- brm(switch ~ contra_satis + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R3_hc_only,
+          prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+          file = "models/R3_m2_hc_only.Rds")
+
+summary(R3_m2_hc_only, prob = .997)
+
+R3_m2_nonhc_only <- brm(switch ~ contra_satis + (1| CASEID),
+                    family = bernoulli(),
+                    data = cccu_R1_nonhc_only,
+                    prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+                    file = "models/R3_m2_nonhc_only.Rds")
+
+summary(R3_m2_nonhc_only, prob = .997)
 
 ```
 
@@ -166,6 +254,30 @@ R1_ma_3_sex_freq <-
   )
 
 summary(R1_ma_3_sex_freq, prob = .997)
+
+R1_m3_hc_only  <- brm(switch ~ contra_satis +  sexual_satisfaction + sex_freq + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R1_hc_only,
+          prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+          file = "models/R1_m3_hc_only.Rds")
+
+summary(R1_m3_hc_only, prob = .997)
+
+R1_m3_nonhc_only <- brm( switch ~ contra_satis +  sexual_satisfaction + sex_freq +
+                           (1| CASEID),
+                    family = bernoulli(),
+                    data = cccu_R1_nonhc_only,
+                    prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+                    file = "models/R1_m3_nonhc_only.Rds")
+
+summary(R1_m3_nonhc_only, prob = .997)
+
 ```
 
 ### R2
@@ -204,6 +316,28 @@ R2_ma_3_sex_freq <-
   )
 
 summary(R2_ma_3_sex_freq, prob = .997)
+
+R2_m3_hc_only  <- brm( switch ~ contra_satis +  sexual_satisfaction + sex_freq +  (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R2_hc_only,
+          prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+          file = "models/R2_m3_hc_only.Rds")
+
+summary(R2_m3_hc_only, prob = .997)
+
+R2_m3_nonhc_only <- brm(switch ~ contra_satis +  sexual_satisfaction + sex_freq +  (1| CASEID),
+                    family = bernoulli(),
+                    data = cccu_R2_nonhc_only,
+                    prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+                    file = "models/R2_m3_nonhc_only.Rds")
+
+summary(R2_m3_nonhc_only, prob = .997)
 ```
 
 ### R3
@@ -242,6 +376,28 @@ R3_ma_3_sex_freq <-
   )
 
 summary(R3_ma_3_sex_freq, prob = .997)
+
+R3_m3_hc_only  <- brm( switch ~ contra_satis +  sexual_satisfaction + sex_freq + (1 | CASEID),
+          family = bernoulli(),
+          data = cccu_R3_hc_only,
+          prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+          file = "models/R3_m3_hc_only.Rds")
+
+summary(R3_m3_hc_only, prob = .997)
+
+R3_m3_nonhc_only <- brm(switch ~ contra_satis +  sexual_satisfaction + sex_freq +  (1| CASEID),
+                    family = bernoulli(),
+                    data = cccu_R3_nonhc_only,
+                    prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+                    file = "models/R3_m3_nonhc_only.Rds")
+
+summary(R3_m3_nonhc_only, prob = .997)
 ```
 
 
@@ -270,6 +426,49 @@ R1_ma_4 <-
 
 summary(R1_ma_4, prob = .997)
 
+R1_m4_hc_only <-
+  brm(
+    switch ~ contra_satis +  sexual_satisfaction + sex_freq +
+      AGE + DEGREE_recode +
+      POVRATE +
+      HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+      TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+      had_baby_between_waves + Avoid_r +
+      FEELPG_recode +
+      rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R1_hc_only,
+    prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+    file = "models/R1_m4_hc_only.Rds"
+  )
+
+summary(R1_m4_hc_only, prob = .997)
+
+R1_m4_nonhc_only <-
+  brm(
+    switch ~ contra_satis +  sexual_satisfaction + sex_freq +
+      AGE + DEGREE_recode +
+      POVRATE +
+      HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+      TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+      had_baby_between_waves + Avoid_r +
+      FEELPG_recode +
+      rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R1_nonhc_only,
+    prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+    file = "models/R1_m4_nonhc_only.Rds"
+  )
+
+summary(R1_m4_nonhc_only, prob = .997)
 ```
 
 ### R2
@@ -293,6 +492,50 @@ R2_ma_4 <-
 
 summary(R2_ma_4, prob = .997)
 
+
+R2_m4_hc_only <-
+  brm(
+    switch ~ contra_satis +  sexual_satisfaction + sex_freq +
+      AGE + DEGREE_recode +
+      POVRATE +
+      HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+      TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+      had_baby_between_waves + Avoid_r +
+      FEELPG_recode +
+      rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R2_hc_only,
+    prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+    file = "models/R2_m4_hc_only.Rds"
+  )
+
+summary(R2_m4_hc_only, prob = .997)
+
+R2_m4_nonhc_only <-
+  brm(
+    switch ~ contra_satis +  sexual_satisfaction + sex_freq +
+      AGE + DEGREE_recode +
+      POVRATE +
+      HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+      TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+      had_baby_between_waves + Avoid_r +
+      FEELPG_recode +
+      rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R1_nonhc_only,
+    prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+    file = "models/R2_m4_nonhc_only.Rds"
+  )
+
+summary(R2_m4_nonhc_only, prob = .997)
 ```
 
 
@@ -317,6 +560,50 @@ R3_ma_4 <-
 
 summary(R3_ma_4, prob = .997)
 
+
+R3_m4_hc_only <-
+  brm(
+    switch ~ contra_satis +  sexual_satisfaction + sex_freq +
+      AGE + DEGREE_recode +
+      POVRATE +
+      HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+      TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+      had_baby_between_waves + Avoid_r +
+      FEELPG_recode +
+      rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R3_hc_only,
+    prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+    file = "models/R3_m4_hc_only.Rds"
+  )
+
+summary(R3_m4_hc_only, prob = .997)
+
+R3_m4_nonhc_only <-
+  brm(
+    switch ~ contra_satis +  sexual_satisfaction + sex_freq +
+      AGE + DEGREE_recode +
+      POVRATE +
+      HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+      TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+      had_baby_between_waves + Avoid_r +
+      FEELPG_recode +
+      rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_R3_nonhc_only,
+    prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+    file = "models/R3_m4_nonhc_only.Rds"
+  )
+
+summary(R3_m4_nonhc_only, prob = .997)
 ```
 
 

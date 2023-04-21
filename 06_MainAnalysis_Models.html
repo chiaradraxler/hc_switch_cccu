@@ -393,6 +393,14 @@ set_priors &lt;- c(prior(normal(0, 1), class = b),
 
 cccu_MA &lt;- cccu_MA %&gt;%
   arrange(CASEID) %&gt;%
+  mutate_if(is.factor, droplevels)
+
+cccu_MA_hc_only &lt;- cccu_MA %&gt;%
+  filter(hc == &quot;hc&quot;) %&gt;%
+  mutate(hc = droplevels(hc))
+
+cccu_MA_nonhc_only &lt;- cccu_MA %&gt;%
+  filter(hc == &quot;non_hc&quot;) %&gt;%
   mutate(hc = droplevels(hc))</code></pre>
 </div>
 <div id="models" class="section level1">
@@ -409,8 +417,8 @@ cccu_MA &lt;- cccu_MA %&gt;%
 <pre><code>## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0.000477 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.77 seconds.
+## Chain 1: Gradient evaluation took 0.000555 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.55 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -427,15 +435,15 @@ cccu_MA &lt;- cccu_MA %&gt;%
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 13.276 seconds (Warm-up)
-## Chain 1:                11.719 seconds (Sampling)
-## Chain 1:                24.995 seconds (Total)
+## Chain 1:  Elapsed Time: 12.729 seconds (Warm-up)
+## Chain 1:                11.656 seconds (Sampling)
+## Chain 1:                24.385 seconds (Total)
 ## Chain 1: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
 ## Chain 2: 
-## Chain 2: Gradient evaluation took 0.00036 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.6 seconds.
+## Chain 2: Gradient evaluation took 0.000313 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.13 seconds.
 ## Chain 2: Adjust your expectations accordingly!
 ## Chain 2: 
 ## Chain 2: 
@@ -452,15 +460,15 @@ cccu_MA &lt;- cccu_MA %&gt;%
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 12.029 seconds (Warm-up)
-## Chain 2:                11.831 seconds (Sampling)
-## Chain 2:                23.86 seconds (Total)
+## Chain 2:  Elapsed Time: 11.911 seconds (Warm-up)
+## Chain 2:                11.341 seconds (Sampling)
+## Chain 2:                23.252 seconds (Total)
 ## Chain 2: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
 ## Chain 3: 
-## Chain 3: Gradient evaluation took 0.000398 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 3.98 seconds.
+## Chain 3: Gradient evaluation took 0.00035 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 3.5 seconds.
 ## Chain 3: Adjust your expectations accordingly!
 ## Chain 3: 
 ## Chain 3: 
@@ -477,15 +485,15 @@ cccu_MA &lt;- cccu_MA %&gt;%
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 12.656 seconds (Warm-up)
-## Chain 3:                10.887 seconds (Sampling)
-## Chain 3:                23.543 seconds (Total)
+## Chain 3:  Elapsed Time: 12.593 seconds (Warm-up)
+## Chain 3:                11.241 seconds (Sampling)
+## Chain 3:                23.834 seconds (Total)
 ## Chain 3: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
 ## Chain 4: 
-## Chain 4: Gradient evaluation took 0.000339 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 3.39 seconds.
+## Chain 4: Gradient evaluation took 0.000333 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 3.33 seconds.
 ## Chain 4: Adjust your expectations accordingly!
 ## Chain 4: 
 ## Chain 4: 
@@ -502,9 +510,9 @@ cccu_MA &lt;- cccu_MA %&gt;%
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 12.287 seconds (Warm-up)
-## Chain 4:                11.506 seconds (Sampling)
-## Chain 4:                23.793 seconds (Total)
+## Chain 4:  Elapsed Time: 12.673 seconds (Warm-up)
+## Chain 4:                12.046 seconds (Sampling)
+## Chain 4:                24.719 seconds (Total)
 ## Chain 4:</code></pre>
 <pre class="r"><code>summary(m1, prob = .997)</code></pre>
 <pre><code>##  Family: bernoulli 
@@ -535,137 +543,415 @@ predictors</h2>
           family = bernoulli(),
           data = cccu_MA,
           prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
           file = &quot;models/m2.Rds&quot;)</code></pre>
 <pre><code>## Compiling Stan program...</code></pre>
 <pre><code>## Start sampling</code></pre>
 <pre><code>## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0.000548 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.48 seconds.
+## Chain 1: Gradient evaluation took 0.000741 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 7.41 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
-## Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 1: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 1: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 1: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 1: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 1: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 1: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 1: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 1: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 1: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 1: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 1: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 1: Iteration: 4500 / 4500 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 15.667 seconds (Warm-up)
-## Chain 1:                12.178 seconds (Sampling)
-## Chain 1:                27.845 seconds (Total)
+## Chain 1:  Elapsed Time: 54.761 seconds (Warm-up)
+## Chain 1:                80.914 seconds (Sampling)
+## Chain 1:                135.675 seconds (Total)
 ## Chain 1: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
 ## Chain 2: 
-## Chain 2: Gradient evaluation took 0.000399 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.99 seconds.
+## Chain 2: Gradient evaluation took 0.000402 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.02 seconds.
 ## Chain 2: Adjust your expectations accordingly!
 ## Chain 2: 
 ## Chain 2: 
-## Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 2: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 2: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 2: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 2: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 2: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 2: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 2: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 2: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 2: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 2: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 2: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 2: Iteration: 4500 / 4500 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 16.211 seconds (Warm-up)
-## Chain 2:                11.976 seconds (Sampling)
-## Chain 2:                28.187 seconds (Total)
+## Chain 2:  Elapsed Time: 61.192 seconds (Warm-up)
+## Chain 2:                82.854 seconds (Sampling)
+## Chain 2:                144.046 seconds (Total)
 ## Chain 2: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
 ## Chain 3: 
-## Chain 3: Gradient evaluation took 0.000741 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 7.41 seconds.
+## Chain 3: Gradient evaluation took 0.000385 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 3.85 seconds.
 ## Chain 3: Adjust your expectations accordingly!
 ## Chain 3: 
 ## Chain 3: 
-## Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 3: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 3: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 3: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 3: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 3: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 3: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 3: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 3: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 3: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 3: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 3: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 3: Iteration: 4500 / 4500 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 15.349 seconds (Warm-up)
-## Chain 3:                11.909 seconds (Sampling)
-## Chain 3:                27.258 seconds (Total)
+## Chain 3:  Elapsed Time: 60.242 seconds (Warm-up)
+## Chain 3:                73.454 seconds (Sampling)
+## Chain 3:                133.696 seconds (Total)
 ## Chain 3: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
 ## Chain 4: 
-## Chain 4: Gradient evaluation took 0.000401 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 4.01 seconds.
+## Chain 4: Gradient evaluation took 0.000388 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 3.88 seconds.
 ## Chain 4: Adjust your expectations accordingly!
 ## Chain 4: 
 ## Chain 4: 
-## Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 4: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 4: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 4: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 4: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 4: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 4: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 4: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 4: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 4: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 4: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 4: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 4: Iteration: 4500 / 4500 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 15.293 seconds (Warm-up)
-## Chain 4:                12.017 seconds (Sampling)
-## Chain 4:                27.31 seconds (Total)
+## Chain 4:  Elapsed Time: 57.423 seconds (Warm-up)
+## Chain 4:                80.075 seconds (Sampling)
+## Chain 4:                137.498 seconds (Total)
 ## Chain 4:</code></pre>
 <pre class="r"><code>summary(m2, prob = .997)</code></pre>
 <pre><code>##  Family: bernoulli 
 ##   Links: mu = logit 
 ## Formula: switch ~ hc * contra_satis + (1 | CASEID) 
 ##    Data: cccu_MA (Number of observations: 3787) 
-##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
-##          total post-warmup draws = 4000
+##   Draws: 4 chains, each with iter = 4500; warmup = 1500; thin = 1;
+##          total post-warmup draws = 12000
 ## 
 ## Group-Level Effects: 
 ## ~CASEID (Number of levels: 1993) 
 ##               Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
-## sd(Intercept)     1.26      0.15       0.69       1.74 1.01      768     1517
+## sd(Intercept)     1.25      0.15       0.81       1.70 1.00     1994     3071
 ## 
 ## Population-Level Effects: 
 ##                       Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS
-## Intercept                 0.10      0.33      -0.91       1.01 1.00     4147
-## hcnon_hc                 -2.08      0.49      -3.50      -0.55 1.00     3728
-## contra_satis             -0.60      0.09      -0.89      -0.32 1.00     4205
-## hcnon_hc:contra_satis     0.28      0.15      -0.17       0.69 1.00     3633
+## Intercept                 0.10      0.34      -0.96       1.08 1.00     7873
+## hcnon_hc                 -2.08      0.49      -3.56      -0.60 1.00     5763
+## contra_satis             -0.61      0.10      -0.89      -0.32 1.00     7200
+## hcnon_hc:contra_satis     0.28      0.15      -0.16       0.72 1.00     5868
 ##                       Tail_ESS
-## Intercept                 3499
-## hcnon_hc                  3132
-## contra_satis              3628
-## hcnon_hc:contra_satis     2959
+## Intercept                 8876
+## hcnon_hc                  7481
+## contra_satis              8631
+## hcnon_hc:contra_satis     7720
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
 ## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+<div id="hc-only" class="section level3">
+<h3>hc only</h3>
+<pre class="r"><code>m2_hc_only &lt;- brm(
+  switch ~ contra_satis + (1 | CASEID),
+  family = bernoulli(),
+  data = cccu_MA_hc_only,
+  prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+  file = &quot;models/m2_hc_only.Rds&quot;
+)</code></pre>
+<pre><code>## Compiling Stan program...</code></pre>
+<pre><code>## Start sampling</code></pre>
+<pre><code>## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
+## Chain 1: 
+## Chain 1: Gradient evaluation took 0.000224 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2.24 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 1: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 1: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 1: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 1: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 1: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 1: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 1: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 1: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 1: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 1: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 1: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 1: 
+## Chain 1:  Elapsed Time: 22.923 seconds (Warm-up)
+## Chain 1:                37.535 seconds (Sampling)
+## Chain 1:                60.458 seconds (Total)
+## Chain 1: 
+## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
+## Chain 2: 
+## Chain 2: Gradient evaluation took 0.000223 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 2.23 seconds.
+## Chain 2: Adjust your expectations accordingly!
+## Chain 2: 
+## Chain 2: 
+## Chain 2: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 2: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 2: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 2: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 2: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 2: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 2: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 2: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 2: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 2: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 2: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 2: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 2: 
+## Chain 2:  Elapsed Time: 22.581 seconds (Warm-up)
+## Chain 2:                37.996 seconds (Sampling)
+## Chain 2:                60.577 seconds (Total)
+## Chain 2: 
+## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
+## Chain 3: 
+## Chain 3: Gradient evaluation took 0.000218 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 2.18 seconds.
+## Chain 3: Adjust your expectations accordingly!
+## Chain 3: 
+## Chain 3: 
+## Chain 3: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 3: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 3: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 3: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 3: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 3: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 3: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 3: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 3: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 3: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 3: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 3: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 3: 
+## Chain 3:  Elapsed Time: 23.735 seconds (Warm-up)
+## Chain 3:                79.636 seconds (Sampling)
+## Chain 3:                103.371 seconds (Total)
+## Chain 3: 
+## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
+## Chain 4: 
+## Chain 4: Gradient evaluation took 0.000229 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 2.29 seconds.
+## Chain 4: Adjust your expectations accordingly!
+## Chain 4: 
+## Chain 4: 
+## Chain 4: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 4: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 4: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 4: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 4: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 4: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 4: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 4: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 4: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 4: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 4: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 4: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 4: 
+## Chain 4:  Elapsed Time: 25.891 seconds (Warm-up)
+## Chain 4:                61.851 seconds (Sampling)
+## Chain 4:                87.742 seconds (Total)
+## Chain 4:</code></pre>
+<pre class="r"><code>summary(m2_hc_only, prob = .997)</code></pre>
+<pre><code>##  Family: bernoulli 
+##   Links: mu = logit 
+## Formula: switch ~ contra_satis + (1 | CASEID) 
+##    Data: cccu_MA_hc_only (Number of observations: 2294) 
+##   Draws: 4 chains, each with iter = 4500; warmup = 1500; thin = 1;
+##          total post-warmup draws = 12000
+## 
+## Group-Level Effects: 
+## ~CASEID (Number of levels: 1234) 
+##               Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     1.15      0.29       0.11       1.92 1.00      854      936
+## 
+## Population-Level Effects: 
+##              Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
+## Intercept        0.48      0.35      -0.56       1.55 1.00    13396     9771
+## contra_satis    -0.68      0.11      -1.02      -0.38 1.00     4288     6338
+## 
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+<div id="non-hc-only" class="section level3">
+<h3>non-hc only</h3>
+<pre class="r"><code>m2_nonhc_only &lt;- brm(
+  switch ~ contra_satis + (1 | CASEID),
+  family = bernoulli(),
+  data = cccu_MA_nonhc_only,
+  prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+  file = &quot;models/m2_nonhc_only.Rds&quot;
+)</code></pre>
+<pre><code>## Compiling Stan program...</code></pre>
+<pre><code>## Start sampling</code></pre>
+<pre><code>## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
+## Chain 1: 
+## Chain 1: Gradient evaluation took 0.000272 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2.72 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 1: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 1: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 1: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 1: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 1: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 1: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 1: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 1: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 1: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 1: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 1: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 1: 
+## Chain 1:  Elapsed Time: 45.898 seconds (Warm-up)
+## Chain 1:                57.492 seconds (Sampling)
+## Chain 1:                103.39 seconds (Total)
+## Chain 1: 
+## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
+## Chain 2: 
+## Chain 2: Gradient evaluation took 0.000155 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.55 seconds.
+## Chain 2: Adjust your expectations accordingly!
+## Chain 2: 
+## Chain 2: 
+## Chain 2: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 2: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 2: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 2: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 2: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 2: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 2: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 2: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 2: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 2: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 2: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 2: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 2: 
+## Chain 2:  Elapsed Time: 21.698 seconds (Warm-up)
+## Chain 2:                57.418 seconds (Sampling)
+## Chain 2:                79.116 seconds (Total)
+## Chain 2: 
+## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
+## Chain 3: 
+## Chain 3: Gradient evaluation took 0.000141 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.41 seconds.
+## Chain 3: Adjust your expectations accordingly!
+## Chain 3: 
+## Chain 3: 
+## Chain 3: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 3: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 3: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 3: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 3: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 3: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 3: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 3: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 3: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 3: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 3: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 3: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 3: 
+## Chain 3:  Elapsed Time: 24.079 seconds (Warm-up)
+## Chain 3:                29.332 seconds (Sampling)
+## Chain 3:                53.411 seconds (Total)
+## Chain 3: 
+## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
+## Chain 4: 
+## Chain 4: Gradient evaluation took 0.000168 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 1.68 seconds.
+## Chain 4: Adjust your expectations accordingly!
+## Chain 4: 
+## Chain 4: 
+## Chain 4: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 4: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 4: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 4: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 4: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 4: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 4: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 4: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 4: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 4: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 4: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 4: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 4: 
+## Chain 4:  Elapsed Time: 20.031 seconds (Warm-up)
+## Chain 4:                73.975 seconds (Sampling)
+## Chain 4:                94.006 seconds (Total)
+## Chain 4:</code></pre>
+<pre><code>## Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
+## Running the chains for more iterations may help. See
+## https://mc-stan.org/misc/warnings.html#tail-ess</code></pre>
+<pre class="r"><code>summary(m2_nonhc_only, prob = .997)</code></pre>
+<pre><code>##  Family: bernoulli 
+##   Links: mu = logit 
+## Formula: switch ~ contra_satis + (1 | CASEID) 
+##    Data: cccu_MA_nonhc_only (Number of observations: 1493) 
+##   Draws: 4 chains, each with iter = 4500; warmup = 1500; thin = 1;
+##          total post-warmup draws = 12000
+## 
+## Group-Level Effects: 
+## ~CASEID (Number of levels: 916) 
+##               Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     1.91      0.57       0.08       3.54 1.01      550      387
+## 
+## Population-Level Effects: 
+##              Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
+## Intercept       -2.92      0.71      -5.42      -1.11 1.00     1425     2728
+## contra_satis    -0.19      0.17      -0.72       0.30 1.00    10687     8530
+## 
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
 </div>
 <div id="model-3-including-not-directly-with-contraceptive-method-associated-predictors" class="section level2">
 <h2>3.3 Model 3: including not directly with contraceptive method
@@ -683,8 +969,8 @@ associated predictors</h2>
 <pre><code>## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0.000554 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.54 seconds.
+## Chain 1: Gradient evaluation took 0.000587 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.87 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -701,15 +987,15 @@ associated predictors</h2>
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 22.963 seconds (Warm-up)
-## Chain 1:                12.724 seconds (Sampling)
-## Chain 1:                35.687 seconds (Total)
+## Chain 1:  Elapsed Time: 26.93 seconds (Warm-up)
+## Chain 1:                14.49 seconds (Sampling)
+## Chain 1:                41.42 seconds (Total)
 ## Chain 1: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
 ## Chain 2: 
-## Chain 2: Gradient evaluation took 0.000411 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.11 seconds.
+## Chain 2: Gradient evaluation took 0.000452 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.52 seconds.
 ## Chain 2: Adjust your expectations accordingly!
 ## Chain 2: 
 ## Chain 2: 
@@ -726,15 +1012,15 @@ associated predictors</h2>
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 22.732 seconds (Warm-up)
-## Chain 2:                12.728 seconds (Sampling)
-## Chain 2:                35.46 seconds (Total)
+## Chain 2:  Elapsed Time: 25.582 seconds (Warm-up)
+## Chain 2:                14.396 seconds (Sampling)
+## Chain 2:                39.978 seconds (Total)
 ## Chain 2: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
 ## Chain 3: 
-## Chain 3: Gradient evaluation took 0.000399 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 3.99 seconds.
+## Chain 3: Gradient evaluation took 0.000465 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 4.65 seconds.
 ## Chain 3: Adjust your expectations accordingly!
 ## Chain 3: 
 ## Chain 3: 
@@ -751,15 +1037,15 @@ associated predictors</h2>
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 23.292 seconds (Warm-up)
-## Chain 3:                24.231 seconds (Sampling)
-## Chain 3:                47.523 seconds (Total)
+## Chain 3:  Elapsed Time: 25.067 seconds (Warm-up)
+## Chain 3:                14.253 seconds (Sampling)
+## Chain 3:                39.32 seconds (Total)
 ## Chain 3: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
 ## Chain 4: 
-## Chain 4: Gradient evaluation took 0.000423 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 4.23 seconds.
+## Chain 4: Gradient evaluation took 0.000461 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 4.61 seconds.
 ## Chain 4: Adjust your expectations accordingly!
 ## Chain 4: 
 ## Chain 4: 
@@ -776,9 +1062,9 @@ associated predictors</h2>
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 24.232 seconds (Warm-up)
-## Chain 4:                12.658 seconds (Sampling)
-## Chain 4:                36.89 seconds (Total)
+## Chain 4:  Elapsed Time: 25.059 seconds (Warm-up)
+## Chain 4:                14.306 seconds (Sampling)
+## Chain 4:                39.365 seconds (Total)
 ## Chain 4:</code></pre>
 <pre class="r"><code>summary(m3, prob = .997)</code></pre>
 <pre><code>##  Family: bernoulli 
@@ -791,35 +1077,35 @@ associated predictors</h2>
 ## Group-Level Effects: 
 ## ~CASEID (Number of levels: 1993) 
 ##               Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
-## sd(Intercept)     1.29      0.15       0.87       1.74 1.00      747     1731
+## sd(Intercept)     1.30      0.15       0.88       1.77 1.01      600     1121
 ## 
 ## Population-Level Effects: 
 ##                                Estimate Est.Error l-99.7% CI u-99.7% CI Rhat
-## Intercept                         -0.25      0.42      -1.49       0.97 1.00
-## hcnon_hc                          -1.35      0.62      -3.10       0.40 1.00
-## contra_satis                      -0.65      0.10      -0.91      -0.37 1.00
+## Intercept                         -0.26      0.43      -1.60       0.98 1.00
+## hcnon_hc                          -1.33      0.61      -3.30       0.50 1.00
+## contra_satis                      -0.65      0.10      -0.93      -0.35 1.00
 ## sexual_satisfaction                0.13      0.07      -0.06       0.32 1.00
-## sex_freq2M5times                  -0.08      0.20      -0.67       0.47 1.00
-## sex_freq6M10times                 -0.20      0.22      -0.78       0.43 1.00
-## sex_freq11ormoretimes             -0.38      0.25      -1.14       0.33 1.00
-## hcnon_hc:contra_satis              0.38      0.16      -0.09       0.86 1.00
-## hcnon_hc:sexual_satisfaction      -0.21      0.11      -0.54       0.12 1.00
-## hcnon_hc:sex_freq2M5times         -0.21      0.35      -1.27       0.84 1.00
-## hcnon_hc:sex_freq6M10times        -0.06      0.39      -1.17       1.12 1.00
-## hcnon_hc:sex_freq11ormoretimes     0.54      0.42      -0.75       1.77 1.00
+## sex_freq2M5times                  -0.09      0.20      -0.66       0.49 1.00
+## sex_freq6M10times                 -0.21      0.22      -0.86       0.42 1.00
+## sex_freq11ormoretimes             -0.37      0.25      -1.09       0.33 1.00
+## hcnon_hc:contra_satis              0.38      0.16      -0.11       0.85 1.00
+## hcnon_hc:sexual_satisfaction      -0.22      0.11      -0.54       0.11 1.00
+## hcnon_hc:sex_freq2M5times         -0.20      0.36      -1.16       0.92 1.00
+## hcnon_hc:sex_freq6M10times        -0.05      0.40      -1.23       1.08 1.00
+## hcnon_hc:sex_freq11ormoretimes     0.55      0.44      -0.83       1.92 1.00
 ##                                Bulk_ESS Tail_ESS
-## Intercept                          4076     3512
-## hcnon_hc                           3247     3018
-## contra_satis                       3771     3279
-## sexual_satisfaction                3260     3130
-## sex_freq2M5times                   1606     2250
-## sex_freq6M10times                  2114     2444
-## sex_freq11ormoretimes              1970     2992
-## hcnon_hc:contra_satis              3893     3437
-## hcnon_hc:sexual_satisfaction       3447     3154
-## hcnon_hc:sex_freq2M5times          2681     3013
-## hcnon_hc:sex_freq6M10times         2838     3054
-## hcnon_hc:sex_freq11ormoretimes     2983     2605
+## Intercept                          3189     3017
+## hcnon_hc                           2696     2796
+## contra_satis                       3015     3105
+## sexual_satisfaction                2429     2899
+## sex_freq2M5times                   2226     2815
+## sex_freq6M10times                  2178     2926
+## sex_freq11ormoretimes              2095     2796
+## hcnon_hc:contra_satis              3074     3194
+## hcnon_hc:sexual_satisfaction       2220     2581
+## hcnon_hc:sex_freq2M5times          2146     3013
+## hcnon_hc:sex_freq6M10times         2176     3088
+## hcnon_hc:sex_freq11ormoretimes     2114     2825
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -837,8 +1123,8 @@ associated predictors</h2>
 <pre><code>## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0.000584 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.84 seconds.
+## Chain 1: Gradient evaluation took 0.000741 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 7.41 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -855,15 +1141,15 @@ associated predictors</h2>
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 18.726 seconds (Warm-up)
-## Chain 1:                12.712 seconds (Sampling)
-## Chain 1:                31.438 seconds (Total)
+## Chain 1:  Elapsed Time: 22.722 seconds (Warm-up)
+## Chain 1:                14.663 seconds (Sampling)
+## Chain 1:                37.385 seconds (Total)
 ## Chain 1: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
 ## Chain 2: 
-## Chain 2: Gradient evaluation took 0.000408 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.08 seconds.
+## Chain 2: Gradient evaluation took 0.000473 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.73 seconds.
 ## Chain 2: Adjust your expectations accordingly!
 ## Chain 2: 
 ## Chain 2: 
@@ -880,15 +1166,15 @@ associated predictors</h2>
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 17.819 seconds (Warm-up)
-## Chain 2:                12.818 seconds (Sampling)
-## Chain 2:                30.637 seconds (Total)
+## Chain 2:  Elapsed Time: 20.278 seconds (Warm-up)
+## Chain 2:                14.797 seconds (Sampling)
+## Chain 2:                35.075 seconds (Total)
 ## Chain 2: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
 ## Chain 3: 
-## Chain 3: Gradient evaluation took 0.00046 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 4.6 seconds.
+## Chain 3: Gradient evaluation took 0.000472 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 4.72 seconds.
 ## Chain 3: Adjust your expectations accordingly!
 ## Chain 3: 
 ## Chain 3: 
@@ -905,15 +1191,15 @@ associated predictors</h2>
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 19.988 seconds (Warm-up)
-## Chain 3:                13.226 seconds (Sampling)
-## Chain 3:                33.214 seconds (Total)
+## Chain 3:  Elapsed Time: 23.132 seconds (Warm-up)
+## Chain 3:                14.8 seconds (Sampling)
+## Chain 3:                37.932 seconds (Total)
 ## Chain 3: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
 ## Chain 4: 
-## Chain 4: Gradient evaluation took 0.000417 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 4.17 seconds.
+## Chain 4: Gradient evaluation took 0.00047 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 4.7 seconds.
 ## Chain 4: Adjust your expectations accordingly!
 ## Chain 4: 
 ## Chain 4: 
@@ -930,9 +1216,9 @@ associated predictors</h2>
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 19.642 seconds (Warm-up)
-## Chain 4:                14.564 seconds (Sampling)
-## Chain 4:                34.206 seconds (Total)
+## Chain 4:  Elapsed Time: 21.629 seconds (Warm-up)
+## Chain 4:                14.862 seconds (Sampling)
+## Chain 4:                36.491 seconds (Total)
 ## Chain 4:</code></pre>
 <pre class="r"><code>summary(m3_sexual_satisfaction, prob = .997)</code></pre>
 <pre><code>##  Family: bernoulli 
@@ -945,19 +1231,19 @@ associated predictors</h2>
 ## Group-Level Effects: 
 ## ~CASEID (Number of levels: 1993) 
 ##               Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
-## sd(Intercept)     1.35      0.15       0.90       1.77 1.00      767     1736
+## sd(Intercept)     1.34      0.15       0.90       1.80 1.01      739     1635
 ## 
 ## Population-Level Effects: 
 ##                              Estimate Est.Error l-99.7% CI u-99.7% CI Rhat
-## Intercept                       -2.23      0.32      -3.19      -1.33 1.00
-## hcnon_hc                        -0.51      0.51      -2.01       1.04 1.00
-## sexual_satisfaction              0.03      0.06      -0.15       0.22 1.00
-## hcnon_hc:sexual_satisfaction    -0.12      0.10      -0.41       0.18 1.00
+## Intercept                       -2.24      0.33      -3.27      -1.32 1.00
+## hcnon_hc                        -0.51      0.51      -2.10       0.96 1.00
+## sexual_satisfaction              0.03      0.06      -0.14       0.21 1.00
+## hcnon_hc:sexual_satisfaction    -0.11      0.10      -0.41       0.19 1.00
 ##                              Bulk_ESS Tail_ESS
-## Intercept                        4066     3026
-## hcnon_hc                         4113     3168
-## sexual_satisfaction              4737     3199
-## hcnon_hc:sexual_satisfaction     4187     3076
+## Intercept                        3479     3424
+## hcnon_hc                         4144     2932
+## sexual_satisfaction              4592     3517
+## hcnon_hc:sexual_satisfaction     3943     3109
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -975,8 +1261,8 @@ associated predictors</h2>
 <pre><code>## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0.000818 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 8.18 seconds.
+## Chain 1: Gradient evaluation took 0.000784 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 7.84 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -993,15 +1279,15 @@ associated predictors</h2>
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 15.679 seconds (Warm-up)
-## Chain 1:                12.736 seconds (Sampling)
-## Chain 1:                28.415 seconds (Total)
+## Chain 1:  Elapsed Time: 15.384 seconds (Warm-up)
+## Chain 1:                13.882 seconds (Sampling)
+## Chain 1:                29.266 seconds (Total)
 ## Chain 1: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
 ## Chain 2: 
-## Chain 2: Gradient evaluation took 0.000408 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.08 seconds.
+## Chain 2: Gradient evaluation took 0.000442 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.42 seconds.
 ## Chain 2: Adjust your expectations accordingly!
 ## Chain 2: 
 ## Chain 2: 
@@ -1018,15 +1304,15 @@ associated predictors</h2>
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 15.627 seconds (Warm-up)
-## Chain 2:                13.989 seconds (Sampling)
-## Chain 2:                29.616 seconds (Total)
+## Chain 2:  Elapsed Time: 14.597 seconds (Warm-up)
+## Chain 2:                13.957 seconds (Sampling)
+## Chain 2:                28.554 seconds (Total)
 ## Chain 2: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
 ## Chain 3: 
-## Chain 3: Gradient evaluation took 0.000474 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 4.74 seconds.
+## Chain 3: Gradient evaluation took 0.000468 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 4.68 seconds.
 ## Chain 3: Adjust your expectations accordingly!
 ## Chain 3: 
 ## Chain 3: 
@@ -1043,15 +1329,15 @@ associated predictors</h2>
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 14.621 seconds (Warm-up)
-## Chain 3:                10.704 seconds (Sampling)
-## Chain 3:                25.325 seconds (Total)
+## Chain 3:  Elapsed Time: 15.417 seconds (Warm-up)
+## Chain 3:                13.912 seconds (Sampling)
+## Chain 3:                29.329 seconds (Total)
 ## Chain 3: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
 ## Chain 4: 
-## Chain 4: Gradient evaluation took 0.000393 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 3.93 seconds.
+## Chain 4: Gradient evaluation took 0.000489 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 4.89 seconds.
 ## Chain 4: Adjust your expectations accordingly!
 ## Chain 4: 
 ## Chain 4: 
@@ -1068,9 +1354,9 @@ associated predictors</h2>
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 14.664 seconds (Warm-up)
-## Chain 4:                13.597 seconds (Sampling)
-## Chain 4:                28.261 seconds (Total)
+## Chain 4:  Elapsed Time: 15.895 seconds (Warm-up)
+## Chain 4:                13.951 seconds (Sampling)
+## Chain 4:                29.846 seconds (Total)
 ## Chain 4:</code></pre>
 <pre class="r"><code>summary(m3_sex_freq, prob = .997)</code></pre>
 <pre><code>##  Family: bernoulli 
@@ -1083,31 +1369,329 @@ associated predictors</h2>
 ## Group-Level Effects: 
 ## ~CASEID (Number of levels: 1993) 
 ##               Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
-## sd(Intercept)     1.36      0.16       0.93       1.79 1.01      713     1290
+## sd(Intercept)     1.35      0.15       0.93       1.80 1.00      905     1809
 ## 
 ## Population-Level Effects: 
 ##                                Estimate Est.Error l-99.7% CI u-99.7% CI Rhat
-## Intercept                         -1.94      0.18      -2.51      -1.44 1.00
-## hcnon_hc                          -0.98      0.32      -1.91      -0.05 1.00
-## sex_freq2M5times                  -0.08      0.19      -0.68       0.52 1.00
-## sex_freq6M10times                 -0.20      0.21      -0.84       0.43 1.00
-## sex_freq11ormoretimes             -0.31      0.24      -0.99       0.37 1.00
-## hcnon_hc:sex_freq2M5times         -0.25      0.36      -1.36       0.79 1.00
-## hcnon_hc:sex_freq6M10times        -0.16      0.39      -1.35       0.96 1.00
-## hcnon_hc:sex_freq11ormoretimes     0.38      0.42      -0.88       1.62 1.00
+## Intercept                         -1.94      0.18      -2.48      -1.42 1.00
+## hcnon_hc                          -0.99      0.32      -1.92      -0.10 1.00
+## sex_freq2M5times                  -0.08      0.19      -0.61       0.50 1.00
+## sex_freq6M10times                 -0.20      0.21      -0.81       0.42 1.00
+## sex_freq11ormoretimes             -0.32      0.23      -1.02       0.37 1.00
+## hcnon_hc:sex_freq2M5times         -0.23      0.36      -1.27       0.86 1.00
+## hcnon_hc:sex_freq6M10times        -0.14      0.39      -1.24       1.05 1.00
+## hcnon_hc:sex_freq11ormoretimes     0.40      0.43      -0.90       1.64 1.00
 ##                                Bulk_ESS Tail_ESS
-## Intercept                          2166     2416
-## hcnon_hc                           2716     2685
-## sex_freq2M5times                   3434     2710
-## sex_freq6M10times                  3271     2863
-## sex_freq11ormoretimes              3222     2823
-## hcnon_hc:sex_freq2M5times          2810     3280
-## hcnon_hc:sex_freq6M10times         2712     2924
-## hcnon_hc:sex_freq11ormoretimes     2776     3245
+## Intercept                          2229     3035
+## hcnon_hc                           4087     2931
+## sex_freq2M5times                   4713     3552
+## sex_freq6M10times                  4677     3550
+## sex_freq11ormoretimes              5052     3444
+## hcnon_hc:sex_freq2M5times          4151     3057
+## hcnon_hc:sex_freq6M10times         4095     3112
+## hcnon_hc:sex_freq11ormoretimes     5084     3180
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
 ## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+<div id="hc-only-1" class="section level3">
+<h3>hc only</h3>
+<pre class="r"><code>m3_hc_only &lt;-
+  brm(
+    switch ~ contra_satis + sexual_satisfaction + sex_freq +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_MA_hc_only,
+  prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+  file = &quot;models/m3_hc_only.Rds&quot;
+  )</code></pre>
+<pre><code>## Compiling Stan program...</code></pre>
+<pre><code>## Start sampling</code></pre>
+<pre><code>## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
+## Chain 1: 
+## Chain 1: Gradient evaluation took 0.00049 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.9 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 1: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 1: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 1: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 1: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 1: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 1: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 1: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 1: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 1: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 1: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 1: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 1: 
+## Chain 1:  Elapsed Time: 26.958 seconds (Warm-up)
+## Chain 1:                86.868 seconds (Sampling)
+## Chain 1:                113.826 seconds (Total)
+## Chain 1: 
+## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
+## Chain 2: 
+## Chain 2: Gradient evaluation took 0.000247 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 2.47 seconds.
+## Chain 2: Adjust your expectations accordingly!
+## Chain 2: 
+## Chain 2: 
+## Chain 2: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 2: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 2: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 2: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 2: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 2: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 2: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 2: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 2: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 2: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 2: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 2: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 2: 
+## Chain 2:  Elapsed Time: 43.939 seconds (Warm-up)
+## Chain 2:                50.926 seconds (Sampling)
+## Chain 2:                94.865 seconds (Total)
+## Chain 2: 
+## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
+## Chain 3: 
+## Chain 3: Gradient evaluation took 0.000272 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 2.72 seconds.
+## Chain 3: Adjust your expectations accordingly!
+## Chain 3: 
+## Chain 3: 
+## Chain 3: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 3: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 3: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 3: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 3: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 3: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 3: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 3: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 3: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 3: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 3: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 3: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 3: 
+## Chain 3:  Elapsed Time: 31.505 seconds (Warm-up)
+## Chain 3:                46.148 seconds (Sampling)
+## Chain 3:                77.653 seconds (Total)
+## Chain 3: 
+## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
+## Chain 4: 
+## Chain 4: Gradient evaluation took 0.000253 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 2.53 seconds.
+## Chain 4: Adjust your expectations accordingly!
+## Chain 4: 
+## Chain 4: 
+## Chain 4: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 4: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 4: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 4: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 4: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 4: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 4: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 4: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 4: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 4: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 4: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 4: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 4: 
+## Chain 4:  Elapsed Time: 29.322 seconds (Warm-up)
+## Chain 4:                92.195 seconds (Sampling)
+## Chain 4:                121.517 seconds (Total)
+## Chain 4:</code></pre>
+<pre class="r"><code>summary(m3_hc_only, prob = .997)</code></pre>
+<pre><code>##  Family: bernoulli 
+##   Links: mu = logit 
+## Formula: switch ~ contra_satis + sexual_satisfaction + sex_freq + (1 | CASEID) 
+##    Data: cccu_MA_hc_only (Number of observations: 2294) 
+##   Draws: 4 chains, each with iter = 4500; warmup = 1500; thin = 1;
+##          total post-warmup draws = 12000
+## 
+## Group-Level Effects: 
+## ~CASEID (Number of levels: 1234) 
+##               Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     1.17      0.29       0.15       1.99 1.01      742      740
+## 
+## Population-Level Effects: 
+##                       Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS
+## Intercept                 0.18      0.45      -1.12       1.57 1.00    13218
+## contra_satis             -0.70      0.11      -1.04      -0.41 1.00     4169
+## sexual_satisfaction       0.10      0.07      -0.09       0.29 1.00    12482
+## sex_freq2M5times         -0.08      0.20      -0.68       0.53 1.00     9135
+## sex_freq6M10times        -0.22      0.22      -0.87       0.42 1.00     8542
+## sex_freq11ormoretimes    -0.40      0.25      -1.15       0.33 1.00     8943
+##                       Tail_ESS
+## Intercept                 9307
+## contra_satis              7254
+## sexual_satisfaction       9086
+## sex_freq2M5times          9605
+## sex_freq6M10times         8200
+## sex_freq11ormoretimes     8327
+## 
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+<div id="non-hc-only-1" class="section level3">
+<h3>non-hc only</h3>
+<pre class="r"><code>m3_nonhc_only &lt;-
+  brm(
+    switch ~ contra_satis + sexual_satisfaction + sex_freq +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_MA_nonhc_only,
+  prior = set_priors,
+          warmup = 1500,
+          iter = 4500,
+          control = list(adapt_delta = 0.99),
+  file = &quot;models/m3_nonhc_only.Rds&quot;
+  )</code></pre>
+<pre><code>## Compiling Stan program...</code></pre>
+<pre><code>## Start sampling</code></pre>
+<pre><code>## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
+## Chain 1: 
+## Chain 1: Gradient evaluation took 0.000224 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2.24 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 1: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 1: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 1: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 1: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 1: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 1: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 1: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 1: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 1: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 1: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 1: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 1: 
+## Chain 1:  Elapsed Time: 15.596 seconds (Warm-up)
+## Chain 1:                50.854 seconds (Sampling)
+## Chain 1:                66.45 seconds (Total)
+## Chain 1: 
+## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
+## Chain 2: 
+## Chain 2: Gradient evaluation took 0.000135 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.35 seconds.
+## Chain 2: Adjust your expectations accordingly!
+## Chain 2: 
+## Chain 2: 
+## Chain 2: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 2: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 2: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 2: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 2: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 2: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 2: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 2: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 2: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 2: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 2: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 2: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 2: 
+## Chain 2:  Elapsed Time: 19.068 seconds (Warm-up)
+## Chain 2:                52.165 seconds (Sampling)
+## Chain 2:                71.233 seconds (Total)
+## Chain 2: 
+## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
+## Chain 3: 
+## Chain 3: Gradient evaluation took 0.000142 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.42 seconds.
+## Chain 3: Adjust your expectations accordingly!
+## Chain 3: 
+## Chain 3: 
+## Chain 3: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 3: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 3: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 3: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 3: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 3: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 3: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 3: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 3: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 3: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 3: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 3: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 3: 
+## Chain 3:  Elapsed Time: 17.911 seconds (Warm-up)
+## Chain 3:                26.642 seconds (Sampling)
+## Chain 3:                44.553 seconds (Total)
+## Chain 3: 
+## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
+## Chain 4: 
+## Chain 4: Gradient evaluation took 0.000139 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 1.39 seconds.
+## Chain 4: Adjust your expectations accordingly!
+## Chain 4: 
+## Chain 4: 
+## Chain 4: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 4: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 4: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 4: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 4: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 4: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 4: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 4: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 4: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 4: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 4: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 4: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 4: 
+## Chain 4:  Elapsed Time: 19.352 seconds (Warm-up)
+## Chain 4:                51.259 seconds (Sampling)
+## Chain 4:                70.611 seconds (Total)
+## Chain 4:</code></pre>
+<pre class="r"><code>summary(m3_nonhc_only, prob = .997)</code></pre>
+<pre><code>##  Family: bernoulli 
+##   Links: mu = logit 
+## Formula: switch ~ contra_satis + sexual_satisfaction + sex_freq + (1 | CASEID) 
+##    Data: cccu_MA_nonhc_only (Number of observations: 1493) 
+##   Draws: 4 chains, each with iter = 4500; warmup = 1500; thin = 1;
+##          total post-warmup draws = 12000
+## 
+## Group-Level Effects: 
+## ~CASEID (Number of levels: 916) 
+##               Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     2.17      0.54       0.40       3.74 1.00      999     1294
+## 
+## Population-Level Effects: 
+##                       Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS
+## Intercept                -2.86      0.91      -6.07      -0.50 1.00     4842
+## contra_satis             -0.19      0.18      -0.75       0.34 1.00    14704
+## sexual_satisfaction      -0.05      0.13      -0.42       0.35 1.00    12820
+## sex_freq2M5times         -0.16      0.40      -1.37       1.04 1.00    10988
+## sex_freq6M10times        -0.18      0.43      -1.54       1.08 1.00    11237
+## sex_freq11ormoretimes     0.37      0.47      -1.03       1.79 1.00    11986
+##                       Tail_ESS
+## Intercept                 7678
+## contra_satis              9568
+## sexual_satisfaction       9094
+## sex_freq2M5times          9410
+## sex_freq6M10times         9457
+## sex_freq11ormoretimes     9936
+## 
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
 </div>
 <div id="model-4-controlling-for-observed-selection-effects" class="section level2">
 <h2>3.4 Model 4: Controlling for observed selection effects</h2>
@@ -1132,8 +1716,8 @@ associated predictors</h2>
 <pre><code>## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0.000876 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 8.76 seconds.
+## Chain 1: Gradient evaluation took 0.000665 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 6.65 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -1150,15 +1734,15 @@ associated predictors</h2>
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 104.177 seconds (Warm-up)
-## Chain 1:                31.507 seconds (Sampling)
-## Chain 1:                135.684 seconds (Total)
+## Chain 1:  Elapsed Time: 93.924 seconds (Warm-up)
+## Chain 1:                30.541 seconds (Sampling)
+## Chain 1:                124.465 seconds (Total)
 ## Chain 1: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
 ## Chain 2: 
-## Chain 2: Gradient evaluation took 0.000494 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.94 seconds.
+## Chain 2: Gradient evaluation took 0.000553 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.53 seconds.
 ## Chain 2: Adjust your expectations accordingly!
 ## Chain 2: 
 ## Chain 2: 
@@ -1175,15 +1759,15 @@ associated predictors</h2>
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 102.751 seconds (Warm-up)
-## Chain 2:                31.316 seconds (Sampling)
-## Chain 2:                134.067 seconds (Total)
+## Chain 2:  Elapsed Time: 99.637 seconds (Warm-up)
+## Chain 2:                30.968 seconds (Sampling)
+## Chain 2:                130.605 seconds (Total)
 ## Chain 2: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
 ## Chain 3: 
-## Chain 3: Gradient evaluation took 0.000536 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 5.36 seconds.
+## Chain 3: Gradient evaluation took 0.000561 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 5.61 seconds.
 ## Chain 3: Adjust your expectations accordingly!
 ## Chain 3: 
 ## Chain 3: 
@@ -1200,15 +1784,15 @@ associated predictors</h2>
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 107.946 seconds (Warm-up)
-## Chain 3:                31.535 seconds (Sampling)
-## Chain 3:                139.481 seconds (Total)
+## Chain 3:  Elapsed Time: 99.113 seconds (Warm-up)
+## Chain 3:                31.123 seconds (Sampling)
+## Chain 3:                130.236 seconds (Total)
 ## Chain 3: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
 ## Chain 4: 
-## Chain 4: Gradient evaluation took 0.000532 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 5.32 seconds.
+## Chain 4: Gradient evaluation took 0.000581 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 5.81 seconds.
 ## Chain 4: Adjust your expectations accordingly!
 ## Chain 4: 
 ## Chain 4: 
@@ -1225,9 +1809,9 @@ associated predictors</h2>
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 100.047 seconds (Warm-up)
-## Chain 4:                31.671 seconds (Sampling)
-## Chain 4:                131.718 seconds (Total)
+## Chain 4:  Elapsed Time: 99.282 seconds (Warm-up)
+## Chain 4:                31.217 seconds (Sampling)
+## Chain 4:                130.499 seconds (Total)
 ## Chain 4:</code></pre>
 <pre class="r"><code>summary(m4, prob = .997)</code></pre>
 <pre><code>##  Family: bernoulli 
@@ -1240,232 +1824,656 @@ associated predictors</h2>
 ## Group-Level Effects: 
 ## ~CASEID (Number of levels: 1993) 
 ##               Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
-## sd(Intercept)     1.62      0.18       1.12       2.16 1.00      651     1268
+## sd(Intercept)     1.60      0.17       1.09       2.16 1.00      659     1339
 ## 
 ## Population-Level Effects: 
 ##                                                     Estimate Est.Error
-## Intercept                                               0.40      0.96
-## hcnon_hc                                               -0.07      0.86
-## contra_satis                                           -0.72      0.12
-## sexual_satisfaction                                     0.07      0.08
-## sex_freq2M5times                                       -0.15      0.22
+## Intercept                                               0.40      0.94
+## hcnon_hc                                               -0.04      0.90
+## contra_satis                                           -0.72      0.11
+## sexual_satisfaction                                     0.07      0.07
+## sex_freq2M5times                                       -0.15      0.23
 ## sex_freq6M10times                                      -0.22      0.25
-## sex_freq11ormoretimes                                  -0.52      0.29
-## AGE                                                     0.02      0.02
-## DEGREE_recode5thD6thgrade                              -0.30      0.78
-## DEGREE_recode7thD8thgrade                               0.78      0.74
-## DEGREE_recode9thgrade                                  -1.27      0.78
-## DEGREE_recode10thgrade                                  0.66      0.70
-## DEGREE_recode11thgrade                                 -0.38      0.74
-## DEGREE_recode12thgradeDnodiploma                        0.55      0.64
-## DEGREE_recodehighschooldiplomaorequivalent              0.08      0.40
-## DEGREE_recodesomecollegenodegree                        0.11      0.38
-## DEGREE_recodeassociatedegree                           -0.37      0.42
-## DEGREE_recodebachelorsdegree                           -0.06      0.37
-## DEGREE_recodemastersdegree                             -0.09      0.41
-## DEGREE_recodeprofessionalordoctoraldegree               0.47      0.53
+## sex_freq11ormoretimes                                  -0.51      0.28
+## AGE                                                     0.03      0.02
+## DEGREE_recode5thD6thgrade                              -0.32      0.78
+## DEGREE_recode7thD8thgrade                               0.78      0.73
+## DEGREE_recode9thgrade                                  -1.27      0.81
+## DEGREE_recode10thgrade                                  0.66      0.67
+## DEGREE_recode11thgrade                                 -0.38      0.72
+## DEGREE_recode12thgradeDnodiploma                        0.54      0.64
+## DEGREE_recodehighschooldiplomaorequivalent              0.07      0.41
+## DEGREE_recodesomecollegenodegree                        0.10      0.38
+## DEGREE_recodeassociatedegree                           -0.39      0.42
+## DEGREE_recodebachelorsdegree                           -0.07      0.37
+## DEGREE_recodemastersdegree                             -0.12      0.41
+## DEGREE_recodeprofessionalordoctoraldegree               0.43      0.51
 ## POVRATE                                                -0.00      0.00
-## HLTHPROB_recodeYes                                      0.21      0.21
-## MEDPROB_recodeYes                                       0.05      0.26
-## GAPINS_recodeYes                                        0.29      0.32
-## TYPEINS_recodeYes                                       0.33      0.37
-## NKIDS_t11                                               0.27      0.24
-## NKIDS_t12                                               0.23      0.26
-## NKIDS_t13                                               0.00      0.41
-## NKIDS_t14ormore                                         0.22      0.53
-## pregnant_between_wavesYes                              -0.27      0.54
-## had_baby_between_wavesYes                              -0.15      0.61
+## HLTHPROB_recodeYes                                      0.21      0.22
+## MEDPROB_recodeYes                                       0.04      0.26
+## GAPINS_recodeYes                                        0.28      0.31
+## TYPEINS_recodeYes                                       0.32      0.37
+## NKIDS_t11                                               0.25      0.24
+## NKIDS_t12                                               0.22      0.26
+## NKIDS_t13                                               0.00      0.40
+## NKIDS_t14ormore                                         0.25      0.53
+## pregnant_between_wavesYes                              -0.26      0.55
+## had_baby_between_wavesYes                              -0.17      0.61
 ## Avoid_r                                                -0.39      0.07
 ## FEELPG_recode                                           0.20      0.07
-## rel_dur_factor0qM25q                                    0.30      0.22
-## rel_dur_factor26qM50q                                   0.15      0.23
-## rel_dur_factor51qM75q                                   0.14      0.25
-## rel_dur_factor76qM100q                                 -0.18      0.33
-## hcnon_hc:contra_satis                                   0.42      0.20
-## hcnon_hc:sexual_satisfaction                           -0.00      0.14
-## hcnon_hc:sex_freq2M5times                               0.06      0.40
-## hcnon_hc:sex_freq6M10times                              0.19      0.45
-## hcnon_hc:sex_freq11ormoretimes                          0.69      0.49
+## rel_dur_factor0qM25q                                    0.29      0.22
+## rel_dur_factor26qM50q                                   0.14      0.24
+## rel_dur_factor51qM75q                                   0.14      0.26
+## rel_dur_factor76qM100q                                 -0.18      0.32
+## hcnon_hc:contra_satis                                   0.43      0.20
+## hcnon_hc:sexual_satisfaction                           -0.01      0.14
+## hcnon_hc:sex_freq2M5times                               0.05      0.40
+## hcnon_hc:sex_freq6M10times                              0.19      0.46
+## hcnon_hc:sex_freq11ormoretimes                          0.68      0.50
 ## hcnon_hc:AGE                                           -0.15      0.04
-## hcnon_hc:DEGREE_recode5thD6thgrade                     -0.19      0.96
+## hcnon_hc:DEGREE_recode5thD6thgrade                     -0.18      0.96
 ## hcnon_hc:DEGREE_recode7thD8thgrade                      0.30      0.90
-## hcnon_hc:DEGREE_recode9thgrade                         -0.11      0.95
-## hcnon_hc:DEGREE_recode10thgrade                        -0.50      0.89
-## hcnon_hc:DEGREE_recode11thgrade                        -0.09      0.97
-## hcnon_hc:DEGREE_recode12thgradeDnodiploma               0.04      0.86
-## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent    -0.57      0.56
-## hcnon_hc:DEGREE_recodesomecollegenodegree               0.13      0.48
-## hcnon_hc:DEGREE_recodeassociatedegree                   0.07      0.57
-## hcnon_hc:DEGREE_recodebachelorsdegree                   0.33      0.48
-## hcnon_hc:DEGREE_recodemastersdegree                     0.65      0.57
-## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree     -0.20      0.73
+## hcnon_hc:DEGREE_recode9thgrade                         -0.10      0.98
+## hcnon_hc:DEGREE_recode10thgrade                        -0.48      0.87
+## hcnon_hc:DEGREE_recode11thgrade                        -0.10      0.98
+## hcnon_hc:DEGREE_recode12thgradeDnodiploma               0.05      0.87
+## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent    -0.56      0.56
+## hcnon_hc:DEGREE_recodesomecollegenodegree               0.13      0.47
+## hcnon_hc:DEGREE_recodeassociatedegree                   0.07      0.56
+## hcnon_hc:DEGREE_recodebachelorsdegree                   0.34      0.46
+## hcnon_hc:DEGREE_recodemastersdegree                     0.67      0.55
+## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree     -0.17      0.74
 ## hcnon_hc:POVRATE                                        0.00      0.00
-## hcnon_hc:HLTHPROB_recodeYes                            -0.07      0.41
-## hcnon_hc:MEDPROB_recodeYes                              0.06      0.47
-## hcnon_hc:GAPINS_recodeYes                               0.00      0.50
-## hcnon_hc:TYPEINS_recodeYes                              0.17      0.53
-## hcnon_hc:NKIDS_t11                                     -0.49      0.40
-## hcnon_hc:NKIDS_t12                                     -0.98      0.46
-## hcnon_hc:NKIDS_t13                                     -0.06      0.59
-## hcnon_hc:NKIDS_t14ormore                               -0.18      0.68
-## hcnon_hc:pregnant_between_wavesYes                     -0.38      0.70
-## hcnon_hc:had_baby_between_wavesYes                     -0.71      0.81
+## hcnon_hc:HLTHPROB_recodeYes                            -0.07      0.40
+## hcnon_hc:MEDPROB_recodeYes                              0.06      0.44
+## hcnon_hc:GAPINS_recodeYes                               0.02      0.49
+## hcnon_hc:TYPEINS_recodeYes                              0.19      0.52
+## hcnon_hc:NKIDS_t11                                     -0.47      0.40
+## hcnon_hc:NKIDS_t12                                     -0.96      0.47
+## hcnon_hc:NKIDS_t13                                     -0.06      0.60
+## hcnon_hc:NKIDS_t14ormore                               -0.22      0.67
+## hcnon_hc:pregnant_between_wavesYes                     -0.38      0.71
+## hcnon_hc:had_baby_between_wavesYes                     -0.69      0.79
 ## hcnon_hc:Avoid_r                                        0.63      0.13
-## hcnon_hc:FEELPG_recode                                 -0.54      0.12
+## hcnon_hc:FEELPG_recode                                 -0.53      0.12
 ## hcnon_hc:rel_dur_factor0qM25q                          -0.19      0.38
 ## hcnon_hc:rel_dur_factor26qM50q                         -0.72      0.43
-## hcnon_hc:rel_dur_factor51qM75q                         -0.31      0.44
-## hcnon_hc:rel_dur_factor76qM100q                         0.01      0.52
+## hcnon_hc:rel_dur_factor51qM75q                         -0.33      0.45
+## hcnon_hc:rel_dur_factor76qM100q                         0.02      0.51
 ##                                                     l-99.7% CI u-99.7% CI Rhat
-## Intercept                                                -2.43       3.34 1.00
-## hcnon_hc                                                 -2.57       2.50 1.00
-## contra_satis                                             -1.06      -0.38 1.00
-## sexual_satisfaction                                      -0.15       0.29 1.00
-## sex_freq2M5times                                         -0.81       0.51 1.00
-## sex_freq6M10times                                        -0.96       0.48 1.00
-## sex_freq11ormoretimes                                    -1.39       0.31 1.00
+## Intercept                                                -2.47       3.22 1.00
+## hcnon_hc                                                 -2.61       2.42 1.00
+## contra_satis                                             -1.08      -0.39 1.00
+## sexual_satisfaction                                      -0.14       0.29 1.00
+## sex_freq2M5times                                         -0.81       0.48 1.00
+## sex_freq6M10times                                        -1.01       0.51 1.00
+## sex_freq11ormoretimes                                    -1.44       0.29 1.00
 ## AGE                                                      -0.04       0.09 1.00
-## DEGREE_recode5thD6thgrade                                -2.68       2.01 1.00
-## DEGREE_recode7thD8thgrade                                -1.45       3.02 1.00
-## DEGREE_recode9thgrade                                    -3.56       0.97 1.00
-## DEGREE_recode10thgrade                                   -1.28       2.97 1.00
-## DEGREE_recode11thgrade                                   -2.67       1.67 1.00
-## DEGREE_recode12thgradeDnodiploma                         -1.19       2.40 1.00
-## DEGREE_recodehighschooldiplomaorequivalent               -1.13       1.21 1.00
-## DEGREE_recodesomecollegenodegree                         -1.01       1.20 1.00
-## DEGREE_recodeassociatedegree                             -1.63       0.95 1.00
-## DEGREE_recodebachelorsdegree                             -1.15       1.00 1.00
-## DEGREE_recodemastersdegree                               -1.29       1.14 1.00
-## DEGREE_recodeprofessionalordoctoraldegree                -1.11       1.95 1.00
+## DEGREE_recode5thD6thgrade                                -2.63       1.89 1.00
+## DEGREE_recode7thD8thgrade                                -1.41       3.05 1.00
+## DEGREE_recode9thgrade                                    -3.74       1.19 1.00
+## DEGREE_recode10thgrade                                   -1.18       2.74 1.00
+## DEGREE_recode11thgrade                                   -2.54       1.66 1.00
+## DEGREE_recode12thgradeDnodiploma                         -1.36       2.41 1.00
+## DEGREE_recodehighschooldiplomaorequivalent               -1.26       1.30 1.00
+## DEGREE_recodesomecollegenodegree                         -1.09       1.20 1.00
+## DEGREE_recodeassociatedegree                             -1.72       0.80 1.00
+## DEGREE_recodebachelorsdegree                             -1.27       0.93 1.00
+## DEGREE_recodemastersdegree                               -1.32       1.03 1.00
+## DEGREE_recodeprofessionalordoctoraldegree                -1.03       1.90 1.00
 ## POVRATE                                                  -0.00       0.00 1.00
-## HLTHPROB_recodeYes                                       -0.44       0.86 1.00
-## MEDPROB_recodeYes                                        -0.72       0.77 1.00
-## GAPINS_recodeYes                                         -0.68       1.25 1.00
-## TYPEINS_recodeYes                                        -0.81       1.37 1.00
-## NKIDS_t11                                                -0.47       0.94 1.00
-## NKIDS_t12                                                -0.51       1.00 1.00
-## NKIDS_t13                                                -1.36       1.21 1.00
-## NKIDS_t14ormore                                          -1.28       1.78 1.00
+## HLTHPROB_recodeYes                                       -0.43       0.91 1.00
+## MEDPROB_recodeYes                                        -0.75       0.79 1.00
+## GAPINS_recodeYes                                         -0.64       1.19 1.00
+## TYPEINS_recodeYes                                        -0.70       1.37 1.00
+## NKIDS_t11                                                -0.49       0.98 1.00
+## NKIDS_t12                                                -0.56       0.96 1.00
+## NKIDS_t13                                                -1.20       1.11 1.00
+## NKIDS_t14ormore                                          -1.34       1.73 1.00
 ## pregnant_between_wavesYes                                -1.90       1.27 1.00
-## had_baby_between_wavesYes                                -1.86       1.63 1.00
-## Avoid_r                                                  -0.58      -0.20 1.00
-## FEELPG_recode                                             0.00       0.39 1.00
-## rel_dur_factor0qM25q                                     -0.33       0.97 1.00
-## rel_dur_factor26qM50q                                    -0.49       0.83 1.00
-## rel_dur_factor51qM75q                                    -0.67       0.90 1.00
-## rel_dur_factor76qM100q                                   -1.14       0.82 1.00
-## hcnon_hc:contra_satis                                    -0.25       1.01 1.00
-## hcnon_hc:sexual_satisfaction                             -0.38       0.45 1.00
-## hcnon_hc:sex_freq2M5times                                -1.23       1.24 1.00
-## hcnon_hc:sex_freq6M10times                               -1.19       1.55 1.00
-## hcnon_hc:sex_freq11ormoretimes                           -0.79       2.02 1.00
-## hcnon_hc:AGE                                             -0.25      -0.04 1.00
-## hcnon_hc:DEGREE_recode5thD6thgrade                       -3.05       2.58 1.00
-## hcnon_hc:DEGREE_recode7thD8thgrade                       -2.53       2.95 1.00
-## hcnon_hc:DEGREE_recode9thgrade                           -2.82       2.76 1.00
-## hcnon_hc:DEGREE_recode10thgrade                          -3.28       2.06 1.00
-## hcnon_hc:DEGREE_recode11thgrade                          -2.93       2.69 1.00
-## hcnon_hc:DEGREE_recode12thgradeDnodiploma                -2.39       2.45 1.00
-## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent      -2.23       1.02 1.00
-## hcnon_hc:DEGREE_recodesomecollegenodegree                -1.19       1.48 1.00
-## hcnon_hc:DEGREE_recodeassociatedegree                    -1.59       1.76 1.00
-## hcnon_hc:DEGREE_recodebachelorsdegree                    -1.01       1.68 1.00
-## hcnon_hc:DEGREE_recodemastersdegree                      -1.01       2.40 1.00
-## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree       -2.28       1.84 1.00
+## had_baby_between_wavesYes                                -1.96       1.62 1.00
+## Avoid_r                                                  -0.57      -0.21 1.00
+## FEELPG_recode                                             0.01       0.40 1.00
+## rel_dur_factor0qM25q                                     -0.40       0.93 1.00
+## rel_dur_factor26qM50q                                    -0.55       0.86 1.00
+## rel_dur_factor51qM75q                                    -0.61       0.91 1.00
+## rel_dur_factor76qM100q                                   -1.17       0.79 1.00
+## hcnon_hc:contra_satis                                    -0.15       1.01 1.00
+## hcnon_hc:sexual_satisfaction                             -0.39       0.39 1.00
+## hcnon_hc:sex_freq2M5times                                -1.07       1.14 1.00
+## hcnon_hc:sex_freq6M10times                               -1.08       1.58 1.00
+## hcnon_hc:sex_freq11ormoretimes                           -0.64       2.21 1.00
+## hcnon_hc:AGE                                             -0.25      -0.05 1.00
+## hcnon_hc:DEGREE_recode5thD6thgrade                       -3.24       2.73 1.00
+## hcnon_hc:DEGREE_recode7thD8thgrade                       -2.37       2.91 1.00
+## hcnon_hc:DEGREE_recode9thgrade                           -2.99       2.82 1.00
+## hcnon_hc:DEGREE_recode10thgrade                          -3.22       2.04 1.00
+## hcnon_hc:DEGREE_recode11thgrade                          -3.02       2.72 1.00
+## hcnon_hc:DEGREE_recode12thgradeDnodiploma                -2.77       2.53 1.00
+## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent      -2.22       1.13 1.00
+## hcnon_hc:DEGREE_recodesomecollegenodegree                -1.23       1.56 1.00
+## hcnon_hc:DEGREE_recodeassociatedegree                    -1.71       1.66 1.00
+## hcnon_hc:DEGREE_recodebachelorsdegree                    -0.99       1.71 1.00
+## hcnon_hc:DEGREE_recodemastersdegree                      -0.99       2.21 1.00
+## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree       -2.28       2.05 1.00
 ## hcnon_hc:POVRATE                                         -0.00       0.00 1.00
-## hcnon_hc:HLTHPROB_recodeYes                              -1.29       1.15 1.00
-## hcnon_hc:MEDPROB_recodeYes                               -1.42       1.49 1.00
-## hcnon_hc:GAPINS_recodeYes                                -1.54       1.45 1.00
-## hcnon_hc:TYPEINS_recodeYes                               -1.40       1.73 1.00
-## hcnon_hc:NKIDS_t11                                       -1.68       0.60 1.00
-## hcnon_hc:NKIDS_t12                                       -2.27       0.37 1.00
-## hcnon_hc:NKIDS_t13                                       -1.82       1.74 1.00
-## hcnon_hc:NKIDS_t14ormore                                 -2.31       1.87 1.00
-## hcnon_hc:pregnant_between_wavesYes                       -2.61       1.61 1.00
-## hcnon_hc:had_baby_between_wavesYes                       -3.09       1.62 1.00
-## hcnon_hc:Avoid_r                                          0.28       1.01 1.00
-## hcnon_hc:FEELPG_recode                                   -0.89      -0.20 1.00
-## hcnon_hc:rel_dur_factor0qM25q                            -1.39       0.91 1.00
-## hcnon_hc:rel_dur_factor26qM50q                           -1.96       0.47 1.00
-## hcnon_hc:rel_dur_factor51qM75q                           -1.69       0.97 1.00
-## hcnon_hc:rel_dur_factor76qM100q                          -1.57       1.63 1.00
+## hcnon_hc:HLTHPROB_recodeYes                              -1.23       1.09 1.00
+## hcnon_hc:MEDPROB_recodeYes                               -1.22       1.35 1.00
+## hcnon_hc:GAPINS_recodeYes                                -1.43       1.42 1.00
+## hcnon_hc:TYPEINS_recodeYes                               -1.24       1.80 1.00
+## hcnon_hc:NKIDS_t11                                       -1.72       0.62 1.00
+## hcnon_hc:NKIDS_t12                                       -2.36       0.32 1.00
+## hcnon_hc:NKIDS_t13                                       -1.80       1.69 1.00
+## hcnon_hc:NKIDS_t14ormore                                 -2.19       1.90 1.00
+## hcnon_hc:pregnant_between_wavesYes                       -2.44       1.71 1.00
+## hcnon_hc:had_baby_between_wavesYes                       -2.96       1.86 1.00
+## hcnon_hc:Avoid_r                                          0.27       1.00 1.00
+## hcnon_hc:FEELPG_recode                                   -0.90      -0.18 1.00
+## hcnon_hc:rel_dur_factor0qM25q                            -1.26       0.88 1.00
+## hcnon_hc:rel_dur_factor26qM50q                           -2.04       0.57 1.00
+## hcnon_hc:rel_dur_factor51qM75q                           -1.61       1.03 1.00
+## hcnon_hc:rel_dur_factor76qM100q                          -1.59       1.51 1.00
 ##                                                     Bulk_ESS Tail_ESS
-## Intercept                                               2242     2786
-## hcnon_hc                                                3367     3102
-## contra_satis                                            2490     3064
-## sexual_satisfaction                                     2454     2859
-## sex_freq2M5times                                        1942     2703
-## sex_freq6M10times                                       1930     2925
-## sex_freq11ormoretimes                                   2006     2726
-## AGE                                                     1912     2256
-## DEGREE_recode5thD6thgrade                               4562     3534
-## DEGREE_recode7thD8thgrade                               3204     3138
-## DEGREE_recode9thgrade                                   3711     3043
-## DEGREE_recode10thgrade                                  3216     2935
-## DEGREE_recode11thgrade                                  3007     3039
-## DEGREE_recode12thgradeDnodiploma                        2485     2966
-## DEGREE_recodehighschooldiplomaorequivalent              1416     2114
-## DEGREE_recodesomecollegenodegree                        1063     1914
-## DEGREE_recodeassociatedegree                            1307     2264
-## DEGREE_recodebachelorsdegree                            1101     1871
-## DEGREE_recodemastersdegree                              1359     2469
-## DEGREE_recodeprofessionalordoctoraldegree               2132     2607
-## POVRATE                                                 3282     3288
-## HLTHPROB_recodeYes                                      2675     2922
-## MEDPROB_recodeYes                                       3183     3280
-## GAPINS_recodeYes                                        2425     2693
-## TYPEINS_recodeYes                                       2338     2705
-## NKIDS_t11                                               2419     3029
-## NKIDS_t12                                               2616     3133
-## NKIDS_t13                                               2932     2965
-## NKIDS_t14ormore                                         3078     2824
-## pregnant_between_wavesYes                               2950     2804
-## had_baby_between_wavesYes                               2864     2740
-## Avoid_r                                                 1898     2422
-## FEELPG_recode                                           2335     2839
-## rel_dur_factor0qM25q                                    2351     2440
-## rel_dur_factor26qM50q                                   2462     2939
-## rel_dur_factor51qM75q                                   2216     3174
-## rel_dur_factor76qM100q                                  2274     2321
-## hcnon_hc:contra_satis                                   2815     3415
-## hcnon_hc:sexual_satisfaction                            2586     2763
-## hcnon_hc:sex_freq2M5times                               2255     2426
-## hcnon_hc:sex_freq6M10times                              1996     2474
-## hcnon_hc:sex_freq11ormoretimes                          2251     2718
-## hcnon_hc:AGE                                            1948     2517
-## hcnon_hc:DEGREE_recode5thD6thgrade                      5728     2918
-## hcnon_hc:DEGREE_recode7thD8thgrade                      4614     2836
-## hcnon_hc:DEGREE_recode9thgrade                          6240     2833
-## hcnon_hc:DEGREE_recode10thgrade                         5331     3184
-## hcnon_hc:DEGREE_recode11thgrade                         5816     2989
-## hcnon_hc:DEGREE_recode12thgradeDnodiploma               4405     3111
-## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent     2677     3203
-## hcnon_hc:DEGREE_recodesomecollegenodegree               2181     2845
-## hcnon_hc:DEGREE_recodeassociatedegree                   2605     3042
-## hcnon_hc:DEGREE_recodebachelorsdegree                   2088     2770
-## hcnon_hc:DEGREE_recodemastersdegree                     2452     2849
-## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree      3452     3152
-## hcnon_hc:POVRATE                                        3717     3121
-## hcnon_hc:HLTHPROB_recodeYes                             2803     2864
-## hcnon_hc:MEDPROB_recodeYes                              3834     3317
-## hcnon_hc:GAPINS_recodeYes                               2446     2782
-## hcnon_hc:TYPEINS_recodeYes                              2416     2742
-## hcnon_hc:NKIDS_t11                                      2803     3112
-## hcnon_hc:NKIDS_t12                                      3054     2912
-## hcnon_hc:NKIDS_t13                                      3085     3211
-## hcnon_hc:NKIDS_t14ormore                                3415     3077
-## hcnon_hc:pregnant_between_wavesYes                      3856     2960
-## hcnon_hc:had_baby_between_wavesYes                      4682     3286
-## hcnon_hc:Avoid_r                                        1790     2123
-## hcnon_hc:FEELPG_recode                                  2230     2946
-## hcnon_hc:rel_dur_factor0qM25q                           2936     3192
-## hcnon_hc:rel_dur_factor26qM50q                          3012     2943
-## hcnon_hc:rel_dur_factor51qM75q                          2859     2786
-## hcnon_hc:rel_dur_factor76qM100q                         2542     2832
+## Intercept                                               2318     2677
+## hcnon_hc                                                3584     3034
+## contra_satis                                            2275     3261
+## sexual_satisfaction                                     2590     2836
+## sex_freq2M5times                                        1995     2643
+## sex_freq6M10times                                       1993     2860
+## sex_freq11ormoretimes                                   2172     2683
+## AGE                                                     2219     3081
+## DEGREE_recode5thD6thgrade                               3837     3127
+## DEGREE_recode7thD8thgrade                               3721     3414
+## DEGREE_recode9thgrade                                   4420     3021
+## DEGREE_recode10thgrade                                  2636     3093
+## DEGREE_recode11thgrade                                  3422     2770
+## DEGREE_recode12thgradeDnodiploma                        3158     3045
+## DEGREE_recodehighschooldiplomaorequivalent              1154     1809
+## DEGREE_recodesomecollegenodegree                        1047     1813
+## DEGREE_recodeassociatedegree                            1193     2059
+## DEGREE_recodebachelorsdegree                            1094     2173
+## DEGREE_recodemastersdegree                              1259     2068
+## DEGREE_recodeprofessionalordoctoraldegree               1874     2567
+## POVRATE                                                 3453     3325
+## HLTHPROB_recodeYes                                      2308     2609
+## MEDPROB_recodeYes                                       2870     3114
+## GAPINS_recodeYes                                        2531     2996
+## TYPEINS_recodeYes                                       2542     3061
+## NKIDS_t11                                               2083     2687
+## NKIDS_t12                                               2099     2791
+## NKIDS_t13                                               2414     2887
+## NKIDS_t14ormore                                         3009     2788
+## pregnant_between_wavesYes                               3084     3141
+## had_baby_between_wavesYes                               3025     3047
+## Avoid_r                                                 1795     2651
+## FEELPG_recode                                           2224     2757
+## rel_dur_factor0qM25q                                    2234     2719
+## rel_dur_factor26qM50q                                   2065     2673
+## rel_dur_factor51qM75q                                   1918     2583
+## rel_dur_factor76qM100q                                  1941     2671
+## hcnon_hc:contra_satis                                   2718     3014
+## hcnon_hc:sexual_satisfaction                            2864     3115
+## hcnon_hc:sex_freq2M5times                               2190     2844
+## hcnon_hc:sex_freq6M10times                              2194     2975
+## hcnon_hc:sex_freq11ormoretimes                          2379     2940
+## hcnon_hc:AGE                                            2257     2734
+## hcnon_hc:DEGREE_recode5thD6thgrade                      6556     3020
+## hcnon_hc:DEGREE_recode7thD8thgrade                      4564     3063
+## hcnon_hc:DEGREE_recode9thgrade                          5655     2897
+## hcnon_hc:DEGREE_recode10thgrade                         5284     3115
+## hcnon_hc:DEGREE_recode11thgrade                         6204     3249
+## hcnon_hc:DEGREE_recode12thgradeDnodiploma               4437     2666
+## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent     2377     2875
+## hcnon_hc:DEGREE_recodesomecollegenodegree               2066     2527
+## hcnon_hc:DEGREE_recodeassociatedegree                   2558     2871
+## hcnon_hc:DEGREE_recodebachelorsdegree                   1980     2391
+## hcnon_hc:DEGREE_recodemastersdegree                     2329     2877
+## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree      4256     2918
+## hcnon_hc:POVRATE                                        4114     3448
+## hcnon_hc:HLTHPROB_recodeYes                             3041     3245
+## hcnon_hc:MEDPROB_recodeYes                              3177     3342
+## hcnon_hc:GAPINS_recodeYes                               2906     3220
+## hcnon_hc:TYPEINS_recodeYes                              2640     3069
+## hcnon_hc:NKIDS_t11                                      2940     3301
+## hcnon_hc:NKIDS_t12                                      2690     2669
+## hcnon_hc:NKIDS_t13                                      3408     2938
+## hcnon_hc:NKIDS_t14ormore                                3402     3126
+## hcnon_hc:pregnant_between_wavesYes                      3930     2915
+## hcnon_hc:had_baby_between_wavesYes                      4135     3139
+## hcnon_hc:Avoid_r                                        1848     2217
+## hcnon_hc:FEELPG_recode                                  1868     3100
+## hcnon_hc:rel_dur_factor0qM25q                           2857     2991
+## hcnon_hc:rel_dur_factor26qM50q                          2693     3079
+## hcnon_hc:rel_dur_factor51qM75q                          2796     3293
+## hcnon_hc:rel_dur_factor76qM100q                         2508     3050
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
 ## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+<div id="hc-only-2" class="section level3">
+<h3>hc only</h3>
+<pre class="r"><code>m4_hc_only &lt;-
+  brm(
+    switch ~ contra_satis + sexual_satisfaction +  sex_freq +
+      AGE + DEGREE_recode + POVRATE +
+      HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+      TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+      had_baby_between_waves + Avoid_r + FEELPG_recode +
+      rel_dur_factor + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_MA_hc_only,
+  prior = set_priors,
+  warmup = 1500,
+  iter = 4500,
+  control = list(adapt_delta = 0.99),
+  file = &quot;models/m4_hc_only.Rds&quot;
+  )</code></pre>
+<pre><code>## Compiling Stan program...</code></pre>
+<pre><code>## Start sampling</code></pre>
+<pre><code>## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
+## Chain 1: 
+## Chain 1: Gradient evaluation took 0.000536 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.36 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 1: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 1: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 1: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 1: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 1: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 1: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 1: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 1: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 1: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 1: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 1: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 1: 
+## Chain 1:  Elapsed Time: 99.565 seconds (Warm-up)
+## Chain 1:                52.125 seconds (Sampling)
+## Chain 1:                151.69 seconds (Total)
+## Chain 1: 
+## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
+## Chain 2: 
+## Chain 2: Gradient evaluation took 0.000279 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 2.79 seconds.
+## Chain 2: Adjust your expectations accordingly!
+## Chain 2: 
+## Chain 2: 
+## Chain 2: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 2: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 2: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 2: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 2: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 2: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 2: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 2: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 2: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 2: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 2: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 2: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 2: 
+## Chain 2:  Elapsed Time: 98.543 seconds (Warm-up)
+## Chain 2:                104.454 seconds (Sampling)
+## Chain 2:                202.997 seconds (Total)
+## Chain 2: 
+## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
+## Chain 3: 
+## Chain 3: Gradient evaluation took 0.000279 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 2.79 seconds.
+## Chain 3: Adjust your expectations accordingly!
+## Chain 3: 
+## Chain 3: 
+## Chain 3: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 3: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 3: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 3: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 3: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 3: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 3: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 3: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 3: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 3: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 3: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 3: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 3: 
+## Chain 3:  Elapsed Time: 102.631 seconds (Warm-up)
+## Chain 3:                108.912 seconds (Sampling)
+## Chain 3:                211.543 seconds (Total)
+## Chain 3: 
+## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
+## Chain 4: 
+## Chain 4: Gradient evaluation took 0.000285 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 2.85 seconds.
+## Chain 4: Adjust your expectations accordingly!
+## Chain 4: 
+## Chain 4: 
+## Chain 4: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 4: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 4: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 4: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 4: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 4: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 4: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 4: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 4: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 4: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 4: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 4: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 4: 
+## Chain 4:  Elapsed Time: 102.06 seconds (Warm-up)
+## Chain 4:                59.461 seconds (Sampling)
+## Chain 4:                161.521 seconds (Total)
+## Chain 4:</code></pre>
+<pre class="r"><code>summary(m4_hc_only, prob = .997)</code></pre>
+<pre><code>##  Family: bernoulli 
+##   Links: mu = logit 
+## Formula: switch ~ contra_satis + sexual_satisfaction + sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode + TYPEINS_recode + NKIDS_t1 + pregnant_between_waves + had_baby_between_waves + Avoid_r + FEELPG_recode + rel_dur_factor + (1 | CASEID) 
+##    Data: cccu_MA_hc_only (Number of observations: 2294) 
+##   Draws: 4 chains, each with iter = 4500; warmup = 1500; thin = 1;
+##          total post-warmup draws = 12000
+## 
+## Group-Level Effects: 
+## ~CASEID (Number of levels: 1234) 
+##               Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     1.65      0.27       0.82       2.49 1.00     1142     2466
+## 
+## Population-Level Effects: 
+##                                            Estimate Est.Error l-99.7% CI
+## Intercept                                      0.61      1.06      -2.54
+## contra_satis                                  -0.76      0.13      -1.17
+## sexual_satisfaction                            0.07      0.08      -0.16
+## sex_freq2M5times                              -0.14      0.23      -0.78
+## sex_freq6M10times                             -0.24      0.26      -0.99
+## sex_freq11ormoretimes                         -0.60      0.30      -1.49
+## AGE                                            0.02      0.02      -0.05
+## DEGREE_recode7thD8thgrade                      0.46      0.79      -1.94
+## DEGREE_recode9thgrade                         -1.22      0.79      -3.63
+## DEGREE_recode10thgrade                         0.79      0.70      -1.33
+## DEGREE_recode11thgrade                        -0.36      0.75      -2.62
+## DEGREE_recode12thgradeDnodiploma               0.48      0.68      -1.59
+## DEGREE_recodehighschooldiplomaorequivalent     0.10      0.40      -1.14
+## DEGREE_recodesomecollegenodegree               0.18      0.37      -0.98
+## DEGREE_recodeassociatedegree                  -0.37      0.42      -1.65
+## DEGREE_recodebachelorsdegree                  -0.04      0.37      -1.17
+## DEGREE_recodemastersdegree                    -0.13      0.42      -1.40
+## DEGREE_recodeprofessionalordoctoraldegree      0.50      0.54      -1.15
+## POVRATE                                       -0.00      0.00      -0.00
+## HLTHPROB_recodeYes                             0.22      0.23      -0.45
+## MEDPROB_recodeYes                              0.04      0.27      -0.79
+## GAPINS_recodeYes                               0.29      0.35      -0.72
+## TYPEINS_recodeYes                              0.30      0.40      -0.87
+## NKIDS_t11                                      0.28      0.25      -0.42
+## NKIDS_t12                                      0.25      0.28      -0.56
+## NKIDS_t13                                      0.06      0.43      -1.27
+## NKIDS_t14ormore                                0.43      0.59      -1.28
+## pregnant_between_wavesYes                     -0.14      0.61      -1.94
+## had_baby_between_wavesYes                     -0.19      0.66      -2.09
+## Avoid_r                                       -0.38      0.07      -0.60
+## FEELPG_recode                                  0.21      0.07       0.01
+## rel_dur_factor0qM25q                           0.33      0.24      -0.39
+## rel_dur_factor26qM50q                          0.21      0.25      -0.56
+## rel_dur_factor51qM75q                          0.23      0.28      -0.55
+## rel_dur_factor76qM100q                        -0.13      0.35      -1.18
+##                                            u-99.7% CI Rhat Bulk_ESS Tail_ESS
+## Intercept                                        3.80 1.00    10015     9489
+## contra_satis                                    -0.39 1.00     7133     7880
+## sexual_satisfaction                              0.31 1.00    10965     9115
+## sex_freq2M5times                                 0.59 1.00     7729     8884
+## sex_freq6M10times                                0.53 1.00     7558     8741
+## sex_freq11ormoretimes                            0.28 1.00     8179     9239
+## AGE                                              0.09 1.00     9008     9081
+## DEGREE_recode7thD8thgrade                        2.83 1.00    14348     8412
+## DEGREE_recode9thgrade                            1.11 1.00    17621     8800
+## DEGREE_recode10thgrade                           2.85 1.00    11919     8989
+## DEGREE_recode11thgrade                           1.85 1.00    14032     9201
+## DEGREE_recode12thgradeDnodiploma                 2.57 1.00    11907     9827
+## DEGREE_recodehighschooldiplomaorequivalent       1.24 1.00     5671     8339
+## DEGREE_recodesomecollegenodegree                 1.27 1.00     5152     7573
+## DEGREE_recodeassociatedegree                     0.90 1.00     5719     8639
+## DEGREE_recodebachelorsdegree                     1.02 1.00     5186     7565
+## DEGREE_recodemastersdegree                       1.10 1.00     5645     8369
+## DEGREE_recodeprofessionalordoctoraldegree        2.16 1.00     7637     9105
+## POVRATE                                          0.00 1.00     9492     9944
+## HLTHPROB_recodeYes                               0.93 1.00    10324     9229
+## MEDPROB_recodeYes                                0.82 1.00    15762     8943
+## GAPINS_recodeYes                                 1.32 1.00    10273     8946
+## TYPEINS_recodeYes                                1.51 1.00    10097     8941
+## NKIDS_t11                                        1.04 1.00     8012     8619
+## NKIDS_t12                                        1.13 1.00     8911     8883
+## NKIDS_t13                                        1.30 1.00     9957     9440
+## NKIDS_t14ormore                                  2.12 1.00    14044     9540
+## pregnant_between_wavesYes                        1.63 1.00    11113     8884
+## had_baby_between_wavesYes                        1.67 1.00    11347    10028
+## Avoid_r                                         -0.18 1.00     5330     7908
+## FEELPG_recode                                    0.42 1.00     7044     7689
+## rel_dur_factor0qM25q                             1.04 1.00     8447     8044
+## rel_dur_factor26qM50q                            0.96 1.00     7782     8924
+## rel_dur_factor51qM75q                            1.07 1.00     7679     8720
+## rel_dur_factor76qM100q                           0.94 1.00     8055     8767
+## 
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+<div id="non-hc-only-2" class="section level3">
+<h3>non-hc only</h3>
+<pre class="r"><code>m4_nonhc_only &lt;-
+  brm(
+    switch ~ contra_satis + sexual_satisfaction +  sex_freq +
+      AGE + DEGREE_recode + POVRATE +
+      HLTHPROB_recode + MEDPROB_recode +  GAPINS_recode +
+      TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves +
+      had_baby_between_waves + Avoid_r + FEELPG_recode +
+      rel_dur_factor + (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_MA_nonhc_only,
+  prior = set_priors,
+  warmup = 1500,
+  iter = 4500,
+  control = list(adapt_delta = 0.99),
+  file = &quot;models/m4_nonhc_only.Rds&quot;
+  )</code></pre>
+<pre><code>## Compiling Stan program...</code></pre>
+<pre><code>## Start sampling</code></pre>
+<pre><code>## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
+## Chain 1: 
+## Chain 1: Gradient evaluation took 0.00042 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.2 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 1: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 1: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 1: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 1: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 1: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 1: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 1: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 1: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 1: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 1: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 1: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 1: 
+## Chain 1:  Elapsed Time: 47.002 seconds (Warm-up)
+## Chain 1:                59.837 seconds (Sampling)
+## Chain 1:                106.839 seconds (Total)
+## Chain 1: 
+## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
+## Chain 2: 
+## Chain 2: Gradient evaluation took 0.000149 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.49 seconds.
+## Chain 2: Adjust your expectations accordingly!
+## Chain 2: 
+## Chain 2: 
+## Chain 2: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 2: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 2: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 2: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 2: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 2: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 2: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 2: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 2: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 2: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 2: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 2: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 2: 
+## Chain 2:  Elapsed Time: 50.599 seconds (Warm-up)
+## Chain 2:                31.041 seconds (Sampling)
+## Chain 2:                81.64 seconds (Total)
+## Chain 2: 
+## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
+## Chain 3: 
+## Chain 3: Gradient evaluation took 0.000145 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.45 seconds.
+## Chain 3: Adjust your expectations accordingly!
+## Chain 3: 
+## Chain 3: 
+## Chain 3: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 3: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 3: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 3: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 3: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 3: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 3: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 3: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 3: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 3: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 3: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 3: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 3: 
+## Chain 3:  Elapsed Time: 53.704 seconds (Warm-up)
+## Chain 3:                61.084 seconds (Sampling)
+## Chain 3:                114.788 seconds (Total)
+## Chain 3: 
+## 
+## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
+## Chain 4: 
+## Chain 4: Gradient evaluation took 0.000147 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 1.47 seconds.
+## Chain 4: Adjust your expectations accordingly!
+## Chain 4: 
+## Chain 4: 
+## Chain 4: Iteration:    1 / 4500 [  0%]  (Warmup)
+## Chain 4: Iteration:  450 / 4500 [ 10%]  (Warmup)
+## Chain 4: Iteration:  900 / 4500 [ 20%]  (Warmup)
+## Chain 4: Iteration: 1350 / 4500 [ 30%]  (Warmup)
+## Chain 4: Iteration: 1501 / 4500 [ 33%]  (Sampling)
+## Chain 4: Iteration: 1950 / 4500 [ 43%]  (Sampling)
+## Chain 4: Iteration: 2400 / 4500 [ 53%]  (Sampling)
+## Chain 4: Iteration: 2850 / 4500 [ 63%]  (Sampling)
+## Chain 4: Iteration: 3300 / 4500 [ 73%]  (Sampling)
+## Chain 4: Iteration: 3750 / 4500 [ 83%]  (Sampling)
+## Chain 4: Iteration: 4200 / 4500 [ 93%]  (Sampling)
+## Chain 4: Iteration: 4500 / 4500 [100%]  (Sampling)
+## Chain 4: 
+## Chain 4:  Elapsed Time: 46.377 seconds (Warm-up)
+## Chain 4:                31.087 seconds (Sampling)
+## Chain 4:                77.464 seconds (Total)
+## Chain 4:</code></pre>
+<pre class="r"><code>summary(m4_nonhc_only, prob = .997)</code></pre>
+<pre><code>##  Family: bernoulli 
+##   Links: mu = logit 
+## Formula: switch ~ contra_satis + sexual_satisfaction + sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode + TYPEINS_recode + NKIDS_t1 + pregnant_between_waves + had_baby_between_waves + Avoid_r + FEELPG_recode + rel_dur_factor + (1 | CASEID) 
+##    Data: cccu_MA_nonhc_only (Number of observations: 1493) 
+##   Draws: 4 chains, each with iter = 4500; warmup = 1500; thin = 1;
+##          total post-warmup draws = 12000
+## 
+## Group-Level Effects: 
+## ~CASEID (Number of levels: 916) 
+##               Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     2.64      0.55       1.06       4.27 1.00     1329     1748
+## 
+## Population-Level Effects: 
+##                                            Estimate Est.Error l-99.7% CI
+## Intercept                                      1.00      1.97      -4.72
+## contra_satis                                  -0.26      0.22      -0.92
+## sexual_satisfaction                            0.07      0.16      -0.42
+## sex_freq2M5times                              -0.01      0.44      -1.30
+## sex_freq6M10times                              0.06      0.48      -1.40
+## sex_freq11ormoretimes                          0.37      0.53      -1.12
+## AGE                                           -0.18      0.05      -0.35
+## DEGREE_recode5thD6thgrade                     -0.18      0.96      -3.10
+## DEGREE_recode7thD8thgrade                      0.54      0.94      -2.33
+## DEGREE_recode9thgrade                         -0.16      0.98      -3.03
+## DEGREE_recode10thgrade                        -0.26      0.93      -2.94
+## DEGREE_recode11thgrade                        -0.11      0.97      -2.92
+## DEGREE_recode12thgradeDnodiploma               0.11      0.90      -2.51
+## DEGREE_recodehighschooldiplomaorequivalent    -0.64      0.61      -2.52
+## DEGREE_recodesomecollegenodegree               0.27      0.52      -1.24
+## DEGREE_recodeassociatedegree                  -0.38      0.62      -2.26
+## DEGREE_recodebachelorsdegree                   0.29      0.51      -1.28
+## DEGREE_recodemastersdegree                     0.54      0.59      -1.19
+## DEGREE_recodeprofessionalordoctoraldegree     -0.01      0.81      -2.55
+## POVRATE                                       -0.00      0.00      -0.00
+## HLTHPROB_recodeYes                             0.21      0.45      -1.15
+## MEDPROB_recodeYes                              0.22      0.49      -1.29
+## GAPINS_recodeYes                               0.04      0.53      -1.61
+## TYPEINS_recodeYes                              0.28      0.56      -1.49
+## NKIDS_t11                                     -0.41      0.44      -1.79
+## NKIDS_t12                                     -0.94      0.52      -2.57
+## NKIDS_t13                                     -0.15      0.63      -2.02
+## NKIDS_t14ormore                               -0.09      0.69      -2.27
+## pregnant_between_wavesYes                     -0.64      0.72      -2.91
+## had_baby_between_wavesYes                     -0.84      0.81      -3.36
+## Avoid_r                                        0.32      0.15      -0.13
+## FEELPG_recode                                 -0.41      0.14      -0.87
+## rel_dur_factor0qM25q                           0.27      0.42      -0.97
+## rel_dur_factor26qM50q                         -0.74      0.49      -2.33
+## rel_dur_factor51qM75q                         -0.23      0.48      -1.71
+## rel_dur_factor76qM100q                         0.01      0.55      -1.62
+##                                            u-99.7% CI Rhat Bulk_ESS Tail_ESS
+## Intercept                                        7.03 1.00     9276     9167
+## contra_satis                                     0.40 1.00    11371     9078
+## sexual_satisfaction                              0.57 1.00     9911     9241
+## sex_freq2M5times                                 1.31 1.00     8964     9289
+## sex_freq6M10times                                1.59 1.00     8598     9190
+## sex_freq11ormoretimes                            1.96 1.00     9091     8607
+## AGE                                             -0.05 1.00     4219     6307
+## DEGREE_recode5thD6thgrade                        2.71 1.00    19281     8582
+## DEGREE_recode7thD8thgrade                        3.16 1.00    17391     9251
+## DEGREE_recode9thgrade                            2.66 1.00    20041     8125
+## DEGREE_recode10thgrade                           2.50 1.00    21408     8267
+## DEGREE_recode11thgrade                           2.65 1.00    21801     7880
+## DEGREE_recode12thgradeDnodiploma                 2.81 1.00    18976     9008
+## DEGREE_recodehighschooldiplomaorequivalent       1.10 1.00     9073     9026
+## DEGREE_recodesomecollegenodegree                 1.90 1.00     7519     8989
+## DEGREE_recodeassociatedegree                     1.43 1.00     9630     9454
+## DEGREE_recodebachelorsdegree                     1.82 1.00     7770     8537
+## DEGREE_recodemastersdegree                       2.31 1.00     8773     8932
+## DEGREE_recodeprofessionalordoctoraldegree        2.32 1.00    15170    10286
+## POVRATE                                          0.00 1.00    10951    10341
+## HLTHPROB_recodeYes                               1.57 1.00     9838     9794
+## MEDPROB_recodeYes                                1.73 1.00    13164     9668
+## GAPINS_recodeYes                                 1.58 1.00    10476     9969
+## TYPEINS_recodeYes                                1.94 1.00    10446     9264
+## NKIDS_t11                                        0.88 1.00     9933     9319
+## NKIDS_t12                                        0.62 1.00    10301     9673
+## NKIDS_t13                                        1.72 1.00    10898     9480
+## NKIDS_t14ormore                                  2.03 1.00    13573     8908
+## pregnant_between_wavesYes                        1.50 1.00    13685     9469
+## had_baby_between_wavesYes                        1.52 1.00    15627     9820
+## Avoid_r                                          0.83 1.00     8436     7966
+## FEELPG_recode                                   -0.02 1.00     6074     8475
+## rel_dur_factor0qM25q                             1.60 1.00     8285     8395
+## rel_dur_factor26qM50q                            0.67 1.00     9539     8438
+## rel_dur_factor51qM75q                            1.22 1.00    10151     9976
+## rel_dur_factor76qM100q                           1.68 1.00     9038     7195
+## 
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
 </div>
 </div>
 
