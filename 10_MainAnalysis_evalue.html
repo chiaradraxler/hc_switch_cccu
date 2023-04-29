@@ -384,6 +384,8 @@ library(tidyverse)</code></pre>
 
 options(scipen = 999)
 
+set.seed(180822)
+
 set_priors &lt;- c(prior(normal(0, 1), class = b),
                 prior(normal(0, 1), class = sd))</code></pre>
 </div>
@@ -403,273 +405,271 @@ selection effects</h1>
 <pre class="r"><code>#repeat models first
 m3_summary = summary(m3, prob = .997)
 
-m4_summary = summary(m4, prob = .997)
-
-##compute OR and CI first
-
-#model 3 to compare e-value for unobserved / observed confounders
+m4_summary = summary(m4, prob = .997)</code></pre>
+<p>##compute OR and evalues</p>
+<pre class="r"><code>#model 3 to compare e-value for unobserved / observed confounders
 exp(m3_summary$fixed)</code></pre>
 <pre><code>##                                 Estimate Est.Error l-99.7% CI u-99.7% CI
-## Intercept                      0.7740731  1.561759 0.21561361  2.7981938
-## hcnon_hc                       0.2560488  1.847046 0.03768589  1.3802545
-## contra_satis                   0.5230542  1.105216 0.39115745  0.6851051
-## sexual_satisfaction            1.1348733  1.069621 0.93843185  1.4118427
-## sex_freq2M5times               0.9205844  1.221706 0.49666437  1.7417234
-## sex_freq6M10times              0.8169696  1.243727 0.42080788  1.6421175
-## sex_freq11ormoretimes          0.6863148  1.282668 0.33758913  1.3923125
-## hcnon_hc:contra_satis          1.4683693  1.175488 0.92363136  2.3866345
-## hcnon_hc:sexual_satisfaction   0.8073399  1.121640 0.59149725  1.1653959
-## hcnon_hc:sex_freq2M5times      0.8138272  1.452927 0.26148140  2.5025360
-## hcnon_hc:sex_freq6M10times     0.9453059  1.508635 0.26897973  3.0472869
-## hcnon_hc:sex_freq11ormoretimes 1.7215150  1.555697 0.47449743  6.4976821
+## Intercept                      0.7726787  1.536930 0.20100415  2.6518279
+## hcnon_hc                       0.2639056  1.834996 0.03702795  1.6430801
+## contra_satis                   0.5229732  1.102855 0.39381859  0.7037303
+## sexual_satisfaction            1.1359558  1.067356 0.94629750  1.3830892
+## sex_freq2M5times               0.9177467  1.218827 0.51733122  1.6360064
+## sex_freq6M10times              0.8142189  1.244266 0.42353928  1.5258312
+## sex_freq11ormoretimes          0.6903513  1.281242 0.33511927  1.3864160
+## hcnon_hc:contra_satis          1.4641546  1.177732 0.89150755  2.3462989
+## hcnon_hc:sexual_satisfaction   0.8025851  1.116924 0.58499663  1.1158412
+## hcnon_hc:sex_freq2M5times      0.8198053  1.433986 0.31242143  2.5106850
+## hcnon_hc:sex_freq6M10times     0.9524484  1.492806 0.29158824  2.9593658
+## hcnon_hc:sex_freq11ormoretimes 1.7318503  1.553615 0.43628859  6.8088483
 ##                                    Rhat Bulk_ESS Tail_ESS
-## Intercept                      2.721955      Inf      Inf
-## hcnon_hc                       2.720633      Inf      Inf
-## contra_satis                   2.719426      Inf      Inf
-## sexual_satisfaction            2.720915      Inf      Inf
-## sex_freq2M5times               2.719665      Inf      Inf
-## sex_freq6M10times              2.718326      Inf      Inf
-## sex_freq11ormoretimes          2.720391      Inf      Inf
-## hcnon_hc:contra_satis          2.718145      Inf      Inf
-## hcnon_hc:sexual_satisfaction   2.720967      Inf      Inf
-## hcnon_hc:sex_freq2M5times      2.719833      Inf      Inf
-## hcnon_hc:sex_freq6M10times     2.718891      Inf      Inf
-## hcnon_hc:sex_freq11ormoretimes 2.719806      Inf      Inf</code></pre>
+## Intercept                      2.721208      Inf      Inf
+## hcnon_hc                       2.718556      Inf      Inf
+## contra_satis                   2.724174      Inf      Inf
+## sexual_satisfaction            2.722762      Inf      Inf
+## sex_freq2M5times               2.721624      Inf      Inf
+## sex_freq6M10times              2.722558      Inf      Inf
+## sex_freq11ormoretimes          2.723830      Inf      Inf
+## hcnon_hc:contra_satis          2.720236      Inf      Inf
+## hcnon_hc:sexual_satisfaction   2.721720      Inf      Inf
+## hcnon_hc:sex_freq2M5times      2.723407      Inf      Inf
+## hcnon_hc:sex_freq6M10times     2.723545      Inf      Inf
+## hcnon_hc:sex_freq11ormoretimes 2.723672      Inf      Inf</code></pre>
 <pre class="r"><code>#model 4
 exp(m4_summary$fixed)</code></pre>
 <pre><code>##                                                      Estimate Est.Error
-## Intercept                                           1.4804275  2.553867
-## hcnon_hc                                            0.9410133  2.399524
-## contra_satis                                        0.4843065  1.125821
-## sexual_satisfaction                                 1.0757838  1.077714
-## sex_freq2M5times                                    0.8671023  1.251908
-## sex_freq6M10times                                   0.8120195  1.283247
-## sex_freq11ormoretimes                               0.5986659  1.328289
-## AGE                                                 1.0258708  1.022903
-## DEGREE_recode5thD6thgrade                           0.7278778  2.190226
-## DEGREE_recode7thD8thgrade                           2.1570478  2.170096
-## DEGREE_recode9thgrade                               0.2839118  2.167759
-## DEGREE_recode10thgrade                              1.9188824  1.954801
-## DEGREE_recode11thgrade                              0.6853267  2.099227
-## DEGREE_recode12thgradeDnodiploma                    1.7164076  1.862765
-## DEGREE_recodehighschooldiplomaorequivalent          1.0540985  1.477395
-## DEGREE_recodesomecollegenodegree                    1.0973394  1.435122
-## DEGREE_recodeassociatedegree                        0.6663972  1.499184
-## DEGREE_recodebachelorsdegree                        0.9204772  1.432927
-## DEGREE_recodemastersdegree                          0.8912181  1.495371
-## DEGREE_recodeprofessionalordoctoraldegree           1.5434615  1.685374
-## POVRATE                                             0.9991023  1.000451
-## HLTHPROB_recodeYes                                  1.2464197  1.240717
-## MEDPROB_recodeYes                                   1.0351618  1.300146
-## GAPINS_recodeYes                                    1.3500273  1.388259
-## TYPEINS_recodeYes                                   1.3872784  1.448076
-## NKIDS_t11                                           1.2919621  1.267456
-## NKIDS_t12                                           1.2591491  1.310238
-## NKIDS_t13                                           0.9992326  1.503873
-## NKIDS_t14ormore                                     1.2660173  1.721963
-## pregnant_between_wavesYes                           0.7592293  1.750160
-## had_baby_between_wavesYes                           0.8558500  1.875629
-## Avoid_r                                             0.6774862  1.070890
-## FEELPG_recode                                       1.2225817  1.067142
-## rel_dur_factor0qM25q                                1.3354985  1.263739
-## rel_dur_factor26qM50q                               1.1532557  1.263957
-## rel_dur_factor51qM75q                               1.1421336  1.304495
-## rel_dur_factor76qM100q                              0.8296767  1.391190
-## hcnon_hc:contra_satis                               1.5257732  1.223006
-## hcnon_hc:sexual_satisfaction                        0.9933701  1.145005
-## hcnon_hc:sex_freq2M5times                           1.0419934  1.508636
-## hcnon_hc:sex_freq6M10times                          1.1940866  1.571987
-## hcnon_hc:sex_freq11ormoretimes                      1.9747695  1.633954
-## hcnon_hc:AGE                                        0.8626258  1.036737
-## hcnon_hc:DEGREE_recode5thD6thgrade                  0.8395243  2.581003
-## hcnon_hc:DEGREE_recode7thD8thgrade                  1.3615852  2.400549
-## hcnon_hc:DEGREE_recode9thgrade                      0.9453610  2.594357
-## hcnon_hc:DEGREE_recode10thgrade                     0.6079675  2.451661
-## hcnon_hc:DEGREE_recode11thgrade                     0.9291467  2.691681
-## hcnon_hc:DEGREE_recode12thgradeDnodiploma           1.0163514  2.363236
-## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent 0.5709997  1.752754
-## hcnon_hc:DEGREE_recodesomecollegenodegree           1.1421977  1.607756
-## hcnon_hc:DEGREE_recodeassociatedegree               1.0895669  1.776720
-## hcnon_hc:DEGREE_recodebachelorsdegree               1.3954230  1.613604
-## hcnon_hc:DEGREE_recodemastersdegree                 1.9200857  1.746520
-## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree  0.8106546  2.146016
-## hcnon_hc:POVRATE                                    1.0005754  1.000868
-## hcnon_hc:HLTHPROB_recodeYes                         0.9079954  1.488109
-## hcnon_hc:MEDPROB_recodeYes                          1.0895727  1.587809
-## hcnon_hc:GAPINS_recodeYes                           0.9866900  1.632527
-## hcnon_hc:TYPEINS_recodeYes                          1.1718704  1.695679
-## hcnon_hc:NKIDS_t11                                  0.6150452  1.475629
-## hcnon_hc:NKIDS_t12                                  0.3762600  1.602353
-## hcnon_hc:NKIDS_t13                                  0.9461709  1.775502
-## hcnon_hc:NKIDS_t14ormore                            0.8144824  1.996536
-## hcnon_hc:pregnant_between_wavesYes                  0.6866628  1.978748
-## hcnon_hc:had_baby_between_wavesYes                  0.4879281  2.218254
-## hcnon_hc:Avoid_r                                    1.8855003  1.138636
-## hcnon_hc:FEELPG_recode                              0.5878976  1.129869
-## hcnon_hc:rel_dur_factor0qM25q                       0.8373724  1.469046
-## hcnon_hc:rel_dur_factor26qM50q                      0.4846010  1.527812
-## hcnon_hc:rel_dur_factor51qM75q                      0.7290738  1.565342
-## hcnon_hc:rel_dur_factor76qM100q                     1.0279560  1.657170
+## Intercept                                           1.4863519  2.557679
+## hcnon_hc                                            0.9576228  2.447982
+## contra_satis                                        0.4852764  1.121121
+## sexual_satisfaction                                 1.0773354  1.077834
+## sex_freq2M5times                                    0.8604421  1.253765
+## sex_freq6M10times                                   0.8053166  1.288271
+## sex_freq11ormoretimes                               0.5976948  1.328636
+## AGE                                                 1.0253839  1.022046
+## DEGREE_recode5thD6thgrade                           0.7287381  2.180431
+## DEGREE_recode7thD8thgrade                           2.1710638  2.077577
+## DEGREE_recode9thgrade                               0.2805417  2.237726
+## DEGREE_recode10thgrade                              1.9369532  1.952948
+## DEGREE_recode11thgrade                              0.6811194  2.064349
+## DEGREE_recode12thgradeDnodiploma                    1.7191731  1.895372
+## DEGREE_recodehighschooldiplomaorequivalent          1.0747575  1.509979
+## DEGREE_recodesomecollegenodegree                    1.0996899  1.460883
+## DEGREE_recodeassociatedegree                        0.6766966  1.527240
+## DEGREE_recodebachelorsdegree                        0.9289545  1.449990
+## DEGREE_recodemastersdegree                          0.8905196  1.509192
+## DEGREE_recodeprofessionalordoctoraldegree           1.5390836  1.668695
+## POVRATE                                             0.9991088  1.000442
+## HLTHPROB_recodeYes                                  1.2331891  1.249459
+## MEDPROB_recodeYes                                   1.0413679  1.291962
+## GAPINS_recodeYes                                    1.3292112  1.369119
+## TYPEINS_recodeYes                                   1.3819665  1.440683
+## NKIDS_t11                                           1.2848448  1.268492
+## NKIDS_t12                                           1.2445662  1.298699
+## NKIDS_t13                                           1.0038677  1.492600
+## NKIDS_t14ormore                                     1.2846020  1.707423
+## pregnant_between_wavesYes                           0.7701999  1.728507
+## had_baby_between_wavesYes                           0.8451172  1.847279
+## Avoid_r                                             0.6784866  1.067428
+## FEELPG_recode                                       1.2228862  1.067498
+## rel_dur_factor0qM25q                                1.3361953  1.250365
+## rel_dur_factor26qM50q                               1.1531785  1.270706
+## rel_dur_factor51qM75q                               1.1509002  1.292752
+## rel_dur_factor76qM100q                              0.8362533  1.378012
+## hcnon_hc:contra_satis                               1.5310713  1.218036
+## hcnon_hc:sexual_satisfaction                        0.9921130  1.146684
+## hcnon_hc:sex_freq2M5times                           1.0492816  1.489892
+## hcnon_hc:sex_freq6M10times                          1.2100748  1.579859
+## hcnon_hc:sex_freq11ormoretimes                      1.9778671  1.643513
+## hcnon_hc:AGE                                        0.8622482  1.036298
+## hcnon_hc:DEGREE_recode5thD6thgrade                  0.8371384  2.602650
+## hcnon_hc:DEGREE_recode7thD8thgrade                  1.3480830  2.468966
+## hcnon_hc:DEGREE_recode9thgrade                      0.9091681  2.669343
+## hcnon_hc:DEGREE_recode10thgrade                     0.6158023  2.395421
+## hcnon_hc:DEGREE_recode11thgrade                     0.9068850  2.667377
+## hcnon_hc:DEGREE_recode12thgradeDnodiploma           1.0477225  2.396035
+## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent 0.5690806  1.746372
+## hcnon_hc:DEGREE_recodesomecollegenodegree           1.1411429  1.606586
+## hcnon_hc:DEGREE_recodeassociatedegree               1.0690918  1.758549
+## hcnon_hc:DEGREE_recodebachelorsdegree               1.4051930  1.582429
+## hcnon_hc:DEGREE_recodemastersdegree                 1.9537360  1.736777
+## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree  0.8470556  2.091064
+## hcnon_hc:POVRATE                                    1.0005563  1.000847
+## hcnon_hc:HLTHPROB_recodeYes                         0.9305942  1.486277
+## hcnon_hc:MEDPROB_recodeYes                          1.0647651  1.559994
+## hcnon_hc:GAPINS_recodeYes                           1.0225356  1.639297
+## hcnon_hc:TYPEINS_recodeYes                          1.2035435  1.689567
+## hcnon_hc:NKIDS_t11                                  0.6219657  1.488249
+## hcnon_hc:NKIDS_t12                                  0.3826035  1.598959
+## hcnon_hc:NKIDS_t13                                  0.9438571  1.824115
+## hcnon_hc:NKIDS_t14ormore                            0.8030660  1.961768
+## hcnon_hc:pregnant_between_wavesYes                  0.6821171  2.041990
+## hcnon_hc:had_baby_between_wavesYes                  0.5033440  2.209128
+## hcnon_hc:Avoid_r                                    1.8727105  1.134284
+## hcnon_hc:FEELPG_recode                              0.5870706  1.128386
+## hcnon_hc:rel_dur_factor0qM25q                       0.8292802  1.466430
+## hcnon_hc:rel_dur_factor26qM50q                      0.4853975  1.540996
+## hcnon_hc:rel_dur_factor51qM75q                      0.7222427  1.563710
+## hcnon_hc:rel_dur_factor76qM100q                     1.0186990  1.666074
 ##                                                     l-99.7% CI u-99.7% CI
-## Intercept                                           0.08227005 18.1766250
-## hcnon_hc                                            0.06569493 11.6051085
-## contra_satis                                        0.33492794  0.6813288
-## sexual_satisfaction                                 0.87840755  1.3401231
-## sex_freq2M5times                                    0.44476369  1.6980698
-## sex_freq6M10times                                   0.37197267  1.7535509
-## sex_freq11ormoretimes                               0.25561770  1.3261661
-## AGE                                                 0.96218083  1.0981708
-## DEGREE_recode5thD6thgrade                           0.06875966  7.2792100
-## DEGREE_recode7thD8thgrade                           0.23023105 18.7472292
-## DEGREE_recode9thgrade                               0.02969837  2.5936993
-## DEGREE_recode10thgrade                              0.28229741 12.2382062
-## DEGREE_recode11thgrade                              0.07429100  5.3314176
-## DEGREE_recode12thgradeDnodiploma                    0.26530471 10.2809978
-## DEGREE_recodehighschooldiplomaorequivalent          0.36165171  3.1686894
-## DEGREE_recodesomecollegenodegree                    0.40816976  3.2186010
-## DEGREE_recodeassociatedegree                        0.21294566  2.2910090
-## DEGREE_recodebachelorsdegree                        0.34638160  2.6279276
-## DEGREE_recodemastersdegree                          0.29021104  2.7413723
-## DEGREE_recodeprofessionalordoctoraldegree           0.34056678  7.1178772
-## POVRATE                                             0.99767467  1.0004331
-## HLTHPROB_recodeYes                                  0.66845528  2.3374103
-## MEDPROB_recodeYes                                   0.43900095  2.1761004
-## GAPINS_recodeYes                                    0.52071999  3.7849745
-## TYPEINS_recodeYes                                   0.45658784  4.3907821
-## NKIDS_t11                                           0.65169299  2.5727860
-## NKIDS_t12                                           0.55066547  2.8715757
-## NKIDS_t13                                           0.29277803  3.3473272
-## NKIDS_t14ormore                                     0.28012991  5.8992835
-## pregnant_between_wavesYes                           0.16159526  3.8885852
-## had_baby_between_wavesYes                           0.11754561  4.4912944
-## Avoid_r                                             0.54674353  0.8245534
-## FEELPG_recode                                       0.98911886  1.4867575
-## rel_dur_factor0qM25q                                0.67556498  2.6903433
-## rel_dur_factor26qM50q                               0.57211965  2.3260860
-## rel_dur_factor51qM75q                               0.53809360  2.4405658
-## rel_dur_factor76qM100q                              0.33408715  2.1601993
-## hcnon_hc:contra_satis                               0.83074674  2.7174347
-## hcnon_hc:sexual_satisfaction                        0.67044498  1.4625634
-## hcnon_hc:sex_freq2M5times                           0.30945667  3.5255555
-## hcnon_hc:sex_freq6M10times                          0.33189941  4.7782716
-## hcnon_hc:sex_freq11ormoretimes                      0.49505229  8.3591719
-## hcnon_hc:AGE                                        0.77442783  0.9545980
-## hcnon_hc:DEGREE_recode5thD6thgrade                  0.03942963 13.5857709
-## hcnon_hc:DEGREE_recode7thD8thgrade                  0.10166056 18.7351913
-## hcnon_hc:DEGREE_recode9thgrade                      0.06186366 15.3951621
-## hcnon_hc:DEGREE_recode10thgrade                     0.03585480  8.8327510
-## hcnon_hc:DEGREE_recode11thgrade                     0.05777114 15.2422434
-## hcnon_hc:DEGREE_recode12thgradeDnodiploma           0.07881079 10.8309834
-## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent 0.11476516  2.8828372
-## hcnon_hc:DEGREE_recodesomecollegenodegree           0.29211750  4.4146580
-## hcnon_hc:DEGREE_recodeassociatedegree               0.19172138  5.7236478
-## hcnon_hc:DEGREE_recodebachelorsdegree               0.33417703  5.4584386
-## hcnon_hc:DEGREE_recodemastersdegree                 0.33386920  9.4688532
-## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree  0.06704794  7.1799057
-## hcnon_hc:POVRATE                                    0.99801605  1.0030540
-## hcnon_hc:HLTHPROB_recodeYes                         0.27404182  2.7710286
-## hcnon_hc:MEDPROB_recodeYes                          0.26719767  4.0713276
-## hcnon_hc:GAPINS_recodeYes                           0.20202980  4.1153842
-## hcnon_hc:TYPEINS_recodeYes                          0.24823732  6.1612953
-## hcnon_hc:NKIDS_t11                                  0.19453845  1.8627709
-## hcnon_hc:NKIDS_t12                                  0.08448252  1.3456576
-## hcnon_hc:NKIDS_t13                                  0.17296165  5.2450759
-## hcnon_hc:NKIDS_t14ormore                            0.11485440  5.9775554
-## hcnon_hc:pregnant_between_wavesYes                  0.08982282  4.6583050
-## hcnon_hc:had_baby_between_wavesYes                  0.04547168  4.7939999
-## hcnon_hc:Avoid_r                                    1.33723219  2.7928879
-## hcnon_hc:FEELPG_recode                              0.40936968  0.8248014
-## hcnon_hc:rel_dur_factor0qM25q                       0.27595671  2.6016695
-## hcnon_hc:rel_dur_factor26qM50q                      0.12600713  1.7314969
-## hcnon_hc:rel_dur_factor51qM75q                      0.21462177  2.6398028
-## hcnon_hc:rel_dur_factor76qM100q                     0.23783896  4.3774545
+## Intercept                                           0.08481078 25.1151229
+## hcnon_hc                                            0.07368950 11.2416365
+## contra_satis                                        0.33992131  0.6790219
+## sexual_satisfaction                                 0.86629773  1.3322004
+## sex_freq2M5times                                    0.44705858  1.6129593
+## sex_freq6M10times                                   0.36493689  1.6732120
+## sex_freq11ormoretimes                               0.23681672  1.3331366
+## AGE                                                 0.95868044  1.0937593
+## DEGREE_recode5thD6thgrade                           0.07209235  6.5905115
+## DEGREE_recode7thD8thgrade                           0.24515574 21.1839000
+## DEGREE_recode9thgrade                               0.02371422  3.2825039
+## DEGREE_recode10thgrade                              0.30604108 15.4809503
+## DEGREE_recode11thgrade                              0.07856130  5.2642204
+## DEGREE_recode12thgradeDnodiploma                    0.25561110 11.1048708
+## DEGREE_recodehighschooldiplomaorequivalent          0.28469048  3.6856128
+## DEGREE_recodesomecollegenodegree                    0.33514072  3.3093215
+## DEGREE_recodeassociatedegree                        0.17827728  2.2304030
+## DEGREE_recodebachelorsdegree                        0.27995213  2.5285176
+## DEGREE_recodemastersdegree                          0.26632834  2.8141714
+## DEGREE_recodeprofessionalordoctoraldegree           0.35566752  6.7134354
+## POVRATE                                             0.99776270  1.0003761
+## HLTHPROB_recodeYes                                  0.65250120  2.4899350
+## MEDPROB_recodeYes                                   0.47218897  2.1976377
+## GAPINS_recodeYes                                    0.52629214  3.2937535
+## TYPEINS_recodeYes                                   0.49797835  3.9248680
+## NKIDS_t11                                           0.61190567  2.6547895
+## NKIDS_t12                                           0.57090814  2.6049319
+## NKIDS_t13                                           0.30073500  3.0362535
+## NKIDS_t14ormore                                     0.26173730  5.6294861
+## pregnant_between_wavesYes                           0.14964517  3.5521745
+## had_baby_between_wavesYes                           0.14033170  5.0465910
+## Avoid_r                                             0.56308746  0.8130148
+## FEELPG_recode                                       1.01461622  1.4988031
+## rel_dur_factor0qM25q                                0.67193909  2.5230770
+## rel_dur_factor26qM50q                               0.57857261  2.3544601
+## rel_dur_factor51qM75q                               0.54135235  2.4760994
+## rel_dur_factor76qM100q                              0.30987252  2.2120973
+## hcnon_hc:contra_satis                               0.86404789  2.7583275
+## hcnon_hc:sexual_satisfaction                        0.67787554  1.4793056
+## hcnon_hc:sex_freq2M5times                           0.34322083  3.1182584
+## hcnon_hc:sex_freq6M10times                          0.33921142  4.8570302
+## hcnon_hc:sex_freq11ormoretimes                      0.52576042  9.0723015
+## hcnon_hc:AGE                                        0.77518992  0.9544556
+## hcnon_hc:DEGREE_recode5thD6thgrade                  0.03904816 15.3110533
+## hcnon_hc:DEGREE_recode7thD8thgrade                  0.09366213 18.3507926
+## hcnon_hc:DEGREE_recode9thgrade                      0.05033094 16.8345936
+## hcnon_hc:DEGREE_recode10thgrade                     0.03976356  7.6784117
+## hcnon_hc:DEGREE_recode11thgrade                     0.04869451 15.1468547
+## hcnon_hc:DEGREE_recode12thgradeDnodiploma           0.06235851 12.5712466
+## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent 0.10889581  3.1098940
+## hcnon_hc:DEGREE_recodesomecollegenodegree           0.29087872  4.7497876
+## hcnon_hc:DEGREE_recodeassociatedegree               0.18153368  5.2557329
+## hcnon_hc:DEGREE_recodebachelorsdegree               0.37195239  5.5238420
+## hcnon_hc:DEGREE_recodemastersdegree                 0.37038706  9.1611915
+## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree  0.10183985  7.7810999
+## hcnon_hc:POVRATE                                    0.99801579  1.0029352
+## hcnon_hc:HLTHPROB_recodeYes                         0.29137456  2.9651258
+## hcnon_hc:MEDPROB_recodeYes                          0.29408905  3.8763820
+## hcnon_hc:GAPINS_recodeYes                           0.24016784  4.1521450
+## hcnon_hc:TYPEINS_recodeYes                          0.28806118  6.0300236
+## hcnon_hc:NKIDS_t11                                  0.17942392  1.8678656
+## hcnon_hc:NKIDS_t12                                  0.09410921  1.3805580
+## hcnon_hc:NKIDS_t13                                  0.16599224  5.4051696
+## hcnon_hc:NKIDS_t14ormore                            0.11174453  6.6588852
+## hcnon_hc:pregnant_between_wavesYes                  0.08683911  5.5260061
+## hcnon_hc:had_baby_between_wavesYes                  0.05186864  6.4530218
+## hcnon_hc:Avoid_r                                    1.30363376  2.7166289
+## hcnon_hc:FEELPG_recode                              0.40848722  0.8322520
+## hcnon_hc:rel_dur_factor0qM25q                       0.28476095  2.4193135
+## hcnon_hc:rel_dur_factor26qM50q                      0.13026427  1.7717821
+## hcnon_hc:rel_dur_factor51qM75q                      0.20035429  2.8045668
+## hcnon_hc:rel_dur_factor76qM100q                     0.20433062  4.5333493
 ##                                                         Rhat Bulk_ESS Tail_ESS
-## Intercept                                           2.725866      Inf      Inf
-## hcnon_hc                                            2.720638      Inf      Inf
-## contra_satis                                        2.720337      Inf      Inf
-## sexual_satisfaction                                 2.720357      Inf      Inf
-## sex_freq2M5times                                    2.720945      Inf      Inf
-## sex_freq6M10times                                   2.722373      Inf      Inf
-## sex_freq11ormoretimes                               2.727318      Inf      Inf
-## AGE                                                 2.718725      Inf      Inf
-## DEGREE_recode5thD6thgrade                           2.722564      Inf      Inf
-## DEGREE_recode7thD8thgrade                           2.720011      Inf      Inf
-## DEGREE_recode9thgrade                               2.718309      Inf      Inf
-## DEGREE_recode10thgrade                              2.718728      Inf      Inf
-## DEGREE_recode11thgrade                              2.719679      Inf      Inf
-## DEGREE_recode12thgradeDnodiploma                    2.720513      Inf      Inf
-## DEGREE_recodehighschooldiplomaorequivalent          2.726282      Inf      Inf
-## DEGREE_recodesomecollegenodegree                    2.725517      Inf      Inf
-## DEGREE_recodeassociatedegree                        2.724728      Inf      Inf
-## DEGREE_recodebachelorsdegree                        2.726946      Inf      Inf
-## DEGREE_recodemastersdegree                          2.724893      Inf      Inf
-## DEGREE_recodeprofessionalordoctoraldegree           2.721675      Inf      Inf
-## POVRATE                                             2.719207      Inf      Inf
-## HLTHPROB_recodeYes                                  2.719877      Inf      Inf
-## MEDPROB_recodeYes                                   2.722675      Inf      Inf
-## GAPINS_recodeYes                                    2.720791      Inf      Inf
-## TYPEINS_recodeYes                                   2.721041      Inf      Inf
-## NKIDS_t11                                           2.720465      Inf      Inf
-## NKIDS_t12                                           2.720625      Inf      Inf
-## NKIDS_t13                                           2.721140      Inf      Inf
-## NKIDS_t14ormore                                     2.718931      Inf      Inf
-## pregnant_between_wavesYes                           2.719067      Inf      Inf
-## had_baby_between_wavesYes                           2.721792      Inf      Inf
-## Avoid_r                                             2.719132      Inf      Inf
-## FEELPG_recode                                       2.718356      Inf      Inf
-## rel_dur_factor0qM25q                                2.721672      Inf      Inf
-## rel_dur_factor26qM50q                               2.721413      Inf      Inf
-## rel_dur_factor51qM75q                               2.722809      Inf      Inf
-## rel_dur_factor76qM100q                              2.721402      Inf      Inf
-## hcnon_hc:contra_satis                               2.718686      Inf      Inf
-## hcnon_hc:sexual_satisfaction                        2.720487      Inf      Inf
-## hcnon_hc:sex_freq2M5times                           2.719359      Inf      Inf
-## hcnon_hc:sex_freq6M10times                          2.721539      Inf      Inf
-## hcnon_hc:sex_freq11ormoretimes                      2.720239      Inf      Inf
-## hcnon_hc:AGE                                        2.722950      Inf      Inf
-## hcnon_hc:DEGREE_recode5thD6thgrade                  2.723512      Inf      Inf
-## hcnon_hc:DEGREE_recode7thD8thgrade                  2.719923      Inf      Inf
-## hcnon_hc:DEGREE_recode9thgrade                      2.726600      Inf      Inf
-## hcnon_hc:DEGREE_recode10thgrade                     2.718819      Inf      Inf
-## hcnon_hc:DEGREE_recode11thgrade                     2.720762      Inf      Inf
-## hcnon_hc:DEGREE_recode12thgradeDnodiploma           2.719589      Inf      Inf
-## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent 2.721925      Inf      Inf
-## hcnon_hc:DEGREE_recodesomecollegenodegree           2.719889      Inf      Inf
-## hcnon_hc:DEGREE_recodeassociatedegree               2.719326      Inf      Inf
-## hcnon_hc:DEGREE_recodebachelorsdegree               2.722296      Inf      Inf
-## hcnon_hc:DEGREE_recodemastersdegree                 2.719765      Inf      Inf
-## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree  2.720355      Inf      Inf
-## hcnon_hc:POVRATE                                    2.717255      Inf      Inf
-## hcnon_hc:HLTHPROB_recodeYes                         2.717792      Inf      Inf
-## hcnon_hc:MEDPROB_recodeYes                          2.721379      Inf      Inf
-## hcnon_hc:GAPINS_recodeYes                           2.717169      Inf      Inf
-## hcnon_hc:TYPEINS_recodeYes                          2.719381      Inf      Inf
-## hcnon_hc:NKIDS_t11                                  2.717810      Inf      Inf
-## hcnon_hc:NKIDS_t12                                  2.721246      Inf      Inf
-## hcnon_hc:NKIDS_t13                                  2.718082      Inf      Inf
-## hcnon_hc:NKIDS_t14ormore                            2.720013      Inf      Inf
-## hcnon_hc:pregnant_between_wavesYes                  2.721797      Inf      Inf
-## hcnon_hc:had_baby_between_wavesYes                  2.721904      Inf      Inf
-## hcnon_hc:Avoid_r                                    2.720217      Inf      Inf
-## hcnon_hc:FEELPG_recode                              2.719261      Inf      Inf
-## hcnon_hc:rel_dur_factor0qM25q                       2.719176      Inf      Inf
-## hcnon_hc:rel_dur_factor26qM50q                      2.724462      Inf      Inf
-## hcnon_hc:rel_dur_factor51qM75q                      2.723211      Inf      Inf
-## hcnon_hc:rel_dur_factor76qM100q                     2.727952      Inf      Inf</code></pre>
+## Intercept                                           2.720494      Inf      Inf
+## hcnon_hc                                            2.721385      Inf      Inf
+## contra_satis                                        2.718569      Inf      Inf
+## sexual_satisfaction                                 2.717634      Inf      Inf
+## sex_freq2M5times                                    2.718731      Inf      Inf
+## sex_freq6M10times                                   2.719271      Inf      Inf
+## sex_freq11ormoretimes                               2.720146      Inf      Inf
+## AGE                                                 2.720764      Inf      Inf
+## DEGREE_recode5thD6thgrade                           2.717789      Inf      Inf
+## DEGREE_recode7thD8thgrade                           2.722043      Inf      Inf
+## DEGREE_recode9thgrade                               2.721171      Inf      Inf
+## DEGREE_recode10thgrade                              2.721208      Inf      Inf
+## DEGREE_recode11thgrade                              2.719112      Inf      Inf
+## DEGREE_recode12thgradeDnodiploma                    2.719798      Inf      Inf
+## DEGREE_recodehighschooldiplomaorequivalent          2.724654      Inf      Inf
+## DEGREE_recodesomecollegenodegree                    2.725443      Inf      Inf
+## DEGREE_recodeassociatedegree                        2.723687      Inf      Inf
+## DEGREE_recodebachelorsdegree                        2.731174      Inf      Inf
+## DEGREE_recodemastersdegree                          2.723833      Inf      Inf
+## DEGREE_recodeprofessionalordoctoraldegree           2.720966      Inf      Inf
+## POVRATE                                             2.721880      Inf      Inf
+## HLTHPROB_recodeYes                                  2.720714      Inf      Inf
+## MEDPROB_recodeYes                                   2.717123      Inf      Inf
+## GAPINS_recodeYes                                    2.717681      Inf      Inf
+## TYPEINS_recodeYes                                   2.719454      Inf      Inf
+## NKIDS_t11                                           2.719888      Inf      Inf
+## NKIDS_t12                                           2.719224      Inf      Inf
+## NKIDS_t13                                           2.723764      Inf      Inf
+## NKIDS_t14ormore                                     2.717171      Inf      Inf
+## pregnant_between_wavesYes                           2.719442      Inf      Inf
+## had_baby_between_wavesYes                           2.722082      Inf      Inf
+## Avoid_r                                             2.718369      Inf      Inf
+## FEELPG_recode                                       2.719386      Inf      Inf
+## rel_dur_factor0qM25q                                2.721224      Inf      Inf
+## rel_dur_factor26qM50q                               2.720775      Inf      Inf
+## rel_dur_factor51qM75q                               2.723760      Inf      Inf
+## rel_dur_factor76qM100q                              2.720477      Inf      Inf
+## hcnon_hc:contra_satis                               2.721061      Inf      Inf
+## hcnon_hc:sexual_satisfaction                        2.720559      Inf      Inf
+## hcnon_hc:sex_freq2M5times                           2.719733      Inf      Inf
+## hcnon_hc:sex_freq6M10times                          2.717771      Inf      Inf
+## hcnon_hc:sex_freq11ormoretimes                      2.720094      Inf      Inf
+## hcnon_hc:AGE                                        2.723166      Inf      Inf
+## hcnon_hc:DEGREE_recode5thD6thgrade                  2.720321      Inf      Inf
+## hcnon_hc:DEGREE_recode7thD8thgrade                  2.719384      Inf      Inf
+## hcnon_hc:DEGREE_recode9thgrade                      2.719944      Inf      Inf
+## hcnon_hc:DEGREE_recode10thgrade                     2.721717      Inf      Inf
+## hcnon_hc:DEGREE_recode11thgrade                     2.722951      Inf      Inf
+## hcnon_hc:DEGREE_recode12thgradeDnodiploma           2.724449      Inf      Inf
+## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent 2.719525      Inf      Inf
+## hcnon_hc:DEGREE_recodesomecollegenodegree           2.724079      Inf      Inf
+## hcnon_hc:DEGREE_recodeassociatedegree               2.726366      Inf      Inf
+## hcnon_hc:DEGREE_recodebachelorsdegree               2.724134      Inf      Inf
+## hcnon_hc:DEGREE_recodemastersdegree                 2.724491      Inf      Inf
+## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree  2.719339      Inf      Inf
+## hcnon_hc:POVRATE                                    2.719618      Inf      Inf
+## hcnon_hc:HLTHPROB_recodeYes                         2.725595      Inf      Inf
+## hcnon_hc:MEDPROB_recodeYes                          2.719580      Inf      Inf
+## hcnon_hc:GAPINS_recodeYes                           2.718600      Inf      Inf
+## hcnon_hc:TYPEINS_recodeYes                          2.721009      Inf      Inf
+## hcnon_hc:NKIDS_t11                                  2.718985      Inf      Inf
+## hcnon_hc:NKIDS_t12                                  2.724152      Inf      Inf
+## hcnon_hc:NKIDS_t13                                  2.719149      Inf      Inf
+## hcnon_hc:NKIDS_t14ormore                            2.719796      Inf      Inf
+## hcnon_hc:pregnant_between_wavesYes                  2.719308      Inf      Inf
+## hcnon_hc:had_baby_between_wavesYes                  2.717470      Inf      Inf
+## hcnon_hc:Avoid_r                                    2.718893      Inf      Inf
+## hcnon_hc:FEELPG_recode                              2.717512      Inf      Inf
+## hcnon_hc:rel_dur_factor0qM25q                       2.721298      Inf      Inf
+## hcnon_hc:rel_dur_factor26qM50q                      2.724867      Inf      Inf
+## hcnon_hc:rel_dur_factor51qM75q                      2.719783      Inf      Inf
+## hcnon_hc:rel_dur_factor76qM100q                     2.718915      Inf      Inf</code></pre>
 <pre class="r"><code>#compute e-values
 
 #model 3
 #for contra_satis
-evalue(OR(0.5230542 ,rare = FALSE),lo = 0.39115745,  hi = 0.6851051)</code></pre>
+evalue(OR(0.5229732 ,rare = FALSE),lo = 0.39381859,  hi = 0.7037303)</code></pre>
 <pre><code>##              point     lower     upper
-## RR       0.7232249 0.6254258 0.8277108
-## E-values 2.1101241        NA 1.7096279</code></pre>
+## RR       0.7231689 0.6275497 0.8388863
+## E-values 2.1103611        NA 1.6705358</code></pre>
 <pre class="r"><code>#model 4
 #for contra_satis
-evalue(OR(0.4843065, rare = FALSE), lo = 0.33492794,  hi = 0.6813288)</code></pre>
+evalue(OR(  0.4852764, rare = FALSE), lo = 0.33992131,  hi = 0.6790219)</code></pre>
 <pre><code>##              point     lower     upper
-## RR       0.6959213 0.5787296 0.8254264
-## E-values 2.2293228        NA 1.7176819</code></pre>
+## RR       0.6966178 0.5830277 0.8240279
+## E-values 2.2261868        NA 1.7226242</code></pre>
 </div>
 
 

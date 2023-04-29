@@ -40,9 +40,10 @@ m4 <- brm(file = "models/m4.Rds")
 m3_summary = summary(m3, prob = .997)
 
 m4_summary = summary(m4, prob = .997)
+```
+##compute OR and evalues
 
-##compute OR and CI first
-
+```{r}
 #model 3 to compare e-value for unobserved / observed confounders
 exp(m3_summary$fixed)
 
@@ -53,12 +54,12 @@ exp(m4_summary$fixed)
 
 #model 3
 #for contra_satis
-evalue(OR(0.5230542 ,rare = FALSE),lo = 0.39115745,  hi = 0.6851051)
+evalue(OR(0.5229732 ,rare = FALSE),lo = 0.39381859,  hi = 0.7037303)
 
 
 #model 4
 #for contra_satis
-evalue(OR(0.4843065, rare = FALSE), lo = 0.33492794,  hi = 0.6813288)
+evalue(OR(	0.4852764, rare = FALSE), lo = 0.33992131,  hi = 0.6790219)
 
 
 ```
