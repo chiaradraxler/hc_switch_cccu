@@ -22,10 +22,6 @@ output: html_document
 
 ## 2. Load Packages
 ```{r}
-# library(effects)
-# library(psych)
-# library(patchwork)
-# library(ggpubr)
 library(formr)
 library(brms)
 library(marginaleffects)
@@ -33,7 +29,10 @@ library(sjPlot)
 library(tidyverse)
 
 
+set.seed(180822)
 
+set_priors <- c(prior(normal(0, 1), class = b),
+                prior(normal(0, 1), class = sd))
 options(scipen=999)
 
 apatheme = theme_bw() +
@@ -157,7 +156,7 @@ ggsave("sexual_freq.pdf", sex_freq)
 
 ggsave("sexual_freq.png", sex_freq)
 
-#for hc dur
+#for hc dur  in sub analyses
 
 sa_m3 <- brm(file = "models/sa_m3.Rds")
 
@@ -495,7 +494,7 @@ m4_forest_plot = m4_sum$fixed %>%
 rownames(m4_forest_plot) = c()
 ```
 
-#### m3 in Robustnessanalyses
+#### m4 in Robustnessanalyses
 ```{r}
 #R1
 R1_m4_forest_plot = R1_m4_sum$fixed %>%
