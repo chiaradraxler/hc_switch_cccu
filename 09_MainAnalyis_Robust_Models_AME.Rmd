@@ -75,34 +75,34 @@ R2_ma_1 <- brm(file = "models/R2_ma_1.Rds")
 R3_ma_1 <- brm(file = "models/R3_ma_1.Rds")
 
 R1_ma_2 <- brm(file = "models/R1_ma_2.Rds")
-R1_ma_2_hc_only <- brm(file = "models/R1_ma_2_hc_only.Rds")
-R1_ma_2_nonhc_only <- brm(file = "models/R1_ma_2_nonhc_only.Rds")
+R1_m2_hc_only <- brm(file = "models/R1_m2_hc_only.Rds")
+R1_m2_nonhc_only <- brm(file = "models/R1_m2_nonhc_only.Rds")
 R2_ma_2 <- brm(file = "models/R2_ma_2.Rds")
-R2_ma_2_hc_only <- brm(file = "models/R2_ma_2_hc_only.Rds")
-R2_ma_2_nonhc_only <- brm(file = "models/R2_ma_2_nonhc_only.Rds")
+R2_m2_hc_only <- brm(file = "models/R2_m2_hc_only.Rds")
+R2_m2_nonhc_only <- brm(file = "models/R2_m2_nonhc_only.Rds")
 R3_ma_2 <- brm(file = "models/R3_ma_2.Rds")
-R3_ma_2_hc_only <- brm(file = "models/R3_ma_2_hc_only.Rds")
-R3_ma_2_nonhc_only <- brm(file = "models/R3_ma_2_nonhc_only.Rds")
+R3_m2_hc_only <- brm(file = "models/R3_m2_hc_only.Rds")
+R3_m2_nonhc_only <- brm(file = "models/R3_m2_nonhc_only.Rds")
 
 R1_ma_3 <- brm(file = "models/R1_ma_3.Rds")
-R1_ma_3_hc_only <- brm(file = "models/R1_ma_3_hc_only.Rds")
-R1_ma_3_nonhc_only <- brm(file = "models/R1_ma_3_nonhc_only.Rds")
+R1_m3_hc_only <- brm(file = "models/R1_m3_hc_only.Rds")
+R1_m3_nonhc_only <- brm(file = "models/R1_m3_nonhc_only.Rds")
 R2_ma_3 <- brm(file = "models/R2_ma_3.Rds")
-R2_ma_3_hc_only <- brm(file = "models/R2_ma_3_hc_only.Rds")
-R2_ma_3_nonhc_only <- brm(file = "models/R2_ma_3_nonhc_only.Rds")
+R2_m3_hc_only <- brm(file = "models/R2_m3_hc_only.Rds")
+R2_m3_nonhc_only <- brm(file = "models/R2_m3_nonhc_only.Rds")
 R3_ma_3 <- brm(file = "models/R3_ma_3.Rds")
-R3_ma_3_hc_only <- brm(file = "models/R3_ma_3_hc_only.Rds")
-R3_ma_3_nonhc_only <- brm(file = "models/R3_ma_3_nonhc_only.Rds")
+R3_m3_hc_only <- brm(file = "models/R3_m3_hc_only.Rds")
+R3_m3_nonhc_only <- brm(file = "models/R3_m3_nonhc_only.Rds")
                
 R1_ma_4 <- brm(file = "models/R1_ma_4.Rds")
-R1_ma_4_hc_only <- brm(file = "models/R1_ma_4_hc_only.Rds")
-R1_ma_4_nonhc_only <- brm(file = "models/R1_ma_4_nonhc_only.Rds")
+R1_m4_hc_only <- brm(file = "models/R1_m4_hc_only.Rds")
+R1_m4_nonhc_only <- brm(file = "models/R1_m4_nonhc_only.Rds")
 R2_ma_4 <- brm(file = "models/R2_ma_4.Rds")
-R2_ma_4_hc_only<- brm(file = "models/R2_ma_4_hc_only.Rds")
-R2_ma_4_nonhc_only <- brm(file = "models/R2_ma_4_nonhc_only.Rds")
+R2_m4_hc_only<- brm(file = "models/R2_m4_hc_only.Rds")
+R2_m4_nonhc_only <- brm(file = "models/R2_m4_nonhc_only.Rds")
 R3_ma_4 <- brm(file = "models/R3_ma_4.Rds")
-R3_ma_4_hc_only <- brm(file = "models/R3_ma_4_hc_only.Rds")
-R3_ma_4_nonhc_only <- brm(file = "models/R3_ma_4_nonhc_only.Rds")
+R3_m4_hc_only <- brm(file = "models/R3_m4_hc_only.Rds")
+R3_m4_nonhc_only <- brm(file = "models/R3_m4_nonhc_only.Rds")
 
 ```
 
@@ -231,18 +231,20 @@ summary(ame, conf_level = .997)
 ## Model 4
 ### R1
 ```{r}
-
 ame <- marginaleffects(R1_ma_4)
-summary(ame, conf_level = .997)
+ame_sum <- summary(ame, conf_level = .997)
+print(ame_sum, nrow = 100000)
 
 
 
 ame <- marginaleffects(R1_m4_hc_only)
-summary(ame, conf_level = .997)
+ame_sum <- summary(ame, conf_level = .997)
+print(ame_sum, nrow = 100000)
 
 
 ame <- marginaleffects(R1_m4_nonhc_only)
-summary(ame, conf_level = .997)
+ame_sum <- summary(ame, conf_level = .997)
+print(ame_sum, nrow = 100000)
 
 
 ```
@@ -251,18 +253,21 @@ summary(ame, conf_level = .997)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R2_ma_4)
-summary(ame, conf_level = .997)
+ame_sum <- summary(ame, conf_level = .997)
+print(ame_sum, nrow = 100000)
 
 
 
 ame <- marginaleffects(R2_m4_hc_only)
-summary(ame, conf_level = .997)
+ame_sum <- summary(ame, conf_level = .997)
+print(ame_sum, nrow = 100000)
 
 
 
 
 ame <- marginaleffects(R2_m4_nonhc_only)
-summary(ame, conf_level = .997)
+ame_sum <- summary(ame, conf_level = .997)
+print(ame_sum, nrow = 100000)
 
 
 ```
@@ -271,19 +276,22 @@ summary(ame, conf_level = .997)
 ```{r}
 
 ame <- marginaleffects(R3_ma_4)
-summary(ame, conf_level = .997)
+ame_sum <- summary(ame, conf_level = .997)
+print(ame_sum, nrow = 100000)
 
 
 
 ame <- marginaleffects(R3_m4_hc_only)
-summary(ame, conf_level = .997)
+ame_sum <- summary(ame, conf_level = .997)
+print(ame_sum, nrow = 100000)
 
 
 
 
 
 ame <- marginaleffects(R3_m4_nonhc_only)
-summary(ame, conf_level = .997)
+ame_sum <- summary(ame, conf_level = .997)
+print(ame_sum, nrow = 100000)
 
 ```
 
