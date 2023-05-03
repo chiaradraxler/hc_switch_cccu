@@ -25,7 +25,7 @@ load("cccu_SA.RData")
 
 cccu_SA <- cccu_SA %>%
   arrange(CASEID) %>%
-  mutate(hc = droplevels(hc))
+  mutate_if(is.factor, droplevels)
 ```
 
 # 3. Models
