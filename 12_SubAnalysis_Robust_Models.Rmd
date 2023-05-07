@@ -21,14 +21,11 @@ set_priors <- c(prior(normal(0, 1), class = b),
 # 2. Load Data
 ```{r}
 #SA
-load("cccu_R1_s.RData") %>%
-  mutate(hc = droplevels(hc))
+load("cccu_R1_s.RData")
 
-load("cccu_R2_s.RData") %>%
-  mutate(hc = droplevels(hc))
+load("cccu_R2_s.RData")
 
-load("cccu_R3_s.RData") %>%
-  mutate(hc = droplevels(hc))
+load("cccu_R3_s.RData")
 
 ```
 
@@ -36,13 +33,16 @@ load("cccu_R3_s.RData") %>%
 ```{r}
 
 cccu_R1_s <- cccu_R1_s %>%
-  arrange(CASEID)
+  arrange(CASEID) %>%
+  mutate_if(is.factor, droplevels)
 
 cccu_R2_s <- cccu_R2_s %>%
-  arrange(CASEID)
+  arrange(CASEID) %>%
+  mutate_if(is.factor, droplevels)
 
 cccu_R3_s <- cccu_R3_s %>%
-  arrange(CASEID)
+  arrange(CASEID) %>%
+  mutate_if(is.factor, droplevels)
 ```
 
 
@@ -150,7 +150,7 @@ R1_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
           prior = set_priors,
           file = "models/R1_sa_m4.Rds",
           warmup = 1500,
-          iter = 4500,
+          iter = 5500,
           control = list(adapt_delta = 0.99))
 
 summary(R1_sa_m4, prob = .997)
@@ -182,7 +182,7 @@ R3_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
           prior = set_priors,
           file = "models/R3_sa_m4.Rds",
           warmup = 1500,
-          iter = 4500,
+          iter = 5500,
           control = list(adapt_delta = 0.99))
 
 summary(R3_sa_m4, prob = .997)
