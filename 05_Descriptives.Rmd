@@ -522,10 +522,10 @@ cramersV(t1_comp_inex$rel_dur_factor,t1_comp_inex$exclude)
 confIntV(t1_comp_inex$rel_dur_factor,t1_comp_inex$exclude, conf.level = 0.95)
 table(cccu_MA_t1$rel_dur_factor)
 430/1723
-336/1723
-345/1723
-320/1723
-292/1723
+358/1723
+361/1723
+305/1723
+269/1723
 
 table(cccu_excluded_t1$rel_dur_factor)
 
