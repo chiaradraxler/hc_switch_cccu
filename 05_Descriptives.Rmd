@@ -79,10 +79,6 @@ cccu_MA_t3 <- cccu_MA%>%
 
 cccu_MA_t4 <- cccu_MA%>%
   filter(WAVE == "t4")
-
-cccu_excluded_t1 <- cccu_excluded %>%
-  filter(WAVE == "t1")
-
 ```
 ##hormonal vs. non hormonal contraception 
 ```{r}
@@ -241,35 +237,38 @@ table(cccu_MA_t1$POVRATE)
 
 #Comparision included to excluded sample 
 ```{r}
-t1_comp_inex = rbind(cccu_MA_t1 %>% mutate(exclude = "no"),
-                     cccu_excluded_t1 %>% mutate(exclude = "yes"))
-table(t1_comp_inex$exclude)
+comp_inex = rbind(cccu_MA %>% mutate(exclude = "no"),
+                     cccu_excluded %>% mutate(exclude = "yes"))
+table(comp_inex$exclude)
 ```
 
 ##hc use
 ```{r}
-chisq.test(t1_comp_inex$hc, t1_comp_inex$exclude, correct=FALSE)
-cramersV(t1_comp_inex$hc,t1_comp_inex$exclude)
-confIntV(t1_comp_inex$hc,t1_comp_inex$exclude, conf.level = 0.95)
-table(cccu_MA_t1$hc)
-691/1723
-1032/1723
-table(cccu_excluded_t1$hc)
-1639/2911
-810/2911
-462/2911
+chisq.test(comp_inex$hc, comp_inex$exclude, correct=FALSE)
+cramersV(comp_inex$hc,comp_inex$exclude)
+confIntV(comp_inex$hc,comp_inex$exclude, conf.level = 0.95)
+
+table(cccu_MA$hc)
+round(table(cccu_MA$hc)/3787, 2)
+table(is.na(cccu_MA$hc))
+table(is.na(cccu_MA$hc))/3787
+
+table(cccu_excluded$hc)
+round(table(cccu_excluded$hc)/6452, 2)
+table(is.na(cccu_excluded$hc))
+table(is.na(cccu_excluded$hc))/6452
 ```
 
 
 ##contraceptive satisfation
 ```{r}
-t.test(t1_comp_inex$contra_satis ~ t1_comp_inex$exclude,
+t.test(comp_inex$contra_satis ~ comp_inex$exclude,
        alternative = 'two.sided',
        paired = FALSE,
        conf.level = .95)
 
 
-t1_comp_inex %>% cohens_d(contra_satis ~ exclude, var.equal = TRUE, ci = TRUE)
+comp_inex %>% cohens_d(contra_satis ~ exclude, var.equal = TRUE, ci = TRUE)
 
 psych::describe(cccu_MA_t1$contra_satis)
 psych::describe(cccu_excluded_t1$contra_satis)
@@ -279,9 +278,9 @@ psych::describe(cccu_excluded_t1$contra_satis)
 ##sexual frequency
 ```{r}
 
-chisq.test(t1_comp_inex$sex_freq, t1_comp_inex$exclude, correct=FALSE)
-cramersV(t1_comp_inex$sex_freq,t1_comp_inex$exclude)
-confIntV(t1_comp_inex$sex_freq,t1_comp_inex$exclude, conf.level = 0.95)
+chisq.test(comp_inex$sex_freq, comp_inex$exclude, correct=FALSE)
+cramersV(comp_inex$sex_freq,comp_inex$exclude)
+confIntV(comp_inex$sex_freq,comp_inex$exclude, conf.level = 0.95)
 table(cccu_MA_t1$sex_freq)
 222/1723
 125/1723
@@ -301,12 +300,12 @@ table(cccu_excluded_t1$sex_freq)
 
 ##sexual satisfaction 
 ```{r}
-t.test(t1_comp_inex$sexual_satisfaction ~ t1_comp_inex$exclude,
+t.test(comp_inex$sexual_satisfaction ~ comp_inex$exclude,
        alternative = 'two.sided',
        paired = FALSE,
        conf.level = .95)
 
-t1_comp_inex %>% cohens_d(sexual_satisfaction ~ exclude, var.equal = TRUE, ci = TRUE)
+comp_inex %>% cohens_d(sexual_satisfaction ~ exclude, var.equal = TRUE, ci = TRUE)
 
 psych::describe(cccu_MA_t1$sexual_satisfaction)
 psych::describe(cccu_excluded_t1$sexual_satisfaction)
@@ -316,12 +315,12 @@ psych::describe(cccu_excluded_t1$sexual_satisfaction)
 
 ##Age
 ```{r}
-t.test(t1_comp_inex$AGE ~ t1_comp_inex$exclude,
+t.test(comp_inex$AGE ~ comp_inex$exclude,
        alternative = 'two.sided',
        paired = FALSE,
        conf.level = .95)
 
-t1_comp_inex %>% cohens_d(AGE ~ exclude, var.equal = TRUE, ci = TRUE)
+comp_inex %>% cohens_d(AGE ~ exclude, var.equal = TRUE, ci = TRUE)
 
 psych::describe(cccu_MA_t1$AGE)
 psych::describe(cccu_excluded_t1$AGE)
@@ -330,9 +329,9 @@ psych::describe(cccu_excluded_t1$AGE)
 
 ##Degree
 ```{r}
-chisq.test(t1_comp_inex$DEGREE_recode, t1_comp_inex$exclude, correct=FALSE)
-cramersV(t1_comp_inex$DEGREE_recode,t1_comp_inex$exclude)
-confIntV(t1_comp_inex$DEGREE_recode,t1_comp_inex$exclude, conf.level = 0.95)
+chisq.test(comp_inex$DEGREE_recode, comp_inex$exclude, correct=FALSE)
+cramersV(comp_inex$DEGREE_recode,comp_inex$exclude)
+confIntV(comp_inex$DEGREE_recode,comp_inex$exclude, conf.level = 0.95)
 table(cccu_MA_t1$DEGREE_recode)
 1/1723
 9/1723
@@ -367,12 +366,12 @@ table(cccu_excluded_t1$DEGREE_recode)
 
 ##Poverty
 ```{r}
-t.test(t1_comp_inex$POVRATE ~ t1_comp_inex$exclude,
+t.test(comp_inex$POVRATE ~ comp_inex$exclude,
        alternative = 'two.sided',
        paired = FALSE,
        conf.level = .95)
 
-t1_comp_inex %>% cohens_d(POVRATE ~ exclude, var.equal = TRUE, ci = TRUE)
+comp_inex %>% cohens_d(POVRATE ~ exclude, var.equal = TRUE, ci = TRUE)
 
 psych::describe(cccu_MA_t1$POVRATE)
 psych::describe(cccu_excluded_t1$POVRATE)
@@ -381,9 +380,9 @@ psych::describe(cccu_excluded_t1$POVRATE)
 
 ##Health problems
 ```{r}
-chisq.test(t1_comp_inex$HLTHPROB_recode, t1_comp_inex$exclude, correct=FALSE)
-cramersV(t1_comp_inex$HLTHPROB_recode,t1_comp_inex$exclude)
-confIntV(t1_comp_inex$HLTHPROB_recode,t1_comp_inex$exclude, conf.level = 0.95)
+chisq.test(comp_inex$HLTHPROB_recode, comp_inex$exclude, correct=FALSE)
+cramersV(comp_inex$HLTHPROB_recode,comp_inex$exclude)
+confIntV(comp_inex$HLTHPROB_recode,comp_inex$exclude, conf.level = 0.95)
 
 table(cccu_MA_t1$HLTHPROB_recode)
 1424/1723
@@ -399,10 +398,10 @@ table(cccu_excluded_t1$HLTHPROB_recode)
 
 ##medical problems
 ```{r}
-chisq.test(t1_comp_inex$MEDPROB_recode, t1_comp_inex$exclude, correct=FALSE)
+chisq.test(comp_inex$MEDPROB_recode, comp_inex$exclude, correct=FALSE)
 
-cramersV(t1_comp_inex$MEDPROB_recode,t1_comp_inex$exclude)
-confIntV(t1_comp_inex$MEDPROB_recode,t1_comp_inex$exclude, conf.level = 0.95)
+cramersV(comp_inex$MEDPROB_recode,comp_inex$exclude)
+confIntV(comp_inex$MEDPROB_recode,comp_inex$exclude, conf.level = 0.95)
 
 table(cccu_MA_t1$MEDPROB_recode)
 1579/1723
@@ -415,9 +414,9 @@ table(cccu_excluded_t1$MEDPROB_recode)
 
 ##gaps in insurance
 ```{r}
-chisq.test(t1_comp_inex$GAPINS_recode, t1_comp_inex$exclude, correct=FALSE)
-cramersV(t1_comp_inex$GAPINS_recode,t1_comp_inex$exclude)
-confIntV(t1_comp_inex$GAPINS_recode,t1_comp_inex$exclude, conf.level = 0.95)
+chisq.test(comp_inex$GAPINS_recode, comp_inex$exclude, correct=FALSE)
+cramersV(comp_inex$GAPINS_recode,comp_inex$exclude)
+confIntV(comp_inex$GAPINS_recode,comp_inex$exclude, conf.level = 0.95)
 table(cccu_MA_t1$GAPINS_recode)
 1382/1723
 341/1723
@@ -428,9 +427,9 @@ table(cccu_excluded_t1$GAPINS_recode)
 
 ##insuranced?
 ```{r}
-chisq.test(t1_comp_inex$TYPEINS_recode, t1_comp_inex$exclude, correct=FALSE)
-cramersV(t1_comp_inex$TYPEINS_recode,t1_comp_inex$exclude)
-confIntV(t1_comp_inex$TYPEINS_recode,t1_comp_inex$exclude, conf.level = 0.95)
+chisq.test(comp_inex$TYPEINS_recode, comp_inex$exclude, correct=FALSE)
+cramersV(comp_inex$TYPEINS_recode,comp_inex$exclude)
+confIntV(comp_inex$TYPEINS_recode,comp_inex$exclude, conf.level = 0.95)
 table(cccu_MA_t1$TYPEINS_recode)
 1456/1723
 267/1723
@@ -442,9 +441,9 @@ table(cccu_excluded_t1$TYPEINS_recode)
 
 ##number of kids at t1
 ```{r}
-chisq.test(t1_comp_inex$NKIDS_t1, t1_comp_inex$exclude, correct=FALSE)
-cramersV(t1_comp_inex$NKIDS_t1,t1_comp_inex$exclude)
-confIntV(t1_comp_inex$NKIDS_t1,t1_comp_inex$exclude, conf.level = 0.95)
+chisq.test(comp_inex$NKIDS_t1, comp_inex$exclude, correct=FALSE)
+cramersV(comp_inex$NKIDS_t1,comp_inex$exclude)
+confIntV(comp_inex$NKIDS_t1,comp_inex$exclude, conf.level = 0.95)
 table(cccu_MA_t1$NKIDS_t1)
 936/1723
 329/1723
@@ -463,9 +462,9 @@ table(cccu_excluded_t1$NKIDS_t1)
 
 ##pregnant between waves
 ```{r}
-chisq.test(t1_comp_inex$pregnant_between_waves, t1_comp_inex$exclude, correct=FALSE)
-cramersV(t1_comp_inex$pregnant_between_waves,t1_comp_inex$exclude)
-confIntV(t1_comp_inex$pregnant_between_waves,t1_comp_inex$exclude, conf.level = 0.95)
+chisq.test(comp_inex$pregnant_between_waves, comp_inex$exclude, correct=FALSE)
+cramersV(comp_inex$pregnant_between_waves,comp_inex$exclude)
+confIntV(comp_inex$pregnant_between_waves,comp_inex$exclude, conf.level = 0.95)
 table(cccu_MA_t1$pregnant_between_waves)
 1688/1723
 35/1723
@@ -476,9 +475,9 @@ table(cccu_excluded_t1$pregnant_between_waves)
 
 ##had baby between waves
 ```{r}
-chisq.test(t1_comp_inex$had_baby_between_waves, t1_comp_inex$exclude, correct=FALSE)
-cramersV(t1_comp_inex$had_baby_between_waves,t1_comp_inex$exclude)
-confIntV(t1_comp_inex$had_baby_between_waves,t1_comp_inex$exclude, conf.level = 0.95)
+chisq.test(comp_inex$had_baby_between_waves, comp_inex$exclude, correct=FALSE)
+cramersV(comp_inex$had_baby_between_waves,comp_inex$exclude)
+confIntV(comp_inex$had_baby_between_waves,comp_inex$exclude, conf.level = 0.95)
 table(cccu_MA_t1$had_baby_between_waves)
 1688/1723
 35/1723
@@ -488,12 +487,12 @@ table(cccu_excluded_t1$had_baby_between_waves)
 
 ##avoidance
 ```{r}
-t.test(t1_comp_inex$Avoid_r ~ t1_comp_inex$exclude,
+t.test(comp_inex$Avoid_r ~ comp_inex$exclude,
        alternative = 'two.sided',
        paired = FALSE,
        conf.level = .95)
 
-t1_comp_inex %>% cohens_d(Avoid_r ~ exclude, var.equal = TRUE, ci = TRUE)
+comp_inex %>% cohens_d(Avoid_r ~ exclude, var.equal = TRUE, ci = TRUE)
 
 
 psych::describe(cccu_MA_t1$Avoid_r)
@@ -503,12 +502,12 @@ psych::describe(cccu_excluded_t1$Avoid_r)
 
 ##feelings about pregnancy
 ```{r}
-t.test(t1_comp_inex$FEELPG_recode ~ t1_comp_inex$exclude,
+t.test(comp_inex$FEELPG_recode ~ comp_inex$exclude,
        alternative = 'two.sided',
        paired = FALSE,
        conf.level = .95)
 
-t1_comp_inex %>% cohens_d(FEELPG_recode ~ exclude, var.equal = TRUE, ci = TRUE)
+comp_inex %>% cohens_d(FEELPG_recode ~ exclude, var.equal = TRUE, ci = TRUE)
 psych::describe(cccu_MA_t1$FEELPG_recode)
 psych::describe(cccu_excluded_t1$FEELPG_recode)
 ```
@@ -517,9 +516,9 @@ psych::describe(cccu_excluded_t1$FEELPG_recode)
 ##relationship duration
 ```{r}
 
-chisq.test(t1_comp_inex$rel_dur_factor, t1_comp_inex$exclude, correct=FALSE)
-cramersV(t1_comp_inex$rel_dur_factor,t1_comp_inex$exclude)
-confIntV(t1_comp_inex$rel_dur_factor,t1_comp_inex$exclude, conf.level = 0.95)
+chisq.test(comp_inex$rel_dur_factor, comp_inex$exclude, correct=FALSE)
+cramersV(comp_inex$rel_dur_factor,comp_inex$exclude)
+confIntV(comp_inex$rel_dur_factor,comp_inex$exclude, conf.level = 0.95)
 table(cccu_MA_t1$rel_dur_factor)
 430/1723
 336/1723
