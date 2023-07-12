@@ -270,8 +270,8 @@ t.test(comp_inex$contra_satis ~ comp_inex$exclude,
 
 comp_inex %>% cohens_d(contra_satis ~ exclude, var.equal = TRUE, ci = TRUE)
 
-psych::describe(cccu_MA_t1$contra_satis)
-psych::describe(cccu_excluded_t1$contra_satis)
+psych::describe(cccu_MA$contra_satis)
+psych::describe(cccu_excluded$contra_satis)
 ```
 
 
@@ -281,19 +281,17 @@ psych::describe(cccu_excluded_t1$contra_satis)
 chisq.test(comp_inex$sex_freq, comp_inex$exclude, correct=FALSE)
 cramersV(comp_inex$sex_freq,comp_inex$exclude)
 confIntV(comp_inex$sex_freq,comp_inex$exclude, conf.level = 0.95)
-table(cccu_MA_t1$sex_freq)
-222/1723
-125/1723
-760/1723
-466/1723
-275/1723
 
-table(cccu_excluded_t1$sex_freq)
-1034/2911
-168/2911
-864/2911
-548/2911
-418/2911
+table(cccu_MA$sex_freq)
+round(table(cccu_MA$sex_freq)/3787, 2)
+table(is.na(cccu_MA$sex_freq))
+table(is.na(cccu_MA$sex_freq))/3787
+
+table(cccu_excluded$sex_freq)
+2374+1879+1238+835+126
+round(table(cccu_excluded$sex_freq)/6452, 2)
+table(is.na(cccu_excluded$sex_freq))
+table(is.na(cccu_excluded$sex_freq))/6452
 
 ```
 
@@ -307,8 +305,8 @@ t.test(comp_inex$sexual_satisfaction ~ comp_inex$exclude,
 
 comp_inex %>% cohens_d(sexual_satisfaction ~ exclude, var.equal = TRUE, ci = TRUE)
 
-psych::describe(cccu_MA_t1$sexual_satisfaction)
-psych::describe(cccu_excluded_t1$sexual_satisfaction)
+psych::describe(cccu_MA$sexual_satisfaction)
+psych::describe(cccu_excluded$sexual_satisfaction)
 
 ```
 
@@ -322,8 +320,8 @@ t.test(comp_inex$AGE ~ comp_inex$exclude,
 
 comp_inex %>% cohens_d(AGE ~ exclude, var.equal = TRUE, ci = TRUE)
 
-psych::describe(cccu_MA_t1$AGE)
-psych::describe(cccu_excluded_t1$AGE)
+psych::describe(cccu_MA$AGE)
+psych::describe(cccu_excluded$AGE)
 ```
 
 
@@ -332,35 +330,17 @@ psych::describe(cccu_excluded_t1$AGE)
 chisq.test(comp_inex$DEGREE_recode, comp_inex$exclude, correct=FALSE)
 cramersV(comp_inex$DEGREE_recode,comp_inex$exclude)
 confIntV(comp_inex$DEGREE_recode,comp_inex$exclude, conf.level = 0.95)
-table(cccu_MA_t1$DEGREE_recode)
-1/1723
-9/1723
-7/1723
-13/1723
-12/1723
-8/1723
-15/1723
-205/1723
-432/1723
-186/1723
-597/1723
-197/1723
-41/1723
-table(cccu_excluded_t1$DEGREE_recode)
-6/2911
-2/2911
-14/2911
-19/2911
-26/2911
-28/2911
-33/2911
-44/2911
-513/2911
-821/2911
-321/2911
-733/2911
-274/2911
-77/2911
+
+
+table(cccu_MA$DEGREE_recode)
+round(table(cccu_MA$DEGREE_recode)/3787, 2)
+table(is.na(cccu_MA$DEGREE_recode))
+table(is.na(cccu_MA$DEGREE_recode))/3787
+
+table(cccu_excluded$DEGREE_recode)
+round(table(cccu_excluded$DEGREE_recode)/6452, 2)
+table(is.na(cccu_excluded$DEGREE_recode))
+table(is.na(cccu_excluded$DEGREE_recode))/6452
 ```
 
 
@@ -373,8 +353,8 @@ t.test(comp_inex$POVRATE ~ comp_inex$exclude,
 
 comp_inex %>% cohens_d(POVRATE ~ exclude, var.equal = TRUE, ci = TRUE)
 
-psych::describe(cccu_MA_t1$POVRATE)
-psych::describe(cccu_excluded_t1$POVRATE)
+psych::describe(cccu_MA$POVRATE)
+psych::describe(cccu_excluded$POVRATE)
 ```
 
 
@@ -384,15 +364,15 @@ chisq.test(comp_inex$HLTHPROB_recode, comp_inex$exclude, correct=FALSE)
 cramersV(comp_inex$HLTHPROB_recode,comp_inex$exclude)
 confIntV(comp_inex$HLTHPROB_recode,comp_inex$exclude, conf.level = 0.95)
 
-table(cccu_MA_t1$HLTHPROB_recode)
-1424/1723
-299/1723
-1424+299
-table(cccu_excluded_t1$HLTHPROB_recode)
-2128+517
-2128/2645
-517/2645
+table(cccu_MA$HLTHPROB_recode)
+round(table(cccu_MA$HLTHPROB_recode)/3787, 2)
+table(is.na(cccu_MA$HLTHPROB_recode))
+table(is.na(cccu_MA$HLTHPROB_recode))/3787
 
+table(cccu_excluded$HLTHPROB_recode)
+round(table(cccu_excluded$HLTHPROB_recode)/6452, 2)
+table(is.na(cccu_excluded$HLTHPROB_recode))
+table(is.na(cccu_excluded$HLTHPROB_recode))/6452
 ```
 
 
@@ -403,12 +383,15 @@ chisq.test(comp_inex$MEDPROB_recode, comp_inex$exclude, correct=FALSE)
 cramersV(comp_inex$MEDPROB_recode,comp_inex$exclude)
 confIntV(comp_inex$MEDPROB_recode,comp_inex$exclude, conf.level = 0.95)
 
-table(cccu_MA_t1$MEDPROB_recode)
-1579/1723
-144/1723
-table(cccu_excluded_t1$MEDPROB_recode)
-2648/2911
-263/2911
+table(cccu_MA$MEDPROB_recode)
+round(table(cccu_MA$MEDPROB_recode)/3787, 2)
+table(is.na(cccu_MA$MEDPROB_recode))
+table(is.na(cccu_MA$MEDPROB_recode))/3787
+
+table(cccu_excluded$MEDPROB_recode)
+round(table(cccu_excluded$MEDPROB_recode)/6452, 2)
+table(is.na(cccu_excluded$MEDPROB_recode))
+table(is.na(cccu_excluded$MEDPROB_recode))/6452
 ```
 
 
@@ -417,12 +400,16 @@ table(cccu_excluded_t1$MEDPROB_recode)
 chisq.test(comp_inex$GAPINS_recode, comp_inex$exclude, correct=FALSE)
 cramersV(comp_inex$GAPINS_recode,comp_inex$exclude)
 confIntV(comp_inex$GAPINS_recode,comp_inex$exclude, conf.level = 0.95)
-table(cccu_MA_t1$GAPINS_recode)
-1382/1723
-341/1723
-table(cccu_excluded_t1$GAPINS_recode)
-2157/2870
-713/2870
+
+table(cccu_MA$GAPINS_recode)
+round(table(cccu_MA$GAPINS_recode)/3787, 2)
+table(is.na(cccu_MA$GAPINS_recode))
+table(is.na(cccu_MA$GAPINS_recode))/3787
+
+table(cccu_excluded$GAPINS_recode)
+round(table(cccu_excluded$GAPINS_recode)/6452, 2)
+table(is.na(cccu_excluded$MEDPROB_recode))
+table(is.na(cccu_excluded$MEDPROB_recode))/6452
 ```
 
 ##insuranced?
@@ -430,12 +417,17 @@ table(cccu_excluded_t1$GAPINS_recode)
 chisq.test(comp_inex$TYPEINS_recode, comp_inex$exclude, correct=FALSE)
 cramersV(comp_inex$TYPEINS_recode,comp_inex$exclude)
 confIntV(comp_inex$TYPEINS_recode,comp_inex$exclude, conf.level = 0.95)
-table(cccu_MA_t1$TYPEINS_recode)
-1456/1723
-267/1723
-table(cccu_excluded_t1$TYPEINS_recode)
-547/2843
-2296/2843
+
+
+table(cccu_MA$TYPEINS_recode)
+round(table(cccu_MA$TYPEINS_recode)/3787, 2)
+table(is.na(cccu_MA$TYPEINS_recode))
+table(is.na(cccu_MA$TYPEINS_recode))/3787
+
+table(cccu_excluded$TYPEINS_recode)
+round(table(cccu_excluded$TYPEINS_recode)/6452, 2)
+table(is.na(cccu_excluded$TYPEINS_recode))
+table(is.na(cccu_excluded$TYPEINS_recode))/6452
 ```
 
 
@@ -444,18 +436,16 @@ table(cccu_excluded_t1$TYPEINS_recode)
 chisq.test(comp_inex$NKIDS_t1, comp_inex$exclude, correct=FALSE)
 cramersV(comp_inex$NKIDS_t1,comp_inex$exclude)
 confIntV(comp_inex$NKIDS_t1,comp_inex$exclude, conf.level = 0.95)
-table(cccu_MA_t1$NKIDS_t1)
-936/1723
-329/1723
-304/1723
-98/1723
-56/1723
-table(cccu_excluded_t1$NKIDS_t1)
-1358/2896
-621/2896
-561/2896
-252/2896
-104/2896
+
+table(cccu_MA$NKIDS_t1)
+round(table(cccu_MA$NKIDS_t1)/3787, 2)
+table(is.na(cccu_MA$NKIDS_t1))
+table(is.na(cccu_MA$NKIDS_t1))/3787
+
+table(cccu_excluded$NKIDS_t1)
+round(table(cccu_excluded$NKIDS_t1)/6452, 2)
+table(is.na(cccu_excluded$NKIDS_t1))
+table(is.na(cccu_excluded$NKIDS_t1))/6452
 
 ```
 
@@ -465,12 +455,18 @@ table(cccu_excluded_t1$NKIDS_t1)
 chisq.test(comp_inex$pregnant_between_waves, comp_inex$exclude, correct=FALSE)
 cramersV(comp_inex$pregnant_between_waves,comp_inex$exclude)
 confIntV(comp_inex$pregnant_between_waves,comp_inex$exclude, conf.level = 0.95)
-table(cccu_MA_t1$pregnant_between_waves)
-1688/1723
-35/1723
-table(cccu_excluded_t1$pregnant_between_waves)
-2770/2894
-124/2894
+
+
+table(cccu_MA$pregnant_between_waves)
+round(table(cccu_MA$pregnant_between_waves)/3787, 2)
+table(is.na(cccu_MA$pregnant_between_waves))
+table(is.na(cccu_MA$pregnant_between_waves))/3787
+
+table(cccu_excluded$pregnant_between_waves)
+round(table(cccu_excluded$pregnant_between_waves)/6452, 2)
+table(is.na(cccu_excluded$pregnant_between_waves))
+table(is.na(cccu_excluded$pregnant_between_waves))/6452
+
 ```
 
 ##had baby between waves
@@ -478,10 +474,16 @@ table(cccu_excluded_t1$pregnant_between_waves)
 chisq.test(comp_inex$had_baby_between_waves, comp_inex$exclude, correct=FALSE)
 cramersV(comp_inex$had_baby_between_waves,comp_inex$exclude)
 confIntV(comp_inex$had_baby_between_waves,comp_inex$exclude, conf.level = 0.95)
-table(cccu_MA_t1$had_baby_between_waves)
-1688/1723
-35/1723
-table(cccu_excluded_t1$had_baby_between_waves)
+
+table(cccu_MA$had_baby_between_waves)
+round(table(cccu_MA$had_baby_between_waves)/3787, 2)
+table(is.na(cccu_MA$had_baby_between_waves))
+table(is.na(cccu_MA$had_baby_between_waves))/3787
+
+table(cccu_excluded$had_baby_between_waves)
+round(table(cccu_excluded$had_baby_between_waves)/6452, 2)
+table(is.na(cccu_excluded$had_baby_between_waves))
+table(is.na(cccu_excluded$had_baby_between_waves))/6452
 ```
 
 
@@ -495,8 +497,8 @@ t.test(comp_inex$Avoid_r ~ comp_inex$exclude,
 comp_inex %>% cohens_d(Avoid_r ~ exclude, var.equal = TRUE, ci = TRUE)
 
 
-psych::describe(cccu_MA_t1$Avoid_r)
-psych::describe(cccu_excluded_t1$Avoid_r)
+psych::describe(cccu_MA$Avoid_r)
+psych::describe(cccu_excluded$Avoid_r)
 ```
 
 
@@ -508,8 +510,8 @@ t.test(comp_inex$FEELPG_recode ~ comp_inex$exclude,
        conf.level = .95)
 
 comp_inex %>% cohens_d(FEELPG_recode ~ exclude, var.equal = TRUE, ci = TRUE)
-psych::describe(cccu_MA_t1$FEELPG_recode)
-psych::describe(cccu_excluded_t1$FEELPG_recode)
+psych::describe(cccu_MA$FEELPG_recode)
+psych::describe(cccu_excluded$FEELPG_recode)
 ```
 
 
@@ -519,26 +521,16 @@ psych::describe(cccu_excluded_t1$FEELPG_recode)
 chisq.test(comp_inex$rel_dur_factor, comp_inex$exclude, correct=FALSE)
 cramersV(comp_inex$rel_dur_factor,comp_inex$exclude)
 confIntV(comp_inex$rel_dur_factor,comp_inex$exclude, conf.level = 0.95)
-table(cccu_MA_t1$rel_dur_factor)
-430/1723
-336/1723
-345/1723
-320/1723
-292/1723
 
-table(cccu_excluded_t1$rel_dur_factor)
+table(cccu_MA$rel_dur_factor)
+round(table(cccu_MA$rel_dur_factor)/3787, 2)
+table(is.na(cccu_MA$rel_dur_factor))
+table(is.na(cccu_MA$rel_dur_factor))/3787
 
-1117/(1117+475+467+444+408)
-
-
-475/(1117+475+467+444+408)
-
-467/(1117+475+467+444+408)
-
-
-444/(1117+475+467+444+408)
-
-408/(1117+475+467+444+408)
+table(cccu_excluded$rel_dur_factor)
+round(table(cccu_excluded$rel_dur_factor)/6452, 2)
+table(is.na(cccu_excluded$rel_dur_factor))
+table(is.na(cccu_excluded$rel_dur_factor))/6452
 ```
 
 
