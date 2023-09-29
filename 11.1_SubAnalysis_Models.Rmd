@@ -1,0 +1,129 @@
+---
+title: "11_SubAnalysis_Models"
+author: "Chiara Draxler"
+date: "16 11 2022"
+output: html_document
+---
+# 1. Load Packages
+```{r}
+library(brms)
+library(marginaleffects)
+library(tidyverse)
+
+
+options(scipen = 999)
+
+set.seed(180822)
+
+set_priors <- c(prior(normal(0, 1), class = b),
+                prior(normal(0, 1), class = sd))
+```
+
+# 2. Load Data
+```{r}
+load("cccu_MA.RData")
+
+cccu_MA <- cccu_MA %>%
+  arrange(CASEID) %>%
+  mutate_if(is.factor, droplevels)
+```
+
+# Datawrangling
+```{r}
+cccu_MA <- cccu_MA %>%
+  mutate(hc_dur = ifelse(hc == "non_hc",-9999, hc_dur))
+```
+
+# 3. Models
+
+## 3.1 Model 1: including directly with contraceptive method associated predictors
+
+DURATION and satisfaction!
+
+```{r}
+sa_m1 <- brm(
+  switch ~ hc + hc:hc_dur + (1 | CASEID),
+  family = bernoulli(),
+  data = cccu_MA,
+  prior = set_priors,
+  file = "models/sa_m1_1.Rds"
+)
+
+summary(sa_m1, prob = .997)
+```
+
+## 3.2 Model 2: including directly with contraceptive method associated predictors
+
+DURATION and satisfaction!
+
+```{r}
+sa_m2 <- brm(
+  switch ~ hc * contra_satis + hc:hc_dur + hc:hc_dur:contra_satis + (1 | CASEID),
+  family = bernoulli(),
+  data = cccu_MA,
+  prior = set_priors,
+  file = "models/sa_m2_1.Rds"
+)
+
+summary(sa_m2, prob = .997)
+```
+
+
+## 3.3 Model 3: including not directly with contraceptive method associated predictors
+```{r}
+sa_m3 <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + hc:hc_dur +
+      hc:hc_dur:contra_satis +
+      hc:hc_dur:sexual_satisfaction +
+      hc:hc_dur:sex_freq +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_MA,
+    prior = set_priors,
+    file = "models/sa_m3_1.Rds"
+  )
+
+summary(sa_m3, prob = .997)
+```
+
+## 3.4 Model 4: Controlling for observed selection effects
+```{r}
+sa_m4 <-
+  brm(
+    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
+      hc * AGE + hc * DEGREE_recode +
+      hc * POVRATE +
+      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
+      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
+      hc * had_baby_between_waves + hc * Avoid_r +
+      hc * FEELPG_recode +
+      hc * rel_dur_factor +
+      hc:hc_dur +
+      hc:hc_dur:contra_satis +
+      hc:hc_dur:sexual_satisfaction +
+      hc:hc_dur:sex_freq +
+      hc:hc_dur:AGE +
+      hc:hc_dur:DEGREE_recode +
+      hc:hc_dur:POVRATE +
+      hc:hc_dur:HLTHPROB_recode +
+      hc:hc_dur:MEDPROB_recode +
+      hc:hc_dur:GAPINS_recode +
+      hc:hc_dur:TYPEINS_recode +
+      hc:hc_dur:NKIDS_t1 +
+      hc:hc_dur:pregnant_between_waves +
+      hc:hc_dur:had_baby_between_waves +
+      hc:hc_dur:Avoid_r +
+      hc:hc_dur:FEELPG_recode +
+      hc:hc_dur:rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_MA,
+    prior = set_priors,
+    file = "models/sa_m4_1.Rds"
+  )
+
+summary(sa_m4, prob = .997)
+```
+
+
