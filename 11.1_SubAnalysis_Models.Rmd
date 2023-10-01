@@ -1,6 +1,6 @@
 ---
 title: "11_SubAnalysis_Models"
-author: "Chiara Draxler"
+author: "Chiara Draxler & Laura Botzet"
 date: "16 11 2022"
 output: html_document
 ---
@@ -31,7 +31,42 @@ cccu_MA <- cccu_MA %>%
 # Datawrangling
 ```{r}
 cccu_MA <- cccu_MA %>%
-  mutate(hc_dur = ifelse(hc == "non_hc",-9999, hc_dur))
+  mutate(
+    hc_dur = ifelse(hc == "non_hc", -9999, hc_dur),
+    hc_dummy = ifelse(hc == "non_hc", 0,
+                      ifelse(hc == "hc", 1, NA))
+  )
+```
+
+# Inspect data
+```{r}
+class(cccu_MA$hc)
+levels(cccu_MA$hc)
+
+library(formr)
+crosstabs( ~ hc + hc_dur, data = cccu_MA)
+
+class(cccu_MA$hc_dummy)
+table(cccu_MA$hc_dummy)
+crosstabs( ~ hc_dummy + hc_dur, data = cccu_MA)
+```
+
+# Frequentist models
+```{r}
+library(lme4)
+sa_m1_freq <- glmer(switch ~ hc + hc:hc_dur + (1 | CASEID),
+                    family = binomial(link = "logit"),
+                    data = cccu_MA)
+
+summary(sa_m1_freq)
+
+sa_m1_freq_dummy <- glmer(
+  switch ~ hc_dummy + hc_dummy:hc_dur + (1 | CASEID),
+  family = binomial(link = "logit"),
+  data = cccu_MA
+)
+
+summary(sa_m1_freq)
 ```
 
 # 3. Models
@@ -42,7 +77,7 @@ DURATION and satisfaction!
 
 ```{r}
 sa_m1 <- brm(
-  switch ~ hc + hc:hc_dur + (1 | CASEID),
+  switch ~ hc_dummy + hc_dummy:hc_dur + (1 | CASEID),
   family = bernoulli(),
   data = cccu_MA,
   prior = set_priors,
@@ -58,7 +93,8 @@ DURATION and satisfaction!
 
 ```{r}
 sa_m2 <- brm(
-  switch ~ hc * contra_satis + hc:hc_dur + hc:hc_dur:contra_satis + (1 | CASEID),
+  switch ~ hc_dummy * contra_satis + hc_dummy:hc_dur + hc_dummy:hc_dur:contra_satis +
+    (1 | CASEID),
   family = bernoulli(),
   data = cccu_MA,
   prior = set_priors,
@@ -73,10 +109,11 @@ summary(sa_m2, prob = .997)
 ```{r}
 sa_m3 <-
   brm(
-    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + hc:hc_dur +
-      hc:hc_dur:contra_satis +
-      hc:hc_dur:sexual_satisfaction +
-      hc:hc_dur:sex_freq +
+    switch ~ hc_dummy * contra_satis +  hc_dummy * sexual_satisfaction +
+      hc_dummy * sex_freq + hc_dummy:hc_dur +
+      hc_dummy:hc_dur:contra_satis +
+      hc_dummy:hc_dur:sexual_satisfaction +
+      hc_dummy:hc_dur:sex_freq +
       (1 | CASEID),
     family = bernoulli(),
     data = cccu_MA,
@@ -91,31 +128,32 @@ summary(sa_m3, prob = .997)
 ```{r}
 sa_m4 <-
   brm(
-    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
-      hc * AGE + hc * DEGREE_recode +
-      hc * POVRATE +
-      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
-      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
-      hc * had_baby_between_waves + hc * Avoid_r +
-      hc * FEELPG_recode +
-      hc * rel_dur_factor +
-      hc:hc_dur +
-      hc:hc_dur:contra_satis +
-      hc:hc_dur:sexual_satisfaction +
-      hc:hc_dur:sex_freq +
-      hc:hc_dur:AGE +
-      hc:hc_dur:DEGREE_recode +
-      hc:hc_dur:POVRATE +
-      hc:hc_dur:HLTHPROB_recode +
-      hc:hc_dur:MEDPROB_recode +
-      hc:hc_dur:GAPINS_recode +
-      hc:hc_dur:TYPEINS_recode +
-      hc:hc_dur:NKIDS_t1 +
-      hc:hc_dur:pregnant_between_waves +
-      hc:hc_dur:had_baby_between_waves +
-      hc:hc_dur:Avoid_r +
-      hc:hc_dur:FEELPG_recode +
-      hc:hc_dur:rel_dur_factor +
+    switch ~ hc_dummy * contra_satis +  hc_dummy * sexual_satisfaction + 
+      hc_dummy * sex_freq +
+      hc_dummy * AGE + hc_dummy * DEGREE_recode +
+      hc_dummy * POVRATE +
+      hc_dummy * HLTHPROB_recode + hc_dummy * MEDPROB_recode +  hc_dummy * GAPINS_recode +
+      hc_dummy * TYPEINS_recode + hc_dummy * NKIDS_t1 +  hc_dummy * pregnant_between_waves +
+      hc_dummy * had_baby_between_waves + hc_dummy * Avoid_r +
+      hc_dummy * FEELPG_recode +
+      hc_dummy * rel_dur_factor +
+      hc_dummy:hc_dur +
+      hc_dummy:hc_dur:contra_satis +
+      hc_dummy:hc_dur:sexual_satisfaction +
+      hc_dummy:hc_dur:sex_freq +
+      hc_dummy:hc_dur:AGE +
+      hc_dummy:hc_dur:DEGREE_recode +
+      hc_dummy:hc_dur:POVRATE +
+      hc_dummy:hc_dur:HLTHPROB_recode +
+      hc_dummy:hc_dur:MEDPROB_recode +
+      hc_dummy:hc_dur:GAPINS_recode +
+      hc_dummy:hc_dur:TYPEINS_recode +
+      hc_dummy:hc_dur:NKIDS_t1 +
+      hc_dummy:hc_dur:pregnant_between_waves +
+      hc_dummy:hc_dur:had_baby_between_waves +
+      hc_dummy:hc_dur:Avoid_r +
+      hc_dummy:hc_dur:FEELPG_recode +
+      hc_dummy:hc_dur:rel_dur_factor +
       (1 | CASEID),
     family = bernoulli(),
     data = cccu_MA,
