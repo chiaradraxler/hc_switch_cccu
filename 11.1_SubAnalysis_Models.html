@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Chiara Draxler" />
+<meta name="author" content="Chiara Draxler &amp; Laura Botzet" />
 
 
 <title>11_SubAnalysis_Models</title>
@@ -350,7 +350,7 @@ display: none;
 
 
 <h1 class="title toc-ignore">11_SubAnalysis_Models</h1>
-<h4 class="author">Chiara Draxler</h4>
+<h4 class="author">Chiara Draxler &amp; Laura Botzet</h4>
 <h4 class="date">16 11 2022</h4>
 
 </div>
@@ -398,7 +398,147 @@ cccu_MA &lt;- cccu_MA %&gt;%
 <div id="datawrangling" class="section level1">
 <h1>Datawrangling</h1>
 <pre class="r"><code>cccu_MA &lt;- cccu_MA %&gt;%
-  mutate(hc_dur = ifelse(hc == &quot;non_hc&quot;,-9999, hc_dur))</code></pre>
+  mutate(
+    hc_dur = ifelse(hc == &quot;non_hc&quot;, -9999, hc_dur),
+    hc_dummy = ifelse(hc == &quot;non_hc&quot;, 0,
+                      ifelse(hc == &quot;hc&quot;, 1, NA))
+  )</code></pre>
+</div>
+<div id="inspect-data" class="section level1">
+<h1>Inspect data</h1>
+<pre class="r"><code>class(cccu_MA$hc)</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<pre class="r"><code>levels(cccu_MA$hc)</code></pre>
+<pre><code>## [1] &quot;hc&quot;     &quot;non_hc&quot;</code></pre>
+<pre class="r"><code>library(formr)</code></pre>
+<pre><code>## 
+## Attache Paket: &#39;formr&#39;</code></pre>
+<pre><code>## Die folgenden Objekte sind maskiert von &#39;package:dplyr&#39;:
+## 
+##     first, last</code></pre>
+<pre class="r"><code>crosstabs( ~ hc + hc_dur, data = cccu_MA)</code></pre>
+<pre><code>##         hc_dur
+## hc       -9999    0    1    2    3    4    5    6    7    8    9   10   11   12
+##   hc         0   13  100  124  109   97  103  126  113  140  132  127  101  120
+##   non_hc  1493    0    0    0    0    0    0    0    0    0    0    0    0    0
+##         hc_dur
+## hc         13   14   15   16   17   18   19   20   21   22   23   24   25   26
+##   hc       90  106  102   98   69   87   52   64   46   53   22   26   14   13
+##   non_hc    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+##         hc_dur
+## hc         27   28   29   30   31   32   34   35   37   38   40   41 &lt;NA&gt;
+##   hc        9    5    2    4    3    6    1    2    2    1    1    1   10
+##   non_hc    0    0    0    0    0    0    0    0    0    0    0    0    0</code></pre>
+<pre class="r"><code>class(cccu_MA$hc_dummy)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>table(cccu_MA$hc_dummy)</code></pre>
+<pre><code>## 
+##    0    1 
+## 1493 2294</code></pre>
+<pre class="r"><code>crosstabs( ~ hc_dummy + hc_dur, data = cccu_MA)</code></pre>
+<pre><code>##         hc_dur
+## hc_dummy -9999    0    1    2    3    4    5    6    7    8    9   10   11   12
+##        0  1493    0    0    0    0    0    0    0    0    0    0    0    0    0
+##        1     0   13  100  124  109   97  103  126  113  140  132  127  101  120
+##         hc_dur
+## hc_dummy   13   14   15   16   17   18   19   20   21   22   23   24   25   26
+##        0    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+##        1   90  106  102   98   69   87   52   64   46   53   22   26   14   13
+##         hc_dur
+## hc_dummy   27   28   29   30   31   32   34   35   37   38   40   41 &lt;NA&gt;
+##        0    0    0    0    0    0    0    0    0    0    0    0    0    0
+##        1    9    5    2    4    3    6    1    2    2    1    1    1   10</code></pre>
+</div>
+<div id="frequentist-models" class="section level1">
+<h1>Frequentist models</h1>
+<pre class="r"><code>library(lme4)</code></pre>
+<pre><code>## Lade nötiges Paket: Matrix</code></pre>
+<pre><code>## 
+## Attache Paket: &#39;Matrix&#39;</code></pre>
+<pre><code>## Die folgenden Objekte sind maskiert von &#39;package:tidyr&#39;:
+## 
+##     expand, pack, unpack</code></pre>
+<pre><code>## 
+## Attache Paket: &#39;lme4&#39;</code></pre>
+<pre><code>## Das folgende Objekt ist maskiert &#39;package:brms&#39;:
+## 
+##     ngrps</code></pre>
+<pre class="r"><code>sa_m1_freq &lt;- glmer(switch ~ hc + hc:hc_dur + (1 | CASEID),
+                    family = binomial(link = &quot;logit&quot;),
+                    data = cccu_MA)</code></pre>
+<pre><code>## fixed-effect model matrix is rank deficient so dropping 1 column / coefficient</code></pre>
+<pre class="r"><code>summary(sa_m1_freq)</code></pre>
+<pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace
+##   Approximation) [glmerMod]
+##  Family: binomial  ( logit )
+## Formula: switch ~ hc + hc:hc_dur + (1 | CASEID)
+##    Data: cccu_MA
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   2765.0   2789.9  -1378.5   2757.0     3773 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -0.9448 -0.2956 -0.2393 -0.1851  3.2493 
+## 
+## Random effects:
+##  Groups Name        Variance Std.Dev.
+##  CASEID (Intercept) 1.904    1.38    
+## Number of obs: 3777, groups:  CASEID, 1985
+## 
+## Fixed effects:
+##             Estimate Std. Error z value             Pr(&gt;|z|)    
+## (Intercept) -1.82129    0.22420  -8.123 0.000000000000000453 ***
+## hcnon_hc    -1.36274    0.16911  -8.058 0.000000000000000774 ***
+## hchc:hc_dur -0.03278    0.01245  -2.632              0.00848 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) hcnn_h
+## hcnon_hc    -0.470       
+## hchc:hc_dur -0.795  0.558
+## fit warnings:
+## fixed-effect model matrix is rank deficient so dropping 1 column / coefficient</code></pre>
+<pre class="r"><code>sa_m1_freq_dummy &lt;- glmer(
+  switch ~ hc_dummy + hc_dummy:hc_dur + (1 | CASEID),
+  family = binomial(link = &quot;logit&quot;),
+  data = cccu_MA
+)
+
+summary(sa_m1_freq)</code></pre>
+<pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace
+##   Approximation) [glmerMod]
+##  Family: binomial  ( logit )
+## Formula: switch ~ hc + hc:hc_dur + (1 | CASEID)
+##    Data: cccu_MA
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   2765.0   2789.9  -1378.5   2757.0     3773 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -0.9448 -0.2956 -0.2393 -0.1851  3.2493 
+## 
+## Random effects:
+##  Groups Name        Variance Std.Dev.
+##  CASEID (Intercept) 1.904    1.38    
+## Number of obs: 3777, groups:  CASEID, 1985
+## 
+## Fixed effects:
+##             Estimate Std. Error z value             Pr(&gt;|z|)    
+## (Intercept) -1.82129    0.22420  -8.123 0.000000000000000453 ***
+## hcnon_hc    -1.36274    0.16911  -8.058 0.000000000000000774 ***
+## hchc:hc_dur -0.03278    0.01245  -2.632              0.00848 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) hcnn_h
+## hcnon_hc    -0.470       
+## hchc:hc_dur -0.795  0.558
+## fit warnings:
+## fixed-effect model matrix is rank deficient so dropping 1 column / coefficient</code></pre>
 </div>
 <div id="models" class="section level1">
 <h1>3. Models</h1>
@@ -407,7 +547,7 @@ cccu_MA &lt;- cccu_MA %&gt;%
 predictors</h2>
 <p>DURATION and satisfaction!</p>
 <pre class="r"><code>sa_m1 &lt;- brm(
-  switch ~ hc + hc:hc_dur + (1 | CASEID),
+  switch ~ hc_dummy + hc_dummy:hc_dur + (1 | CASEID),
   family = bernoulli(),
   data = cccu_MA,
   prior = set_priors,
@@ -419,8 +559,8 @@ predictors</h2>
 <pre><code>## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0.000574 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.74 seconds.
+## Chain 1: Gradient evaluation took 0.000476 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.76 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -437,15 +577,15 @@ predictors</h2>
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 312.004 seconds (Warm-up)
-## Chain 1:                390.146 seconds (Sampling)
-## Chain 1:                702.15 seconds (Total)
+## Chain 1:  Elapsed Time: 24.404 seconds (Warm-up)
+## Chain 1:                11.076 seconds (Sampling)
+## Chain 1:                35.48 seconds (Total)
 ## Chain 1: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
 ## Chain 2: 
-## Chain 2: Gradient evaluation took 0.000307 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.07 seconds.
+## Chain 2: Gradient evaluation took 0.000351 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.51 seconds.
 ## Chain 2: Adjust your expectations accordingly!
 ## Chain 2: 
 ## Chain 2: 
@@ -462,15 +602,15 @@ predictors</h2>
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 332.445 seconds (Warm-up)
-## Chain 2:                379.671 seconds (Sampling)
-## Chain 2:                712.116 seconds (Total)
+## Chain 2:  Elapsed Time: 24.113 seconds (Warm-up)
+## Chain 2:                10.866 seconds (Sampling)
+## Chain 2:                34.979 seconds (Total)
 ## Chain 2: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
 ## Chain 3: 
-## Chain 3: Gradient evaluation took 0.000344 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 3.44 seconds.
+## Chain 3: Gradient evaluation took 0.000359 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 3.59 seconds.
 ## Chain 3: Adjust your expectations accordingly!
 ## Chain 3: 
 ## Chain 3: 
@@ -487,15 +627,15 @@ predictors</h2>
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 328.277 seconds (Warm-up)
-## Chain 3:                378.168 seconds (Sampling)
-## Chain 3:                706.445 seconds (Total)
+## Chain 3:  Elapsed Time: 26.479 seconds (Warm-up)
+## Chain 3:                5.586 seconds (Sampling)
+## Chain 3:                32.065 seconds (Total)
 ## Chain 3: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
 ## Chain 4: 
-## Chain 4: Gradient evaluation took 0.0003 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 3 seconds.
+## Chain 4: Gradient evaluation took 0.000357 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 3.57 seconds.
 ## Chain 4: Adjust your expectations accordingly!
 ## Chain 4: 
 ## Chain 4: 
@@ -512,20 +652,17 @@ predictors</h2>
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 326.824 seconds (Warm-up)
-## Chain 4:                375.466 seconds (Sampling)
-## Chain 4:                702.29 seconds (Total)
+## Chain 4:  Elapsed Time: 28.661 seconds (Warm-up)
+## Chain 4:                5.666 seconds (Sampling)
+## Chain 4:                34.327 seconds (Total)
 ## Chain 4:</code></pre>
-<pre><code>## Warning: There were 4000 transitions after warmup that exceeded the maximum treedepth. Increase max_treedepth above 10. See
-## https://mc-stan.org/misc/warnings.html#maximum-treedepth-exceeded</code></pre>
-<pre><code>## Warning: Examine the pairs() plot to diagnose sampling problems</code></pre>
 <pre><code>## Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
 ## Running the chains for more iterations may help. See
 ## https://mc-stan.org/misc/warnings.html#bulk-ess</code></pre>
 <pre class="r"><code>summary(sa_m1, prob = .997)</code></pre>
 <pre><code>##  Family: bernoulli 
 ##   Links: mu = logit 
-## Formula: switch ~ hc + hc:hc_dur + (1 | CASEID) 
+## Formula: switch ~ hc_dummy + hc_dummy:hc_dur + (1 | CASEID) 
 ##    Data: cccu_MA (Number of observations: 3777) 
 ##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
 ##          total post-warmup draws = 4000
@@ -533,14 +670,13 @@ predictors</h2>
 ## Group-Level Effects: 
 ## ~CASEID (Number of levels: 1985) 
 ##               Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
-## sd(Intercept)     1.00      0.18       0.41       1.57 1.01      258      525
+## sd(Intercept)     0.99      0.18       0.42       1.49 1.01      368      608
 ## 
 ## Population-Level Effects: 
 ##                 Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
-## Intercept          -1.47      0.17      -2.04      -0.99 1.01      423     1273
-## hcnon_hc           -0.01      0.98      -2.87       2.84 1.00     4479     2723
-## hchc:hc_dur        -0.04      0.01      -0.08      -0.01 1.00     1509     2489
-## hcnon_hc:hc_dur     0.00      0.00      -0.00       0.00 1.00     4502     2780
+## Intercept          -2.86      0.17      -3.38      -2.39 1.01      566     1457
+## hc_dummy            1.38      0.16       0.92       1.83 1.00     3598     2767
+## hc_dummy:hc_dur    -0.04      0.01      -0.07      -0.01 1.00     1542     2178
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -551,7 +687,8 @@ predictors</h2>
 predictors</h2>
 <p>DURATION and satisfaction!</p>
 <pre class="r"><code>sa_m2 &lt;- brm(
-  switch ~ hc * contra_satis + hc:hc_dur + hc:hc_dur:contra_satis + (1 | CASEID),
+  switch ~ hc_dummy * contra_satis + hc_dummy:hc_dur + hc_dummy:hc_dur:contra_satis +
+    (1 | CASEID),
   family = bernoulli(),
   data = cccu_MA,
   prior = set_priors,
@@ -563,8 +700,8 @@ predictors</h2>
 <pre><code>## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0.000458 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.58 seconds.
+## Chain 1: Gradient evaluation took 0.000539 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.39 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -581,15 +718,15 @@ predictors</h2>
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 331.469 seconds (Warm-up)
-## Chain 1:                392.708 seconds (Sampling)
-## Chain 1:                724.177 seconds (Total)
+## Chain 1:  Elapsed Time: 43.408 seconds (Warm-up)
+## Chain 1:                23.526 seconds (Sampling)
+## Chain 1:                66.934 seconds (Total)
 ## Chain 1: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
 ## Chain 2: 
-## Chain 2: Gradient evaluation took 0.000345 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.45 seconds.
+## Chain 2: Gradient evaluation took 0.000337 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.37 seconds.
 ## Chain 2: Adjust your expectations accordingly!
 ## Chain 2: 
 ## Chain 2: 
@@ -606,15 +743,15 @@ predictors</h2>
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 331.929 seconds (Warm-up)
-## Chain 2:                399.245 seconds (Sampling)
-## Chain 2:                731.174 seconds (Total)
+## Chain 2:  Elapsed Time: 42.716 seconds (Warm-up)
+## Chain 2:                23.21 seconds (Sampling)
+## Chain 2:                65.926 seconds (Total)
 ## Chain 2: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
 ## Chain 3: 
-## Chain 3: Gradient evaluation took 0.000345 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 3.45 seconds.
+## Chain 3: Gradient evaluation took 0.000547 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 5.47 seconds.
 ## Chain 3: Adjust your expectations accordingly!
 ## Chain 3: 
 ## Chain 3: 
@@ -631,15 +768,15 @@ predictors</h2>
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 348.988 seconds (Warm-up)
-## Chain 3:                403.885 seconds (Sampling)
-## Chain 3:                752.873 seconds (Total)
+## Chain 3:  Elapsed Time: 45.761 seconds (Warm-up)
+## Chain 3:                23.089 seconds (Sampling)
+## Chain 3:                68.85 seconds (Total)
 ## Chain 3: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
 ## Chain 4: 
-## Chain 4: Gradient evaluation took 0.00035 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 3.5 seconds.
+## Chain 4: Gradient evaluation took 0.000449 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 4.49 seconds.
 ## Chain 4: Adjust your expectations accordingly!
 ## Chain 4: 
 ## Chain 4: 
@@ -656,29 +793,14 @@ predictors</h2>
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 334.176 seconds (Warm-up)
-## Chain 4:                402.973 seconds (Sampling)
-## Chain 4:                737.149 seconds (Total)
+## Chain 4:  Elapsed Time: 46.968 seconds (Warm-up)
+## Chain 4:                23.476 seconds (Sampling)
+## Chain 4:                70.444 seconds (Total)
 ## Chain 4:</code></pre>
-<pre><code>## Warning: There were 4000 transitions after warmup that exceeded the maximum treedepth. Increase max_treedepth above 10. See
-## https://mc-stan.org/misc/warnings.html#maximum-treedepth-exceeded</code></pre>
-<pre><code>## Warning: Examine the pairs() plot to diagnose sampling problems</code></pre>
-<pre><code>## Warning: The largest R-hat is 2.66, indicating chains have not mixed.
-## Running the chains for more iterations may help. See
-## https://mc-stan.org/misc/warnings.html#r-hat</code></pre>
-<pre><code>## Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
-## Running the chains for more iterations may help. See
-## https://mc-stan.org/misc/warnings.html#bulk-ess</code></pre>
-<pre><code>## Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
-## Running the chains for more iterations may help. See
-## https://mc-stan.org/misc/warnings.html#tail-ess</code></pre>
 <pre class="r"><code>summary(sa_m2, prob = .997)</code></pre>
-<pre><code>## Warning: Parts of the model have not converged (some Rhats are &gt; 1.05). Be
-## careful when analysing the results! We recommend running more iterations and/or
-## setting stronger priors.</code></pre>
 <pre><code>##  Family: bernoulli 
 ##   Links: mu = logit 
-## Formula: switch ~ hc * contra_satis + hc:hc_dur + hc:hc_dur:contra_satis + (1 | CASEID) 
+## Formula: switch ~ hc_dummy * contra_satis + hc_dummy:hc_dur + hc_dummy:hc_dur:contra_satis + (1 | CASEID) 
 ##    Data: cccu_MA (Number of observations: 3777) 
 ##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
 ##          total post-warmup draws = 4000
@@ -686,27 +808,23 @@ predictors</h2>
 ## Group-Level Effects: 
 ## ~CASEID (Number of levels: 1985) 
 ##               Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
-## sd(Intercept)     0.05      0.04       0.00       0.17 1.10       35       78
+## sd(Intercept)     1.00      0.18       0.25       1.57 1.00      514      847
 ## 
 ## Population-Level Effects: 
 ##                              Estimate Est.Error l-99.7% CI u-99.7% CI Rhat
-## Intercept                        1.22      0.51       0.03       2.64 1.13
-## hcnon_hc                        -0.66      1.01      -2.05       1.70 2.65
-## contra_satis                    -0.68      0.15      -1.09      -0.36 1.13
-## hcnon_hc:contra_satis           -0.84      0.64      -2.02       0.31 2.27
-## hchc:hc_dur                     -0.12      0.05      -0.28       0.00 1.11
-## hcnon_hc:hc_dur                  0.00      0.00       0.00       0.00 1.81
-## hchc:contra_satis:hc_dur         0.02      0.01      -0.02       0.06 1.12
-## hcnon_hc:contra_satis:hc_dur    -0.00      0.00      -0.00       0.00 2.05
+## Intercept                       -1.81      0.39      -2.99      -0.67 1.00
+## hc_dummy                         2.36      0.56       0.69       3.99 1.00
+## contra_satis                    -0.32      0.12      -0.65       0.04 1.00
+## hc_dummy:contra_satis           -0.29      0.17      -0.75       0.19 1.00
+## hc_dummy:hc_dur                 -0.06      0.05      -0.22       0.08 1.00
+## hc_dummy:contra_satis:hc_dur     0.01      0.01      -0.03       0.05 1.00
 ##                              Bulk_ESS Tail_ESS
-## Intercept                          21       61
-## hcnon_hc                            5       16
-## contra_satis                       22       59
-## hcnon_hc:contra_satis               5       13
-## hchc:hc_dur                        27      119
-## hcnon_hc:hc_dur                     6       31
-## hchc:contra_satis:hc_dur           25      119
-## hcnon_hc:contra_satis:hc_dur        5       25
+## Intercept                        5280     3354
+## hc_dummy                         4466     2943
+## contra_satis                     5959     3346
+## hc_dummy:contra_satis            4533     2980
+## hc_dummy:hc_dur                  3813     2659
+## hc_dummy:contra_satis:hc_dur     4364     2774
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -717,10 +835,11 @@ predictors</h2>
 associated predictors</h2>
 <pre class="r"><code>sa_m3 &lt;-
   brm(
-    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq + hc:hc_dur +
-      hc:hc_dur:contra_satis +
-      hc:hc_dur:sexual_satisfaction +
-      hc:hc_dur:sex_freq +
+    switch ~ hc_dummy * contra_satis +  hc_dummy * sexual_satisfaction +
+      hc_dummy * sex_freq + hc_dummy:hc_dur +
+      hc_dummy:hc_dur:contra_satis +
+      hc_dummy:hc_dur:sexual_satisfaction +
+      hc_dummy:hc_dur:sex_freq +
       (1 | CASEID),
     family = bernoulli(),
     data = cccu_MA,
@@ -733,8 +852,8 @@ associated predictors</h2>
 <pre><code>## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0.000494 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.94 seconds.
+## Chain 1: Gradient evaluation took 0.000518 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.18 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -751,15 +870,15 @@ associated predictors</h2>
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 363.626 seconds (Warm-up)
-## Chain 1:                428.636 seconds (Sampling)
-## Chain 1:                792.262 seconds (Total)
+## Chain 1:  Elapsed Time: 52.368 seconds (Warm-up)
+## Chain 1:                26.752 seconds (Sampling)
+## Chain 1:                79.12 seconds (Total)
 ## Chain 1: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
 ## Chain 2: 
-## Chain 2: Gradient evaluation took 0.000371 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.71 seconds.
+## Chain 2: Gradient evaluation took 0.000394 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.94 seconds.
 ## Chain 2: Adjust your expectations accordingly!
 ## Chain 2: 
 ## Chain 2: 
@@ -776,15 +895,15 @@ associated predictors</h2>
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 320.69 seconds (Warm-up)
-## Chain 2:                449.063 seconds (Sampling)
-## Chain 2:                769.753 seconds (Total)
+## Chain 2:  Elapsed Time: 55.634 seconds (Warm-up)
+## Chain 2:                26.514 seconds (Sampling)
+## Chain 2:                82.148 seconds (Total)
 ## Chain 2: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
 ## Chain 3: 
-## Chain 3: Gradient evaluation took 0.000412 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 4.12 seconds.
+## Chain 3: Gradient evaluation took 0.000418 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 4.18 seconds.
 ## Chain 3: Adjust your expectations accordingly!
 ## Chain 3: 
 ## Chain 3: 
@@ -801,15 +920,15 @@ associated predictors</h2>
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 363.102 seconds (Warm-up)
-## Chain 3:                449.66 seconds (Sampling)
-## Chain 3:                812.762 seconds (Total)
+## Chain 3:  Elapsed Time: 55.66 seconds (Warm-up)
+## Chain 3:                25.29 seconds (Sampling)
+## Chain 3:                80.95 seconds (Total)
 ## Chain 3: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
 ## Chain 4: 
-## Chain 4: Gradient evaluation took 0.000387 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 3.87 seconds.
+## Chain 4: Gradient evaluation took 0.000398 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 3.98 seconds.
 ## Chain 4: Adjust your expectations accordingly!
 ## Chain 4: 
 ## Chain 4: 
@@ -826,31 +945,14 @@ associated predictors</h2>
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 292.313 seconds (Warm-up)
-## Chain 4:                410.36 seconds (Sampling)
-## Chain 4:                702.673 seconds (Total)
+## Chain 4:  Elapsed Time: 57.273 seconds (Warm-up)
+## Chain 4:                28.493 seconds (Sampling)
+## Chain 4:                85.766 seconds (Total)
 ## Chain 4:</code></pre>
-<pre><code>## Warning: There were 4000 transitions after warmup that exceeded the maximum treedepth. Increase max_treedepth above 10. See
-## https://mc-stan.org/misc/warnings.html#maximum-treedepth-exceeded</code></pre>
-<pre><code>## Warning: There were 1 chains where the estimated Bayesian Fraction of Missing Information was low. See
-## https://mc-stan.org/misc/warnings.html#bfmi-low</code></pre>
-<pre><code>## Warning: Examine the pairs() plot to diagnose sampling problems</code></pre>
-<pre><code>## Warning: The largest R-hat is 4.28, indicating chains have not mixed.
-## Running the chains for more iterations may help. See
-## https://mc-stan.org/misc/warnings.html#r-hat</code></pre>
-<pre><code>## Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
-## Running the chains for more iterations may help. See
-## https://mc-stan.org/misc/warnings.html#bulk-ess</code></pre>
-<pre><code>## Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
-## Running the chains for more iterations may help. See
-## https://mc-stan.org/misc/warnings.html#tail-ess</code></pre>
 <pre class="r"><code>summary(sa_m3, prob = .997)</code></pre>
-<pre><code>## Warning: Parts of the model have not converged (some Rhats are &gt; 1.05). Be
-## careful when analysing the results! We recommend running more iterations and/or
-## setting stronger priors.</code></pre>
 <pre><code>##  Family: bernoulli 
 ##   Links: mu = logit 
-## Formula: switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc:hc_dur + hc:hc_dur:contra_satis + hc:hc_dur:sexual_satisfaction + hc:hc_dur:sex_freq + (1 | CASEID) 
+## Formula: switch ~ hc_dummy * contra_satis + hc_dummy * sexual_satisfaction + hc_dummy * sex_freq + hc_dummy:hc_dur + hc_dummy:hc_dur:contra_satis + hc_dummy:hc_dur:sexual_satisfaction + hc_dummy:hc_dur:sex_freq + (1 | CASEID) 
 ##    Data: cccu_MA (Number of observations: 3777) 
 ##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
 ##          total post-warmup draws = 4000
@@ -858,59 +960,47 @@ associated predictors</h2>
 ## Group-Level Effects: 
 ## ~CASEID (Number of levels: 1985) 
 ##               Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
-## sd(Intercept)     0.29      0.34       0.00       0.93 3.38        5       11
+## sd(Intercept)     1.09      0.18       0.56       1.62 1.01      447      913
 ## 
 ## Population-Level Effects: 
 ##                                       Estimate Est.Error l-99.7% CI u-99.7% CI
-## Intercept                                 4.34      4.51      -3.87      12.55
-## hcnon_hc                                 -0.34      0.99      -1.95       0.70
-## contra_satis                             -1.09      0.21      -1.44      -0.63
-## sexual_satisfaction                      -0.20      0.57      -1.18       1.31
-## sex_freq2M5times                         -0.74      0.73      -1.75       0.23
-## sex_freq6M10times                         0.27      1.23      -1.38       1.65
-## sex_freq11ormoretimes                    -0.37      1.04      -1.74       1.22
-## hcnon_hc:contra_satis                     0.04      1.05      -1.60       1.39
-## hcnon_hc:sexual_satisfaction              0.02      1.20      -1.50       1.56
-## hcnon_hc:sex_freq2M5times                 0.09      1.47      -2.07       2.00
-## hcnon_hc:sex_freq6M10times                0.19      0.91      -1.14       1.18
-## hcnon_hc:sex_freq11ormoretimes            0.11      0.70      -0.68       0.98
-## hchc:hc_dur                              -0.02      0.38      -0.41       1.26
-## hcnon_hc:hc_dur                           0.00      0.00      -0.00       0.00
-## hchc:contra_satis:hc_dur                 -0.03      0.14      -0.48       0.09
-## hcnon_hc:contra_satis:hc_dur             -0.00      0.00      -0.00       0.00
-## hchc:sexual_satisfaction:hc_dur          -0.01      0.03      -0.10       0.03
-## hcnon_hc:sexual_satisfaction:hc_dur      -0.00      0.00      -0.00       0.00
-## hchc:sex_freq2M5times:hc_dur              0.22      0.34      -0.04       1.19
-## hcnon_hc:sex_freq2M5times:hc_dur         -0.00      0.00      -0.00       0.00
-## hchc:sex_freq6M10times:hc_dur             0.16      0.42      -0.17       1.36
-## hcnon_hc:sex_freq6M10times:hc_dur         0.00      0.00      -0.00       0.00
-## hchc:sex_freq11ormoretimes:hc_dur         0.18      0.35      -0.15       0.83
-## hcnon_hc:sex_freq11ormoretimes:hc_dur    -0.00      0.00      -0.00       0.00
+## Intercept                                -1.37      0.53      -3.00       0.15
+## hc_dummy                                  1.82      0.67      -0.12       3.80
+## contra_satis                             -0.27      0.13      -0.64       0.11
+## sexual_satisfaction                      -0.09      0.09      -0.37       0.18
+## sex_freq2M5times                         -0.33      0.30      -1.16       0.55
+## sex_freq6M10times                        -0.29      0.33      -1.31       0.61
+## sex_freq11ormoretimes                     0.09      0.36      -1.01       1.09
+## hc_dummy:contra_satis                    -0.41      0.19      -1.02       0.13
+## hc_dummy:sexual_satisfaction              0.23      0.13      -0.14       0.66
+## hc_dummy:sex_freq2M5times                -0.21      0.39      -1.31       0.93
+## hc_dummy:sex_freq6M10times               -0.11      0.44      -1.56       1.13
+## hc_dummy:sex_freq11ormoretimes           -0.74      0.48      -2.10       0.60
+## hc_dummy:hc_dur                          -0.10      0.06      -0.28       0.07
+## hc_dummy:contra_satis:hc_dur              0.01      0.01      -0.03       0.05
+## hc_dummy:sexual_satisfaction:hc_dur       0.00      0.01      -0.03       0.03
+## hc_dummy:sex_freq2M5times:hc_dur          0.05      0.03      -0.04       0.14
+## hc_dummy:sex_freq6M10times:hc_dur         0.02      0.03      -0.07       0.13
+## hc_dummy:sex_freq11ormoretimes:hc_dur     0.03      0.04      -0.08       0.14
 ##                                       Rhat Bulk_ESS Tail_ESS
-## Intercept                             2.62        5       11
-## hcnon_hc                              3.64        4       11
-## contra_satis                          2.61        5       15
-## sexual_satisfaction                   2.37        5       11
-## sex_freq2M5times                      2.99        5       23
-## sex_freq6M10times                     3.46        4       18
-## sex_freq11ormoretimes                 3.48        4       12
-## hcnon_hc:contra_satis                 3.35        4       13
-## hcnon_hc:sexual_satisfaction          3.14        5       14
-## hcnon_hc:sex_freq2M5times             3.45        4       17
-## hcnon_hc:sex_freq6M10times            3.47        4       11
-## hcnon_hc:sex_freq11ormoretimes        2.91        5       18
-## hchc:hc_dur                           2.40        5       11
-## hcnon_hc:hc_dur                       1.74        6       18
-## hchc:contra_satis:hc_dur              2.60        5       11
-## hcnon_hc:contra_satis:hc_dur          3.45        4       13
-## hchc:sexual_satisfaction:hc_dur       2.06        5       13
-## hcnon_hc:sexual_satisfaction:hc_dur   3.21        4       11
-## hchc:sex_freq2M5times:hc_dur          2.84        5       11
-## hcnon_hc:sex_freq2M5times:hc_dur      2.17        5       29
-## hchc:sex_freq6M10times:hc_dur         2.62        5       11
-## hcnon_hc:sex_freq6M10times:hc_dur     1.74        6       29
-## hchc:sex_freq11ormoretimes:hc_dur     3.30        4       16
-## hcnon_hc:sex_freq11ormoretimes:hc_dur 2.77        5       28
+## Intercept                             1.00     4716     3279
+## hc_dummy                              1.00     3117     2910
+## contra_satis                          1.00     3828     3240
+## sexual_satisfaction                   1.00     3587     3205
+## sex_freq2M5times                      1.00     2425     2788
+## sex_freq6M10times                     1.00     2710     3104
+## sex_freq11ormoretimes                 1.00     2746     2852
+## hc_dummy:contra_satis                 1.00     2902     2927
+## hc_dummy:sexual_satisfaction          1.00     2465     2710
+## hc_dummy:sex_freq2M5times             1.00     2336     2684
+## hc_dummy:sex_freq6M10times            1.00     2666     3059
+## hc_dummy:sex_freq11ormoretimes        1.00     2802     2962
+## hc_dummy:hc_dur                       1.00     2900     2767
+## hc_dummy:contra_satis:hc_dur          1.00     3222     3082
+## hc_dummy:sexual_satisfaction:hc_dur   1.00     3563     2830
+## hc_dummy:sex_freq2M5times:hc_dur      1.00     2365     2371
+## hc_dummy:sex_freq6M10times:hc_dur     1.00     2857     2751
+## hc_dummy:sex_freq11ormoretimes:hc_dur 1.00     2822     3015
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -920,31 +1010,32 @@ associated predictors</h2>
 <h2>3.4 Model 4: Controlling for observed selection effects</h2>
 <pre class="r"><code>sa_m4 &lt;-
   brm(
-    switch ~ hc * contra_satis +  hc * sexual_satisfaction + hc * sex_freq +
-      hc * AGE + hc * DEGREE_recode +
-      hc * POVRATE +
-      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
-      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
-      hc * had_baby_between_waves + hc * Avoid_r +
-      hc * FEELPG_recode +
-      hc * rel_dur_factor +
-      hc:hc_dur +
-      hc:hc_dur:contra_satis +
-      hc:hc_dur:sexual_satisfaction +
-      hc:hc_dur:sex_freq +
-      hc:hc_dur:AGE +
-      hc:hc_dur:DEGREE_recode +
-      hc:hc_dur:POVRATE +
-      hc:hc_dur:HLTHPROB_recode +
-      hc:hc_dur:MEDPROB_recode +
-      hc:hc_dur:GAPINS_recode +
-      hc:hc_dur:TYPEINS_recode +
-      hc:hc_dur:NKIDS_t1 +
-      hc:hc_dur:pregnant_between_waves +
-      hc:hc_dur:had_baby_between_waves +
-      hc:hc_dur:Avoid_r +
-      hc:hc_dur:FEELPG_recode +
-      hc:hc_dur:rel_dur_factor +
+    switch ~ hc_dummy * contra_satis +  hc_dummy * sexual_satisfaction + 
+      hc_dummy * sex_freq +
+      hc_dummy * AGE + hc_dummy * DEGREE_recode +
+      hc_dummy * POVRATE +
+      hc_dummy * HLTHPROB_recode + hc_dummy * MEDPROB_recode +  hc_dummy * GAPINS_recode +
+      hc_dummy * TYPEINS_recode + hc_dummy * NKIDS_t1 +  hc_dummy * pregnant_between_waves +
+      hc_dummy * had_baby_between_waves + hc_dummy * Avoid_r +
+      hc_dummy * FEELPG_recode +
+      hc_dummy * rel_dur_factor +
+      hc_dummy:hc_dur +
+      hc_dummy:hc_dur:contra_satis +
+      hc_dummy:hc_dur:sexual_satisfaction +
+      hc_dummy:hc_dur:sex_freq +
+      hc_dummy:hc_dur:AGE +
+      hc_dummy:hc_dur:DEGREE_recode +
+      hc_dummy:hc_dur:POVRATE +
+      hc_dummy:hc_dur:HLTHPROB_recode +
+      hc_dummy:hc_dur:MEDPROB_recode +
+      hc_dummy:hc_dur:GAPINS_recode +
+      hc_dummy:hc_dur:TYPEINS_recode +
+      hc_dummy:hc_dur:NKIDS_t1 +
+      hc_dummy:hc_dur:pregnant_between_waves +
+      hc_dummy:hc_dur:had_baby_between_waves +
+      hc_dummy:hc_dur:Avoid_r +
+      hc_dummy:hc_dur:FEELPG_recode +
+      hc_dummy:hc_dur:rel_dur_factor +
       (1 | CASEID),
     family = bernoulli(),
     data = cccu_MA,
@@ -957,8 +1048,8 @@ associated predictors</h2>
 <pre><code>## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 0.000919 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 9.19 seconds.
+## Chain 1: Gradient evaluation took 0.001149 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 11.49 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -975,15 +1066,15 @@ associated predictors</h2>
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 140.392 seconds (Warm-up)
-## Chain 1:                25.384 seconds (Sampling)
-## Chain 1:                165.776 seconds (Total)
+## Chain 1:  Elapsed Time: 423.586 seconds (Warm-up)
+## Chain 1:                521.248 seconds (Sampling)
+## Chain 1:                944.834 seconds (Total)
 ## Chain 1: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
 ## Chain 2: 
-## Chain 2: Gradient evaluation took 0.000742 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 7.42 seconds.
+## Chain 2: Gradient evaluation took 0.000583 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.83 seconds.
 ## Chain 2: Adjust your expectations accordingly!
 ## Chain 2: 
 ## Chain 2: 
@@ -1000,15 +1091,15 @@ associated predictors</h2>
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 240.222 seconds (Warm-up)
-## Chain 2:                562.816 seconds (Sampling)
-## Chain 2:                803.038 seconds (Total)
+## Chain 2:  Elapsed Time: 428.42 seconds (Warm-up)
+## Chain 2:                507.972 seconds (Sampling)
+## Chain 2:                936.392 seconds (Total)
 ## Chain 2: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
 ## Chain 3: 
-## Chain 3: Gradient evaluation took 0.000862 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 8.62 seconds.
+## Chain 3: Gradient evaluation took 0.000571 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 5.71 seconds.
 ## Chain 3: Adjust your expectations accordingly!
 ## Chain 3: 
 ## Chain 3: 
@@ -1025,15 +1116,15 @@ associated predictors</h2>
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 94.604 seconds (Warm-up)
-## Chain 3:                55.031 seconds (Sampling)
-## Chain 3:                149.635 seconds (Total)
+## Chain 3:  Elapsed Time: 414.733 seconds (Warm-up)
+## Chain 3:                502.318 seconds (Sampling)
+## Chain 3:                917.051 seconds (Total)
 ## Chain 3: 
 ## 
 ## SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
 ## Chain 4: 
-## Chain 4: Gradient evaluation took 0.000849 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 8.49 seconds.
+## Chain 4: Gradient evaluation took 0.000656 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 6.56 seconds.
 ## Chain 4: Adjust your expectations accordingly!
 ## Chain 4: 
 ## Chain 4: 
@@ -1050,37 +1141,17 @@ associated predictors</h2>
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 252.079 seconds (Warm-up)
-## Chain 4:                580.113 seconds (Sampling)
-## Chain 4:                832.192 seconds (Total)
+## Chain 4:  Elapsed Time: 420.859 seconds (Warm-up)
+## Chain 4:                501.431 seconds (Sampling)
+## Chain 4:                922.29 seconds (Total)
 ## Chain 4:</code></pre>
-<pre><code>## Warning: There were 1829 divergent transitions after warmup. See
-## https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
-## to find out why this is a problem and how to eliminate them.</code></pre>
-<pre><code>## Warning: There were 2030 transitions after warmup that exceeded the maximum treedepth. Increase max_treedepth above 10. See
+<pre><code>## Warning: There were 4000 transitions after warmup that exceeded the maximum treedepth. Increase max_treedepth above 10. See
 ## https://mc-stan.org/misc/warnings.html#maximum-treedepth-exceeded</code></pre>
-<pre><code>## Warning: There were 4 chains where the estimated Bayesian Fraction of Missing Information was low. See
-## https://mc-stan.org/misc/warnings.html#bfmi-low</code></pre>
 <pre><code>## Warning: Examine the pairs() plot to diagnose sampling problems</code></pre>
-<pre><code>## Warning: The largest R-hat is 4.25, indicating chains have not mixed.
-## Running the chains for more iterations may help. See
-## https://mc-stan.org/misc/warnings.html#r-hat</code></pre>
-<pre><code>## Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
-## Running the chains for more iterations may help. See
-## https://mc-stan.org/misc/warnings.html#bulk-ess</code></pre>
-<pre><code>## Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
-## Running the chains for more iterations may help. See
-## https://mc-stan.org/misc/warnings.html#tail-ess</code></pre>
 <pre class="r"><code>summary(sa_m4, prob = .997)</code></pre>
-<pre><code>## Warning: Parts of the model have not converged (some Rhats are &gt; 1.05). Be
-## careful when analysing the results! We recommend running more iterations and/or
-## setting stronger priors.</code></pre>
-<pre><code>## Warning: There were 1829 divergent transitions after warmup. Increasing
-## adapt_delta above 0.8 may help. See
-## http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</code></pre>
 <pre><code>##  Family: bernoulli 
 ##   Links: mu = logit 
-## Formula: switch ~ hc * contra_satis + hc * sexual_satisfaction + hc * sex_freq + hc * AGE + hc * DEGREE_recode + hc * POVRATE + hc * HLTHPROB_recode + hc * MEDPROB_recode + hc * GAPINS_recode + hc * TYPEINS_recode + hc * NKIDS_t1 + hc * pregnant_between_waves + hc * had_baby_between_waves + hc * Avoid_r + hc * FEELPG_recode + hc * rel_dur_factor + hc:hc_dur + hc:hc_dur:contra_satis + hc:hc_dur:sexual_satisfaction + hc:hc_dur:sex_freq + hc:hc_dur:AGE + hc:hc_dur:DEGREE_recode + hc:hc_dur:POVRATE + hc:hc_dur:HLTHPROB_recode + hc:hc_dur:MEDPROB_recode + hc:hc_dur:GAPINS_recode + hc:hc_dur:TYPEINS_recode + hc:hc_dur:NKIDS_t1 + hc:hc_dur:pregnant_between_waves + hc:hc_dur:had_baby_between_waves + hc:hc_dur:Avoid_r + hc:hc_dur:FEELPG_recode + hc:hc_dur:rel_dur_factor + (1 | CASEID) 
+## Formula: switch ~ hc_dummy * contra_satis + hc_dummy * sexual_satisfaction + hc_dummy * sex_freq + hc_dummy * AGE + hc_dummy * DEGREE_recode + hc_dummy * POVRATE + hc_dummy * HLTHPROB_recode + hc_dummy * MEDPROB_recode + hc_dummy * GAPINS_recode + hc_dummy * TYPEINS_recode + hc_dummy * NKIDS_t1 + hc_dummy * pregnant_between_waves + hc_dummy * had_baby_between_waves + hc_dummy * Avoid_r + hc_dummy * FEELPG_recode + hc_dummy * rel_dur_factor + hc_dummy:hc_dur + hc_dummy:hc_dur:contra_satis + hc_dummy:hc_dur:sexual_satisfaction + hc_dummy:hc_dur:sex_freq + hc_dummy:hc_dur:AGE + hc_dummy:hc_dur:DEGREE_recode + hc_dummy:hc_dur:POVRATE + hc_dummy:hc_dur:HLTHPROB_recode + hc_dummy:hc_dur:MEDPROB_recode + hc_dummy:hc_dur:GAPINS_recode + hc_dummy:hc_dur:TYPEINS_recode + hc_dummy:hc_dur:NKIDS_t1 + hc_dummy:hc_dur:pregnant_between_waves + hc_dummy:hc_dur:had_baby_between_waves + hc_dummy:hc_dur:Avoid_r + hc_dummy:hc_dur:FEELPG_recode + hc_dummy:hc_dur:rel_dur_factor + (1 | CASEID) 
 ##    Data: cccu_MA (Number of observations: 3777) 
 ##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
 ##          total post-warmup draws = 4000
@@ -1088,589 +1159,445 @@ associated predictors</h2>
 ## Group-Level Effects: 
 ## ~CASEID (Number of levels: 1985) 
 ##               Estimate Est.Error l-99.7% CI u-99.7% CI Rhat Bulk_ESS Tail_ESS
-## sd(Intercept)     0.40      0.23       0.21       0.78 3.30        4       12
+## sd(Intercept)     1.71      0.22       1.12       2.45 1.01      481     1307
 ## 
 ## Population-Level Effects: 
 ##                                                            Estimate Est.Error
-## Intercept                                                     59.25    139.04
-## hcnon_hc                                                      -0.23      1.33
-## contra_satis                                                   0.57      1.28
-## sexual_satisfaction                                           -0.41      1.04
-## sex_freq2M5times                                              -0.18      1.12
-## sex_freq6M10times                                              0.15      0.80
-## sex_freq11ormoretimes                                         -0.07      0.73
-## AGE                                                            0.23      0.88
-## DEGREE_recode5thD6thgrade                                     -0.41      1.32
-## DEGREE_recode7thD8thgrade                                      0.27      1.29
-## DEGREE_recode9thgrade                                         -0.07      1.16
-## DEGREE_recode10thgrade                                         0.42      1.04
-## DEGREE_recode11thgrade                                         0.31      1.35
-## DEGREE_recode12thgradeDnodiploma                               0.28      0.87
-## DEGREE_recodehighschooldiplomaorequivalent                    -0.25      1.45
-## DEGREE_recodesomecollegenodegree                               0.36      1.28
-## DEGREE_recodeassociatedegree                                  -0.94      0.74
-## DEGREE_recodebachelorsdegree                                  -0.25      0.83
-## DEGREE_recodemastersdegree                                     0.52      1.36
-## DEGREE_recodeprofessionalordoctoraldegree                      0.21      1.14
-## POVRATE                                                        0.24      0.87
-## HLTHPROB_recodeYes                                             0.30      1.37
-## MEDPROB_recodeYes                                             -1.30      0.60
-## GAPINS_recodeYes                                               0.23      0.85
-## TYPEINS_recodeYes                                              0.14      1.15
-## NKIDS_t11                                                     -0.11      0.68
-## NKIDS_t12                                                     -0.84      0.85
-## NKIDS_t13                                                      0.83      0.87
-## NKIDS_t14ormore                                                0.32      0.45
-## pregnant_between_wavesYes                                      0.15      0.61
-## had_baby_between_wavesYes                                     -0.58      1.28
-## Avoid_r                                                       -1.27      0.50
-## FEELPG_recode                                                 -0.15      0.85
-## rel_dur_factor0qM25q                                           0.07      1.12
-## rel_dur_factor26qM50q                                          0.30      0.44
-## rel_dur_factor51qM75q                                         -0.74      0.47
-## rel_dur_factor76qM100q                                        -0.95      0.69
-## hcnon_hc:contra_satis                                          0.25      1.12
-## hcnon_hc:sexual_satisfaction                                   0.33      0.97
-## hcnon_hc:sex_freq2M5times                                      0.77      0.72
-## hcnon_hc:sex_freq6M10times                                    -0.54      0.45
-## hcnon_hc:sex_freq11ormoretimes                                 0.33      1.44
-## hcnon_hc:AGE                                                   0.58      0.80
-## hcnon_hc:DEGREE_recode5thD6thgrade                            -0.11      1.11
-## hcnon_hc:DEGREE_recode7thD8thgrade                             0.60      0.89
-## hcnon_hc:DEGREE_recode9thgrade                                 0.38      1.22
-## hcnon_hc:DEGREE_recode10thgrade                                0.12      1.32
-## hcnon_hc:DEGREE_recode11thgrade                                0.30      0.90
-## hcnon_hc:DEGREE_recode12thgradeDnodiploma                      0.06      1.31
-## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent           -0.97      0.77
-## hcnon_hc:DEGREE_recodesomecollegenodegree                     -0.46      0.63
-## hcnon_hc:DEGREE_recodeassociatedegree                          0.58      1.47
-## hcnon_hc:DEGREE_recodebachelorsdegree                          0.48      0.62
-## hcnon_hc:DEGREE_recodemastersdegree                            1.07      0.60
-## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree             0.69      0.95
-## hcnon_hc:POVRATE                                              -0.37      1.05
-## hcnon_hc:HLTHPROB_recodeYes                                    0.63      0.73
-## hcnon_hc:MEDPROB_recodeYes                                    -0.44      0.80
-## hcnon_hc:GAPINS_recodeYes                                     -0.18      0.95
-## hcnon_hc:TYPEINS_recodeYes                                     0.73      1.18
-## hcnon_hc:NKIDS_t11                                            -0.48      0.42
-## hcnon_hc:NKIDS_t12                                            -0.39      0.57
-## hcnon_hc:NKIDS_t13                                             0.94      1.25
-## hcnon_hc:NKIDS_t14ormore                                       0.46      1.01
-## hcnon_hc:pregnant_between_wavesYes                            -0.33      0.80
-## hcnon_hc:had_baby_between_wavesYes                            -0.27      0.56
-## hcnon_hc:Avoid_r                                              -0.14      1.38
-## hcnon_hc:FEELPG_recode                                         0.09      1.29
-## hcnon_hc:rel_dur_factor0qM25q                                 -0.71      1.01
-## hcnon_hc:rel_dur_factor26qM50q                                 0.26      1.08
-## hcnon_hc:rel_dur_factor51qM75q                                -0.57      0.87
-## hcnon_hc:rel_dur_factor76qM100q                               -0.10      0.89
-## hchc:hc_dur                                                   -0.21      1.16
-## hcnon_hc:hc_dur                                                0.78      0.70
-## hchc:contra_satis:hc_dur                                      -0.61      0.82
-## hcnon_hc:contra_satis:hc_dur                                  -0.00      0.00
-## hchc:sexual_satisfaction:hc_dur                               -0.37      0.95
-## hcnon_hc:sexual_satisfaction:hc_dur                           -0.00      0.00
-## hchc:sex_freq2M5times:hc_dur                                  -0.47      1.06
-## hcnon_hc:sex_freq2M5times:hc_dur                              -0.20      0.22
-## hchc:sex_freq6M10times:hc_dur                                 -0.52      0.67
-## hcnon_hc:sex_freq6M10times:hc_dur                             -0.20      0.22
-## hchc:sex_freq11ormoretimes:hc_dur                              0.08      1.27
-## hcnon_hc:sex_freq11ormoretimes:hc_dur                         -0.21      0.23
-## hchc:AGE:hc_dur                                               -0.27      0.49
-## hcnon_hc:AGE:hc_dur                                            0.00      0.00
-## hchc:DEGREE_recode5thD6thgrade:hc_dur                         -0.38      1.38
-## hcnon_hc:DEGREE_recode5thD6thgrade:hc_dur                     -0.73      0.51
-## hchc:DEGREE_recode7thD8thgrade:hc_dur                         -1.00      0.85
-## hcnon_hc:DEGREE_recode7thD8thgrade:hc_dur                     -1.12      0.80
-## hchc:DEGREE_recode9thgrade:hc_dur                              0.11      1.31
-## hcnon_hc:DEGREE_recode9thgrade:hc_dur                          0.50      1.19
-## hchc:DEGREE_recode10thgrade:hc_dur                            -0.20      1.46
-## hcnon_hc:DEGREE_recode10thgrade:hc_dur                        -1.16      0.49
-## hchc:DEGREE_recode11thgrade:hc_dur                            -0.11      0.90
-## hcnon_hc:DEGREE_recode11thgrade:hc_dur                        -0.19      0.56
-## hchc:DEGREE_recode12thgradeDnodiploma:hc_dur                  -0.57      1.08
-## hcnon_hc:DEGREE_recode12thgradeDnodiploma:hc_dur              -1.26      0.20
-## hchc:DEGREE_recodehighschooldiplomaorequivalent:hc_dur         0.59      1.30
-## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent:hc_dur    -0.45      0.29
-## hchc:DEGREE_recodesomecollegenodegree:hc_dur                   0.92      0.91
-## hcnon_hc:DEGREE_recodesomecollegenodegree:hc_dur              -0.50      0.34
-## hchc:DEGREE_recodeassociatedegree:hc_dur                       0.20      0.54
-## hcnon_hc:DEGREE_recodeassociatedegree:hc_dur                  -0.50      0.34
-## hchc:DEGREE_recodebachelorsdegree:hc_dur                       0.20      0.77
-## hcnon_hc:DEGREE_recodebachelorsdegree:hc_dur                  -0.50      0.34
-## hchc:DEGREE_recodemastersdegree:hc_dur                        -0.37      1.06
-## hcnon_hc:DEGREE_recodemastersdegree:hc_dur                    -0.49      0.34
-## hchc:DEGREE_recodeprofessionalordoctoraldegree:hc_dur         -0.27      0.77
-## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree:hc_dur     -0.35      0.41
-## hchc:POVRATE:hc_dur                                           -0.00      0.04
-## hcnon_hc:POVRATE:hc_dur                                       -0.00      0.00
-## hchc:HLTHPROB_recodeYes:hc_dur                                -1.34      0.42
-## hcnon_hc:HLTHPROB_recodeYes:hc_dur                            -0.00      0.01
-## hchc:MEDPROB_recodeYes:hc_dur                                 -0.11      1.06
-## hcnon_hc:MEDPROB_recodeYes:hc_dur                             -0.00      0.05
-## hchc:GAPINS_recodeYes:hc_dur                                   0.57      1.01
-## hcnon_hc:GAPINS_recodeYes:hc_dur                              -0.06      0.17
-## hchc:TYPEINS_recodeYes:hc_dur                                 -1.08      0.56
-## hcnon_hc:TYPEINS_recodeYes:hc_dur                             -0.07      0.17
-## hchc:NKIDS_t11:hc_dur                                          1.03      0.95
-## hcnon_hc:NKIDS_t11:hc_dur                                      0.00      0.01
-## hchc:NKIDS_t12:hc_dur                                         -0.11      1.23
-## hcnon_hc:NKIDS_t12:hc_dur                                      0.00      0.02
-## hchc:NKIDS_t13:hc_dur                                          0.39      0.82
-## hcnon_hc:NKIDS_t13:hc_dur                                     -0.00      0.06
-## hchc:NKIDS_t14ormore:hc_dur                                    0.46      0.54
-## hcnon_hc:NKIDS_t14ormore:hc_dur                               -0.09      0.18
-## hchc:pregnant_between_wavesYes:hc_dur                         -0.59      0.92
-## hcnon_hc:pregnant_between_wavesYes:hc_dur                     -0.08      0.92
-## hchc:had_baby_between_wavesYes:hc_dur                         -0.69      0.16
-## hcnon_hc:had_baby_between_wavesYes:hc_dur                      0.21      1.05
-## hchc:Avoid_r:hc_dur                                            0.43      1.31
-## hcnon_hc:Avoid_r:hc_dur                                       -0.00      0.00
-## hchc:FEELPG_recode:hc_dur                                      0.74      1.29
-## hcnon_hc:FEELPG_recode:hc_dur                                  0.00      0.01
-## hchc:rel_dur_factor0qM25q:hc_dur                              -0.30      1.34
-## hcnon_hc:rel_dur_factor0qM25q:hc_dur                          -0.02      0.11
-## hchc:rel_dur_factor26qM50q:hc_dur                              0.46      0.90
-## hcnon_hc:rel_dur_factor26qM50q:hc_dur                         -0.06      0.12
-## hchc:rel_dur_factor51qM75q:hc_dur                              0.00      1.08
-## hcnon_hc:rel_dur_factor51qM75q:hc_dur                         -0.02      0.11
-## hchc:rel_dur_factor76qM100q:hc_dur                            -0.34      0.88
-## hcnon_hc:rel_dur_factor76qM100q:hc_dur                        -0.02      0.10
+## Intercept                                                      1.40      1.30
+## hc_dummy                                                       0.42      0.91
+## contra_satis                                                  -0.30      0.17
+## sexual_satisfaction                                            0.05      0.12
+## sex_freq2M5times                                              -0.27      0.34
+## sex_freq6M10times                                             -0.18      0.39
+## sex_freq11ormoretimes                                         -0.00      0.42
+## AGE                                                           -0.14      0.03
+## DEGREE_recode5thD6thgrade                                     -0.47      0.91
+## DEGREE_recode7thD8thgrade                                      0.65      0.87
+## DEGREE_recode9thgrade                                         -0.45      0.92
+## DEGREE_recode10thgrade                                        -0.46      0.83
+## DEGREE_recode11thgrade                                        -0.06      0.90
+## DEGREE_recode12thgradeDnodiploma                               0.42      0.75
+## DEGREE_recodehighschooldiplomaorequivalent                    -0.52      0.51
+## DEGREE_recodesomecollegenodegree                               0.17      0.44
+## DEGREE_recodeassociatedegree                                  -0.42      0.52
+## DEGREE_recodebachelorsdegree                                   0.26      0.44
+## DEGREE_recodemastersdegree                                     0.50      0.50
+## DEGREE_recodeprofessionalordoctoraldegree                      0.37      0.66
+## POVRATE                                                       -0.00      0.00
+## HLTHPROB_recodeYes                                             0.17      0.34
+## MEDPROB_recodeYes                                             -0.06      0.39
+## GAPINS_recodeYes                                               0.21      0.43
+## TYPEINS_recodeYes                                              0.34      0.45
+## NKIDS_t11                                                     -0.19      0.34
+## NKIDS_t12                                                     -0.64      0.41
+## NKIDS_t13                                                     -0.04      0.50
+## NKIDS_t14ormore                                                0.27      0.57
+## pregnant_between_wavesYes                                     -0.39      0.62
+## had_baby_between_wavesYes                                     -0.71      0.73
+## Avoid_r                                                        0.20      0.12
+## FEELPG_recode                                                 -0.36      0.11
+## rel_dur_factor0qM25q                                           0.08      0.34
+## rel_dur_factor26qM50q                                         -0.54      0.38
+## rel_dur_factor51qM75q                                         -0.15      0.38
+## rel_dur_factor76qM100q                                        -0.12      0.44
+## hc_dummy:contra_satis                                         -0.50      0.25
+## hc_dummy:sexual_satisfaction                                   0.06      0.17
+## hc_dummy:sex_freq2M5times                                     -0.53      0.45
+## hc_dummy:sex_freq6M10times                                    -0.52      0.50
+## hc_dummy:sex_freq11ormoretimes                                -0.82      0.54
+## hc_dummy:AGE                                                   0.15      0.04
+## hc_dummy:DEGREE_recode5thD6thgrade                            -0.29      0.94
+## hc_dummy:DEGREE_recode7thD8thgrade                             0.26      0.92
+## hc_dummy:DEGREE_recode9thgrade                                -0.30      0.98
+## hc_dummy:DEGREE_recode10thgrade                               -0.13      0.86
+## hc_dummy:DEGREE_recode11thgrade                                0.03      0.92
+## hc_dummy:DEGREE_recode12thgradeDnodiploma                      0.34      0.87
+## hc_dummy:DEGREE_recodehighschooldiplomaorequivalent            0.48      0.61
+## hc_dummy:DEGREE_recodesomecollegenodegree                      0.19      0.54
+## hc_dummy:DEGREE_recodeassociatedegree                         -0.47      0.63
+## hc_dummy:DEGREE_recodebachelorsdegree                          0.06      0.53
+## hc_dummy:DEGREE_recodemastersdegree                           -0.41      0.62
+## hc_dummy:DEGREE_recodeprofessionalordoctoraldegree             0.62      0.78
+## hc_dummy:POVRATE                                              -0.00      0.00
+## hc_dummy:HLTHPROB_recodeYes                                    0.36      0.46
+## hc_dummy:MEDPROB_recodeYes                                    -0.84      0.55
+## hc_dummy:GAPINS_recodeYes                                      0.38      0.58
+## hc_dummy:TYPEINS_recodeYes                                     0.02      0.62
+## hc_dummy:NKIDS_t11                                             0.36      0.47
+## hc_dummy:NKIDS_t12                                             0.86      0.53
+## hc_dummy:NKIDS_t13                                            -0.13      0.68
+## hc_dummy:NKIDS_t14ormore                                       0.74      0.80
+## hc_dummy:pregnant_between_wavesYes                             0.62      0.80
+## hc_dummy:had_baby_between_wavesYes                             0.49      0.85
+## hc_dummy:Avoid_r                                              -0.62      0.16
+## hc_dummy:FEELPG_recode                                         0.44      0.15
+## hc_dummy:rel_dur_factor0qM25q                                  0.04      0.47
+## hc_dummy:rel_dur_factor26qM50q                                 0.62      0.48
+## hc_dummy:rel_dur_factor51qM75q                                 0.43      0.52
+## hc_dummy:rel_dur_factor76qM100q                               -0.28      0.60
+## hc_dummy:hc_dur                                               -0.29      0.31
+## hc_dummy:contra_satis:hc_dur                                   0.01      0.02
+## hc_dummy:sexual_satisfaction:hc_dur                           -0.00      0.01
+## hc_dummy:sex_freq2M5times:hc_dur                               0.08      0.04
+## hc_dummy:sex_freq6M10times:hc_dur                              0.06      0.04
+## hc_dummy:sex_freq11ormoretimes:hc_dur                          0.05      0.04
+## hc_dummy:AGE:hc_dur                                            0.00      0.00
+## hc_dummy:DEGREE_recode5thD6thgrade:hc_dur                      0.11      0.30
+## hc_dummy:DEGREE_recode7thD8thgrade:hc_dur                      0.06      0.29
+## hc_dummy:DEGREE_recode9thgrade:hc_dur                         -1.01      0.68
+## hc_dummy:DEGREE_recode10thgrade:hc_dur                         0.41      0.32
+## hc_dummy:DEGREE_recode11thgrade:hc_dur                        -0.09      0.34
+## hc_dummy:DEGREE_recode12thgradeDnodiploma:hc_dur               0.02      0.31
+## hc_dummy:DEGREE_recodehighschooldiplomaorequivalent:hc_dur     0.07      0.28
+## hc_dummy:DEGREE_recodesomecollegenodegree:hc_dur               0.02      0.28
+## hc_dummy:DEGREE_recodeassociatedegree:hc_dur                   0.10      0.28
+## hc_dummy:DEGREE_recodebachelorsdegree:hc_dur                   0.01      0.28
+## hc_dummy:DEGREE_recodemastersdegree:hc_dur                     0.03      0.28
+## hc_dummy:DEGREE_recodeprofessionalordoctoraldegree:hc_dur      0.00      0.29
+## hc_dummy:POVRATE:hc_dur                                       -0.00      0.00
+## hc_dummy:HLTHPROB_recodeYes:hc_dur                            -0.02      0.03
+## hc_dummy:MEDPROB_recodeYes:hc_dur                              0.11      0.04
+## hc_dummy:GAPINS_recodeYes:hc_dur                              -0.04      0.06
+## hc_dummy:TYPEINS_recodeYes:hc_dur                              0.00      0.07
+## hc_dummy:NKIDS_t11:hc_dur                                      0.01      0.03
+## hc_dummy:NKIDS_t12:hc_dur                                     -0.01      0.04
+## hc_dummy:NKIDS_t13:hc_dur                                     -0.01      0.08
+## hc_dummy:NKIDS_t14ormore:hc_dur                               -0.29      0.17
+## hc_dummy:pregnant_between_wavesYes:hc_dur                     -0.32      0.24
+## hc_dummy:had_baby_between_wavesYes:hc_dur                      0.16      0.27
+## hc_dummy:Avoid_r:hc_dur                                        0.00      0.01
+## hc_dummy:FEELPG_recode:hc_dur                                  0.02      0.01
+## hc_dummy:rel_dur_factor0qM25q:hc_dur                           0.03      0.04
+## hc_dummy:rel_dur_factor26qM50q:hc_dur                          0.01      0.04
+## hc_dummy:rel_dur_factor51qM75q:hc_dur                         -0.01      0.04
+## hc_dummy:rel_dur_factor76qM100q:hc_dur                         0.03      0.04
 ##                                                            l-99.7% CI
-## Intercept                                                     -162.88
-## hcnon_hc                                                        -1.63
-## contra_satis                                                    -1.18
-## sexual_satisfaction                                             -1.45
-## sex_freq2M5times                                                -1.57
-## sex_freq6M10times                                               -0.50
-## sex_freq11ormoretimes                                           -0.94
-## AGE                                                             -1.10
-## DEGREE_recode5thD6thgrade                                       -1.72
-## DEGREE_recode7thD8thgrade                                       -1.76
-## DEGREE_recode9thgrade                                           -1.22
-## DEGREE_recode10thgrade                                          -1.30
-## DEGREE_recode11thgrade                                          -1.87
-## DEGREE_recode12thgradeDnodiploma                                -0.33
-## DEGREE_recodehighschooldiplomaorequivalent                      -1.84
-## DEGREE_recodesomecollegenodegree                                -1.34
-## DEGREE_recodeassociatedegree                                    -1.91
-## DEGREE_recodebachelorsdegree                                    -1.13
-## DEGREE_recodemastersdegree                                      -1.75
-## DEGREE_recodeprofessionalordoctoraldegree                       -1.66
-## POVRATE                                                         -1.42
-## HLTHPROB_recodeYes                                              -1.93
-## MEDPROB_recodeYes                                               -1.77
-## GAPINS_recodeYes                                                -0.54
-## TYPEINS_recodeYes                                               -1.69
-## NKIDS_t11                                                       -0.97
-## NKIDS_t12                                                       -1.51
-## NKIDS_t13                                                       -0.27
-## NKIDS_t14ormore                                                 -0.23
-## pregnant_between_wavesYes                                       -0.89
-## had_baby_between_wavesYes                                       -1.65
-## Avoid_r                                                         -1.78
-## FEELPG_recode                                                   -1.31
-## rel_dur_factor0qM25q                                            -1.48
-## rel_dur_factor26qM50q                                           -0.36
-## rel_dur_factor51qM75q                                           -1.30
-## rel_dur_factor76qM100q                                          -1.59
-## hcnon_hc:contra_satis                                           -1.10
-## hcnon_hc:sexual_satisfaction                                    -0.65
-## hcnon_hc:sex_freq2M5times                                       -0.07
-## hcnon_hc:sex_freq6M10times                                      -1.16
-## hcnon_hc:sex_freq11ormoretimes                                  -1.72
-## hcnon_hc:AGE                                                    -0.56
-## hcnon_hc:DEGREE_recode5thD6thgrade                              -1.84
-## hcnon_hc:DEGREE_recode7thD8thgrade                              -0.59
-## hcnon_hc:DEGREE_recode9thgrade                                  -0.92
-## hcnon_hc:DEGREE_recode10thgrade                                 -1.81
-## hcnon_hc:DEGREE_recode11thgrade                                 -1.10
-## hcnon_hc:DEGREE_recode12thgradeDnodiploma                       -1.58
-## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent             -1.79
-## hcnon_hc:DEGREE_recodesomecollegenodegree                       -1.27
-## hcnon_hc:DEGREE_recodeassociatedegree                           -1.82
-## hcnon_hc:DEGREE_recodebachelorsdegree                           -0.08
-## hcnon_hc:DEGREE_recodemastersdegree                              0.10
-## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree              -0.77
-## hcnon_hc:POVRATE                                                -1.68
-## hcnon_hc:HLTHPROB_recodeYes                                     -0.24
-## hcnon_hc:MEDPROB_recodeYes                                      -1.68
-## hcnon_hc:GAPINS_recodeYes                                       -0.91
-## hcnon_hc:TYPEINS_recodeYes                                      -1.00
-## hcnon_hc:NKIDS_t11                                              -0.94
-## hcnon_hc:NKIDS_t12                                              -1.20
-## hcnon_hc:NKIDS_t13                                              -1.20
-## hcnon_hc:NKIDS_t14ormore                                        -0.89
-## hcnon_hc:pregnant_between_wavesYes                              -1.53
-## hcnon_hc:had_baby_between_wavesYes                              -0.89
-## hcnon_hc:Avoid_r                                                -1.90
-## hcnon_hc:FEELPG_recode                                          -1.77
-## hcnon_hc:rel_dur_factor0qM25q                                   -1.80
-## hcnon_hc:rel_dur_factor26qM50q                                  -1.46
-## hcnon_hc:rel_dur_factor51qM75q                                  -1.65
-## hcnon_hc:rel_dur_factor76qM100q                                 -1.55
-## hchc:hc_dur                                                     -1.63
-## hcnon_hc:hc_dur                                                 -0.69
-## hchc:contra_satis:hc_dur                                        -1.84
-## hcnon_hc:contra_satis:hc_dur                                    -0.01
-## hchc:sexual_satisfaction:hc_dur                                 -1.50
-## hcnon_hc:sexual_satisfaction:hc_dur                             -0.02
-## hchc:sex_freq2M5times:hc_dur                                    -1.89
-## hcnon_hc:sex_freq2M5times:hc_dur                                -0.54
-## hchc:sex_freq6M10times:hc_dur                                   -0.97
-## hcnon_hc:sex_freq6M10times:hc_dur                               -0.54
-## hchc:sex_freq11ormoretimes:hc_dur                               -1.97
-## hcnon_hc:sex_freq11ormoretimes:hc_dur                           -0.72
-## hchc:AGE:hc_dur                                                 -0.98
-## hcnon_hc:AGE:hc_dur                                             -0.00
-## hchc:DEGREE_recode5thD6thgrade:hc_dur                           -1.69
-## hcnon_hc:DEGREE_recode5thD6thgrade:hc_dur                       -1.36
-## hchc:DEGREE_recode7thD8thgrade:hc_dur                           -2.00
-## hcnon_hc:DEGREE_recode7thD8thgrade:hc_dur                       -1.98
-## hchc:DEGREE_recode9thgrade:hc_dur                               -1.18
-## hcnon_hc:DEGREE_recode9thgrade:hc_dur                           -1.25
-## hchc:DEGREE_recode10thgrade:hc_dur                              -1.69
-## hcnon_hc:DEGREE_recode10thgrade:hc_dur                          -1.86
-## hchc:DEGREE_recode11thgrade:hc_dur                              -0.89
-## hcnon_hc:DEGREE_recode11thgrade:hc_dur                          -0.86
-## hchc:DEGREE_recode12thgradeDnodiploma:hc_dur                    -1.57
-## hcnon_hc:DEGREE_recode12thgradeDnodiploma:hc_dur                -1.44
-## hchc:DEGREE_recodehighschooldiplomaorequivalent:hc_dur          -1.52
-## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent:hc_dur      -0.93
-## hchc:DEGREE_recodesomecollegenodegree:hc_dur                    -0.65
-## hcnon_hc:DEGREE_recodesomecollegenodegree:hc_dur                -0.93
-## hchc:DEGREE_recodeassociatedegree:hc_dur                        -0.61
-## hcnon_hc:DEGREE_recodeassociatedegree:hc_dur                    -1.08
-## hchc:DEGREE_recodebachelorsdegree:hc_dur                        -0.91
-## hcnon_hc:DEGREE_recodebachelorsdegree:hc_dur                    -0.93
-## hchc:DEGREE_recodemastersdegree:hc_dur                          -1.91
-## hcnon_hc:DEGREE_recodemastersdegree:hc_dur                      -0.92
-## hchc:DEGREE_recodeprofessionalordoctoraldegree:hc_dur           -1.31
-## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree:hc_dur       -0.97
-## hchc:POVRATE:hc_dur                                             -0.05
-## hcnon_hc:POVRATE:hc_dur                                         -0.00
-## hchc:HLTHPROB_recodeYes:hc_dur                                  -1.91
-## hcnon_hc:HLTHPROB_recodeYes:hc_dur                              -0.20
-## hchc:MEDPROB_recodeYes:hc_dur                                   -1.24
-## hcnon_hc:MEDPROB_recodeYes:hc_dur                               -0.79
-## hchc:GAPINS_recodeYes:hc_dur                                    -1.18
-## hcnon_hc:GAPINS_recodeYes:hc_dur                                -0.26
-## hchc:TYPEINS_recodeYes:hc_dur                                   -1.91
-## hcnon_hc:TYPEINS_recodeYes:hc_dur                               -0.26
-## hchc:NKIDS_t11:hc_dur                                           -0.45
-## hcnon_hc:NKIDS_t11:hc_dur                                       -0.04
-## hchc:NKIDS_t12:hc_dur                                           -1.34
-## hcnon_hc:NKIDS_t12:hc_dur                                       -0.04
-## hchc:NKIDS_t13:hc_dur                                           -0.85
-## hcnon_hc:NKIDS_t13:hc_dur                                       -0.79
-## hchc:NKIDS_t14ormore:hc_dur                                     -0.10
-## hcnon_hc:NKIDS_t14ormore:hc_dur                                 -1.48
-## hchc:pregnant_between_wavesYes:hc_dur                           -1.88
-## hcnon_hc:pregnant_between_wavesYes:hc_dur                       -1.45
-## hchc:had_baby_between_wavesYes:hc_dur                           -0.92
-## hcnon_hc:had_baby_between_wavesYes:hc_dur                       -1.69
-## hchc:Avoid_r:hc_dur                                             -1.66
-## hcnon_hc:Avoid_r:hc_dur                                         -0.05
-## hchc:FEELPG_recode:hc_dur                                       -1.48
-## hcnon_hc:FEELPG_recode:hc_dur                                   -0.00
-## hchc:rel_dur_factor0qM25q:hc_dur                                -1.51
-## hcnon_hc:rel_dur_factor0qM25q:hc_dur                            -1.14
-## hchc:rel_dur_factor26qM50q:hc_dur                               -0.37
-## hcnon_hc:rel_dur_factor26qM50q:hc_dur                           -0.73
-## hchc:rel_dur_factor51qM75q:hc_dur                               -1.74
-## hcnon_hc:rel_dur_factor51qM75q:hc_dur                           -1.12
-## hchc:rel_dur_factor76qM100q:hc_dur                              -1.46
-## hcnon_hc:rel_dur_factor76qM100q:hc_dur                          -0.99
+## Intercept                                                       -2.68
+## hc_dummy                                                        -2.20
+## contra_satis                                                    -0.82
+## sexual_satisfaction                                             -0.28
+## sex_freq2M5times                                                -1.29
+## sex_freq6M10times                                               -1.39
+## sex_freq11ormoretimes                                           -1.18
+## AGE                                                             -0.24
+## DEGREE_recode5thD6thgrade                                       -3.02
+## DEGREE_recode7thD8thgrade                                       -2.12
+## DEGREE_recode9thgrade                                           -3.13
+## DEGREE_recode10thgrade                                          -3.01
+## DEGREE_recode11thgrade                                          -3.03
+## DEGREE_recode12thgradeDnodiploma                                -1.98
+## DEGREE_recodehighschooldiplomaorequivalent                      -1.99
+## DEGREE_recodesomecollegenodegree                                -1.08
+## DEGREE_recodeassociatedegree                                    -2.06
+## DEGREE_recodebachelorsdegree                                    -0.96
+## DEGREE_recodemastersdegree                                      -0.97
+## DEGREE_recodeprofessionalordoctoraldegree                       -1.58
+## POVRATE                                                         -0.00
+## HLTHPROB_recodeYes                                              -0.79
+## MEDPROB_recodeYes                                               -1.23
+## GAPINS_recodeYes                                                -1.07
+## TYPEINS_recodeYes                                               -1.07
+## NKIDS_t11                                                       -1.23
+## NKIDS_t12                                                       -1.91
+## NKIDS_t13                                                       -1.50
+## NKIDS_t14ormore                                                 -1.48
+## pregnant_between_wavesYes                                       -2.16
+## had_baby_between_wavesYes                                       -2.94
+## Avoid_r                                                         -0.14
+## FEELPG_recode                                                   -0.71
+## rel_dur_factor0qM25q                                            -0.90
+## rel_dur_factor26qM50q                                           -1.64
+## rel_dur_factor51qM75q                                           -1.37
+## rel_dur_factor76qM100q                                          -1.38
+## hc_dummy:contra_satis                                           -1.22
+## hc_dummy:sexual_satisfaction                                    -0.39
+## hc_dummy:sex_freq2M5times                                       -1.84
+## hc_dummy:sex_freq6M10times                                      -2.01
+## hc_dummy:sex_freq11ormoretimes                                  -2.48
+## hc_dummy:AGE                                                     0.03
+## hc_dummy:DEGREE_recode5thD6thgrade                              -3.15
+## hc_dummy:DEGREE_recode7thD8thgrade                              -2.58
+## hc_dummy:DEGREE_recode9thgrade                                  -3.51
+## hc_dummy:DEGREE_recode10thgrade                                 -2.66
+## hc_dummy:DEGREE_recode11thgrade                                 -2.91
+## hc_dummy:DEGREE_recode12thgradeDnodiploma                       -2.24
+## hc_dummy:DEGREE_recodehighschooldiplomaorequivalent             -1.37
+## hc_dummy:DEGREE_recodesomecollegenodegree                       -1.39
+## hc_dummy:DEGREE_recodeassociatedegree                           -2.42
+## hc_dummy:DEGREE_recodebachelorsdegree                           -1.42
+## hc_dummy:DEGREE_recodemastersdegree                             -2.22
+## hc_dummy:DEGREE_recodeprofessionalordoctoraldegree              -1.72
+## hc_dummy:POVRATE                                                -0.00
+## hc_dummy:HLTHPROB_recodeYes                                     -0.98
+## hc_dummy:MEDPROB_recodeYes                                      -2.45
+## hc_dummy:GAPINS_recodeYes                                       -1.32
+## hc_dummy:TYPEINS_recodeYes                                      -1.79
+## hc_dummy:NKIDS_t11                                              -1.12
+## hc_dummy:NKIDS_t12                                              -0.71
+## hc_dummy:NKIDS_t13                                              -2.24
+## hc_dummy:NKIDS_t14ormore                                        -1.59
+## hc_dummy:pregnant_between_wavesYes                              -1.72
+## hc_dummy:had_baby_between_wavesYes                              -2.02
+## hc_dummy:Avoid_r                                                -1.08
+## hc_dummy:FEELPG_recode                                           0.01
+## hc_dummy:rel_dur_factor0qM25q                                   -1.33
+## hc_dummy:rel_dur_factor26qM50q                                  -0.78
+## hc_dummy:rel_dur_factor51qM75q                                  -1.06
+## hc_dummy:rel_dur_factor76qM100q                                 -2.03
+## hc_dummy:hc_dur                                                 -1.16
+## hc_dummy:contra_satis:hc_dur                                    -0.05
+## hc_dummy:sexual_satisfaction:hc_dur                             -0.04
+## hc_dummy:sex_freq2M5times:hc_dur                                -0.02
+## hc_dummy:sex_freq6M10times:hc_dur                               -0.05
+## hc_dummy:sex_freq11ormoretimes:hc_dur                           -0.08
+## hc_dummy:AGE:hc_dur                                             -0.01
+## hc_dummy:DEGREE_recode5thD6thgrade:hc_dur                       -0.79
+## hc_dummy:DEGREE_recode7thD8thgrade:hc_dur                       -0.82
+## hc_dummy:DEGREE_recode9thgrade:hc_dur                           -3.39
+## hc_dummy:DEGREE_recode10thgrade:hc_dur                          -0.55
+## hc_dummy:DEGREE_recode11thgrade:hc_dur                          -1.14
+## hc_dummy:DEGREE_recode12thgradeDnodiploma:hc_dur                -0.89
+## hc_dummy:DEGREE_recodehighschooldiplomaorequivalent:hc_dur      -0.77
+## hc_dummy:DEGREE_recodesomecollegenodegree:hc_dur                -0.85
+## hc_dummy:DEGREE_recodeassociatedegree:hc_dur                    -0.74
+## hc_dummy:DEGREE_recodebachelorsdegree:hc_dur                    -0.84
+## hc_dummy:DEGREE_recodemastersdegree:hc_dur                      -0.84
+## hc_dummy:DEGREE_recodeprofessionalordoctoraldegree:hc_dur       -0.92
+## hc_dummy:POVRATE:hc_dur                                         -0.00
+## hc_dummy:HLTHPROB_recodeYes:hc_dur                              -0.11
+## hc_dummy:MEDPROB_recodeYes:hc_dur                               -0.01
+## hc_dummy:GAPINS_recodeYes:hc_dur                                -0.22
+## hc_dummy:TYPEINS_recodeYes:hc_dur                               -0.20
+## hc_dummy:NKIDS_t11:hc_dur                                       -0.09
+## hc_dummy:NKIDS_t12:hc_dur                                       -0.13
+## hc_dummy:NKIDS_t13:hc_dur                                       -0.27
+## hc_dummy:NKIDS_t14ormore:hc_dur                                 -0.88
+## hc_dummy:pregnant_between_wavesYes:hc_dur                       -1.16
+## hc_dummy:had_baby_between_wavesYes:hc_dur                       -0.60
+## hc_dummy:Avoid_r:hc_dur                                         -0.03
+## hc_dummy:FEELPG_recode:hc_dur                                   -0.01
+## hc_dummy:rel_dur_factor0qM25q:hc_dur                            -0.07
+## hc_dummy:rel_dur_factor26qM50q:hc_dur                           -0.09
+## hc_dummy:rel_dur_factor51qM75q:hc_dur                           -0.12
+## hc_dummy:rel_dur_factor76qM100q:hc_dur                          -0.09
 ##                                                            u-99.7% CI Rhat
-## Intercept                                                      285.27 3.01
-## hcnon_hc                                                         1.15 3.34
-## contra_satis                                                     1.82 3.49
-## sexual_satisfaction                                              1.32 3.51
-## sex_freq2M5times                                                 1.16 3.00
-## sex_freq6M10times                                                1.51 2.96
-## sex_freq11ormoretimes                                            1.05 3.23
-## AGE                                                              1.35 3.28
-## DEGREE_recode5thD6thgrade                                        1.79 3.37
-## DEGREE_recode7thD8thgrade                                        1.73 3.64
-## DEGREE_recode9thgrade                                            1.69 3.25
-## DEGREE_recode10thgrade                                           1.34 3.27
-## DEGREE_recode11thgrade                                           1.61 3.45
-## DEGREE_recode12thgradeDnodiploma                                 1.77 3.11
-## DEGREE_recodehighschooldiplomaorequivalent                       1.91 3.17
-## DEGREE_recodesomecollegenodegree                                 1.64 3.02
-## DEGREE_recodeassociatedegree                                     0.13 3.12
-## DEGREE_recodebachelorsdegree                                     0.90 3.70
-## DEGREE_recodemastersdegree                                       1.77 3.07
-## DEGREE_recodeprofessionalordoctoraldegree                        1.45 3.38
-## POVRATE                                                          1.64 2.92
-## HLTHPROB_recodeYes                                               1.59 2.92
-## MEDPROB_recodeYes                                               -0.27 3.97
-## GAPINS_recodeYes                                                 1.66 3.28
-## TYPEINS_recodeYes                                                1.34 3.56
-## NKIDS_t11                                                        0.56 3.31
-## NKIDS_t12                                                        0.61 3.36
-## NKIDS_t13                                                        1.84 3.50
-## NKIDS_t14ormore                                                  0.91 3.43
-## pregnant_between_wavesYes                                        0.66 3.35
-## had_baby_between_wavesYes                                        1.61 3.05
-## Avoid_r                                                         -0.62 3.17
-## FEELPG_recode                                                    1.03 3.09
-## rel_dur_factor0qM25q                                             1.51 3.24
-## rel_dur_factor26qM50q                                            0.89 3.18
-## rel_dur_factor51qM75q                                           -0.05 3.54
-## rel_dur_factor76qM100q                                           0.12 2.90
-## hcnon_hc:contra_satis                                            1.84 3.51
-## hcnon_hc:sexual_satisfaction                                     1.61 3.40
-## hcnon_hc:sex_freq2M5times                                        1.91 3.31
-## hcnon_hc:sex_freq6M10times                                       0.07 3.19
-## hcnon_hc:sex_freq11ormoretimes                                   1.77 3.31
-## hcnon_hc:AGE                                                     1.71 3.23
-## hcnon_hc:DEGREE_recode5thD6thgrade                               0.91 3.56
-## hcnon_hc:DEGREE_recode7thD8thgrade                               1.84 3.84
-## hcnon_hc:DEGREE_recode9thgrade                                   1.84 3.20
-## hcnon_hc:DEGREE_recode10thgrade                                  1.55 3.04
-## hcnon_hc:DEGREE_recode11thgrade                                  1.13 3.40
-## hcnon_hc:DEGREE_recode12thgradeDnodiploma                        1.81 3.27
-## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent              0.20 3.99
-## hcnon_hc:DEGREE_recodesomecollegenodegree                        0.46 3.36
-## hcnon_hc:DEGREE_recodeassociatedegree                            1.85 3.24
-## hcnon_hc:DEGREE_recodebachelorsdegree                            1.53 3.08
-## hcnon_hc:DEGREE_recodemastersdegree                              1.74 2.94
-## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree               1.77 3.44
-## hcnon_hc:POVRATE                                                 1.24 3.90
-## hcnon_hc:HLTHPROB_recodeYes                                      1.64 3.69
-## hcnon_hc:MEDPROB_recodeYes                                       0.33 3.02
-## hcnon_hc:GAPINS_recodeYes                                        1.45 3.19
-## hcnon_hc:TYPEINS_recodeYes                                       1.82 3.37
-## hcnon_hc:NKIDS_t11                                              -0.00 3.28
-## hcnon_hc:NKIDS_t12                                               0.37 2.94
-## hcnon_hc:NKIDS_t13                                               1.96 3.65
-## hcnon_hc:NKIDS_t14ormore                                         1.44 3.27
-## hcnon_hc:pregnant_between_wavesYes                               0.61 3.47
-## hcnon_hc:had_baby_between_wavesYes                               0.65 2.99
-## hcnon_hc:Avoid_r                                                 1.80 3.05
-## hcnon_hc:FEELPG_recode                                           1.35 3.40
-## hcnon_hc:rel_dur_factor0qM25q                                    0.82 3.07
-## hcnon_hc:rel_dur_factor26qM50q                                   1.46 2.95
-## hcnon_hc:rel_dur_factor51qM75q                                   0.49 3.06
-## hcnon_hc:rel_dur_factor76qM100q                                  0.88 3.35
-## hchc:hc_dur                                                      1.17 3.26
-## hcnon_hc:hc_dur                                                  1.52 3.65
-## hchc:contra_satis:hc_dur                                         0.33 3.24
-## hcnon_hc:contra_satis:hc_dur                                     0.03 2.48
-## hchc:sexual_satisfaction:hc_dur                                  1.13 2.90
-## hcnon_hc:sexual_satisfaction:hc_dur                              0.01 2.31
-## hchc:sex_freq2M5times:hc_dur                                     1.11 3.05
-## hcnon_hc:sex_freq2M5times:hc_dur                                 0.22 2.73
-## hchc:sex_freq6M10times:hc_dur                                    0.64 3.71
-## hcnon_hc:sex_freq6M10times:hc_dur                                0.22 3.09
-## hchc:sex_freq11ormoretimes:hc_dur                                1.50 2.98
-## hcnon_hc:sex_freq11ormoretimes:hc_dur                            0.22 3.07
-## hchc:AGE:hc_dur                                                  1.16 3.93
-## hcnon_hc:AGE:hc_dur                                              0.03 2.04
-## hchc:DEGREE_recode5thD6thgrade:hc_dur                            1.93 3.08
-## hcnon_hc:DEGREE_recode5thD6thgrade:hc_dur                       -0.06 3.17
-## hchc:DEGREE_recode7thD8thgrade:hc_dur                            0.13 3.20
-## hcnon_hc:DEGREE_recode7thD8thgrade:hc_dur                       -0.17 4.07
-## hchc:DEGREE_recode9thgrade:hc_dur                                1.91 2.99
-## hcnon_hc:DEGREE_recode9thgrade:hc_dur                            1.88 3.73
-## hchc:DEGREE_recode10thgrade:hc_dur                               2.00 4.04
-## hcnon_hc:DEGREE_recode10thgrade:hc_dur                          -0.58 4.21
-## hchc:DEGREE_recode11thgrade:hc_dur                               1.41 3.18
-## hcnon_hc:DEGREE_recode11thgrade:hc_dur                           0.70 4.01
-## hchc:DEGREE_recode12thgradeDnodiploma:hc_dur                     1.11 3.18
-## hcnon_hc:DEGREE_recode12thgradeDnodiploma:hc_dur                -0.89 4.09
-## hchc:DEGREE_recodehighschooldiplomaorequivalent:hc_dur           1.98 3.67
-## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent:hc_dur       0.37 3.16
-## hchc:DEGREE_recodesomecollegenodegree:hc_dur                     1.51 3.32
-## hcnon_hc:DEGREE_recodesomecollegenodegree:hc_dur                 0.37 3.53
-## hchc:DEGREE_recodeassociatedegree:hc_dur                         0.87 3.33
-## hcnon_hc:DEGREE_recodeassociatedegree:hc_dur                     0.37 3.00
-## hchc:DEGREE_recodebachelorsdegree:hc_dur                         1.12 3.48
-## hcnon_hc:DEGREE_recodebachelorsdegree:hc_dur                     0.37 3.54
-## hchc:DEGREE_recodemastersdegree:hc_dur                           0.65 3.14
-## hcnon_hc:DEGREE_recodemastersdegree:hc_dur                       0.37 3.52
-## hchc:DEGREE_recodeprofessionalordoctoraldegree:hc_dur            0.47 3.07
-## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree:hc_dur        1.17 3.08
-## hchc:POVRATE:hc_dur                                              0.07 3.44
-## hcnon_hc:POVRATE:hc_dur                                          0.00 2.91
-## hchc:HLTHPROB_recodeYes:hc_dur                                  -0.79 3.38
-## hcnon_hc:HLTHPROB_recodeYes:hc_dur                               0.02 1.95
-## hchc:MEDPROB_recodeYes:hc_dur                                    1.34 3.30
-## hcnon_hc:MEDPROB_recodeYes:hc_dur                                0.00 1.37
-## hchc:GAPINS_recodeYes:hc_dur                                     1.30 3.60
-## hcnon_hc:GAPINS_recodeYes:hc_dur                                 0.32 3.53
-## hchc:TYPEINS_recodeYes:hc_dur                                   -0.32 3.39
-## hcnon_hc:TYPEINS_recodeYes:hc_dur                                0.32 4.08
-## hchc:NKIDS_t11:hc_dur                                            1.98 3.11
-## hcnon_hc:NKIDS_t11:hc_dur                                        0.09 2.42
-## hchc:NKIDS_t12:hc_dur                                            1.47 3.10
-## hcnon_hc:NKIDS_t12:hc_dur                                        0.22 3.06
-## hchc:NKIDS_t13:hc_dur                                            1.44 4.02
-## hcnon_hc:NKIDS_t13:hc_dur                                        0.10 2.24
-## hchc:NKIDS_t14ormore:hc_dur                                      1.22 3.36
-## hcnon_hc:NKIDS_t14ormore:hc_dur                                  0.10 2.11
-## hchc:pregnant_between_wavesYes:hc_dur                            0.67 3.36
-## hcnon_hc:pregnant_between_wavesYes:hc_dur                        1.69 3.48
-## hchc:had_baby_between_wavesYes:hc_dur                           -0.49 2.93
-## hcnon_hc:had_baby_between_wavesYes:hc_dur                        1.84 3.35
-## hchc:Avoid_r:hc_dur                                              1.94 3.43
-## hcnon_hc:Avoid_r:hc_dur                                          0.00 2.56
-## hchc:FEELPG_recode:hc_dur                                        1.68 3.13
-## hcnon_hc:FEELPG_recode:hc_dur                                    0.05 2.76
-## hchc:rel_dur_factor0qM25q:hc_dur                                 1.87 3.35
-## hcnon_hc:rel_dur_factor0qM25q:hc_dur                             0.00 3.37
-## hchc:rel_dur_factor26qM50q:hc_dur                                1.96 3.18
-## hcnon_hc:rel_dur_factor26qM50q:hc_dur                            0.00 3.39
-## hchc:rel_dur_factor51qM75q:hc_dur                                1.19 3.47
-## hcnon_hc:rel_dur_factor51qM75q:hc_dur                            0.00 2.63
-## hchc:rel_dur_factor76qM100q:hc_dur                               0.87 3.26
-## hcnon_hc:rel_dur_factor76qM100q:hc_dur                           0.01 3.47
+## Intercept                                                        5.42 1.00
+## hc_dummy                                                         3.07 1.00
+## contra_satis                                                     0.22 1.00
+## sexual_satisfaction                                              0.43 1.00
+## sex_freq2M5times                                                 0.73 1.00
+## sex_freq6M10times                                                0.89 1.00
+## sex_freq11ormoretimes                                            1.17 1.00
+## AGE                                                             -0.04 1.00
+## DEGREE_recode5thD6thgrade                                        2.13 1.01
+## DEGREE_recode7thD8thgrade                                        3.22 1.00
+## DEGREE_recode9thgrade                                            2.31 1.00
+## DEGREE_recode10thgrade                                           1.92 1.00
+## DEGREE_recode11thgrade                                           2.61 1.00
+## DEGREE_recode12thgradeDnodiploma                                 2.55 1.00
+## DEGREE_recodehighschooldiplomaorequivalent                       1.07 1.00
+## DEGREE_recodesomecollegenodegree                                 1.51 1.00
+## DEGREE_recodeassociatedegree                                     1.10 1.00
+## DEGREE_recodebachelorsdegree                                     1.59 1.00
+## DEGREE_recodemastersdegree                                       2.00 1.00
+## DEGREE_recodeprofessionalordoctoraldegree                        2.28 1.00
+## POVRATE                                                          0.00 1.00
+## HLTHPROB_recodeYes                                               1.15 1.00
+## MEDPROB_recodeYes                                                1.03 1.00
+## GAPINS_recodeYes                                                 1.50 1.00
+## TYPEINS_recodeYes                                                1.56 1.00
+## NKIDS_t11                                                        0.79 1.00
+## NKIDS_t12                                                        0.46 1.00
+## NKIDS_t13                                                        1.36 1.00
+## NKIDS_t14ormore                                                  1.86 1.00
+## pregnant_between_wavesYes                                        1.49 1.00
+## had_baby_between_wavesYes                                        1.40 1.00
+## Avoid_r                                                          0.57 1.00
+## FEELPG_recode                                                   -0.06 1.00
+## rel_dur_factor0qM25q                                             1.12 1.00
+## rel_dur_factor26qM50q                                            0.59 1.00
+## rel_dur_factor51qM75q                                            0.97 1.00
+## rel_dur_factor76qM100q                                           1.12 1.00
+## hc_dummy:contra_satis                                            0.23 1.00
+## hc_dummy:sexual_satisfaction                                     0.63 1.00
+## hc_dummy:sex_freq2M5times                                        0.71 1.00
+## hc_dummy:sex_freq6M10times                                       1.00 1.00
+## hc_dummy:sex_freq11ormoretimes                                   0.71 1.00
+## hc_dummy:AGE                                                     0.29 1.00
+## hc_dummy:DEGREE_recode5thD6thgrade                               2.48 1.00
+## hc_dummy:DEGREE_recode7thD8thgrade                               3.15 1.00
+## hc_dummy:DEGREE_recode9thgrade                                   2.86 1.00
+## hc_dummy:DEGREE_recode10thgrade                                  2.37 1.00
+## hc_dummy:DEGREE_recode11thgrade                                  2.82 1.00
+## hc_dummy:DEGREE_recode12thgradeDnodiploma                        2.79 1.00
+## hc_dummy:DEGREE_recodehighschooldiplomaorequivalent              2.27 1.00
+## hc_dummy:DEGREE_recodesomecollegenodegree                        1.77 1.00
+## hc_dummy:DEGREE_recodeassociatedegree                            1.44 1.00
+## hc_dummy:DEGREE_recodebachelorsdegree                            1.79 1.00
+## hc_dummy:DEGREE_recodemastersdegree                              1.35 1.00
+## hc_dummy:DEGREE_recodeprofessionalordoctoraldegree               2.84 1.00
+## hc_dummy:POVRATE                                                 0.00 1.00
+## hc_dummy:HLTHPROB_recodeYes                                      1.73 1.00
+## hc_dummy:MEDPROB_recodeYes                                       0.78 1.00
+## hc_dummy:GAPINS_recodeYes                                        2.05 1.00
+## hc_dummy:TYPEINS_recodeYes                                       1.85 1.00
+## hc_dummy:NKIDS_t11                                               1.75 1.00
+## hc_dummy:NKIDS_t12                                               2.38 1.00
+## hc_dummy:NKIDS_t13                                               1.84 1.00
+## hc_dummy:NKIDS_t14ormore                                         2.97 1.00
+## hc_dummy:pregnant_between_wavesYes                               3.19 1.00
+## hc_dummy:had_baby_between_wavesYes                               2.96 1.00
+## hc_dummy:Avoid_r                                                -0.18 1.00
+## hc_dummy:FEELPG_recode                                           0.88 1.00
+## hc_dummy:rel_dur_factor0qM25q                                    1.28 1.00
+## hc_dummy:rel_dur_factor26qM50q                                   2.03 1.00
+## hc_dummy:rel_dur_factor51qM75q                                   1.93 1.00
+## hc_dummy:rel_dur_factor76qM100q                                  1.52 1.00
+## hc_dummy:hc_dur                                                  0.62 1.00
+## hc_dummy:contra_satis:hc_dur                                     0.06 1.00
+## hc_dummy:sexual_satisfaction:hc_dur                              0.03 1.00
+## hc_dummy:sex_freq2M5times:hc_dur                                 0.19 1.00
+## hc_dummy:sex_freq6M10times:hc_dur                                0.18 1.00
+## hc_dummy:sex_freq11ormoretimes:hc_dur                            0.17 1.00
+## hc_dummy:AGE:hc_dur                                              0.01 1.00
+## hc_dummy:DEGREE_recode5thD6thgrade:hc_dur                        1.02 1.00
+## hc_dummy:DEGREE_recode7thD8thgrade:hc_dur                        0.90 1.00
+## hc_dummy:DEGREE_recode9thgrade:hc_dur                            0.61 1.00
+## hc_dummy:DEGREE_recode10thgrade:hc_dur                           1.33 1.00
+## hc_dummy:DEGREE_recode11thgrade:hc_dur                           0.91 1.00
+## hc_dummy:DEGREE_recode12thgradeDnodiploma:hc_dur                 0.89 1.00
+## hc_dummy:DEGREE_recodehighschooldiplomaorequivalent:hc_dur       0.87 1.00
+## hc_dummy:DEGREE_recodesomecollegenodegree:hc_dur                 0.84 1.00
+## hc_dummy:DEGREE_recodeassociatedegree:hc_dur                     0.91 1.00
+## hc_dummy:DEGREE_recodebachelorsdegree:hc_dur                     0.81 1.00
+## hc_dummy:DEGREE_recodemastersdegree:hc_dur                       0.84 1.00
+## hc_dummy:DEGREE_recodeprofessionalordoctoraldegree:hc_dur        0.90 1.00
+## hc_dummy:POVRATE:hc_dur                                          0.00 1.00
+## hc_dummy:HLTHPROB_recodeYes:hc_dur                               0.07 1.00
+## hc_dummy:MEDPROB_recodeYes:hc_dur                                0.22 1.00
+## hc_dummy:GAPINS_recodeYes:hc_dur                                 0.12 1.00
+## hc_dummy:TYPEINS_recodeYes:hc_dur                                0.20 1.00
+## hc_dummy:NKIDS_t11:hc_dur                                        0.11 1.00
+## hc_dummy:NKIDS_t12:hc_dur                                        0.11 1.00
+## hc_dummy:NKIDS_t13:hc_dur                                        0.21 1.00
+## hc_dummy:NKIDS_t14ormore:hc_dur                                  0.10 1.00
+## hc_dummy:pregnant_between_wavesYes:hc_dur                        0.24 1.00
+## hc_dummy:had_baby_between_wavesYes:hc_dur                        1.05 1.00
+## hc_dummy:Avoid_r:hc_dur                                          0.03 1.00
+## hc_dummy:FEELPG_recode:hc_dur                                    0.05 1.00
+## hc_dummy:rel_dur_factor0qM25q:hc_dur                             0.14 1.00
+## hc_dummy:rel_dur_factor26qM50q:hc_dur                            0.13 1.00
+## hc_dummy:rel_dur_factor51qM75q:hc_dur                            0.11 1.00
+## hc_dummy:rel_dur_factor76qM100q:hc_dur                           0.17 1.00
 ##                                                            Bulk_ESS Tail_ESS
-## Intercept                                                         5       13
-## hcnon_hc                                                          4       11
-## contra_satis                                                      4       11
-## sexual_satisfaction                                               4       11
-## sex_freq2M5times                                                  5       16
-## sex_freq6M10times                                                 5       25
-## sex_freq11ormoretimes                                             4       13
-## AGE                                                               4       12
-## DEGREE_recode5thD6thgrade                                         5       34
-## DEGREE_recode7thD8thgrade                                         4       11
-## DEGREE_recode9thgrade                                             4       13
-## DEGREE_recode10thgrade                                            4       12
-## DEGREE_recode11thgrade                                            4       11
-## DEGREE_recode12thgradeDnodiploma                                  5       13
-## DEGREE_recodehighschooldiplomaorequivalent                        5       13
-## DEGREE_recodesomecollegenodegree                                  5       18
-## DEGREE_recodeassociatedegree                                      5       15
-## DEGREE_recodebachelorsdegree                                      4       15
-## DEGREE_recodemastersdegree                                        5       13
-## DEGREE_recodeprofessionalordoctoraldegree                         4       12
-## POVRATE                                                           5       11
-## HLTHPROB_recodeYes                                                5       15
-## MEDPROB_recodeYes                                                 4       16
-## GAPINS_recodeYes                                                  4       20
-## TYPEINS_recodeYes                                                 4       14
-## NKIDS_t11                                                         5       11
-## NKIDS_t12                                                         4       17
-## NKIDS_t13                                                         4       11
-## NKIDS_t14ormore                                                   4       11
-## pregnant_between_wavesYes                                         4       12
-## had_baby_between_wavesYes                                         5       12
-## Avoid_r                                                           5       15
-## FEELPG_recode                                                     5       19
-## rel_dur_factor0qM25q                                              5       16
-## rel_dur_factor26qM50q                                             5       15
-## rel_dur_factor51qM75q                                             4       12
-## rel_dur_factor76qM100q                                            5       39
-## hcnon_hc:contra_satis                                             4       14
-## hcnon_hc:sexual_satisfaction                                      4       14
-## hcnon_hc:sex_freq2M5times                                         4       13
-## hcnon_hc:sex_freq6M10times                                        5       11
-## hcnon_hc:sex_freq11ormoretimes                                    4       15
-## hcnon_hc:AGE                                                      4       12
-## hcnon_hc:DEGREE_recode5thD6thgrade                                4       12
-## hcnon_hc:DEGREE_recode7thD8thgrade                                4       12
-## hcnon_hc:DEGREE_recode9thgrade                                    5       28
-## hcnon_hc:DEGREE_recode10thgrade                                   5       11
-## hcnon_hc:DEGREE_recode11thgrade                                   4       21
-## hcnon_hc:DEGREE_recode12thgradeDnodiploma                         4       12
-## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent               4       11
-## hcnon_hc:DEGREE_recodesomecollegenodegree                         4       14
-## hcnon_hc:DEGREE_recodeassociatedegree                             4       14
-## hcnon_hc:DEGREE_recodebachelorsdegree                             5       13
-## hcnon_hc:DEGREE_recodemastersdegree                               5       11
-## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree                4       16
-## hcnon_hc:POVRATE                                                  4       11
-## hcnon_hc:HLTHPROB_recodeYes                                       4       12
-## hcnon_hc:MEDPROB_recodeYes                                        5       20
-## hcnon_hc:GAPINS_recodeYes                                         5       18
-## hcnon_hc:TYPEINS_recodeYes                                        4       12
-## hcnon_hc:NKIDS_t11                                                4       12
-## hcnon_hc:NKIDS_t12                                                5       24
-## hcnon_hc:NKIDS_t13                                                4       13
-## hcnon_hc:NKIDS_t14ormore                                          4       16
-## hcnon_hc:pregnant_between_wavesYes                                4       13
-## hcnon_hc:had_baby_between_wavesYes                                5       19
-## hcnon_hc:Avoid_r                                                  5       16
-## hcnon_hc:FEELPG_recode                                            4       16
-## hcnon_hc:rel_dur_factor0qM25q                                     5       19
-## hcnon_hc:rel_dur_factor26qM50q                                    5       15
-## hcnon_hc:rel_dur_factor51qM75q                                    5       30
-## hcnon_hc:rel_dur_factor76qM100q                                   4       15
-## hchc:hc_dur                                                       4       11
-## hcnon_hc:hc_dur                                                   4       11
-## hchc:contra_satis:hc_dur                                          4       13
-## hcnon_hc:contra_satis:hc_dur                                      5       25
-## hchc:sexual_satisfaction:hc_dur                                   5       25
-## hcnon_hc:sexual_satisfaction:hc_dur                               6       18
-## hchc:sex_freq2M5times:hc_dur                                      5       20
-## hcnon_hc:sex_freq2M5times:hc_dur                                  5       14
-## hchc:sex_freq6M10times:hc_dur                                     4       12
-## hcnon_hc:sex_freq6M10times:hc_dur                                 5       15
-## hchc:sex_freq11ormoretimes:hc_dur                                 5       20
-## hcnon_hc:sex_freq11ormoretimes:hc_dur                             5       11
-## hchc:AGE:hc_dur                                                   4       11
-## hcnon_hc:AGE:hc_dur                                               6       25
-## hchc:DEGREE_recode5thD6thgrade:hc_dur                             5       11
-## hcnon_hc:DEGREE_recode5thD6thgrade:hc_dur                         4       18
-## hchc:DEGREE_recode7thD8thgrade:hc_dur                             5       32
-## hcnon_hc:DEGREE_recode7thD8thgrade:hc_dur                         4       11
-## hchc:DEGREE_recode9thgrade:hc_dur                                 5       15
-## hcnon_hc:DEGREE_recode9thgrade:hc_dur                             4       11
-## hchc:DEGREE_recode10thgrade:hc_dur                                4       12
-## hcnon_hc:DEGREE_recode10thgrade:hc_dur                            4       11
-## hchc:DEGREE_recode11thgrade:hc_dur                                5       11
-## hcnon_hc:DEGREE_recode11thgrade:hc_dur                            4       11
-## hchc:DEGREE_recode12thgradeDnodiploma:hc_dur                      4       11
-## hcnon_hc:DEGREE_recode12thgradeDnodiploma:hc_dur                  4       11
-## hchc:DEGREE_recodehighschooldiplomaorequivalent:hc_dur            4       14
-## hcnon_hc:DEGREE_recodehighschooldiplomaorequivalent:hc_dur        4       12
-## hchc:DEGREE_recodesomecollegenodegree:hc_dur                      4       16
-## hcnon_hc:DEGREE_recodesomecollegenodegree:hc_dur                  4       12
-## hchc:DEGREE_recodeassociatedegree:hc_dur                          4       11
-## hcnon_hc:DEGREE_recodeassociatedegree:hc_dur                      5       12
-## hchc:DEGREE_recodebachelorsdegree:hc_dur                          4       11
-## hcnon_hc:DEGREE_recodebachelorsdegree:hc_dur                      4       12
-## hchc:DEGREE_recodemastersdegree:hc_dur                            5       17
-## hcnon_hc:DEGREE_recodemastersdegree:hc_dur                        4       11
-## hchc:DEGREE_recodeprofessionalordoctoraldegree:hc_dur             5       14
-## hcnon_hc:DEGREE_recodeprofessionalordoctoraldegree:hc_dur         5       11
-## hchc:POVRATE:hc_dur                                               4       13
-## hcnon_hc:POVRATE:hc_dur                                           5       28
-## hchc:HLTHPROB_recodeYes:hc_dur                                    4       11
-## hcnon_hc:HLTHPROB_recodeYes:hc_dur                                6       20
-## hchc:MEDPROB_recodeYes:hc_dur                                     4       15
-## hcnon_hc:MEDPROB_recodeYes:hc_dur                                11       30
-## hchc:GAPINS_recodeYes:hc_dur                                      4       13
-## hcnon_hc:GAPINS_recodeYes:hc_dur                                  4       11
-## hchc:TYPEINS_recodeYes:hc_dur                                     4       14
-## hcnon_hc:TYPEINS_recodeYes:hc_dur                                 4       12
-## hchc:NKIDS_t11:hc_dur                                             5       21
-## hcnon_hc:NKIDS_t11:hc_dur                                         6       13
-## hchc:NKIDS_t12:hc_dur                                             5       15
-## hcnon_hc:NKIDS_t12:hc_dur                                         5       17
-## hchc:NKIDS_t13:hc_dur                                             4       11
-## hcnon_hc:NKIDS_t13:hc_dur                                         6       15
-## hchc:NKIDS_t14ormore:hc_dur                                       4       13
-## hcnon_hc:NKIDS_t14ormore:hc_dur                                   6       14
-## hchc:pregnant_between_wavesYes:hc_dur                             4       13
-## hcnon_hc:pregnant_between_wavesYes:hc_dur                         4       11
-## hchc:had_baby_between_wavesYes:hc_dur                             5       22
-## hcnon_hc:had_baby_between_wavesYes:hc_dur                         4       11
-## hchc:Avoid_r:hc_dur                                               4       12
-## hcnon_hc:Avoid_r:hc_dur                                           5       20
-## hchc:FEELPG_recode:hc_dur                                         5       11
-## hcnon_hc:FEELPG_recode:hc_dur                                     5       15
-## hchc:rel_dur_factor0qM25q:hc_dur                                  4       13
-## hcnon_hc:rel_dur_factor0qM25q:hc_dur                              4       12
-## hchc:rel_dur_factor26qM50q:hc_dur                                 4       12
-## hcnon_hc:rel_dur_factor26qM50q:hc_dur                             4       11
-## hchc:rel_dur_factor51qM75q:hc_dur                                 4       11
-## hcnon_hc:rel_dur_factor51qM75q:hc_dur                             5       13
-## hchc:rel_dur_factor76qM100q:hc_dur                                4       17
-## hcnon_hc:rel_dur_factor76qM100q:hc_dur                            4       11
+## Intercept                                                      4696     3330
+## hc_dummy                                                       7661     3323
+## contra_satis                                                   5039     3404
+## sexual_satisfaction                                            4550     2861
+## sex_freq2M5times                                               3809     3531
+## sex_freq6M10times                                              3667     3342
+## sex_freq11ormoretimes                                          3882     3496
+## AGE                                                            4269     3596
+## DEGREE_recode5thD6thgrade                                      9766     3206
+## DEGREE_recode7thD8thgrade                                      8136     2790
+## DEGREE_recode9thgrade                                          9668     2387
+## DEGREE_recode10thgrade                                         8224     3094
+## DEGREE_recode11thgrade                                         9087     2699
+## DEGREE_recode12thgradeDnodiploma                               6451     3170
+## DEGREE_recodehighschooldiplomaorequivalent                     3818     3116
+## DEGREE_recodesomecollegenodegree                               3343     3305
+## DEGREE_recodeassociatedegree                                   4162     3189
+## DEGREE_recodebachelorsdegree                                   3444     2971
+## DEGREE_recodemastersdegree                                     3985     3399
+## DEGREE_recodeprofessionalordoctoraldegree                      5813     3096
+## POVRATE                                                        4217     3860
+## HLTHPROB_recodeYes                                             5044     3258
+## MEDPROB_recodeYes                                              6620     3022
+## GAPINS_recodeYes                                               4368     3329
+## TYPEINS_recodeYes                                              4176     3418
+## NKIDS_t11                                                      4610     3235
+## NKIDS_t12                                                      4568     3270
+## NKIDS_t13                                                      4658     3346
+## NKIDS_t14ormore                                                5426     3426
+## pregnant_between_wavesYes                                      5964     3319
+## had_baby_between_wavesYes                                      5778     3249
+## Avoid_r                                                        4056     3156
+## FEELPG_recode                                                  3699     2860
+## rel_dur_factor0qM25q                                           4614     3466
+## rel_dur_factor26qM50q                                          4201     3416
+## rel_dur_factor51qM75q                                          4663     3580
+## rel_dur_factor76qM100q                                         4470     3294
+## hc_dummy:contra_satis                                          3177     2810
+## hc_dummy:sexual_satisfaction                                   4030     3357
+## hc_dummy:sex_freq2M5times                                      3494     3427
+## hc_dummy:sex_freq6M10times                                     3516     2744
+## hc_dummy:sex_freq11ormoretimes                                 3678     3183
+## hc_dummy:AGE                                                   3415     3306
+## hc_dummy:DEGREE_recode5thD6thgrade                             9805     2694
+## hc_dummy:DEGREE_recode7thD8thgrade                            10140     2676
+## hc_dummy:DEGREE_recode9thgrade                                 9434     2336
+## hc_dummy:DEGREE_recode10thgrade                                9952     3083
+## hc_dummy:DEGREE_recode11thgrade                               10044     3037
+## hc_dummy:DEGREE_recode12thgradeDnodiploma                      7897     2928
+## hc_dummy:DEGREE_recodehighschooldiplomaorequivalent            4674     3041
+## hc_dummy:DEGREE_recodesomecollegenodegree                      4386     2941
+## hc_dummy:DEGREE_recodeassociatedegree                          4488     2888
+## hc_dummy:DEGREE_recodebachelorsdegree                          4337     3045
+## hc_dummy:DEGREE_recodemastersdegree                            5505     3348
+## hc_dummy:DEGREE_recodeprofessionalordoctoraldegree             7498     3187
+## hc_dummy:POVRATE                                               4529     3347
+## hc_dummy:HLTHPROB_recodeYes                                    4582     3286
+## hc_dummy:MEDPROB_recodeYes                                     5715     2955
+## hc_dummy:GAPINS_recodeYes                                      3958     3287
+## hc_dummy:TYPEINS_recodeYes                                     3547     3121
+## hc_dummy:NKIDS_t11                                             4966     3301
+## hc_dummy:NKIDS_t12                                             4487     3330
+## hc_dummy:NKIDS_t13                                             5250     3320
+## hc_dummy:NKIDS_t14ormore                                       6487     3181
+## hc_dummy:pregnant_between_wavesYes                             7025     3246
+## hc_dummy:had_baby_between_wavesYes                             6949     2917
+## hc_dummy:Avoid_r                                               3084     3203
+## hc_dummy:FEELPG_recode                                         2825     2893
+## hc_dummy:rel_dur_factor0qM25q                                  4611     3488
+## hc_dummy:rel_dur_factor26qM50q                                 3899     3135
+## hc_dummy:rel_dur_factor51qM75q                                 4084     2965
+## hc_dummy:rel_dur_factor76qM100q                                3774     3293
+## hc_dummy:hc_dur                                                 789     1335
+## hc_dummy:contra_satis:hc_dur                                   4601     3140
+## hc_dummy:sexual_satisfaction:hc_dur                            5105     3330
+## hc_dummy:sex_freq2M5times:hc_dur                               3387     3431
+## hc_dummy:sex_freq6M10times:hc_dur                              3193     2979
+## hc_dummy:sex_freq11ormoretimes:hc_dur                          3343     3105
+## hc_dummy:AGE:hc_dur                                            5575     3335
+## hc_dummy:DEGREE_recode5thD6thgrade:hc_dur                       795     1367
+## hc_dummy:DEGREE_recode7thD8thgrade:hc_dur                       726     1376
+## hc_dummy:DEGREE_recode9thgrade:hc_dur                          3509     3062
+## hc_dummy:DEGREE_recode10thgrade:hc_dur                          817     1541
+## hc_dummy:DEGREE_recode11thgrade:hc_dur                          958     1707
+## hc_dummy:DEGREE_recode12thgradeDnodiploma:hc_dur                810     1627
+## hc_dummy:DEGREE_recodehighschooldiplomaorequivalent:hc_dur      690     1351
+## hc_dummy:DEGREE_recodesomecollegenodegree:hc_dur                686     1329
+## hc_dummy:DEGREE_recodeassociatedegree:hc_dur                    700     1308
+## hc_dummy:DEGREE_recodebachelorsdegree:hc_dur                    694     1317
+## hc_dummy:DEGREE_recodemastersdegree:hc_dur                      693     1338
+## hc_dummy:DEGREE_recodeprofessionalordoctoraldegree:hc_dur       723     1341
+## hc_dummy:POVRATE:hc_dur                                        4384     3755
+## hc_dummy:HLTHPROB_recodeYes:hc_dur                             5114     3383
+## hc_dummy:MEDPROB_recodeYes:hc_dur                              5719     3084
+## hc_dummy:GAPINS_recodeYes:hc_dur                               3088     2920
+## hc_dummy:TYPEINS_recodeYes:hc_dur                              2846     2793
+## hc_dummy:NKIDS_t11:hc_dur                                      5958     3402
+## hc_dummy:NKIDS_t12:hc_dur                                      5122     3046
+## hc_dummy:NKIDS_t13:hc_dur                                      5539     3312
+## hc_dummy:NKIDS_t14ormore:hc_dur                                4983     3218
+## hc_dummy:pregnant_between_wavesYes:hc_dur                      4012     2697
+## hc_dummy:had_baby_between_wavesYes:hc_dur                      4410     2995
+## hc_dummy:Avoid_r:hc_dur                                        4559     3354
+## hc_dummy:FEELPG_recode:hc_dur                                  4461     3024
+## hc_dummy:rel_dur_factor0qM25q:hc_dur                           3707     3342
+## hc_dummy:rel_dur_factor26qM50q:hc_dur                          3594     3154
+## hc_dummy:rel_dur_factor51qM75q:hc_dur                          3479     3403
+## hc_dummy:rel_dur_factor76qM100q:hc_dur                         3652     3561
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
