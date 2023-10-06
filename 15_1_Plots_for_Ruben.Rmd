@@ -692,7 +692,7 @@ forest_plot_data2 <- forest_plot_data2 %>%
 #forest plot including robustness analyses
 
 #set colors
-group.color <- c("yellow", "green", "blue", "red")
+group.color <- c("orchid3", "green", "blue", "red")
 
 forest_ma_ra <- ggplot(
   data = forest_plot_data2 %>%
@@ -831,7 +831,7 @@ forest_plot_data_rub <- forest_plot_data_rub %>%
 #forest plot without robustness analyses
 
 #set colors
-group.color <- c("yellow", "green", "blue", "red")
+group.color <- c("orchid3", "green", "blue", "red")
 
 forest_ma_rub <- ggplot(
   data = forest_plot_data_rub %>%
@@ -847,7 +847,6 @@ forest_ma_rub <- ggplot(
   geom_point(position = position_dodge(width = 0.9),
              alpha = 0.08) +
   geom_pointrange(aes(ymin = lower, ymax = upper),
-                  alpha = 0.5,
                   position = position_dodge(width = 0.9)) +
   scale_x_discrete(limits = rev, expand = c(0.002, 0)) +
   #scale_y_continuous(limits = c(-8,8),
@@ -1396,7 +1395,6 @@ forest_sa_rub <- ggplot(
   geom_point(position = position_dodge(width = 0.9),
              alpha = 0.08) +
   geom_pointrange(aes(ymin = lower, ymax = upper),
-                  alpha = 0.5,
                   position = position_dodge(width = 0.9)) +
   scale_x_discrete(limits = rev, expand = c(0.002, 0)) +
   # scale_y_continuous(limits = c(-8,8),
