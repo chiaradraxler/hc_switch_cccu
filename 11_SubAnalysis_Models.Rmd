@@ -50,7 +50,7 @@ summary(sa_m2, prob = .997)
 ```
 
 
-## 3.3 Model 3: including not directly with contraceptive method associated predictors
+## 3.3 Model 3: including sexual satisfaction & sexual frequency
 ```{r}
 sa_m3 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq +(1 | CASEID),
           family = bernoulli(),

@@ -98,7 +98,7 @@ m2_nonhc_only <- brm(
 summary(m2_nonhc_only, prob = .997)
 ```
 
-## 3.3 Model 3: including not directly with contraceptive method associated predictors
+## 3.3 Model 3: including sexual satisfaction & sexual frequency
 ```{r}
 m3 <-
   brm(
