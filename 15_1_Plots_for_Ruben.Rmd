@@ -1252,9 +1252,15 @@ sa_forest_plot_data2 <- sa_forest_plot_data2 %>%
 #forest plot including robustness analyses
 
 #set colors
-group.color <- c("green", "blue", "red")
+group.color <- c("orchid3", "green", "blue")
 
-forest_sa_ra <- ggplot(
+#set names for facets
+grouping_names_sa = c("Model 2", "Model 3", "Model 4")
+names(grouping_names_sa) = c("color_1", "color_2", "color_3")
+
+
+
+ forest_sa_ra <- ggplot(
   data = sa_forest_plot_data2 %>%
     filter(predictor != "(Intercept)"),
   aes(
@@ -1266,50 +1272,50 @@ forest_sa_ra <- ggplot(
     shape = shape
   )
 ) +
-  geom_point(position = position_dodge(width = 0.9),
-             aes(shape = shape),
-             alpha = 0.08) +
+  geom_point(position = position_dodge(width = 0.9))+
   geom_pointrange(aes(ymin = lower, ymax = upper),
-                  alpha = 0.5,
                   position = position_dodge(width = 0.9)) +
   scale_x_discrete(limits = rev, expand = c(0.002, 0)) +
   # scale_y_continuous(limits = c(-8,8),
   #                    breaks = seq(-8,8,2)) +
   geom_hline(yintercept = 0) +
   coord_flip() +
-  scale_fill_manual(
-    name = "Model",
-    breaks = c("color_2", "color_3", "color_4"),
+ scale_fill_manual(
+    name = "Analyses",
+    breaks = c("shape_1", "shape_2", "shape_3", "shape_4"),
     labels = 
       c(
-      "Model 2",
-      "Model 3",
-      "Model 4"
+      "Sub Analyses",
+      "Robustness Analyses 1",
+      "Robustness Analyses 2",
+      "Robustness Analyses 3"
     ),
     values = group.color
   ) +
   scale_colour_manual(
-    name = "Model",
-    breaks = c("color_2", "color_3", "color_4"),
-    labels = 
-      c(
-      "Model 2",
-      "Model 3",
-      "Model 4"
+    name = "Analyses",
+    breaks = c("shape_1", "shape_2", "shape_3", "shape_4"),
+    labels = c(
+      "Sub Analyses",
+      "Robustness Analyses 1",
+      "Robustness Analyses 2",
+      "Robustness Analyses 3"
     ),
     values = group.color
   ) +
   scale_shape_manual(
     name = "Analyses",
-    values = c(21,22,24,25),
+    values = c(24,21,22,25),
     labels = c(
-      "Main Analyses",
+      "Sub Analyses",
       "Robustness Analyses 1",
       "Robustness Analyses 2",
       "Robustness Analyses 3"
     )
   ) +
   labs(y = "Effect Size", x = "Predictor") +
+  facet_wrap(~grouping,
+             labeller = labeller(grouping = grouping_names)) +
   apatheme
 
 forest_sa_ra
