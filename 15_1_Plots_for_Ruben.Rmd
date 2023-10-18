@@ -614,7 +614,7 @@ forest_plot_data2$predictor = factor(forest_plot_data2$predictor,
                                                "hcnon_hc:sex_freq6M10times",
                                                "hcnon_hc:sex_freq11ormoretimes"),
                                     labels = c("(Intercept)",
-                                               "HC",
+                                               "\nHC\n",
                                                "Contraceptive Satisfaction",
                                                "HC:Contraceptive Satisfaction",
                                                "Sexual Satisfaction","HC:Sexual Satisfaction",    
@@ -694,23 +694,24 @@ forest_plot_data2 <- forest_plot_data2 %>%
 #set colors
 group.color <- c("orchid3", "green", "blue", "red")
 
+#set names for facets
+grouping_names = c("Model 1", "Model 2", "Model 3", "Model 4")
+names(grouping_names) = c("color_1", "color_2", "color_3", "color_4")
+
 forest_ma_ra <- ggplot(
   data = forest_plot_data2 %>%
     filter(predictor != "(Intercept)"),
   aes(
     x = predictor,
     y = estimate,
-    group = forcats::fct_rev(grouping),
-    fill = forcats::fct_rev(grouping),
-    color = forcats::fct_rev(grouping),
+    group = forcats::fct_rev(shape),
+    fill = forcats::fct_rev(shape),
+    color = forcats::fct_rev(shape),
     shape = shape
   )
 ) +
-  geom_point(position = position_dodge(width = 0.9),
-             aes(shape = shape),
-             alpha = 0.08) +
+  geom_point(position = position_dodge(width = 0.9)) +
   geom_pointrange(aes(ymin = lower, ymax = upper),
-                  alpha = 0.5,
                   position = position_dodge(width = 0.9)) +
   scale_x_discrete(limits = rev, expand = c(0.002, 0)) +
   #scale_y_continuous(limits = c(-8,8),
@@ -718,32 +719,31 @@ forest_ma_ra <- ggplot(
   geom_hline(yintercept = 0) +
   coord_flip() +
   scale_fill_manual(
-    name = "Model",
-    breaks = c("color_1", "color_2", "color_3", "color_4"),
+    name = "Analyses",
+    breaks = c("shape_1", "shape_2", "shape_3", "shape_4"),
     labels = 
       c(
-      "Model 1",
-      "Model 2",
-      "Model 3",
-      "Model 4"
+      "Main Analyses",
+      "Robustness Analyses 1",
+      "Robustness Analyses 2",
+      "Robustness Analyses 3"
     ),
     values = group.color
   ) +
   scale_colour_manual(
-    name = "Model",
-    breaks = c("color_1", "color_2", "color_3", "color_4"),
-    labels = 
-      c(
-      "Model 1",
-      "Model 2",
-      "Model 3",
-      "Model 4"
+    name = "Analyses",
+    breaks = c("shape_1", "shape_2", "shape_3", "shape_4"),
+    labels = c(
+      "Main Analyses",
+      "Robustness Analyses 1",
+      "Robustness Analyses 2",
+      "Robustness Analyses 3"
     ),
     values = group.color
   ) +
   scale_shape_manual(
     name = "Analyses",
-    values = c(21,22,24,25),
+    values = c(24,21,22,25),
     labels = c(
       "Main Analyses",
       "Robustness Analyses 1",
@@ -752,6 +752,8 @@ forest_ma_ra <- ggplot(
     )
   ) +
   labs(y = "Effect Size", x = "Predictor") +
+  facet_wrap(~grouping,
+             labeller = labeller(grouping = grouping_names)) +
   apatheme
 
 forest_ma_ra
