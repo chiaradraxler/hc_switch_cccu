@@ -577,9 +577,147 @@ rownames(R3_m4_forest_plot) = c()
 
 
 
+###Forest plot without robustness analyses
+#### Dataframe for plot
+```{r}
+#without robustness analyses
+forest_plot_data_rub = rbind(
+  m1_forest_plot,
+  m2_forest_plot,
+  m3_forest_plot,
+  m4_forest_plot
+)
+
+forest_plot_data_rub$predictor = factor(forest_plot_data_rub$predictor,
+                                    levels = c("Intercept",
+                                               "hcnon_hc",
+                                               "contra_satis",
+                                               "hcnon_hc:contra_satis",
+                                               "sexual_satisfaction","hcnon_hc:sexual_satisfaction",
+                                  
+                                               "sex_freq2M5times", "sex_freq6M10times",
+                                               "sex_freq11ormoretimes", 
+                                                            "hcnon_hc:sex_freq2M5times",
+                                               "hcnon_hc:sex_freq6M10times",
+                                               "hcnon_hc:sex_freq11ormoretimes"),
+                                    labels = c("(Intercept)",
+                                               "HC",
+                                               "Contraceptive Satisfaction",
+                                               "HC:Contraceptive Satisfaction",
+                                               "Sexual Satisfaction","HC:Sexual Satisfaction",    
+                                               "Sexual Frequency 2-5 times", "Sexual Frequency 6-10 times",
+                                               "Sexual Frequency 11 or more times",
+                                                                                          "HC:Sexual Frequency 2-5 times",
+                                               "HC:Sexual Frequency 6-10 times",
+                                               "HC:Sexual Frequency 11 or more times"))
+
+forest_plot_data_rub$group = factor(
+  forest_plot_data_rub$group,
+  levels = 
+    c(
+    "model_1",
+    "model_2",
+    "model_3",
+    "model_4"
+  ),
+  labels = 
+    c(
+    "model_1",
+    "model_2",
+    "model_3",
+    "model_4"
+  )
+)
 
 
-### Dataframe for plot
+#give group for color:
+forest_plot_data_rub <- forest_plot_data_rub %>%
+  mutate(grouping = ifelse(group == "model_1" , "color_1",
+  ifelse(group == "model_2" , "color_2",
+        ifelse(group == "model_3", "color_3",
+                ifelse(group == "model_4" ,"color_4",NA))))) 
+```
+
+#### Plot
+```{r}
+#forest plot without robustness analyses
+#forest plot including robustness analyses
+
+#set colors
+group.color <- c("orchid3", "green", "blue", "red")
+
+#set names for facets
+grouping_names = c("Model 1", "Model 2", "Model 3", "Model 4")
+names(grouping_names) = c("color_1", "color_2", "color_3", "color_4")
+
+forest_ma_rub <- ggplot(
+  data = forest_plot_data_rub %>%
+    filter(predictor != "(Intercept)"),
+  aes(
+    x = predictor,
+    y = estimate,
+    group = forcats::fct_rev(grouping),
+    fill = forcats::fct_rev(grouping),
+    color = forcats::fct_rev(grouping),
+    shape = grouping
+  )
+) +
+  geom_point(position = position_dodge(width = 0.9)) +
+  geom_pointrange(aes(ymin = lower, ymax = upper),
+                  position = position_dodge(width = 0.9)) +
+  scale_x_discrete(limits = rev, expand = c(0.002, 0),
+                   expansion(add = c(0.5, 0.5))) +
+  geom_hline(yintercept = 0) +
+  coord_flip() +
+  scale_fill_manual(
+    name = "Models",
+    breaks = c("color_1", "color_2", "color_3", "color_4"),
+    labels = 
+      c(
+      "Model 1",
+      "Model 2",
+      "Model 3",
+      "Model 4"
+    ),
+    values = group.color
+  ) +
+  scale_colour_manual(
+    name = "Models",
+    breaks = c("color_1", "color_2", "color_3", "color_4"),
+    labels = c(
+      "Model 1",
+      "Model 2",
+      "Model 3",
+      "Model 4"
+    ),
+    values = group.color
+  ) +
+  scale_shape_manual(
+    name = "Models",
+    values = c(24,21,22,25),
+    labels = c(
+      "Model 1",
+      "Model 2",
+      "Model 3",
+      "Model 4"
+    )
+  ) +
+  labs(y = "Effect Size", x = "Predictor") +
+  apatheme
+
+forest_ma_rub
+
+forest_ma_rub
+
+ggsave("forest_ma_rub.pdf", forest_ma_rub, width = 23, height = 12, units = "cm", dpi = 300)
+ggsave("forest_ma_rub.png", forest_ma_rub, width = 23, height = 12, units = "cm", dpi = 300)
+
+```
+
+
+
+### Forest plot with robustness analyses
+#### Dataframe for plot
 ```{r}
 #for robustness analyses
 forest_plot_data2 = rbind(
@@ -687,7 +825,7 @@ forest_plot_data2 <- forest_plot_data2 %>%
 
 ```
 
-### Plot
+#### Plot
 ```{r}
 #forest plot including robustness analyses
 
@@ -763,131 +901,6 @@ ggsave("forest_ma.png", forest_ma_ra, width = 23, height = 12, units = "cm", dpi
 
 ```
 
-
-
-#forest plot without robustness analyses
-### Dataframe for plot
-```{r}
-#without robustness analyses
-forest_plot_data_rub = rbind(
-  m1_forest_plot,
-  m2_forest_plot,
-  m3_forest_plot,
-  m4_forest_plot
-)
-
-forest_plot_data_rub$predictor = factor(forest_plot_data_rub$predictor,
-                                    levels = c("Intercept",
-                                               "hcnon_hc",
-                                               "contra_satis",
-                                               "hcnon_hc:contra_satis",
-                                               "sexual_satisfaction","hcnon_hc:sexual_satisfaction",
-                                  
-                                               "sex_freq2M5times", "sex_freq6M10times",
-                                               "sex_freq11ormoretimes", 
-                                                            "hcnon_hc:sex_freq2M5times",
-                                               "hcnon_hc:sex_freq6M10times",
-                                               "hcnon_hc:sex_freq11ormoretimes"),
-                                    labels = c("(Intercept)",
-                                               "HC",
-                                               "Contraceptive Satisfaction",
-                                               "HC:Contraceptive Satisfaction",
-                                               "Sexual Satisfaction","HC:Sexual Satisfaction",    
-                                               "Sexual Frequency 2-5 times", "Sexual Frequency 6-10 times",
-                                               "Sexual Frequency 11 or more times",
-                                                                                          "HC:Sexual Frequency 2-5 times",
-                                               "HC:Sexual Frequency 6-10 times",
-                                               "HC:Sexual Frequency 11 or more times"))
-
-forest_plot_data_rub$group = factor(
-  forest_plot_data_rub$group,
-  levels = 
-    c(
-    "model_1",
-    "model_2",
-    "model_3",
-    "model_4"
-  ),
-  labels = 
-    c(
-    "model_1",
-    "model_2",
-    "model_3",
-    "model_4"
-  )
-)
-
-
-#give group for color:
-forest_plot_data_rub <- forest_plot_data_rub %>%
-  mutate(grouping = ifelse(group == "model_1" , "color_1",
-  ifelse(group == "model_2" , "color_2",
-        ifelse(group == "model_3", "color_3",
-                ifelse(group == "model_4" ,"color_4",NA))))) 
-
-
-```
-
-### Plot
-```{r}
-#forest plot without robustness analyses
-
-#set colors
-group.color <- c("orchid3", "green", "blue", "red")
-
-forest_ma_rub <- ggplot(
-  data = forest_plot_data_rub %>%
-    filter(predictor != "(Intercept)"),
-  aes(
-    x = predictor,
-    y = estimate,
-    group = forcats::fct_rev(grouping),
-    fill = forcats::fct_rev(grouping),
-    color = forcats::fct_rev(grouping)
-  )
-) +
-  geom_point(position = position_dodge(width = 0.9),
-             alpha = 0.08) +
-  geom_pointrange(aes(ymin = lower, ymax = upper),
-                  position = position_dodge(width = 0.9)) +
-  scale_x_discrete(limits = rev, expand = c(0.002, 0)) +
-  #scale_y_continuous(limits = c(-8,8),
-  #                   breaks = seq(-8,8,2)) +
-  geom_hline(yintercept = 0) +
-  coord_flip() +
-  scale_fill_manual(
-    name = "Model",
-    breaks = c("color_1", "color_2", "color_3", "color_4"),
-    labels = 
-      c(
-      "Model 1",
-      "Model 2",
-      "Model 3",
-      "Model 4"
-    ),
-    values = group.color
-  ) +
-  scale_colour_manual(
-    name = "Model",
-    breaks = c("color_1", "color_2", "color_3", "color_4"),
-    labels = 
-      c(
-      "Model 1",
-      "Model 2",
-      "Model 3",
-      "Model 4"
-    ),
-    values = group.color
-  ) +
-  labs(y = "Effect Size", x = "Predictor") +
-  apatheme
-
-forest_ma_rub
-
-ggsave("forest_ma_rub.pdf", forest_ma_rub, width = 23, height = 12, units = "cm", dpi = 300)
-ggsave("forest_ma_rub.png", forest_ma_rub, width = 23, height = 12, units = "cm", dpi = 300)
-
-```
 
 
 
