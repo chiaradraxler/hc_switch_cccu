@@ -581,14 +581,14 @@ rownames(R3_m4_forest_plot) = c()
 #### Dataframe for plot
 ```{r}
 #without robustness analyses
-forest_plot_data_rub = rbind(
+forest_plot_data = rbind(
   m1_forest_plot,
   m2_forest_plot,
   m3_forest_plot,
   m4_forest_plot
 )
 
-forest_plot_data_rub$predictor = factor(forest_plot_data_rub$predictor,
+forest_plot_data$predictor = factor(forest_plot_data$predictor,
                                     levels = c("Intercept",
                                                "hcnon_hc",
                                                "contra_satis",
@@ -611,8 +611,8 @@ forest_plot_data_rub$predictor = factor(forest_plot_data_rub$predictor,
                                                "HC:Sexual Frequency 6-10 times",
                                                "HC:Sexual Frequency 11 or more times"))
 
-forest_plot_data_rub$group = factor(
-  forest_plot_data_rub$group,
+forest_plot_data$group = factor(
+  forest_plot_data$group,
   levels = 
     c(
     "model_1",
@@ -631,7 +631,7 @@ forest_plot_data_rub$group = factor(
 
 
 #give group for color:
-forest_plot_data_rub <- forest_plot_data_rub %>%
+forest_plot_data <- forest_plot_data%>%
   mutate(grouping = ifelse(group == "model_1" , "color_1",
   ifelse(group == "model_2" , "color_2",
         ifelse(group == "model_3", "color_3",
@@ -649,8 +649,8 @@ group.color <- c("orchid3", "green", "blue", "red")
 grouping_names = c("Model 1", "Model 2", "Model 3", "Model 4")
 names(grouping_names) = c("color_1", "color_2", "color_3", "color_4")
 
-forest_ma_rub <- ggplot(
-  data = forest_plot_data_rub %>%
+forest_ma <- ggplot(
+  data = forest_plot_data %>%
     filter(predictor != "(Intercept)"),
   aes(
     x = predictor,
@@ -703,10 +703,10 @@ forest_ma_rub <- ggplot(
   labs(y = "Effect Size", x = "Predictor") +
   apatheme
 
-forest_ma_rub
+forest_ma
 
-ggsave("forest_ma_rub.pdf", forest_ma_rub, width = 23, height = 12, units = "cm", dpi = 300)
-ggsave("forest_ma_rub.png", forest_ma_rub, width = 23, height = 12, units = "cm", dpi = 300)
+ggsave("forest_ma.pdf", forest_ma, width = 23, height = 12, units = "cm", dpi = 300)
+ggsave("forest_ma.png", forest_ma, width = 23, height = 12, units = "cm", dpi = 300)
 
 ```
 
@@ -897,8 +897,8 @@ forest_ma_ra <- ggplot(
 
 forest_ma_ra
 
-ggsave("forest_ma.pdf", forest_ma_ra, width = 60, height = 30, units = "cm", dpi = 300)
-ggsave("forest_ma.png", forest_ma_ra, width = 60, height = 30, units = "cm", dpi = 300)
+ggsave("forest_ma_ra.pdf", forest_ma_ra, width = 60, height = 30, units = "cm", dpi = 300)
+ggsave("forest_ma_ra.png", forest_ma_ra, width = 60, height = 30, units = "cm", dpi = 300)
 
 ```
 
@@ -1179,13 +1179,13 @@ rownames(R3_sa_m4_forest_plot) = c()
 #### Dataframe for plot
 ```{r}
 #without robustness analyses
-sa_forest_plot_data_rub = rbind(
+sa_forest_plot_data = rbind(
   sa_m2_forest_plot,
   sa_m3_forest_plot,
   sa_m4_forest_plot
 )
 
-sa_forest_plot_data_rub$predictor = factor(sa_forest_plot_data_rub$predictor,
+sa_forest_plot_data$predictor = factor(sa_forest_plot_data$predictor,
                                     levels = c("Intercept",
                                                "contra_satis",
                                                "hc_dur",
@@ -1201,8 +1201,8 @@ sa_forest_plot_data_rub$predictor = factor(sa_forest_plot_data_rub$predictor,
                                                "Sexual Frequency 2-5 times", "Sexual Frequency 6-10 times",
                                                "Sexual Frequency 11 or more times")) 
 
-sa_forest_plot_data_rub$group = factor(
-  sa_forest_plot_data_rub$group,
+sa_forest_plot_data$group = factor(
+  sa_forest_plot_data$group,
   levels = 
     c(
     "sa_model_2",
@@ -1219,7 +1219,7 @@ sa_forest_plot_data_rub$group = factor(
 
 
 #give group for color:
-sa_forest_plot_data_rub <- sa_forest_plot_data_rub %>%
+sa_forest_plot_data <- sa_forest_plot_data %>%
   mutate(grouping =   ifelse(group == "sa_model_2" , "color_2",
          ifelse(group == "sa_model_3"  ,"color_3",
                  ifelse(group == "sa_model_4" , "color_4",NA)))) 
@@ -1235,8 +1235,8 @@ sa_forest_plot_data_rub <- sa_forest_plot_data_rub %>%
 #set colors
 group.color <- c("green", "blue", "red")
 
-forest_sa_rub <- ggplot(
-  data = sa_forest_plot_data_rub %>%
+forest_sa <- ggplot(
+  data = sa_forest_plot_data %>%
     filter(predictor != "(Intercept)"),
   aes(
     x = predictor,
@@ -1290,10 +1290,10 @@ forest_sa_rub <- ggplot(
   labs(y = "Effect Size", x = "Predictor") +
   apatheme
 
-forest_sa_rub
+forest_sa
 
-ggsave("forest_sa_rub.pdf", forest_sa_rub, width = 23, height = 12, units = "cm", dpi = 300)
-ggsave("forest_sa_rub.png", forest_sa_rub, width = 23, height = 12, units = "cm", dpi = 300)
+ggsave("forest_sa.pdf", forest_sa, width = 23, height = 12, units = "cm", dpi = 300)
+ggsave("forest_sa.png", forest_sa, width = 23, height = 12, units = "cm", dpi = 300)
 
 ```
 
@@ -1421,7 +1421,7 @@ forest_sa_ra <- ggplot(
     breaks = c("shape_1", "shape_2", "shape_3", "shape_4"),
     labels = 
       c(
-      "Main Analyses",
+      "Sub Analyses",
       "Robustness Analyses 1",
       "Robustness Analyses 2",
       "Robustness Analyses 3"
@@ -1432,7 +1432,7 @@ forest_sa_ra <- ggplot(
     name = "Analyses",
     breaks = c("shape_1", "shape_2", "shape_3", "shape_4"),
     labels = c(
-      "Main Analyses",
+      "Sub Analyses",
       "Robustness Analyses 1",
       "Robustness Analyses 2",
       "Robustness Analyses 3"
@@ -1443,7 +1443,7 @@ forest_sa_ra <- ggplot(
     name = "Analyses",
     values = c(21,24,22,25),
     labels = c(
-      "Main Analyses",
+      "Sub Analyses",
       "Robustness Analyses 1",
       "Robustness Analyses 2",
       "Robustness Analyses 3"
@@ -1462,8 +1462,8 @@ forest_sa_ra <- ggplot(
     strip.text = element_text(size=30)
   )
 
-forest_ma_ra
+forest_sa_ra
 
-ggsave("forest_sa.pdf", forest_sa_ra, width = 60, height = 30, units = "cm", dpi = 300)
-ggsave("forest_sa.png", forest_sa_ra, width = 60, height = 30, units = "cm", dpi = 300)
+ggsave("forest_sa_ra.pdf", forest_sa_ra, width = 60, height = 30, units = "cm", dpi = 300)
+ggsave("forest_sa_ra.png", forest_sa_ra, width = 60, height = 30, units = "cm", dpi = 300)
 ```
