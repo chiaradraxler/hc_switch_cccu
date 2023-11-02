@@ -424,15 +424,6 @@ library(dplyr)</code></pre>
 ##     filter</code></pre>
 <pre class="r"><code>library(ufs)
 library(Hmisc)</code></pre>
-<pre><code>## Lade nötiges Paket: lattice</code></pre>
-<pre><code>## Lade nötiges Paket: survival</code></pre>
-<pre><code>## Lade nötiges Paket: Formula</code></pre>
-<pre><code>## Lade nötiges Paket: ggplot2</code></pre>
-<pre><code>## 
-## Attache Paket: &#39;ggplot2&#39;</code></pre>
-<pre><code>## Die folgenden Objekte sind maskiert von &#39;package:psych&#39;:
-## 
-##     %+%, alpha</code></pre>
 <pre><code>## 
 ## Attache Paket: &#39;Hmisc&#39;</code></pre>
 <pre><code>## Das folgende Objekt ist maskiert &#39;package:ufs&#39;:
@@ -687,16 +678,16 @@ table(cccu_MA_t1$rel_dur)</code></pre>
 ##     1293      430       12    0.968    3.948     4.18        0        0 
 ##      .25      .50      .75      .90      .95 
 ##        0        3        7       10       11 
-## 
-## lowest :  0  1  2  3  4, highest:  7  8  9 10 11
 ##                                                                             
-## Value          0     1     2     3     4     5     6     7     8     9    10
+## Value       0.00  0.99  1.98  2.97  3.96  4.95  5.94  6.93  7.92  8.91  9.90
 ## Frequency    398   102    88    76    83    80   127    58    59    78    59
 ## Proportion 0.308 0.079 0.068 0.059 0.064 0.062 0.098 0.045 0.046 0.060 0.046
 ##                 
-## Value         11
+## Value      11.00
 ## Frequency     85
-## Proportion 0.066</code></pre>
+## Proportion 0.066
+## 
+## For the frequency table, variable is rounded to the nearest 0.11</code></pre>
 <p>##Region and State</p>
 <pre class="r"><code>#region
 table(cccu_MA_t1$Region_recode)</code></pre>
@@ -821,18 +812,35 @@ table(comp_inex$exclude)</code></pre>
 ##   no  yes 
 ## 3787 6452</code></pre>
 <p>##hc use</p>
+<pre class="r"><code>table(comp_inex$hc)</code></pre>
+<pre><code>## 
+##         hc     non_hc IUD&amp;non_hc 
+##       3965       5282        992</code></pre>
+<pre class="r"><code>comp_inex &lt;- comp_inex %&gt;%
+  mutate(hc = as.factor(ifelse(NOBARRIER == &quot;(1) Yes&quot; &amp; hc == &quot;non_hc&quot;,
+                                &quot;no_contra&quot;,
+                                as.character(hc))))
+
+cccu_excluded &lt;- cccu_excluded %&gt;%
+  mutate(hc = as.factor(ifelse(NOBARRIER == &quot;(1) Yes&quot; &amp; hc == &quot;non_hc&quot;,
+                                &quot;no_contra&quot;,
+                                as.character(hc))))
+table(comp_inex$hc)</code></pre>
+<pre><code>## 
+##         hc IUD&amp;non_hc  no_contra     non_hc 
+##       3965        992       1273       2439</code></pre>
 <pre class="r"><code>chisq.test(comp_inex$hc, comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test
 ## 
 ## data:  comp_inex$hc and comp_inex$exclude
-## X-squared = 1495.6, df = 2, p-value &lt; 2.2e-16</code></pre>
+## X-squared = 2331.2, df = 3, p-value &lt; 2.2e-16</code></pre>
 <pre class="r"><code>cramersV(comp_inex$hc,comp_inex$exclude)</code></pre>
-<pre><code>## Cramér&#39;s V =  0.38</code></pre>
+<pre><code>## Cramér&#39;s V =  0.48</code></pre>
 <pre class="r"><code>confIntV(comp_inex$hc,comp_inex$exclude, conf.level = 0.95)</code></pre>
-<pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .38):  
-## Bootstrapped: [.37; .4]  
-## Using Fisher&#39;s z: [.37; .4]</code></pre>
+<pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .48):  
+## Bootstrapped: [.47; .49]  
+## Using Fisher&#39;s z: [.46; .49]</code></pre>
 <pre class="r"><code>table(cccu_MA$hc)</code></pre>
 <pre><code>## 
 ##         hc     non_hc IUD&amp;non_hc 
@@ -851,20 +859,20 @@ table(comp_inex$exclude)</code></pre>
 ##     1</code></pre>
 <pre class="r"><code>table(cccu_excluded$hc)</code></pre>
 <pre><code>## 
-##         hc     non_hc IUD&amp;non_hc 
-##       1671       3789        992</code></pre>
+##         hc IUD&amp;non_hc  no_contra     non_hc 
+##       1671        992       1273        990</code></pre>
 <pre class="r"><code>round(table(cccu_excluded$hc)/6452, 2)</code></pre>
 <pre><code>## 
-##         hc     non_hc IUD&amp;non_hc 
-##       0.26       0.59       0.15</code></pre>
+##         hc IUD&amp;non_hc  no_contra     non_hc 
+##       0.26       0.15       0.20       0.15</code></pre>
 <pre class="r"><code>table(is.na(cccu_excluded$hc))</code></pre>
 <pre><code>## 
-## FALSE 
-##  6452</code></pre>
+## FALSE  TRUE 
+##  4926  1526</code></pre>
 <pre class="r"><code>table(is.na(cccu_excluded$hc))/6452</code></pre>
 <pre><code>## 
-## FALSE 
-##     1</code></pre>
+##     FALSE      TRUE 
+## 0.7634842 0.2365158</code></pre>
 <p>##contraceptive satisfation</p>
 <pre class="r"><code>t.test(comp_inex$contra_satis ~ comp_inex$exclude,
        alternative = &#39;two.sided&#39;,
@@ -957,10 +965,9 @@ table(comp_inex$exclude)</code></pre>
 ##          5.016636          4.913700</code></pre>
 <pre class="r"><code>comp_inex %&gt;% cohens_d(sexual_satisfaction ~ exclude, var.equal = TRUE, ci = TRUE)</code></pre>
 <pre><code>## # A tibble: 1 × 9
-##   .y.                 group1 group2 effsize    n1    n2 conf.low conf.…¹ magni…²
-## * &lt;chr&gt;               &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;ord&gt;  
-## 1 sexual_satisfaction no     yes     0.0824  3787  4832     0.04    0.12 neglig…
-## # … with abbreviated variable names ¹​conf.high, ²​magnitude</code></pre>
+##   .y.             group1 group2 effsize    n1    n2 conf.low conf.high magnitude
+## * &lt;chr&gt;           &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;    
+## 1 sexual_satisfa… no     yes     0.0824  3787  4832     0.04      0.13 negligib…</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA$sexual_satisfaction)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
 ## X1    1 3787 5.02 1.16      5    5.21 1.48   1   6     5 -1.22     1.15 0.02</code></pre>
@@ -1455,7 +1462,7 @@ table(comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 × 9
 ##   .y.     group1 group2 effsize    n1    n2 conf.low conf.high magnitude
 ## * &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;    
-## 1 Avoid_r no     yes      0.203  3787  6079     0.16      0.24 small</code></pre>
+## 1 Avoid_r no     yes      0.203  3787  6079     0.17      0.24 small</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA$Avoid_r)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
 ## X1    1 3787 4.78 1.55      5    5.06 1.48   1   6     5 -1.13     0.16 0.03</code></pre>
@@ -1482,7 +1489,7 @@ table(comp_inex$exclude)</code></pre>
 <pre><code>## # A tibble: 1 × 9
 ##   .y.           group1 group2 effsize    n1    n2 conf.low conf.high magnitude 
 ## * &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;     
-## 1 FEELPG_recode no     yes    -0.0468  3787  6074    -0.09   -0.0054 negligible</code></pre>
+## 1 FEELPG_recode no     yes    -0.0468  3787  6074    -0.09     -0.01 negligible</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA$FEELPG_recode)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed  mad min max range skew kurtosis   se
 ## X1    1 3787 3.41 1.69      3    3.38 1.48   1   6     5    0    -1.21 0.03</code></pre>
