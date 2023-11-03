@@ -1414,6 +1414,7 @@ forest_sa_ra <- ggplot(
   geom_pointrange(aes(ymin = lower, ymax = upper),
                   position = position_dodge(width = 0.8)) +
   scale_x_discrete(limits = rev) +
+  scale_y_continuous(breaks = c(-1,0,1), limits = c(-1.5, 1.5)) +
   geom_hline(yintercept = 0) +
   coord_flip() +
   scale_fill_manual(
@@ -1451,19 +1452,18 @@ forest_sa_ra <- ggplot(
   ) +
   labs(y = "Effect Size", x = "Predictor") +
   facet_wrap(~grouping,
-             labeller = labeller(grouping = grouping_names),
-             nrow = 2) +
+             labeller = labeller(grouping = grouping_names)) +
   apatheme +
   theme(
-    axis.text = element_text(size = 30),
-    axis.title = element_text(size = 30),
-    legend.text = element_text(size = 30),
-    legend.title = element_text(size = 30),
-    strip.text = element_text(size=30)
+    axis.text = element_text(size = 24),
+    axis.title = element_text(size = 24),
+    legend.text = element_text(size = 24),
+    legend.title = element_text(size = 24),
+    strip.text = element_text(size=24)
   )
 
 forest_sa_ra
 
-ggsave("forest_sa_ra.pdf", forest_sa_ra, width = 60, height = 30, units = "cm", dpi = 300)
+ggsave("forest_sa_ra.pdf", forest_sa_ra, width = 40, height = 20, units = "cm", dpi = 300)
 ggsave("forest_sa_ra.png", forest_sa_ra, width = 60, height = 30, units = "cm", dpi = 300)
 ```
