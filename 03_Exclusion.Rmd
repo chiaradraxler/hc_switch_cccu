@@ -417,36 +417,8 @@ crosstabs(~exclusion_R1 + hc + NOBARRIER + sex_inlast30days, data =cccu_complete
 
 ```
 
-### 4.9.2. Sex + no contra
 
-```{r}
-#overview over relevant variables
-
-table(cccu_complete1$NOBARRIER)#no non-hormonal contraceptive method in last 30days
-table(cccu_complete1$hc)#no hormonal contraceptive method 
-#joint = no contraceptive method 
-
-table(cccu_complete1$sex_inlast30days)# yes= sex in last 30 days
-
-#create column that indicates with 1 = sex and no contraceptive method used in last 30 days
-
-cccu_complete1 <- cccu_complete1 %>%
-  mutate(exclusion_R2 = ifelse(is.na(NOBARRIER), 0,
-                               ifelse(NOBARRIER == "(1) Yes" & 
-                                 hc == "non_hc" &
-                                 sex_inlast30days == "Yes",1,0)))
-
-table(cccu_complete1$exclusion_R2)
-
-
-cccu_complete1$exclusion_R2 <-as.factor(cccu_complete1$exclusion_R2)
-qplot(cccu_complete1$exclusion_R2)#missingness might be because sex_inlast30days and NOBARRIER can be missing 
-
-crosstabs(~is.na(exclusion_R2) + NOBARRIER + sex_inlast30days, data = cccu_complete1) #seems to have worked :) :) (see NOBARRIER = (1) Yes, sex_inlast30days = Yes)
-
-```
-
-### 4.9.3. Vasectomy
+### 4.9.2. Vasectomy
 ```{r}
 #overview
 
@@ -458,15 +430,15 @@ table(cccu_complete1$SP2VAS)
 
 #create column that indicates if used Vasectomy
 cccu_complete1 <- cccu_complete1 %>%
-  mutate(exclusion_R3 = ifelse(VASECTOMY == "(1) Yes" |
+  mutate(exclusion_R2 = ifelse(VASECTOMY == "(1) Yes" |
                                  SP1VAS == "(1) Yes" | SP2VAS == "(1) Yes", 1, NA),
-         exclusion_R3 = ifelse(is.na(exclusion_R3), 0, exclusion_R3))
+         exclusion_R2 = ifelse(is.na(exclusion_R2), 0, exclusion_R2))
          
 
-table(cccu_complete1$exclusion_R3)
-crosstabs(~exclusion_R3+ SP2VAS, data = cccu_complete1)
-cccu_complete1$exclusion_R3 <-as.factor(cccu_complete1$exclusion_R3)
-qplot(cccu_complete1$exclusion_R3)
+table(cccu_complete1$exclusion_R2)
+crosstabs(~exclusion_R2+ SP2VAS, data = cccu_complete1)
+cccu_complete1$exclusion_R2 <-as.factor(cccu_complete1$exclusion_R2)
+qplot(cccu_complete1$exclusion_R2)
 
 ```
 
@@ -888,8 +860,8 @@ cccu_R1_s<-cccu_SA %>%
 
 ```
 
-### 5.9.2. Sex + no contra
 
+### 5.9.2. Vasectomy
 ```{r}
 table(cccu_complete1$exclusion_R2)
 #exclude from df
@@ -904,36 +876,12 @@ length(unique(cccu_complete1$CASEID)) -
   select(CASEID) %>%
   unique() %>%
   nrow()
-#325#relatively high exclusion
-length(unique(cccu_R2$CASEID))
-
-#df for SA
-cccu_R2_s<-cccu_SA %>%
-  filter(exclusion_R2 !=1)
-
-```
-
-### 5.9.3. Vasectomy
-```{r}
-table(cccu_complete1$exclusion_R3)
-#exclude from df
-cccu_R3<-cccu_MA %>%
-  filter(exclusion_R3 !=1)
-
-#number of excluded women from cccu_complete1 bc of exclusion_R3 = 1 (might be combination with other exclusion criteria)
-
-length(unique(cccu_complete1$CASEID)) -
-  cccu_complete1 %>%
-  filter(exclusion_R3 !=1) %>%
-  select(CASEID) %>%
-  unique() %>%
-  nrow()
 #1
 
-length(unique(cccu_R3$CASEID))
+length(unique(cccu_R2$CASEID))
 #df for subanalysis
-cccu_R3_s<-cccu_SA %>%
-  filter(exclusion_R3 !=1)
+cccu_R2_s<-cccu_SA %>%
+  filter(exclusion_R2 !=1)
 ```
 
 
@@ -1001,23 +949,5 @@ save(cccu_R2_s,file = "cccu_R2_s.RData")
 load("cccu_R2_s.RData")
 nrow(cccu_R2_s) #timepoints
 length(unique(cccu_R2_s$CASEID)) #women
-#R3
-##MA
-save(cccu_R3,file = "cccu_R3.RData")
-
-load("cccu_R3.RData")
-
-nrow(cccu_R3) #timepoints
-length(unique(cccu_R3$CASEID)) #women
-
-
-
-##SA
-save(cccu_R3_s,file = "cccu_R3_s.RData")
-
-load("cccu_R3_s.RData")
-
-nrow(cccu_R3_s) #timepoints
-length(unique(cccu_R3_s$CASEID)) #women
 ```
 

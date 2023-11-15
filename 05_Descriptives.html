@@ -911,7 +911,7 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.26</code></pre>
 <pre class="r"><code>confIntV(comp_inex$sex_freq,comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .26):  
-## Bootstrapped: [.24; .28]  
+## Bootstrapped: [.25; .28]  
 ## Using Fisher&#39;s z: [.24; .28]</code></pre>
 <pre class="r"><code>table(cccu_MA$sex_freq)</code></pre>
 <pre><code>## 
@@ -967,7 +967,7 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## # A tibble: 1 × 9
 ##   .y.             group1 group2 effsize    n1    n2 conf.low conf.high magnitude
 ## * &lt;chr&gt;           &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;    
-## 1 sexual_satisfa… no     yes     0.0824  3787  4832     0.04      0.13 negligib…</code></pre>
+## 1 sexual_satisfa… no     yes     0.0824  3787  4832     0.04      0.12 negligib…</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA$sexual_satisfaction)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
 ## X1    1 3787 5.02 1.16      5    5.21 1.48   1   6     5 -1.22     1.15 0.02</code></pre>
@@ -1138,7 +1138,7 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.024</code></pre>
 <pre class="r"><code>confIntV(comp_inex$HLTHPROB_recode,comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .02):  
-## Bootstrapped: [0; .04]  
+## Bootstrapped: [.01; .04]  
 ## Using Fisher&#39;s z: [0; .04]</code></pre>
 <pre class="r"><code>table(cccu_MA$HLTHPROB_recode)</code></pre>
 <pre><code>## 
@@ -1462,7 +1462,7 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## # A tibble: 1 × 9
 ##   .y.     group1 group2 effsize    n1    n2 conf.low conf.high magnitude
 ## * &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;    
-## 1 Avoid_r no     yes      0.203  3787  6079     0.17      0.24 small</code></pre>
+## 1 Avoid_r no     yes      0.203  3787  6079     0.16      0.24 small</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA$Avoid_r)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
 ## X1    1 3787 4.78 1.55      5    5.06 1.48   1   6     5 -1.13     0.16 0.03</code></pre>
@@ -1489,7 +1489,7 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## # A tibble: 1 × 9
 ##   .y.           group1 group2 effsize    n1    n2 conf.low conf.high magnitude 
 ## * &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;     
-## 1 FEELPG_recode no     yes    -0.0468  3787  6074    -0.09     -0.01 negligible</code></pre>
+## 1 FEELPG_recode no     yes    -0.0468  3787  6074    -0.09   -0.0034 negligible</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA$FEELPG_recode)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed  mad min max range skew kurtosis   se
 ## X1    1 3787 3.41 1.69      3    3.38 1.48   1   6     5    0    -1.21 0.03</code></pre>
