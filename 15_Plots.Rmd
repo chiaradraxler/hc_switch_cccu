@@ -12,11 +12,9 @@ output: html_document
 # length(unique(cccu_SA$CASEID)) #women
 # load("cccu_R1.RData")
 # load("cccu_R2.RData")
-# load("cccu_R3.RData")
 # load("cccu_R1_s.RData")
 # length(unique(cccu_R1_s$CASEID)) #women
 # load("cccu_R2_s.RData")
-# load("cccu_R3_s.RData")
 ```
 
 
@@ -248,11 +246,6 @@ R2_ma_1 <- brm(file = "models/R2_ma_1.Rds")
 
 R2_m1_sum = summary(R2_ma_1, prob = .997)
 
-#### 3Robustness analyses: m1 
-R3_ma_1 <- brm(file = "models/R3_ma_1.Rds")
-
-R3_m1_sum = summary(R3_ma_1, prob = .997)
-
 ```
 
 
@@ -273,10 +266,6 @@ R1_m2_sum = summary(R1_ma_2, prob = .997)
 R2_ma_2 <- brm(file = "models/R2_ma_2.Rds")
 R2_m2_sum = summary(R2_ma_2, prob = .997)
 
-
-#r3
-R3_ma_2 <- brm(file = "models/R3_ma_2.Rds")
-R3_m2_sum = summary(R3_ma_2, prob = .997)
 ```
 
 #### m3
@@ -295,11 +284,6 @@ R1_m3_sum = summary(R1_ma_3, prob = .997)
 #r2
 R2_ma_3 <- brm(file = "models/R2_ma_3.Rds")
 R2_m3_sum = summary(R2_ma_3, prob = .997)
-
-#r3
-R3_ma_3 <- brm(file = "models/R3_ma_3.Rds")
-
-R3_m3_sum = summary(R3_ma_3, prob = .997)
 ```
 
 
@@ -321,11 +305,6 @@ R1_m4_sum = summary(R1_ma_4, prob = .997)
 R2_ma_4 <- brm(file = "models/R2_ma_4.Rds")
 
 R2_m4_sum = summary(R2_ma_4, prob = .997)
-
-#r3
-R3_ma_4 <- brm(file = "models/R3_ma_4.Rds")
-
-R3_m4_sum = summary(R3_ma_4, prob = .997)
 ```
 
 
@@ -372,20 +351,6 @@ R2_m1_forest_plot = R2_m1_sum$fixed %>%
          group)
 
 rownames(R2_m1_forest_plot) = c()
-
-
-#R3
-R3_m1_forest_plot = R3_m1_sum$fixed %>%
-  data.frame() %>%
-  mutate(predictor = rownames(.),
-         group = rep("R3_model_1", 2)) %>%
-  select(predictor,
-         estimate = Estimate,
-         lower = l.99.7..CI,
-         upper = u.99.7..CI,
-         group)
-
-rownames(R3_m1_forest_plot) = c()
 
 ```
 
@@ -434,19 +399,6 @@ R2_m2_forest_plot = R2_m2_sum$fixed %>%
          group)
 
 rownames(R2_m2_forest_plot) = c()
-
-#R3
-R3_m2_forest_plot = R3_m2_sum$fixed %>%
-  data.frame() %>%
-  mutate(predictor = rownames(.),
-         group = rep("R3_model_2", 4)) %>%
-  select(predictor,
-         estimate = Estimate,
-         lower = l.99.7..CI,
-         upper = u.99.7..CI,
-         group)
-
-rownames(R3_m2_forest_plot) = c()
 ```
 
 
@@ -494,20 +446,6 @@ R2_m3_forest_plot = R2_m3_sum$fixed %>%
          group)
 
 rownames(R2_m3_forest_plot) = c()
-
-
-#R3
-R3_m3_forest_plot = R3_m3_sum$fixed %>%
-  data.frame() %>%
-  mutate(predictor = rownames(.),
-         group = rep("R3_model_3", 12)) %>%
-  select(predictor,
-         estimate = Estimate,
-         lower = l.99.7..CI,
-         upper = u.99.7..CI,
-         group)
-
-rownames(R3_m3_forest_plot) = c()
 
 ```
 
@@ -558,20 +496,6 @@ R2_m4_forest_plot = R2_m4_sum$fixed %>%
          group)
 
 rownames(R2_m4_forest_plot) = c()
-
-
-#R3
-R3_m4_forest_plot = R3_m4_sum$fixed %>%
-  data.frame() %>%
-  mutate(predictor = rownames(.),
-         group = rep("R3_model_4", 72)) %>%
-  select(predictor,
-         estimate = Estimate,
-         lower = l.99.7..CI,
-         upper = u.99.7..CI,
-         group)
-
-rownames(R3_m4_forest_plot) = c()
 
 ```
 
@@ -720,19 +644,15 @@ forest_plot_data2 = rbind(
   m1_forest_plot,
   R1_m1_forest_plot,
   R2_m1_forest_plot,
-  R3_m1_forest_plot,
   m2_forest_plot,
   R1_m2_forest_plot,
   R2_m2_forest_plot,
-  R3_m2_forest_plot,
   m3_forest_plot,
   R1_m3_forest_plot,
   R2_m3_forest_plot,
-  R3_m3_forest_plot,
   m4_forest_plot,
   R1_m4_forest_plot,
-  R2_m4_forest_plot,
-  R3_m4_forest_plot
+  R2_m4_forest_plot
 )
 
 forest_plot_data2$predictor = factor(forest_plot_data2$predictor,
@@ -765,48 +685,41 @@ forest_plot_data2$group = factor(
     "model_1",
     "R1_model_1",
     "R2_model_1",
-    "R3_model_1",
     "model_2",
     "R1_model_2",
     "R2_model_2",
-    "R3_model_2",
     "model_3",
     "R1_model_3",
     "R2_model_3",
-    "R3_model_3",
     "model_4",
     "R1_model_4",
-    "R2_model_4",
-    "R3_model_4"
-  ),
+    "R2_model_4"
+    ),
   labels = 
     c(
     "model_1",
     "R1_model_1",
     "R2_model_1",
-    "R3_model_1",
     "model_2",
     "R1_model_2",
     "R2_model_2",
-    "R3_model_2",
     "model_3",
     "R1_model_3",
     "R2_model_3",
-    "R3_model_3",
     "model_4",
     "R1_model_4",
-    "R2_model_4",
-    "R3_model_4"
+    "R2_model_4"
   )
 )
 
 
 #give group for color:
 forest_plot_data2 <- forest_plot_data2 %>%
-  mutate(grouping = ifelse(group == "model_1" |group == "R1_model_1" | group == "R2_model_1" | group == "R3_model_1", "color_1",
-  ifelse(group == "model_2" |group == "R1_model_2" | group == "R2_model_2" | group == "R3_model_2", "color_2",
-         ifelse(group == "model_3" |group == "R1_model_3" | group == "R2_model_3" | group == "R3_model_3" ,"color_3",
-                 ifelse(group == "model_4" |group == "R1_model_4" | group == "R2_model_4" | group == "R3_model_4", "color_4",NA))))) 
+  mutate(grouping = ifelse(group == "model_1" |group == "R1_model_1" | group == "R2_model_1", "color_1",
+  ifelse(group == "model_2" |group == "R1_model_2" | group == "R2_model_2", "color_2",
+         ifelse(group == "model_3" |group == "R1_model_3" | group == "R2_model_3", "color_3",
+                 ifelse(group == "model_4" |group == "R1_model_4" | group == "R2_model_4",
+                        "color_4", NA))))) 
 
 
 #give group for shape:
@@ -816,8 +729,7 @@ forest_plot_data2 <- forest_plot_data2 %>%
     group == "model_3"|
     group == "model_4", "shape_1",
   ifelse(group %contains% "R1", "shape_2",
-         ifelse(group %contains% "R2", "shape_3",
-                ifelse(group %contains% "R3", "shape_4", NA)))))
+         ifelse(group %contains% "R2", "shape_3", NA))))
 
 ```
 
@@ -826,7 +738,7 @@ forest_plot_data2 <- forest_plot_data2 %>%
 #forest plot including robustness analyses
 
 #set colors
-group.color <- c("orchid3", "green", "blue", "red")
+group.color <- c("orchid3", "green", "blue")
 
 #set names for facets
 grouping_names = c("Model 1", "Model 2", "Model 3", "Model 4")
@@ -852,35 +764,32 @@ forest_ma_ra <- ggplot(
   coord_flip() +
   scale_fill_manual(
     name = "Analyses",
-    breaks = c("shape_1", "shape_2", "shape_3", "shape_4"),
+    breaks = c("shape_1", "shape_2", "shape_3"),
     labels = 
       c(
       "Main Analyses",
       "Robustness Analyses 1",
-      "Robustness Analyses 2",
-      "Robustness Analyses 3"
+      "Robustness Analyses 2"
     ),
     values = group.color
   ) +
   scale_colour_manual(
     name = "Analyses",
-    breaks = c("shape_1", "shape_2", "shape_3", "shape_4"),
+    breaks = c("shape_1", "shape_2", "shape_3"),
     labels = c(
       "Main Analyses",
       "Robustness Analyses 1",
-      "Robustness Analyses 2",
-      "Robustness Analyses 3"
+      "Robustness Analyses 2"
     ),
     values = group.color
   ) +
   scale_shape_manual(
     name = "Analyses",
-    values = c(21,24,22,25),
+    values = c(21,24,22),
     labels = c(
       "Main Analyses",
       "Robustness Analyses 1",
-      "Robustness Analyses 2",
-      "Robustness Analyses 3"
+      "Robustness Analyses 2"
     )
   ) +
   labs(y = "Effect Size", x = "Predictor") +
@@ -927,10 +836,6 @@ R2_sa_m2 <- brm(file = "models/R2_sa_m2.Rds")
 
 R2_sa_m2_sum<- summary(R2_sa_m2, prob = .997)
 
-R3_sa_m2 <- brm(file = "models/R3_sa_m2.Rds")
-
-R3_sa_m2_sum<- summary(R3_sa_m2, prob = .997)
-
 ```
 
 
@@ -953,10 +858,6 @@ R1_sa_m3_sum<- summary(R1_sa_m3, prob = .997)
 R2_sa_m3 <- brm(file = "models/R2_sa_m3.Rds")
 
 R2_sa_m3_sum<- summary(R2_sa_m3, prob = .997)
-
-R3_sa_m3 <- brm(file = "models/R3_sa_m3.Rds")
-
-R3_sa_m3_sum<- summary(R3_sa_m3, prob = .997)
 ```
 
 
@@ -977,11 +878,6 @@ R1_sa_m4_sum<- summary(R1_sa_m4, prob = .997)
 R2_sa_m4 <- brm(file = "models/R2_sa_m4.Rds")
 
 R2_sa_m4_sum<- summary(R2_sa_m4, prob = .997)
-
-R3_sa_m4 <- brm(file = "models/R3_sa_m4.Rds")
-
-R3_sa_m4_sum<- summary(R3_sa_m4, prob = .997)
-
 ```
 
 
@@ -1033,18 +929,6 @@ R2_sa_m2_forest_plot = R2_sa_m2_sum$fixed %>%
 
 rownames(R2_sa_m2_forest_plot) = c()
 
-#R3
-R3_sa_m2_forest_plot = R3_sa_m2_sum$fixed %>%
-  data.frame() %>%
-  mutate(predictor = rownames(.),
-         group = rep("R3_sa_model_2", 4)) %>%
-  select(predictor,
-         estimate = Estimate,
-         lower = l.99.7..CI,
-         upper = u.99.7..CI,
-         group)
-
-rownames(R3_sa_m2_forest_plot) = c()
 ```
 
 
@@ -1092,20 +976,6 @@ R2_sa_m3_forest_plot = R2_sa_m3_sum$fixed %>%
          group)
 
 rownames(R2_sa_m3_forest_plot) = c()
-
-
-#R3
-R3_sa_m3_forest_plot = R3_sa_m3_sum$fixed %>%
-  data.frame() %>%
-  mutate(predictor = rownames(.),
-         group = rep("R3_sa_model_3", 8)) %>%
-  select(predictor,
-         estimate = Estimate,
-         lower = l.99.7..CI,
-         upper = u.99.7..CI,
-         group)
-
-rownames(R3_sa_m3_forest_plot) = c()
 
 ```
 
@@ -1156,20 +1026,6 @@ R2_sa_m4_forest_plot = R2_sa_m4_sum$fixed %>%
          group)
 
 rownames(R2_sa_m4_forest_plot) = c()
-
-
-#R3
-R3_sa_m4_forest_plot = R3_sa_m4_sum$fixed %>%
-  data.frame() %>%
-  mutate(predictor = rownames(.),
-         group = rep("R3_sa_model_4", 37)) %>%
-  select(predictor,
-         estimate = Estimate,
-         lower = l.99.7..CI,
-         upper = u.99.7..CI,
-         group)
-
-rownames(R3_sa_m4_forest_plot) = c()
 
 ```
 
@@ -1230,7 +1086,7 @@ sa_forest_plot_data <- sa_forest_plot_data %>%
 
 #### Plot
 ```{r}
-#forest plot including robustness analyses
+#forest plot without robustness analyses
 
 #set colors
 group.color <- c("green", "blue", "red")
@@ -1307,15 +1163,12 @@ sa_forest_plot_data2 = rbind(
   sa_m2_forest_plot,
   R1_sa_m2_forest_plot,
   R2_sa_m2_forest_plot,
-  R3_sa_m2_forest_plot,
   sa_m3_forest_plot,
   R1_sa_m3_forest_plot,
   R2_sa_m3_forest_plot,
-  R3_sa_m3_forest_plot,
   sa_m4_forest_plot,
   R1_sa_m4_forest_plot,
-  R2_sa_m4_forest_plot,
-  R3_sa_m4_forest_plot
+  R2_sa_m4_forest_plot
 )
 
 sa_forest_plot_data2$predictor = factor(sa_forest_plot_data2$predictor,
@@ -1341,39 +1194,36 @@ sa_forest_plot_data2$group = factor(
     "sa_model_2",
     "R1_sa_model_2",
     "R2_sa_model_2",
-    "R3_sa_model_2",
     "sa_model_3",
     "R1_sa_model_3",
     "R2_sa_model_3",
-    "R3_sa_model_3",
     "sa_model_4",
     "R1_sa_model_4",
-    "R2_sa_model_4",
-    "R3_sa_model_4"
+    "R2_sa_model_4"
   ),
   labels = 
     c(
     "sa_model_2",
     "R1_sa_model_2",
     "R2_sa_model_2",
-    "R3_sa_model_2",
     "sa_model_3",
     "R1_sa_model_3",
     "R2_sa_model_3",
-    "R3_sa_model_3",
     "sa_model_4",
     "R1_sa_model_4",
-    "R2_sa_model_4",
-    "R3_sa_model_4"
+    "R2_sa_model_4"
   )
 )
 
 
 #give group for color:
 sa_forest_plot_data2 <- sa_forest_plot_data2 %>%
-  mutate(grouping =   ifelse(group == "sa_model_2" |group == "R1_sa_model_2" | group == "R2_sa_model_2" | group == "R3_sa_model_2", "color_2",
-         ifelse(group == "sa_model_3" |group == "R1_sa_model_3" | group == "R2_sa_model_3" | group == "R3_sa_model_3" ,"color_3",
-                 ifelse(group == "sa_model_4" |group == "R1_sa_model_4" | group == "R2_sa_model_4" | group == "R3_sa_model_4", "color_4",NA)))) 
+  mutate(grouping = ifelse(group == "sa_model_2" |group == "R1_sa_model_2" | group == "R2_sa_model_2",
+                           "color_2",
+         ifelse(group == "sa_model_3" |group == "R1_sa_model_3" | group == "R2_sa_model_3",
+                "color_3",
+                 ifelse(group == "sa_model_4" |group == "R1_sa_model_4" | group == "R2_sa_model_4",
+                        "color_4",NA)))) 
 
 
 #give group for shape:
@@ -1382,8 +1232,7 @@ sa_forest_plot_data2 <- sa_forest_plot_data2 %>%
     group == "sa_model_3"|
     group == "sa_model_4", "shape_1",
   ifelse(group %contains% "R1", "shape_2",
-         ifelse(group %contains% "R2", "shape_3",
-                ifelse(group %contains% "R3", "shape_4", NA)))))
+         ifelse(group %contains% "R2", "shape_3", NA))))
 
 ```
 
@@ -1392,7 +1241,7 @@ sa_forest_plot_data2 <- sa_forest_plot_data2 %>%
 #forest plot including robustness analyses
 
 #set colors
-group.color <- c("orchid3", "green", "blue", "red")
+group.color <- c("orchid3", "green", "blue")
 
 #set names for facets
 grouping_names = c("Model 1", "Model 2", "Model 3", "Model 4")
@@ -1419,35 +1268,32 @@ forest_sa_ra <- ggplot(
   coord_flip() +
   scale_fill_manual(
     name = "Analyses",
-    breaks = c("shape_1", "shape_2", "shape_3", "shape_4"),
+    breaks = c("shape_1", "shape_2", "shape_3"),
     labels = 
       c(
       "Sub Analyses",
       "Robustness Analyses 1",
-      "Robustness Analyses 2",
-      "Robustness Analyses 3"
+      "Robustness Analyses 2"
     ),
     values = group.color
   ) +
   scale_colour_manual(
     name = "Analyses",
-    breaks = c("shape_1", "shape_2", "shape_3", "shape_4"),
+    breaks = c("shape_1", "shape_2", "shape_3"),
     labels = c(
       "Sub Analyses",
       "Robustness Analyses 1",
-      "Robustness Analyses 2",
-      "Robustness Analyses 3"
+      "Robustness Analyses 2"
     ),
     values = group.color
   ) +
   scale_shape_manual(
     name = "Analyses",
-    values = c(21,24,22,25),
+    values = c(21,24,22),
     labels = c(
       "Sub Analyses",
       "Robustness Analyses 1",
-      "Robustness Analyses 2",
-      "Robustness Analyses 3"
+      "Robustness Analyses 2"
     )
   ) +
   labs(y = "Effect Size", x = "Predictor") +

@@ -24,8 +24,6 @@ set_priors <- c(prior(normal(0, 1), class = b),
 #SA
 load("cccu_R1_s.RData")
 load("cccu_R2_s.RData")
-load("cccu_R3_s.RData")
-
 ```
 
 ```{r}
@@ -37,10 +35,6 @@ cccu_R1_s <- cccu_R1_s %>%
 cccu_R2_s <- cccu_R2_s %>%
   arrange(CASEID) %>%
   mutate_if(is.factor, droplevels)
-
-cccu_R3_s <- cccu_R3_s %>%
-  arrange(CASEID) %>%
-  mutate_if(is.factor, droplevels)
 ```
 
 
@@ -48,15 +42,12 @@ cccu_R3_s <- cccu_R3_s %>%
 ```{r}
 R1_sa_m2 <- brm(file = "models/R1_sa_m2.Rds")
 R2_sa_m2 <- brm(file = "models/R2_sa_m2.Rds")
-R3_sa_m2 <- brm(file = "models/R3_sa_m2.Rds")
 
 R1_sa_m3 <- brm(file = "models/R1_sa_m3.Rds")
 R2_sa_m3 <- brm(file = "models/R2_sa_m3.Rds")
-R3_sa_m3 <- brm(file = "models/R3_sa_m3.Rds")
 
 R1_sa_m4 <- brm(file = "models/R1_sa_m4.Rds")
 R2_sa_m4 <- brm(file = "models/R2_sa_m4.Rds")
-R3_sa_m4 <- brm(file = "models/R3_sa_m4.Rds")
 ```
 
 
@@ -81,13 +72,6 @@ summary(ame, conf_level = .997)
 ```
 
 
-### R3
-```{r}
-#average marginal effect
-ame <- marginaleffects(R3_sa_m2)
-summary(ame, conf_level = .997)
-```
-
 ## Model 3
 ### R1
 ```{r}
@@ -101,13 +85,6 @@ summary(ame, conf_level = .997)
 ```{r}
 #average marginal effect
 ame <- marginaleffects(R2_sa_m3)
-summary(ame, conf_level = .997)
-```
-
-### R3
-```{r}
-#average marginal effect
-ame <- marginaleffects(R3_sa_m3)
 summary(ame, conf_level = .997)
 ```
 
@@ -131,15 +108,6 @@ print(ame_sum, nrow = 100000)
 
 ```
 
-
-### R3
-```{r}
-#average marginal effect
-ame <- marginaleffects(R3_sa_m4)
-ame_sum <- summary(ame, conf_level = .997)
-print(ame_sum, nrow = 100000)
-
-```
 
 
 

@@ -24,9 +24,6 @@ set_priors <- c(prior(normal(0, 1), class = b),
 load("cccu_R1_s.RData")
 
 load("cccu_R2_s.RData")
-
-load("cccu_R3_s.RData")
-
 ```
 
 
@@ -37,10 +34,6 @@ cccu_R1_s <- cccu_R1_s %>%
   mutate_if(is.factor, droplevels)
 
 cccu_R2_s <- cccu_R2_s %>%
-  arrange(CASEID) %>%
-  mutate_if(is.factor, droplevels)
-
-cccu_R3_s <- cccu_R3_s %>%
   arrange(CASEID) %>%
   mutate_if(is.factor, droplevels)
 ```
@@ -79,20 +72,6 @@ R2_sa_m2 <- brm(switch ~ contra_satis * hc_dur + (1 | CASEID),
 summary(R2_sa_m2, prob = .997)
 ```
 
-### R3
-```{r}
-R3_sa_m2 <- brm(switch ~ contra_satis * hc_dur + (1 | CASEID),
-          family = bernoulli(),
-          data = cccu_R3_s,
-          prior = set_priors,
-          file = "models/R3_sa_m2.Rds",
-          warmup = 1000,
-          iter = 4000,
-          control = list(adapt_delta = 0.99))
-
-summary(R3_sa_m2, prob = .997)
-```
-
 
 ## 5.2 Model 3
 ### R1
@@ -121,20 +100,6 @@ R2_sa_m3 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
           control = list(adapt_delta = 0.99))
 
 summary(R2_sa_m3, prob = .997)
-```
-
-### R3
-```{r}
-R3_sa_m3 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq +(1 | CASEID),
-          family = bernoulli(),
-          data = cccu_R3_s,
-          prior = set_priors,
-          file = "models/R3_sa_m3.Rds",
-          warmup = 1000,
-          iter = 4000,
-          control = list(adapt_delta = 0.99))
-
-summary(R3_sa_m3, prob = .997)
 ```
 
 
@@ -172,18 +137,3 @@ R2_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq
 summary(R2_sa_m4, prob = .997)
 ```
 
-### R3
-```{r}
-R3_sa_m4 <- brm(switch ~ contra_satis * hc_dur + sexual_satisfaction +  sex_freq + AGE + DEGREE_recode + POVRATE + HLTHPROB_recode + MEDPROB_recode + GAPINS_recode +
-              TYPEINS_recode + NKIDS_t1 +  pregnant_between_waves + had_baby_between_waves+ Avoid_r + FEELPG_recode +
-              rel_dur_factor + (1 | CASEID),
-          family = bernoulli(),
-          data = cccu_R3_s,
-          prior = set_priors,
-          file = "models/R3_sa_m4.Rds",
-          warmup = 1500,
-          iter = 4500,
-          control = list(adapt_delta = 0.99))
-
-summary(R3_sa_m4, prob = .997)
-```

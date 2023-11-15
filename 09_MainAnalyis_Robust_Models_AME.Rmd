@@ -24,9 +24,6 @@ set_priors <- c(prior(normal(0, 1), class = b),
 load("cccu_R1.RData")
 
 load("cccu_R2.RData")
-
-load("cccu_R3.RData")
-
 ```
 
 
@@ -55,24 +52,13 @@ cccu_R2_nonhc_only <- cccu_R2 %>%
   filter(hc == "non_hc") %>%
   mutate_if(is.factor, droplevels)
 
-cccu_R3 <- cccu_R3 %>%
-  arrange(CASEID) %>%
-  mutate_if(is.factor, droplevels)
 
-cccu_R3_hc_only <- cccu_R3 %>%
-  filter(hc == "hc") %>%
-  mutate_if(is.factor, droplevels)
-
-cccu_R3_nonhc_only <- cccu_R3 %>%
-  filter(hc == "non_hc") %>%
-  mutate_if(is.factor, droplevels)
 ```
 
 # 3. Load models of main analysis
 ```{r}
 R1_ma_1 <- brm(file = "models/R1_ma_1.Rds")
 R2_ma_1 <- brm(file = "models/R2_ma_1.Rds")
-R3_ma_1 <- brm(file = "models/R3_ma_1.Rds")
 
 R1_ma_2 <- brm(file = "models/R1_ma_2.Rds")
 R1_m2_hc_only <- brm(file = "models/R1_m2_hc_only.Rds")
@@ -80,9 +66,6 @@ R1_m2_nonhc_only <- brm(file = "models/R1_m2_nonhc_only.Rds")
 R2_ma_2 <- brm(file = "models/R2_ma_2.Rds")
 R2_m2_hc_only <- brm(file = "models/R2_m2_hc_only.Rds")
 R2_m2_nonhc_only <- brm(file = "models/R2_m2_nonhc_only.Rds")
-R3_ma_2 <- brm(file = "models/R3_ma_2.Rds")
-R3_m2_hc_only <- brm(file = "models/R3_m2_hc_only.Rds")
-R3_m2_nonhc_only <- brm(file = "models/R3_m2_nonhc_only.Rds")
 
 R1_ma_3 <- brm(file = "models/R1_ma_3.Rds")
 R1_m3_hc_only <- brm(file = "models/R1_m3_hc_only.Rds")
@@ -90,20 +73,13 @@ R1_m3_nonhc_only <- brm(file = "models/R1_m3_nonhc_only.Rds")
 R2_ma_3 <- brm(file = "models/R2_ma_3.Rds")
 R2_m3_hc_only <- brm(file = "models/R2_m3_hc_only.Rds")
 R2_m3_nonhc_only <- brm(file = "models/R2_m3_nonhc_only.Rds")
-R3_ma_3 <- brm(file = "models/R3_ma_3.Rds")
-R3_m3_hc_only <- brm(file = "models/R3_m3_hc_only.Rds")
-R3_m3_nonhc_only <- brm(file = "models/R3_m3_nonhc_only.Rds")
-               
+
 R1_ma_4 <- brm(file = "models/R1_ma_4.Rds")
 R1_m4_hc_only <- brm(file = "models/R1_m4_hc_only.Rds")
 R1_m4_nonhc_only <- brm(file = "models/R1_m4_nonhc_only.Rds")
 R2_ma_4 <- brm(file = "models/R2_ma_4.Rds")
 R2_m4_hc_only<- brm(file = "models/R2_m4_hc_only.Rds")
 R2_m4_nonhc_only <- brm(file = "models/R2_m4_nonhc_only.Rds")
-R3_ma_4 <- brm(file = "models/R3_ma_4.Rds")
-R3_m4_hc_only <- brm(file = "models/R3_m4_hc_only.Rds")
-R3_m4_nonhc_only <- brm(file = "models/R3_m4_nonhc_only.Rds")
-
 ```
 
 # 4. Average marginal effects for models in main analyses for robustness analyses
@@ -128,14 +104,6 @@ summary(ame, conf_level = .997)
 
 ```
 
-### R3
-```{r}
-#average marginal effect
-ame <- marginaleffects(R3_ma_1)
-summary(ame, conf_level = .997)
-
-
-```
 
 ## Model 2
 ### R1
@@ -164,19 +132,6 @@ ame <- marginaleffects(R2_m2_nonhc_only)
 summary(ame, conf_level = .997)
 ```
 
-### R3
-```{r}
-#average marginal effect
-ame <- marginaleffects(R3_ma_2)
-summary(ame, conf_level = .997)
-
-
-ame <- marginaleffects(R3_m2_hc_only)
-summary(ame, conf_level = .997)
-
-ame <- marginaleffects(R3_m2_nonhc_only)
-summary(ame, conf_level = .997)
-```
 
 ## Model 3
 
@@ -213,20 +168,6 @@ ame <- marginaleffects(R2_m3_nonhc_only)
 summary(ame, conf_level = .997)
 ```
 
-### R3
-```{r}
-#average marginal effect
-ame <- marginaleffects(R3_ma_3)
-summary(ame, conf_level = .997)
-
-
-ame <- marginaleffects(R3_m3_hc_only)
-summary(ame, conf_level = .997)
-
-
-ame <- marginaleffects(R3_m3_nonhc_only)
-summary(ame, conf_level = .997)
-```
 
 ## Model 4
 ### R1
@@ -271,28 +212,4 @@ print(ame_sum, nrow = 100000)
 
 
 ```
-
-### R3
-```{r}
-
-ame <- marginaleffects(R3_ma_4)
-ame_sum <- summary(ame, conf_level = .997)
-print(ame_sum, nrow = 100000)
-
-
-
-ame <- marginaleffects(R3_m4_hc_only)
-ame_sum <- summary(ame, conf_level = .997)
-print(ame_sum, nrow = 100000)
-
-
-
-
-
-ame <- marginaleffects(R3_m4_nonhc_only)
-ame_sum <- summary(ame, conf_level = .997)
-print(ame_sum, nrow = 100000)
-
-```
-
 
