@@ -370,9 +370,9 @@ display: none;
 <pre class="r"><code>library(marginaleffects)
 library(tidyverse)</code></pre>
 <pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-## ✔ dplyr     1.1.0     ✔ readr     2.1.4
+## ✔ dplyr     1.1.2     ✔ readr     2.1.4
 ## ✔ forcats   1.0.0     ✔ stringr   1.5.0
-## ✔ ggplot2   3.4.1     ✔ tibble    3.2.0
+## ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
 ## ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
 ## ✔ purrr     1.0.1</code></pre>
 <pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
@@ -390,17 +390,12 @@ set_priors &lt;- c(prior(normal(0, 1), class = b),
 <h1>2. Load Data</h1>
 <pre class="r"><code>#SA
 load(&quot;cccu_R1_s.RData&quot;)
-load(&quot;cccu_R2_s.RData&quot;)
-load(&quot;cccu_R3_s.RData&quot;)</code></pre>
+load(&quot;cccu_R2_s.RData&quot;)</code></pre>
 <pre class="r"><code>cccu_R1_s &lt;- cccu_R1_s %&gt;%
   arrange(CASEID) %&gt;%
   mutate_if(is.factor, droplevels)
 
 cccu_R2_s &lt;- cccu_R2_s %&gt;%
-  arrange(CASEID) %&gt;%
-  mutate_if(is.factor, droplevels)
-
-cccu_R3_s &lt;- cccu_R3_s %&gt;%
   arrange(CASEID) %&gt;%
   mutate_if(is.factor, droplevels)</code></pre>
 </div>
@@ -408,15 +403,12 @@ cccu_R3_s &lt;- cccu_R3_s %&gt;%
 <h1>3. Load models of robustness analysis</h1>
 <pre class="r"><code>R1_sa_m2 &lt;- brm(file = &quot;models/R1_sa_m2.Rds&quot;)
 R2_sa_m2 &lt;- brm(file = &quot;models/R2_sa_m2.Rds&quot;)
-R3_sa_m2 &lt;- brm(file = &quot;models/R3_sa_m2.Rds&quot;)
 
 R1_sa_m3 &lt;- brm(file = &quot;models/R1_sa_m3.Rds&quot;)
 R2_sa_m3 &lt;- brm(file = &quot;models/R2_sa_m3.Rds&quot;)
-R3_sa_m3 &lt;- brm(file = &quot;models/R3_sa_m3.Rds&quot;)
 
 R1_sa_m4 &lt;- brm(file = &quot;models/R1_sa_m4.Rds&quot;)
-R2_sa_m4 &lt;- brm(file = &quot;models/R2_sa_m4.Rds&quot;)
-R3_sa_m4 &lt;- brm(file = &quot;models/R3_sa_m4.Rds&quot;)</code></pre>
+R2_sa_m4 &lt;- brm(file = &quot;models/R2_sa_m4.Rds&quot;)</code></pre>
 </div>
 <div id="average-marginal-effects-for-models-of-sub-analyses-in-robustnessanalyses" class="section level1">
 <h1>4. Average marginal effects for models of sub analyses in
@@ -442,20 +434,8 @@ ame &lt;- marginaleffects(R2_sa_m2)
 summary(ame, conf_level = .997)</code></pre>
 <pre><code>## 
 ##          Term    Contrast Estimate    0.2 %   99.8 %
-##  contra_satis mean(dY/dX) -0.06255 -0.09583 -0.02997
-##  hc_dur       mean(dY/dX) -0.00609 -0.00981 -0.00231
-## 
-## Columns: term, contrast, estimate, conf.low, conf.high</code></pre>
-</div>
-<div id="r3" class="section level3">
-<h3>R3</h3>
-<pre class="r"><code>#average marginal effect
-ame &lt;- marginaleffects(R3_sa_m2)
-summary(ame, conf_level = .997)</code></pre>
-<pre><code>## 
-##          Term    Contrast Estimate    0.2 %   99.8 %
-##  contra_satis mean(dY/dX) -0.06170 -0.09259 -0.02803
-##  hc_dur       mean(dY/dX) -0.00622 -0.00994 -0.00252
+##  contra_satis mean(dY/dX) -0.06176 -0.09312 -0.02969
+##  hc_dur       mean(dY/dX) -0.00621 -0.00994 -0.00239
 ## 
 ## Columns: term, contrast, estimate, conf.low, conf.high</code></pre>
 </div>
@@ -469,19 +449,19 @@ ame &lt;- marginaleffects(R1_sa_m3)
 summary(ame, conf_level = .997)</code></pre>
 <pre><code>## 
 ##                 Term                                      Contrast Estimate
-##  contra_satis        mean(dY/dX)                                   -0.05751
-##  hc_dur              mean(dY/dX)                                   -0.00549
-##  sexual_satisfaction mean(dY/dX)                                    0.02281
-##  sex_freq            mean(2-5 times) - mean(No sex or once)        -0.00627
-##  sex_freq            mean(6-10 times) - mean(No sex or once)       -0.02373
-##  sex_freq            mean(11 or more times) - mean(No sex or once) -0.04572
-##     0.2 %   99.8 %
-##  -0.09123 -0.02332
-##  -0.00956 -0.00126
-##  -0.00166  0.04927
-##  -0.11749  0.07965
-##  -0.13563  0.06621
-##  -0.15743  0.04685
+##  contra_satis        mean(dY/dX)                                   -0.05777
+##  hc_dur              mean(dY/dX)                                   -0.00551
+##  sexual_satisfaction mean(dY/dX)                                    0.02263
+##  sex_freq            mean(2-5 times) - mean(No sex or once)        -0.00598
+##  sex_freq            mean(6-10 times) - mean(No sex or once)       -0.02301
+##  sex_freq            mean(11 or more times) - mean(No sex or once) -0.04568
+##      0.2 %   99.8 %
+##  -0.091230 -0.02248
+##  -0.009360 -0.00146
+##  -0.000193  0.04727
+##  -0.117411  0.08110
+##  -0.138594  0.06988
+##  -0.163025  0.05076
 ## 
 ## Columns: term, contrast, estimate, conf.low, conf.high</code></pre>
 </div>
@@ -492,42 +472,19 @@ ame &lt;- marginaleffects(R2_sa_m3)
 summary(ame, conf_level = .997)</code></pre>
 <pre><code>## 
 ##                 Term                                      Contrast Estimate
-##  contra_satis        mean(dY/dX)                                    -0.0641
-##  hc_dur              mean(dY/dX)                                    -0.0060
-##  sexual_satisfaction mean(dY/dX)                                     0.0129
-##  sex_freq            mean(2-5 times) - mean(No sex or once)         -0.0133
-##  sex_freq            mean(6-10 times) - mean(No sex or once)        -0.0256
-##  sex_freq            mean(11 or more times) - mean(No sex or once)  -0.0461
+##  contra_satis        mean(dY/dX)                                   -0.06353
+##  hc_dur              mean(dY/dX)                                   -0.00611
+##  sexual_satisfaction mean(dY/dX)                                    0.01247
+##  sex_freq            mean(2-5 times) - mean(No sex or once)        -0.01402
+##  sex_freq            mean(6-10 times) - mean(No sex or once)       -0.02509
+##  sex_freq            mean(11 or more times) - mean(No sex or once) -0.04620
 ##     0.2 %   99.8 %
-##  -0.09573 -0.03124
-##  -0.00966 -0.00223
-##  -0.00686  0.03363
-##  -0.08592  0.05347
-##  -0.10349  0.04482
-##  -0.12842  0.03395
-## 
-## Columns: term, contrast, estimate, conf.low, conf.high</code></pre>
-</div>
-<div id="r3-1" class="section level3">
-<h3>R3</h3>
-<pre class="r"><code>#average marginal effect
-ame &lt;- marginaleffects(R3_sa_m3)
-summary(ame, conf_level = .997)</code></pre>
-<pre><code>## 
-##                 Term                                      Contrast Estimate
-##  contra_satis        mean(dY/dX)                                    -0.0636
-##  hc_dur              mean(dY/dX)                                    -0.0061
-##  sexual_satisfaction mean(dY/dX)                                     0.0124
-##  sex_freq            mean(2-5 times) - mean(No sex or once)         -0.0141
-##  sex_freq            mean(6-10 times) - mean(No sex or once)        -0.0247
-##  sex_freq            mean(11 or more times) - mean(No sex or once)  -0.0459
-##     0.2 %   99.8 %
-##  -0.09488 -0.03116
-##  -0.00974 -0.00221
-##  -0.00766  0.03321
-##  -0.08988  0.05340
-##  -0.10561  0.05257
-##  -0.12485  0.03209
+##  -0.09474 -0.03220
+##  -0.00987 -0.00207
+##  -0.00887  0.03276
+##  -0.08508  0.05034
+##  -0.10120  0.04747
+##  -0.12520  0.03302
 ## 
 ## Columns: term, contrast, estimate, conf.low, conf.high</code></pre>
 </div>
@@ -578,77 +535,77 @@ print(ame_sum, nrow = 100000)</code></pre>
 ##  rel_dur_factor        
 ##  rel_dur_factor        
 ##                                                       Contrast   Estimate
-##  mean(dY/dX)                                                   -0.0531120
-##  mean(dY/dX)                                                   -0.0043563
-##  mean(dY/dX)                                                    0.0189254
-##  mean(2-5 times) - mean(No sex or once)                         0.0007613
-##  mean(6-10 times) - mean(No sex or once)                       -0.0110149
-##  mean(11 or more times) - mean(No sex or once)                 -0.0389164
-##  mean(dY/dX)                                                    0.0033001
-##  mean(7th/8th grade) - mean(5th/6th grade)                      0.0734559
-##  mean(9th grade) - mean(5th/6th grade)                         -0.0914772
-##  mean(10th grade) - mean(5th/6th grade)                         0.1125559
-##  mean(11th grade) - mean(5th/6th grade)                        -0.0175127
-##  mean(12th grade / no diploma) - mean(5th/6th grade)            0.0223556
-##  mean(high school diploma or equivalent) - mean(5th/6th grade)  0.0077903
-##  mean(some college, no degree) - mean(5th/6th grade)            0.0162661
-##  mean(associate degree) - mean(5th/6th grade)                  -0.0297538
-##  mean(bachelors degree) - mean(5th/6th grade)                   0.0043866
-##  mean(masters degree) - mean(5th/6th grade)                    -0.0122046
-##  mean(professional or doctoral degree) - mean(5th/6th grade)    0.0453395
-##  mean(dY/dX)                                                   -0.0000465
-##  mean(Yes) - mean(No)                                           0.0255706
-##  mean(Yes) - mean(No)                                          -0.0292240
-##  mean(Yes) - mean(No)                                           0.0295517
-##  mean(Yes) - mean(No)                                           0.0194894
-##  mean(1) - mean(0)                                              0.0114199
-##  mean(2) - mean(0)                                              0.0119501
-##  mean(3) - mean(0)                                             -0.0454908
-##  mean(4 or more) - mean(0)                                      0.0020622
-##  mean(Yes) - mean(No)                                          -0.0268345
-##  mean(Yes) - mean(No)                                           0.0293572
-##  mean(dY/dX)                                                   -0.0355288
-##  mean(dY/dX)                                                    0.0164983
-##  mean(0q-25q) - mean(Single)                                    0.0195011
-##  mean(26q-50q) - mean(Single)                                   0.0111054
-##  mean(51q-75q) - mean(Single)                                   0.0131771
-##  mean(76q-100q) - mean(Single)                                 -0.0028260
+##  mean(dY/dX)                                                   -0.0533186
+##  mean(dY/dX)                                                   -0.0043426
+##  mean(dY/dX)                                                    0.0190487
+##  mean(2-5 times) - mean(No sex or once)                         0.0015780
+##  mean(6-10 times) - mean(No sex or once)                       -0.0107835
+##  mean(11 or more times) - mean(No sex or once)                 -0.0388777
+##  mean(dY/dX)                                                    0.0033201
+##  mean(7th/8th grade) - mean(5th/6th grade)                      0.0740375
+##  mean(9th grade) - mean(5th/6th grade)                         -0.0913521
+##  mean(10th grade) - mean(5th/6th grade)                         0.1120578
+##  mean(11th grade) - mean(5th/6th grade)                        -0.0164996
+##  mean(12th grade / no diploma) - mean(5th/6th grade)            0.0224720
+##  mean(high school diploma or equivalent) - mean(5th/6th grade)  0.0080744
+##  mean(some college, no degree) - mean(5th/6th grade)            0.0167693
+##  mean(associate degree) - mean(5th/6th grade)                  -0.0297498
+##  mean(bachelors degree) - mean(5th/6th grade)                   0.0042308
+##  mean(masters degree) - mean(5th/6th grade)                    -0.0126121
+##  mean(professional or doctoral degree) - mean(5th/6th grade)    0.0461675
+##  mean(dY/dX)                                                   -0.0000472
+##  mean(Yes) - mean(No)                                           0.0258406
+##  mean(Yes) - mean(No)                                          -0.0291254
+##  mean(Yes) - mean(No)                                           0.0293233
+##  mean(Yes) - mean(No)                                           0.0194862
+##  mean(1) - mean(0)                                              0.0113083
+##  mean(2) - mean(0)                                              0.0117991
+##  mean(3) - mean(0)                                             -0.0447794
+##  mean(4 or more) - mean(0)                                      0.0007221
+##  mean(Yes) - mean(No)                                          -0.0278879
+##  mean(Yes) - mean(No)                                           0.0290230
+##  mean(dY/dX)                                                   -0.0354941
+##  mean(dY/dX)                                                    0.0164543
+##  mean(0q-25q) - mean(Single)                                    0.0200166
+##  mean(26q-50q) - mean(Single)                                   0.0110623
+##  mean(51q-75q) - mean(Single)                                   0.0136885
+##  mean(76q-100q) - mean(Single)                                 -0.0024755
 ##      0.2 %     99.8 %
-##  -0.087748 -0.0181438
-##  -0.008691  0.0005233
-##  -0.004141  0.0422114
-##  -0.104525  0.0829472
-##  -0.118185  0.0737580
-##  -0.147020  0.0504053
-##  -0.002934  0.0093418
-##  -0.127081  0.4197243
-##  -0.218565  0.0919109
-##  -0.090650  0.4278558
-##  -0.170255  0.2378564
-##  -0.142448  0.2839207
-##  -0.123098  0.1164470
-##  -0.110561  0.1130335
-##  -0.159439  0.0805662
-##  -0.123733  0.0954213
-##  -0.144926  0.0971137
-##  -0.112168  0.2277996
-##  -0.000169  0.0000747
-##  -0.035037  0.0942287
-##  -0.089566  0.0533631
-##  -0.069957  0.1537555
-##  -0.121090  0.1051817
-##  -0.052095  0.0863542
-##  -0.060151  0.0951247
-##  -0.124779  0.0731994
-##  -0.116619  0.2043176
-##  -0.136989  0.1993671
-##  -0.117143  0.3504295
-##  -0.053880 -0.0160850
-##  -0.003474  0.0349641
-##  -0.050131  0.0866863
-##  -0.055417  0.0788756
-##  -0.060229  0.0923722
-##  -0.086350  0.0951308
+##  -0.087915 -0.0185632
+##  -0.008443  0.0003932
+##  -0.004309  0.0444150
+##  -0.097348  0.0810383
+##  -0.115504  0.0759017
+##  -0.141252  0.0520975
+##  -0.003269  0.0096171
+##  -0.134749  0.4351190
+##  -0.216575  0.0938970
+##  -0.097153  0.4190933
+##  -0.180595  0.2526498
+##  -0.149803  0.2901470
+##  -0.128237  0.1211678
+##  -0.111126  0.1123430
+##  -0.160692  0.0805917
+##  -0.132528  0.0944214
+##  -0.149518  0.0938309
+##  -0.118164  0.2239337
+##  -0.000169  0.0000674
+##  -0.037816  0.0929795
+##  -0.094086  0.0594855
+##  -0.068596  0.1545518
+##  -0.118038  0.1052697
+##  -0.054338  0.0841272
+##  -0.062344  0.0974057
+##  -0.120808  0.0699528
+##  -0.113646  0.2052994
+##  -0.134656  0.2176356
+##  -0.117400  0.3504879
+##  -0.054615 -0.0171076
+##  -0.001640  0.0354629
+##  -0.048474  0.0886516
+##  -0.057103  0.0796342
+##  -0.062845  0.0903882
+##  -0.089105  0.0992139
 ## 
 ## Columns: term, contrast, estimate, conf.low, conf.high</code></pre>
 </div>
@@ -696,195 +653,77 @@ print(ame_sum, nrow = 100000)</code></pre>
 ##  rel_dur_factor        
 ##  rel_dur_factor        
 ##                                                       Contrast   Estimate
-##  mean(dY/dX)                                                   -0.0612932
-##  mean(dY/dX)                                                   -0.0044771
-##  mean(dY/dX)                                                    0.0100587
-##  mean(2-5 times) - mean(No sex or once)                        -0.0190417
-##  mean(6-10 times) - mean(No sex or once)                       -0.0258308
-##  mean(11 or more times) - mean(No sex or once)                 -0.0567287
-##  mean(dY/dX)                                                    0.0020795
-##  mean(7th/8th grade) - mean(5th/6th grade)                      0.0716040
-##  mean(9th grade) - mean(5th/6th grade)                         -0.0935778
-##  mean(10th grade) - mean(5th/6th grade)                         0.1023856
-##  mean(11th grade) - mean(5th/6th grade)                        -0.0333036
-##  mean(12th grade / no diploma) - mean(5th/6th grade)            0.0410614
-##  mean(high school diploma or equivalent) - mean(5th/6th grade)  0.0117735
-##  mean(some college, no degree) - mean(5th/6th grade)            0.0126344
-##  mean(associate degree) - mean(5th/6th grade)                  -0.0307855
-##  mean(bachelors degree) - mean(5th/6th grade)                  -0.0009417
-##  mean(masters degree) - mean(5th/6th grade)                    -0.0074575
-##  mean(professional or doctoral degree) - mean(5th/6th grade)    0.0497214
-##  mean(dY/dX)                                                   -0.0000701
-##  mean(Yes) - mean(No)                                           0.0244680
-##  mean(Yes) - mean(No)                                          -0.0003161
-##  mean(Yes) - mean(No)                                           0.0265352
-##  mean(Yes) - mean(No)                                           0.0248335
-##  mean(1) - mean(0)                                              0.0168230
-##  mean(2) - mean(0)                                              0.0110243
-##  mean(3) - mean(0)                                             -0.0142345
-##  mean(4 or more) - mean(0)                                      0.0019624
-##  mean(Yes) - mean(No)                                          -0.0159427
-##  mean(Yes) - mean(No)                                          -0.0195913
-##  mean(dY/dX)                                                   -0.0339084
-##  mean(dY/dX)                                                    0.0171379
-##  mean(0q-25q) - mean(Single)                                    0.0305319
-##  mean(26q-50q) - mean(Single)                                   0.0159970
-##  mean(51q-75q) - mean(Single)                                   0.0231564
-##  mean(76q-100q) - mean(Single)                                  0.0079374
+##  mean(dY/dX)                                                   -0.0604481
+##  mean(dY/dX)                                                   -0.0045121
+##  mean(dY/dX)                                                    0.0096393
+##  mean(2-5 times) - mean(No sex or once)                        -0.0189878
+##  mean(6-10 times) - mean(No sex or once)                       -0.0236094
+##  mean(11 or more times) - mean(No sex or once)                 -0.0553308
+##  mean(dY/dX)                                                    0.0020225
+##  mean(7th/8th grade) - mean(5th/6th grade)                      0.0718055
+##  mean(9th grade) - mean(5th/6th grade)                         -0.0935066
+##  mean(10th grade) - mean(5th/6th grade)                         0.1014071
+##  mean(11th grade) - mean(5th/6th grade)                        -0.0335270
+##  mean(12th grade / no diploma) - mean(5th/6th grade)            0.0421494
+##  mean(high school diploma or equivalent) - mean(5th/6th grade)  0.0110155
+##  mean(some college, no degree) - mean(5th/6th grade)            0.0116904
+##  mean(associate degree) - mean(5th/6th grade)                  -0.0317269
+##  mean(bachelors degree) - mean(5th/6th grade)                  -0.0025632
+##  mean(masters degree) - mean(5th/6th grade)                    -0.0078063
+##  mean(professional or doctoral degree) - mean(5th/6th grade)    0.0479784
+##  mean(dY/dX)                                                   -0.0000695
+##  mean(Yes) - mean(No)                                           0.0245429
+##  mean(Yes) - mean(No)                                           0.0004711
+##  mean(Yes) - mean(No)                                           0.0267885
+##  mean(Yes) - mean(No)                                           0.0248855
+##  mean(1) - mean(0)                                              0.0172509
+##  mean(2) - mean(0)                                              0.0107778
+##  mean(3) - mean(0)                                             -0.0135394
+##  mean(4 or more) - mean(0)                                      0.0025691
+##  mean(Yes) - mean(No)                                          -0.0158552
+##  mean(Yes) - mean(No)                                          -0.0206998
+##  mean(dY/dX)                                                   -0.0345553
+##  mean(dY/dX)                                                    0.0168179
+##  mean(0q-25q) - mean(Single)                                    0.0304203
+##  mean(26q-50q) - mean(Single)                                   0.0168272
+##  mean(51q-75q) - mean(Single)                                   0.0242039
+##  mean(76q-100q) - mean(Single)                                  0.0058839
 ##      0.2 %     99.8 %
-##  -0.093936 -0.0290955
-##  -0.008368 -0.0001942
-##  -0.011112  0.0307700
-##  -0.094460  0.0447234
-##  -0.107144  0.0452200
-##  -0.137128  0.0198151
-##  -0.003780  0.0078878
-##  -0.132534  0.4231380
-##  -0.222123  0.0931347
-##  -0.105975  0.4037674
-##  -0.196454  0.2114359
-##  -0.140815  0.3090514
-##  -0.122626  0.1180776
-##  -0.116916  0.1089378
-##  -0.161662  0.0725919
-##  -0.131148  0.0932612
-##  -0.144026  0.1007457
-##  -0.112782  0.2356852
-##  -0.000194  0.0000451
-##  -0.035299  0.0857928
-##  -0.063944  0.0818312
-##  -0.068562  0.1394526
-##  -0.101862  0.1035475
-##  -0.046886  0.0869323
-##  -0.059162  0.0931227
-##  -0.102339  0.1153608
-##  -0.116444  0.2080282
-##  -0.125142  0.2001037
-##  -0.129041  0.2370453
-##  -0.049730 -0.0164701
-##  -0.000410  0.0339101
-##  -0.032792  0.0952897
-##  -0.047603  0.0804696
-##  -0.045666  0.0975415
-##  -0.076454  0.1029274
-## 
-## Columns: term, contrast, estimate, conf.low, conf.high</code></pre>
-</div>
-<div id="r3-2" class="section level3">
-<h3>R3</h3>
-<pre class="r"><code>#average marginal effect
-ame &lt;- marginaleffects(R3_sa_m4)
-ame_sum &lt;- summary(ame, conf_level = .997)
-print(ame_sum, nrow = 100000)</code></pre>
-<pre><code>## 
-##                    Term
-##  contra_satis          
-##  hc_dur                
-##  sexual_satisfaction   
-##  sex_freq              
-##  sex_freq              
-##  sex_freq              
-##  AGE                   
-##  DEGREE_recode         
-##  DEGREE_recode         
-##  DEGREE_recode         
-##  DEGREE_recode         
-##  DEGREE_recode         
-##  DEGREE_recode         
-##  DEGREE_recode         
-##  DEGREE_recode         
-##  DEGREE_recode         
-##  DEGREE_recode         
-##  DEGREE_recode         
-##  POVRATE               
-##  HLTHPROB_recode       
-##  MEDPROB_recode        
-##  GAPINS_recode         
-##  TYPEINS_recode        
-##  NKIDS_t1              
-##  NKIDS_t1              
-##  NKIDS_t1              
-##  NKIDS_t1              
-##  pregnant_between_waves
-##  had_baby_between_waves
-##  Avoid_r               
-##  FEELPG_recode         
-##  rel_dur_factor        
-##  rel_dur_factor        
-##  rel_dur_factor        
-##  rel_dur_factor        
-##                                                       Contrast   Estimate
-##  mean(dY/dX)                                                   -0.0604447
-##  mean(dY/dX)                                                   -0.0045115
-##  mean(dY/dX)                                                    0.0097583
-##  mean(2-5 times) - mean(No sex or once)                        -0.0188526
-##  mean(6-10 times) - mean(No sex or once)                       -0.0239110
-##  mean(11 or more times) - mean(No sex or once)                 -0.0554893
-##  mean(dY/dX)                                                    0.0020359
-##  mean(7th/8th grade) - mean(5th/6th grade)                      0.0724468
-##  mean(9th grade) - mean(5th/6th grade)                         -0.0927983
-##  mean(10th grade) - mean(5th/6th grade)                         0.1008003
-##  mean(11th grade) - mean(5th/6th grade)                        -0.0340672
-##  mean(12th grade / no diploma) - mean(5th/6th grade)            0.0408257
-##  mean(high school diploma or equivalent) - mean(5th/6th grade)  0.0108774
-##  mean(some college, no degree) - mean(5th/6th grade)            0.0130213
-##  mean(associate degree) - mean(5th/6th grade)                  -0.0308842
-##  mean(bachelors degree) - mean(5th/6th grade)                  -0.0021714
-##  mean(masters degree) - mean(5th/6th grade)                    -0.0073228
-##  mean(professional or doctoral degree) - mean(5th/6th grade)    0.0491192
-##  mean(dY/dX)                                                   -0.0000698
-##  mean(Yes) - mean(No)                                           0.0246408
-##  mean(Yes) - mean(No)                                           0.0000746
-##  mean(Yes) - mean(No)                                           0.0258560
-##  mean(Yes) - mean(No)                                           0.0241570
-##  mean(1) - mean(0)                                              0.0172147
-##  mean(2) - mean(0)                                              0.0107595
-##  mean(3) - mean(0)                                             -0.0142110
-##  mean(4 or more) - mean(0)                                      0.0040096
-##  mean(Yes) - mean(No)                                          -0.0154252
-##  mean(Yes) - mean(No)                                          -0.0197889
-##  mean(dY/dX)                                                   -0.0345983
-##  mean(dY/dX)                                                    0.0166863
-##  mean(0q-25q) - mean(Single)                                    0.0303888
-##  mean(26q-50q) - mean(Single)                                   0.0162773
-##  mean(51q-75q) - mean(Single)                                   0.0238152
-##  mean(76q-100q) - mean(Single)                                  0.0046809
-##      0.2 %     99.8 %
-##  -0.091321 -0.0267809
-##  -0.008657 -0.0002821
-##  -0.010867  0.0311473
-##  -0.089699  0.0432385
-##  -0.100945  0.0471349
-##  -0.134547  0.0192400
-##  -0.004131  0.0081315
-##  -0.134096  0.4219589
-##  -0.221877  0.0901681
-##  -0.102928  0.4224075
-##  -0.184405  0.2154417
-##  -0.127908  0.3335162
-##  -0.111818  0.1183832
-##  -0.112329  0.1076183
-##  -0.154349  0.0763794
-##  -0.126710  0.0899508
-##  -0.137742  0.1010252
-##  -0.114038  0.2284180
-##  -0.000190  0.0000417
-##  -0.030033  0.0879799
-##  -0.067577  0.0805344
-##  -0.065848  0.1454417
-##  -0.102699  0.1067784
-##  -0.041667  0.0905030
-##  -0.057098  0.0941320
-##  -0.097135  0.1142768
-##  -0.115286  0.2095989
-##  -0.126964  0.2123120
-##  -0.131802  0.2251453
-##  -0.051639 -0.0180087
-##  -0.000388  0.0344908
-##  -0.034454  0.0931728
-##  -0.044601  0.0835848
-##  -0.047401  0.0981101
-##  -0.075826  0.0987164
+##  -0.091652 -0.0279965
+##  -0.008746  0.0000580
+##  -0.011480  0.0298151
+##  -0.093036  0.0450575
+##  -0.104640  0.0486184
+##  -0.139053  0.0209125
+##  -0.003772  0.0080221
+##  -0.139071  0.4278361
+##  -0.217884  0.0920685
+##  -0.106553  0.4008107
+##  -0.180202  0.2145281
+##  -0.141058  0.3137386
+##  -0.119055  0.1165033
+##  -0.116249  0.1082562
+##  -0.161390  0.0715591
+##  -0.129510  0.0857011
+##  -0.137268  0.0994733
+##  -0.104595  0.2278434
+##  -0.000192  0.0000405
+##  -0.033441  0.0901847
+##  -0.064954  0.0828862
+##  -0.065384  0.1422294
+##  -0.103793  0.1062916
+##  -0.044460  0.0884663
+##  -0.056906  0.0907924
+##  -0.099372  0.1103044
+##  -0.112468  0.2172076
+##  -0.122756  0.2105372
+##  -0.131102  0.2425617
+##  -0.051218 -0.0175978
+##  -0.000839  0.0342181
+##  -0.031070  0.0954797
+##  -0.048503  0.0828690
+##  -0.044925  0.1001486
+##  -0.074702  0.0959698
 ## 
 ## Columns: term, contrast, estimate, conf.low, conf.high</code></pre>
 </div>
