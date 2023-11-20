@@ -5,7 +5,7 @@ date: "24 1 2022"
 output: html_document
 ---
 
-#Introduction for working code:
+# Introduction for working code:
 
 0. Download the Code from Github. The new downloaded folder hc_switch_cccu-main contains the R project, Rmd Code, created data frames, knitted Html Code, Figures as .pdf and.jpg, Preregistered synthetic Code, and a folder to store the downloaded RData called RData.
 
@@ -44,14 +44,14 @@ All relevant packages and versions can be seen in the section "Analyses"
 
 4. Run  the Code :) 
 
-#1. load Data
+# 1. load Data
 ```{r}
 load("cccu_MA.RData")
 load("cccu_excluded.RData")
 ```
 
 
-#2. Load Packages
+# 2. Load Packages
 ```{r}
 library(psych)
 library(dplyr)
@@ -63,8 +63,8 @@ library(Hmisc)
 ```
 
 
-#3. Participants
-##filter values for waves
+# 3. Participants
+## filter values for waves
 
 ```{r}
 cccu_MA_t1 <- cccu_MA%>%
@@ -79,7 +79,8 @@ cccu_MA_t3 <- cccu_MA%>%
 cccu_MA_t4 <- cccu_MA%>%
   filter(WAVE == "t4")
 ```
-##hormonal vs. non hormonal contraception 
+
+## hormonal vs. non hormonal contraception 
 ```{r}
 table(cccu_MA_t1$hc)#IUD & non_hc should be zero bc of exclusion - yes
 1032/1723
@@ -127,13 +128,14 @@ table(cccu_MA_t1_non_hc$NOBARRIER)
 
 ```
 
-##Age
+## Age
 ```{r}
 #as.numeric
 psych::describe(cccu_MA_t1$AGE)
 table(cccu_MA_t1$AGE)
 ```
-##Ethnicity
+
+## Ethnicity
 
 ```{r}
 table(cccu_MA_t1$Ethnicity)
@@ -144,7 +146,7 @@ table(cccu_MA_t1$Ethnicity)
 ```
 
 
-##Degree
+## Degree
 ```{r}
 table(cccu_MA_t1$DEGREE_recode)
 
@@ -153,7 +155,8 @@ table(cccu_MA_t1$DEGREE_recode)
 
 
 ```
-##Employment Status
+
+## Employment Status
 ```{r}
 table(cccu_MA_t1$Employment_status)
 1078/1723
@@ -168,7 +171,7 @@ table(cccu_MA_t1$Employment_status)
 ```
 
 
-##Relationship Status & Duration
+## Relationship Status & Duration
 
 ```{r}
 #status
@@ -187,7 +190,7 @@ describe(cccu_MA_t1$rel_dur_months)
 ```
 
 
-##Region and State
+## Region and State
 ```{r}
 #region
 table(cccu_MA_t1$Region_recode)
@@ -200,7 +203,7 @@ table(cccu_MA_t1$state_recode)
 
 
 
-##Number of Kids
+## Number of Kids
 ```{r}
 table(cccu_MA_t1$NKIDS_t1)
 
@@ -211,7 +214,7 @@ table(cccu_MA_t1$NKIDS_t1)
 ```
 
 
-##Type of Insurance
+## Type of Insurance
 ```{r}
 table(cccu_MA_t1$TYPEINS)
 table(cccu_MA_t1$TYPEINS_recode)
@@ -220,12 +223,12 @@ table(cccu_MA_t1$TYPEINS_recode)
 ```
 
 
-##Income
+## Income
 ```{r}
 table(cccu_MA_t1$Income)
 ```
 
-##POVRATE
+## POVRATE
 ```{r}
 psych::describe(cccu_MA_t1$POVRATE)
 table(cccu_MA_t1$POVRATE)
@@ -234,14 +237,14 @@ table(cccu_MA_t1$POVRATE)
 ```
 
 
-#Comparision included to excluded sample 
+# Comparison included to excluded sample 
 ```{r}
 comp_inex = rbind(cccu_MA %>% mutate(exclude = "no"),
                      cccu_excluded %>% mutate(exclude = "yes"))
 table(comp_inex$exclude)
 ```
 
-##hc use
+## hc use
 ```{r}
 table(comp_inex$hc)
 table(is.na(comp_inex$hc))
@@ -275,7 +278,7 @@ table(is.na(cccu_excluded$hc))/6452
 ```
 
 
-##contraceptive satisfation
+## contraceptive satisfation
 ```{r}
 t.test(comp_inex$contra_satis ~ comp_inex$exclude,
        alternative = 'two.sided',
@@ -290,7 +293,7 @@ psych::describe(cccu_excluded$contra_satis)
 ```
 
 
-##sexual frequency
+## sexual frequency
 ```{r}
 
 chisq.test(comp_inex$sex_freq, comp_inex$exclude, correct=FALSE)
@@ -311,7 +314,7 @@ table(is.na(cccu_excluded$sex_freq))/6452
 ```
 
 
-##sexual satisfaction 
+## sexual satisfaction 
 ```{r}
 t.test(comp_inex$sexual_satisfaction ~ comp_inex$exclude,
        alternative = 'two.sided',
@@ -326,7 +329,7 @@ psych::describe(cccu_excluded$sexual_satisfaction)
 ```
 
 
-##Age
+## Age
 ```{r}
 t.test(comp_inex$AGE ~ comp_inex$exclude,
        alternative = 'two.sided',
@@ -340,7 +343,7 @@ psych::describe(cccu_excluded$AGE)
 ```
 
 
-##Degree
+## Degree
 ```{r}
 chisq.test(comp_inex$DEGREE_recode, comp_inex$exclude, correct=FALSE)
 cramersV(comp_inex$DEGREE_recode,comp_inex$exclude)
@@ -359,7 +362,7 @@ table(is.na(cccu_excluded$DEGREE_recode))/6452
 ```
 
 
-##Poverty
+## Poverty
 ```{r}
 t.test(comp_inex$POVRATE ~ comp_inex$exclude,
        alternative = 'two.sided',
@@ -373,7 +376,7 @@ psych::describe(cccu_excluded$POVRATE)
 ```
 
 
-##Health problems
+## Health problems
 ```{r}
 chisq.test(comp_inex$HLTHPROB_recode, comp_inex$exclude, correct=FALSE)
 cramersV(comp_inex$HLTHPROB_recode,comp_inex$exclude)
@@ -391,7 +394,7 @@ table(is.na(cccu_excluded$HLTHPROB_recode))/6452
 ```
 
 
-##medical problems
+## medical problems
 ```{r}
 chisq.test(comp_inex$MEDPROB_recode, comp_inex$exclude, correct=FALSE)
 
@@ -410,7 +413,7 @@ table(is.na(cccu_excluded$MEDPROB_recode))/6452
 ```
 
 
-##gaps in insurance
+## gaps in insurance
 ```{r}
 chisq.test(comp_inex$GAPINS_recode, comp_inex$exclude, correct=FALSE)
 cramersV(comp_inex$GAPINS_recode,comp_inex$exclude)
@@ -427,7 +430,7 @@ table(is.na(cccu_excluded$MEDPROB_recode))
 table(is.na(cccu_excluded$MEDPROB_recode))/6452
 ```
 
-##insuranced?
+## insuranced?
 ```{r}
 chisq.test(comp_inex$TYPEINS_recode, comp_inex$exclude, correct=FALSE)
 cramersV(comp_inex$TYPEINS_recode,comp_inex$exclude)
@@ -446,7 +449,7 @@ table(is.na(cccu_excluded$TYPEINS_recode))/6452
 ```
 
 
-##number of kids at t1
+## number of kids at t1
 ```{r}
 chisq.test(comp_inex$NKIDS_t1, comp_inex$exclude, correct=FALSE)
 cramersV(comp_inex$NKIDS_t1,comp_inex$exclude)
@@ -465,7 +468,7 @@ table(is.na(cccu_excluded$NKIDS_t1))/6452
 ```
 
 
-##pregnant between waves
+## pregnant between waves
 ```{r}
 chisq.test(comp_inex$pregnant_between_waves, comp_inex$exclude, correct=FALSE)
 cramersV(comp_inex$pregnant_between_waves,comp_inex$exclude)
@@ -484,7 +487,7 @@ table(is.na(cccu_excluded$pregnant_between_waves))/6452
 
 ```
 
-##had baby between waves
+## had baby between waves
 ```{r}
 chisq.test(comp_inex$had_baby_between_waves, comp_inex$exclude, correct=FALSE)
 cramersV(comp_inex$had_baby_between_waves,comp_inex$exclude)
@@ -502,7 +505,7 @@ table(is.na(cccu_excluded$had_baby_between_waves))/6452
 ```
 
 
-##avoidance
+## avoidance
 ```{r}
 t.test(comp_inex$Avoid_r ~ comp_inex$exclude,
        alternative = 'two.sided',
@@ -517,7 +520,7 @@ psych::describe(cccu_excluded$Avoid_r)
 ```
 
 
-##feelings about pregnancy
+## feelings about pregnancy
 ```{r}
 t.test(comp_inex$FEELPG_recode ~ comp_inex$exclude,
        alternative = 'two.sided',
@@ -530,7 +533,7 @@ psych::describe(cccu_excluded$FEELPG_recode)
 ```
 
 
-##relationship duration
+## relationship duration
 ```{r}
 
 chisq.test(comp_inex$rel_dur_factor, comp_inex$exclude, correct=FALSE)
@@ -549,8 +552,8 @@ table(is.na(cccu_excluded$rel_dur_factor))/6452
 ```
 
 
-#4. Descriptives of Variables
-##t1
+# 4. Descriptives of Variables
+## t1
 ```{r}
 cccu_MA_t1_descriptives <- cccu_MA_t1 %>%
   select(
@@ -590,7 +593,7 @@ table(cccu_MA_t1_descriptives$had_baby_between_waves)
 table(cccu_MA_t1_descriptives$rel_dur_factor)
 
 ```
-##t2
+## t2
 ```{r}
 cccu_MA_t2_descriptives <- cccu_MA_t2 %>%
   select(
@@ -632,7 +635,7 @@ table(cccu_MA_t2_descriptives$rel_dur_factor)
 
 ```
 
-##t3
+## t3
 ```{r}
 cccu_MA_t3_descriptives <- cccu_MA_t3 %>%
   select(

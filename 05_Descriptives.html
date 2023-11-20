@@ -356,7 +356,8 @@ display: none;
 </div>
 
 
-<p>#Introduction for working code:</p>
+<div id="introduction-for-working-code" class="section level1">
+<h1>Introduction for working code:</h1>
 <ol start="0" style="list-style-type: decimal">
 <li>Download the Code from Github. The new downloaded folder
 hc_switch_cccu-main contains the R project, Rmd Code, created data
@@ -402,10 +403,14 @@ code!</li>
 09_ so that all data frames are created appropriately</p></li>
 <li><p>Run the Code :)</p></li>
 </ol>
-<p>#1. load Data</p>
+</div>
+<div id="load-data" class="section level1">
+<h1>1. load Data</h1>
 <pre class="r"><code>load(&quot;cccu_MA.RData&quot;)
 load(&quot;cccu_excluded.RData&quot;)</code></pre>
-<p>#2. Load Packages</p>
+</div>
+<div id="load-packages" class="section level1">
+<h1>2. Load Packages</h1>
 <pre class="r"><code>library(psych)
 library(dplyr)</code></pre>
 <pre><code>## 
@@ -438,7 +443,11 @@ library(Hmisc)</code></pre>
 <pre><code>## Die folgenden Objekte sind maskiert von &#39;package:base&#39;:
 ## 
 ##     format.pval, units</code></pre>
-<p>#3. Participants ##filter values for waves</p>
+</div>
+<div id="participants" class="section level1">
+<h1>3. Participants</h1>
+<div id="filter-values-for-waves" class="section level2">
+<h2>filter values for waves</h2>
 <pre class="r"><code>cccu_MA_t1 &lt;- cccu_MA%&gt;%
   filter(WAVE == &quot;t1&quot;)
 
@@ -450,7 +459,9 @@ cccu_MA_t3 &lt;- cccu_MA%&gt;%
 
 cccu_MA_t4 &lt;- cccu_MA%&gt;%
   filter(WAVE == &quot;t4&quot;)</code></pre>
-<p>##hormonal vs. non hormonal contraception</p>
+</div>
+<div id="hormonal-vs.-non-hormonal-contraception" class="section level2">
+<h2>hormonal vs. non hormonal contraception</h2>
 <pre class="r"><code>table(cccu_MA_t1$hc)#IUD &amp; non_hc should be zero bc of exclusion - yes</code></pre>
 <pre><code>## 
 ##         hc     non_hc IUD&amp;non_hc 
@@ -548,7 +559,9 @@ table(cccu_MA_t1_non_hc$CONDOMR) # sum is n of non-hc users = 691</code></pre>
 <pre><code>## 
 ##  (0) No (1) Yes 
 ##     670       0</code></pre>
-<p>##Age</p>
+</div>
+<div id="age" class="section level2">
+<h2>Age</h2>
 <pre class="r"><code>#as.numeric
 psych::describe(cccu_MA_t1$AGE)</code></pre>
 <pre><code>##    vars    n  mean   sd median trimmed  mad min max range skew kurtosis   se
@@ -559,7 +572,9 @@ psych::describe(cccu_MA_t1$AGE)</code></pre>
 ##  10  27  42  68  78 118 129 154 117 113 139 123  79  73  54  71  68  57  59  43 
 ##  38  39 
 ##  54  47</code></pre>
-<p>##Ethnicity</p>
+</div>
+<div id="ethnicity" class="section level2">
+<h2>Ethnicity</h2>
 <pre class="r"><code>table(cccu_MA_t1$Ethnicity)</code></pre>
 <pre><code>## 
 ##    White, Non-Hispanic    Black, Non-Hispanic    Other, Non-Hispanic 
@@ -570,7 +585,9 @@ psych::describe(cccu_MA_t1$AGE)</code></pre>
 <pre><code>## [1] 0.6784678</code></pre>
 <pre class="r"><code>275/1723</code></pre>
 <pre><code>## [1] 0.1596053</code></pre>
-<p>##Degree</p>
+</div>
+<div id="degree" class="section level2">
+<h2>Degree</h2>
 <pre class="r"><code>table(cccu_MA_t1$DEGREE_recode)</code></pre>
 <pre><code>## 
 ##               no formal education                  1st to 4th grade 
@@ -591,7 +608,9 @@ psych::describe(cccu_MA_t1$AGE)</code></pre>
 <pre><code>## [1] 0.3464887</code></pre>
 <pre class="r"><code>432/1723</code></pre>
 <pre><code>## [1] 0.2507255</code></pre>
-<p>##Employment Status</p>
+</div>
+<div id="employment-status" class="section level2">
+<h2>Employment Status</h2>
 <pre class="r"><code>table(cccu_MA_t1$Employment_status)</code></pre>
 <pre><code>## 
 ##                 Working - as a paid employee 
@@ -624,7 +643,9 @@ psych::describe(cccu_MA_t1$AGE)</code></pre>
 <pre><code>## [1] 0.6028369</code></pre>
 <pre class="r"><code>12+186+26+340</code></pre>
 <pre><code>## [1] 564</code></pre>
-<p>##Relationship Status &amp; Duration</p>
+</div>
+<div id="relationship-status-duration" class="section level2">
+<h2>Relationship Status &amp; Duration</h2>
 <pre class="r"><code>#status
 table(cccu_MA_t1$partnered)</code></pre>
 <pre><code>## 
@@ -688,7 +709,9 @@ table(cccu_MA_t1$rel_dur)</code></pre>
 ## Proportion 0.066
 ## 
 ## For the frequency table, variable is rounded to the nearest 0.11</code></pre>
-<p>##Region and State</p>
+</div>
+<div id="region-and-state" class="section level2">
+<h2>Region and State</h2>
 <pre class="r"><code>#region
 table(cccu_MA_t1$Region_recode)</code></pre>
 <pre><code>## 
@@ -721,7 +744,9 @@ table(cccu_MA_t1$state_recode)</code></pre>
 ##              2             20             11             27             37 
 ##     Washington         Oregon     California         Alaska         Hawaii 
 ##             44             34            229              3              2</code></pre>
-<p>##Number of Kids</p>
+</div>
+<div id="number-of-kids" class="section level2">
+<h2>Number of Kids</h2>
 <pre class="r"><code>table(cccu_MA_t1$NKIDS_t1)</code></pre>
 <pre><code>## 
 ##         0         1         2         3 4 or more 
@@ -732,7 +757,9 @@ table(cccu_MA_t1$state_recode)</code></pre>
 <pre><code>## [1] 0.190946</code></pre>
 <pre class="r"><code>304/1723</code></pre>
 <pre><code>## [1] 0.1764364</code></pre>
-<p>##Type of Insurance</p>
+</div>
+<div id="type-of-insurance" class="section level2">
+<h2>Type of Insurance</h2>
 <pre class="r"><code>table(cccu_MA_t1$TYPEINS)</code></pre>
 <pre><code>## 
 ##                                                                                                                 (-1) Refused 
@@ -761,7 +788,9 @@ table(cccu_MA_t1$state_recode)</code></pre>
 ##  267 1456</code></pre>
 <pre class="r"><code>1456/1723</code></pre>
 <pre><code>## [1] 0.8450377</code></pre>
-<p>##Income</p>
+</div>
+<div id="income" class="section level2">
+<h2>Income</h2>
 <pre class="r"><code>table(cccu_MA_t1$Income)</code></pre>
 <pre><code>## 
 ##     Less than $5,000     $5,000 to $7,499     $7,500 to $9,999 
@@ -778,7 +807,9 @@ table(cccu_MA_t1$state_recode)</code></pre>
 ##                  106                   56                   37 
 ##     $175,000 or more 
 ##                   40</code></pre>
-<p>##POVRATE</p>
+</div>
+<div id="povrate" class="section level2">
+<h2>POVRATE</h2>
 <pre class="r"><code>psych::describe(cccu_MA_t1$POVRATE)</code></pre>
 <pre><code>##    vars    n  mean  sd median trimmed    mad min  max range skew kurtosis   se
 ## X1    1 1723 313.7 232    250  285.47 212.01  14 1455  1441 1.13     1.23 5.59</code></pre>
@@ -804,14 +835,18 @@ table(cccu_MA_t1$state_recode)</code></pre>
 ##   18   36   14    8   10   18   11    3   10    8    1    1</code></pre>
 <pre class="r"><code>(2 +   3  +  1  +  4  +  3   +13 +   3 +   1 +  15  +  7 +   1 +   1  +  2+   21    +1    +1 +  12 +   1 +   7 + 4   + 2  + 11 +  11  +  7   + 1 +   5+    8  +  4 +  11  + 16  + 11 +   4  +  3 +   3 +  16 +   1  + 14   +18 + 4  +  1 +  10+    1  +  9  +  9  + 14 +   3+   13)/1723</code></pre>
 <pre><code>## [1] 0.1816599</code></pre>
-<p>#Comparision included to excluded sample</p>
+</div>
+</div>
+<div id="comparison-included-to-excluded-sample" class="section level1">
+<h1>Comparison included to excluded sample</h1>
 <pre class="r"><code>comp_inex = rbind(cccu_MA %&gt;% mutate(exclude = &quot;no&quot;),
                      cccu_excluded %&gt;% mutate(exclude = &quot;yes&quot;))
 table(comp_inex$exclude)</code></pre>
 <pre><code>## 
 ##   no  yes 
 ## 3787 6452</code></pre>
-<p>##hc use</p>
+<div id="hc-use" class="section level2">
+<h2>hc use</h2>
 <pre class="r"><code>table(comp_inex$hc)</code></pre>
 <pre><code>## 
 ##         hc     non_hc IUD&amp;non_hc 
@@ -879,7 +914,9 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## 
 ## FALSE 
 ##     1</code></pre>
-<p>##contraceptive satisfation</p>
+</div>
+<div id="contraceptive-satisfation" class="section level2">
+<h2>contraceptive satisfation</h2>
 <pre class="r"><code>t.test(comp_inex$contra_satis ~ comp_inex$exclude,
        alternative = &#39;two.sided&#39;,
        paired = FALSE,
@@ -906,7 +943,9 @@ table(comp_inex$hc)</code></pre>
 <pre class="r"><code>psych::describe(cccu_excluded$contra_satis)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed mad min max range  skew kurtosis   se
 ## X1    1 2845 3.42 0.75      4    3.56   0   1   4     3 -1.24     1.13 0.01</code></pre>
-<p>##sexual frequency</p>
+</div>
+<div id="sexual-frequency" class="section level2">
+<h2>sexual frequency</h2>
 <pre class="r"><code>chisq.test(comp_inex$sex_freq, comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test
@@ -953,7 +992,9 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## 
 ##      FALSE       TRUE 
 ## 0.98047117 0.01952883</code></pre>
-<p>##sexual satisfaction</p>
+</div>
+<div id="sexual-satisfaction" class="section level2">
+<h2>sexual satisfaction</h2>
 <pre class="r"><code>t.test(comp_inex$sexual_satisfaction ~ comp_inex$exclude,
        alternative = &#39;two.sided&#39;,
        paired = FALSE,
@@ -980,7 +1021,9 @@ table(comp_inex$hc)</code></pre>
 <pre class="r"><code>psych::describe(cccu_excluded$sexual_satisfaction)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
 ## X1    1 4832 4.91 1.32      5    5.14 1.48   1   6     5 -1.19     0.68 0.02</code></pre>
-<p>##Age</p>
+</div>
+<div id="age-1" class="section level2">
+<h2>Age</h2>
 <pre class="r"><code>t.test(comp_inex$AGE ~ comp_inex$exclude,
        alternative = &#39;two.sided&#39;,
        paired = FALSE,
@@ -1007,7 +1050,9 @@ table(comp_inex$hc)</code></pre>
 <pre class="r"><code>psych::describe(cccu_excluded$AGE)</code></pre>
 <pre><code>##    vars    n  mean   sd median trimmed  mad min max range skew kurtosis   se
 ## X1    1 6452 28.64 5.35     28    28.5 5.93  18  39    21 0.22     -0.9 0.07</code></pre>
-<p>##Degree</p>
+</div>
+<div id="degree-1" class="section level2">
+<h2>Degree</h2>
 <pre class="r"><code>chisq.test(comp_inex$DEGREE_recode, comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## Warning in chisq.test(comp_inex$DEGREE_recode, comp_inex$exclude, correct =
 ## FALSE): Chi-Quadrat-Approximation kann inkorrekt sein</code></pre>
@@ -1102,7 +1147,9 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## 
 ## FALSE 
 ##     1</code></pre>
-<p>##Poverty</p>
+</div>
+<div id="poverty" class="section level2">
+<h2>Poverty</h2>
 <pre class="r"><code>t.test(comp_inex$POVRATE ~ comp_inex$exclude,
        alternative = &#39;two.sided&#39;,
        paired = FALSE,
@@ -1133,7 +1180,9 @@ table(comp_inex$hc)</code></pre>
 ## X1    1 6452 271.12 220.72    215  239.84 186.81  13 1576  1563 1.52     3.12
 ##      se
 ## X1 2.75</code></pre>
-<p>##Health problems</p>
+</div>
+<div id="health-problems" class="section level2">
+<h2>Health problems</h2>
 <pre class="r"><code>chisq.test(comp_inex$HLTHPROB_recode, comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test
@@ -1178,7 +1227,9 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## 
 ##      FALSE       TRUE 
 ## 0.91072536 0.08927464</code></pre>
-<p>##medical problems</p>
+</div>
+<div id="medical-problems" class="section level2">
+<h2>medical problems</h2>
 <pre class="r"><code>chisq.test(comp_inex$MEDPROB_recode, comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test
@@ -1223,7 +1274,9 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## 
 ## FALSE 
 ##     1</code></pre>
-<p>##gaps in insurance</p>
+</div>
+<div id="gaps-in-insurance" class="section level2">
+<h2>gaps in insurance</h2>
 <pre class="r"><code>chisq.test(comp_inex$GAPINS_recode, comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test
@@ -1268,7 +1321,9 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## 
 ## FALSE 
 ##     1</code></pre>
-<p>##insuranced?</p>
+</div>
+<div id="insuranced" class="section level2">
+<h2>insuranced?</h2>
 <pre class="r"><code>chisq.test(comp_inex$TYPEINS_recode, comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test
@@ -1279,7 +1334,7 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## Cramér&#39;s V =  0.057</code></pre>
 <pre class="r"><code>confIntV(comp_inex$TYPEINS_recode,comp_inex$exclude, conf.level = 0.95)</code></pre>
 <pre><code>## Cramér&#39;s V 95% confidence interval (point estimate = .06):  
-## Bootstrapped: [.04; .07]  
+## Bootstrapped: [.04; .08]  
 ## Using Fisher&#39;s z: [.04; .08]</code></pre>
 <pre class="r"><code>table(cccu_MA$TYPEINS_recode)</code></pre>
 <pre><code>## 
@@ -1313,7 +1368,9 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## 
 ##      FALSE       TRUE 
 ## 0.98636082 0.01363918</code></pre>
-<p>##number of kids at t1</p>
+</div>
+<div id="number-of-kids-at-t1" class="section level2">
+<h2>number of kids at t1</h2>
 <pre class="r"><code>chisq.test(comp_inex$NKIDS_t1, comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test
@@ -1358,7 +1415,9 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## 
 ##      FALSE       TRUE 
 ## 0.99550527 0.00449473</code></pre>
-<p>##pregnant between waves</p>
+</div>
+<div id="pregnant-between-waves" class="section level2">
+<h2>pregnant between waves</h2>
 <pre class="r"><code>chisq.test(comp_inex$pregnant_between_waves, comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test
@@ -1403,7 +1462,9 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## 
 ##       FALSE        TRUE 
 ## 0.994420335 0.005579665</code></pre>
-<p>##had baby between waves</p>
+</div>
+<div id="had-baby-between-waves" class="section level2">
+<h2>had baby between waves</h2>
 <pre class="r"><code>chisq.test(comp_inex$had_baby_between_waves, comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test
@@ -1448,7 +1509,9 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## 
 ##       FALSE        TRUE 
 ## 0.994420335 0.005579665</code></pre>
-<p>##avoidance</p>
+</div>
+<div id="avoidance" class="section level2">
+<h2>avoidance</h2>
 <pre class="r"><code>t.test(comp_inex$Avoid_r ~ comp_inex$exclude,
        alternative = &#39;two.sided&#39;,
        paired = FALSE,
@@ -1468,14 +1531,16 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## # A tibble: 1 × 9
 ##   .y.     group1 group2 effsize    n1    n2 conf.low conf.high magnitude
 ## * &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;    
-## 1 Avoid_r no     yes      0.203  3787  6079     0.17      0.24 small</code></pre>
+## 1 Avoid_r no     yes      0.203  3787  6079     0.16      0.24 small</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA$Avoid_r)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
 ## X1    1 3787 4.78 1.55      5    5.06 1.48   1   6     5 -1.13     0.16 0.03</code></pre>
 <pre class="r"><code>psych::describe(cccu_excluded$Avoid_r)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
 ## X1    1 6079 4.41 1.94      5    4.64 1.48   1   6     5 -0.81    -0.94 0.02</code></pre>
-<p>##feelings about pregnancy</p>
+</div>
+<div id="feelings-about-pregnancy" class="section level2">
+<h2>feelings about pregnancy</h2>
 <pre class="r"><code>t.test(comp_inex$FEELPG_recode ~ comp_inex$exclude,
        alternative = &#39;two.sided&#39;,
        paired = FALSE,
@@ -1495,14 +1560,16 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## # A tibble: 1 × 9
 ##   .y.           group1 group2 effsize    n1    n2 conf.low conf.high magnitude 
 ## * &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;ord&gt;     
-## 1 FEELPG_recode no     yes    -0.0468  3787  6074    -0.09   -0.0041 negligible</code></pre>
+## 1 FEELPG_recode no     yes    -0.0468  3787  6074    -0.09   -0.0083 negligible</code></pre>
 <pre class="r"><code>psych::describe(cccu_MA$FEELPG_recode)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed  mad min max range skew kurtosis   se
 ## X1    1 3787 3.41 1.69      3    3.38 1.48   1   6     5    0    -1.21 0.03</code></pre>
 <pre class="r"><code>psych::describe(cccu_excluded$FEELPG_recode)</code></pre>
 <pre><code>##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
 ## X1    1 6074 3.49 1.85      4    3.49 2.97   1   6     5 -0.01    -1.39 0.02</code></pre>
-<p>##relationship duration</p>
+</div>
+<div id="relationship-duration" class="section level2">
+<h2>relationship duration</h2>
 <pre class="r"><code>chisq.test(comp_inex$rel_dur_factor, comp_inex$exclude, correct=FALSE)</code></pre>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test
@@ -1547,7 +1614,12 @@ table(comp_inex$hc)</code></pre>
 <pre><code>## 
 ## FALSE 
 ##     1</code></pre>
-<p>#4. Descriptives of Variables ##t1</p>
+</div>
+</div>
+<div id="descriptives-of-variables" class="section level1">
+<h1>4. Descriptives of Variables</h1>
+<div id="t1" class="section level2">
+<h2>t1</h2>
 <pre class="r"><code>cccu_MA_t1_descriptives &lt;- cccu_MA_t1 %&gt;%
   select(
     hc, switch, contra_satis, hc_dur,
@@ -1641,7 +1713,9 @@ psych::describe(cccu_MA_t1_descriptives$contra_satis)</code></pre>
 <pre><code>## 
 ##   Single   0q-25q  26q-50q  51q-75q 76q-100q 
 ##      430      358      361      305      269</code></pre>
-<p>##t2</p>
+</div>
+<div id="t2" class="section level2">
+<h2>t2</h2>
 <pre class="r"><code>cccu_MA_t2_descriptives &lt;- cccu_MA_t2 %&gt;%
   select(
     hc, switch, contra_satis, hc_dur,
@@ -1744,7 +1818,9 @@ colnames(cccu_MA_t2_descriptives)</code></pre>
 <pre><code>## 
 ##   Single   0q-25q  26q-50q  51q-75q 76q-100q 
 ##      289      247      224      221      200</code></pre>
-<p>##t3</p>
+</div>
+<div id="t3" class="section level2">
+<h2>t3</h2>
 <pre class="r"><code>cccu_MA_t3_descriptives &lt;- cccu_MA_t3 %&gt;%
   select(
     hc, switch, contra_satis, hc_dur,
@@ -2233,6 +2309,8 @@ table(cccu_MA$rel_dur_factor)</code></pre>
 ##      932      792      760      684      619</code></pre>
 <pre class="r"><code>plot(cccu_MA$rel_dur_factor)</code></pre>
 <p><img src="data:image/png;base64,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" width="672" /></p>
+</div>
+</div>
 
 
 
