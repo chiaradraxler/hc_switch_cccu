@@ -1,0 +1,1315 @@
+---
+title: "15_SYN_Plots"
+author: "Chiara Draxler & Laura Botzet"
+date: "24 1 2022"
+output: html_document
+---
+
+## 1. Load Data
+```{r}
+# load("FAKE_cccu_MA.RData")
+# load("FAKE_cccu_SA.RData")
+# length(unique(FAKE_cccu_SA$CASEID)) #women
+# load("FAKE_cccu_R1.RData")
+# load("FAKE_cccu_R2.RData")
+# load("FAKE_cccu_R1_s.RData")
+# length(unique(FAKE_cccu_R1_s$CASEID)) #women
+# load("FAKE_cccu_R2_s.RData")
+```
+
+
+## 2. Load Packages
+```{r}
+library(formr)
+library(brms)
+library(marginaleffects)
+library(sjPlot)
+library(tidyverse)
+
+
+set.seed(180822)
+
+set_priors <- c(prior(normal(0, 1), class = b),
+                prior(normal(0, 1), class = sd))
+options(scipen=999)
+
+apatheme = theme_bw() +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank(),
+    axis.line = element_line()
+  ) +
+  theme(
+    axis.text = element_text(size = 12),
+    axis.title = element_text(size = 12),
+    legend.text = element_text(size = 12),
+    legend.title = element_text(size = 12)
+  )
+```
+
+
+## 3. Specific effects
+Plots for
+- hc*contra_satis
+- hc*sexual_satisfaction
+- hc*sex_freq
+- hc_dur*contra_satis
+based on multilevel model FAKE_m3
+```{r}
+FAKE_m3 <- brm(file = "models/FAKE_m3.Rds")
+
+### contra_satis
+
+contra_satis <- plot_model(FAKE_m3, type = "pred",
+                           terms = c("contra_satis", "hc"),
+                           ci.lvl = 0.997) +
+  scale_fill_manual(
+    values = c("red", "blue"),
+    name = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "HC",
+      "Non-HC"
+    ),
+  ) +
+  scale_colour_manual(
+    values = c("red", "blue"),
+    name  = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "HC",
+      "Non-HC"
+    )
+  ) +
+  labs(y = "Probability to Switch", title = "") +
+  scale_x_discrete("Contraceptive Satisfaction",
+                   limits = c("1", "2", "3", "4")) +
+  apatheme
+
+contra_satis
+
+ggsave("contra_satis.pdf", contra_satis)
+
+ggsave("contra_satis.png", contra_satis)
+
+#contra satis on FAKE_m2
+FAKE_m2 <- brm(file = "models/FAKE_m2.Rds")
+
+contra_satis_FAKE_m2 <- plot_model(FAKE_m2, type = "pred",
+                           terms = c("contra_satis", "hc"),
+                           ci.lvl = 0.997) +
+  scale_fill_manual(
+    values = c("red", "blue"),
+    name = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "HC",
+      "Non-HC"
+    ),
+  ) +
+  scale_colour_manual(
+    values = c("red", "blue"),
+    name  = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "HC",
+      "Non-HC"
+    )
+  ) +
+  labs(y = "Probability to Switch", title = "") +
+  scale_x_discrete("Contraceptive Satisfaction",
+                   limits = c("1", "2", "3", "4")) +
+  apatheme
+
+contra_satis_FAKE_m2
+
+ggsave("contra_satis_FAKE_m2.pdf", contra_satis_FAKE_m2)
+
+ggsave("contra_satis_FAKE_m2.png", contra_satis_FAKE_m2)
+
+
+###sexual satisfaction
+
+sex_sat <- plot_model(FAKE_m3, type = "pred", terms = c("sexual_satisfaction", "hc"), ci.lvl = 0.997)  +  
+  scale_fill_manual(
+    values = c("red", "blue"),
+    name = "Group",
+    breaks = c("hc", "non_hc"),
+     labels = c(
+      "HC",
+      "Non-HC"
+    ),
+  ) +
+  scale_colour_manual(
+    values = c("red", "blue"),
+    name  = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "HC",
+      "Non-HC"
+    )
+  ) +
+  labs(y = "Probability to Switch", title = "") +
+  scale_x_discrete("Sexual Satisfaction",
+                   limits = c("1", "2", "3", "4", "5", "6")) +
+  apatheme
+sex_sat
+
+ggsave("sexual_satis.pdf", sex_sat)
+
+ggsave("sexual_satis.png", sex_sat)
+
+###sexual frequency
+
+sex_freq <- plot_model(FAKE_m3, type = "pred", terms = c("sex_freq", "hc"), ci.lvl = 0.997)  +
+  scale_fill_manual(
+    values = c("red", "blue"),
+    name = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "HC",
+      "Non-HC"
+    ),
+  ) +
+  scale_colour_manual(
+    values = c("red", "blue"),
+    name  = "Group",
+    breaks = c("hc", "non_hc"),
+    labels = c(
+      "HC",
+      "Non-HC"
+    )
+  ) +
+  labs(y = "Probability to Switch", title = "") +
+  scale_x_discrete("Sexual Frequency",
+                   limits = c("No sex or once", "2-5 times","6-10 times", "11 or more times"), guide = guide_axis(n.dodge=2)) +
+  apatheme
+sex_freq
+
+ggsave("sexual_freq.pdf", sex_freq)
+
+ggsave("sexual_freq.png", sex_freq)
+
+#for hc dur  in sub analyses
+
+sa_FAKE_m3 <- brm(file = "models/sa_FAKE_m3.Rds")
+
+
+hc_dur<-
+  plot_model(sa_FAKE_m3, type = "pred",  show.legend = TRUE,
+             terms = c("contra_satis","hc_dur[0, 12,24,36,48]"), ci.lvl = 0.997) +
+  labs(y = "Probability to Switch", title = "") +
+  scale_x_discrete("Contraceptive Satisfaction",
+                   limits = c("1", "2", "3", "4"))+
+  scale_color_discrete(name = "Duration", labels = c("< 1 year",
+                                                     "1-2 years",
+                                                     "2-3 years",
+                                                     "3-4 years",
+                                                     ">4 years")) +
+  apatheme
+
+hc_dur
+
+
+
+
+
+ggsave("hc_dur.pdf", hc_dur)
+
+ggsave("hc_dur.png", hc_dur)
+
+
+```
+
+
+
+## 4. Forest plot main effects
+for models FAKE_m1, FAKE_m2, FAKE_m3, FAKE_m4
+
+### Models
+#### FAKE_m1
+```{r}
+FAKE_FAKE_m1 <- brm(file = "models/FAKE_FAKE_m1.Rds")
+
+FAKE_FAKE_m1_sum = summary(FAKE_FAKE_m1, prob = .997)
+```
+
+#### FAKE_m1 in robustness analyses
+```{r}
+####1 Robustness analyses : FAKE_m1 
+FAKE_R1_ma_1 <- brm(file = "models/FAKE_R1_ma_1.Rds")
+FAKE_R1_FAKE_m1_sum = summary(FAKE_R1_ma_1, prob = .997)
+
+####2 Robustness analyses: FAKE_m1 
+FAKE_R2_ma_1 <- brm(file = "models/FAKE_R2_ma_1.Rds")
+
+FAKE_R2_FAKE_m1_sum = summary(FAKE_R2_ma_1, prob = .997)
+
+```
+
+
+#### FAKE_m2
+```{r}
+FAKE_m2 <- brm(file = "models/FAKE_m2.Rds")
+FAKE_m2_sum = summary(FAKE_m2, prob = .997)
+```
+
+#### FAKE_m2 in robustness analyses 
+```{r}
+#r1
+FAKE_R1_ma_2 <- brm(file = "models/FAKE_R1_ma_2.Rds")
+
+FAKE_R1_FAKE_m2_sum = summary(FAKE_R1_ma_2, prob = .997)
+
+#r2
+FAKE_R2_ma_2 <- brm(file = "models/FAKE_R2_ma_2.Rds")
+FAKE_R2_FAKE_m2_sum = summary(FAKE_R2_ma_2, prob = .997)
+
+```
+
+#### FAKE_m3
+```{r}
+FAKE_m3 <- brm(file = "models/FAKE_m3.Rds")
+FAKE_m3_sum = summary(FAKE_m3, prob = .997)
+```
+
+#### FAKE_m3 in robustness analyses 
+```{r}
+#r1
+FAKE_R1_ma_3 <- brm(file = "models/FAKE_R1_ma_3.Rds")
+
+FAKE_R1_FAKE_m3_sum = summary(FAKE_R1_ma_3, prob = .997)
+
+#r2
+FAKE_R2_ma_3 <- brm(file = "models/FAKE_R2_ma_3.Rds")
+FAKE_R2_FAKE_m3_sum = summary(FAKE_R2_ma_3, prob = .997)
+```
+
+
+
+#### FAKE_m4
+```{r}
+FAKE_m4 = brm(file = "models/FAKE_m4.Rds")
+FAKE_m4_sum <- summary(FAKE_m4, prob = .997)
+```
+
+#### FAKE_m4 in robustness analysis 
+```{r}
+#r1
+FAKE_R1_ma_4 <- brm(file = "models/FAKE_R1_ma_4.Rds")
+
+FAKE_R1_FAKE_m4_sum = summary(FAKE_R1_ma_4, prob = .997)
+
+#r2
+FAKE_R2_ma_4 <- brm(file = "models/FAKE_R2_ma_4.Rds")
+
+FAKE_R2_FAKE_m4_sum = summary(FAKE_R2_ma_4, prob = .997)
+```
+
+
+### Effects and CIs
+#### FAKE_m1
+```{r}
+FAKE_m1_forest_plot = FAKE_m1_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("model_1", 2)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(FAKE_m1_forest_plot) = c()
+```
+
+#### FAKE_m1 in Robustnessanalyses
+```{r}
+#R1
+FAKE_R1_FAKE_m1_forest_plot = FAKE_R1_FAKE_m1_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("FAKE_R1_model_1", 2)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(FAKE_R1_FAKE_m1_forest_plot) = c()
+
+#R2
+FAKE_R2_FAKE_m1_forest_plot = FAKE_R2_FAKE_m1_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("FAKE_R2_model_1", 2)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(FAKE_R2_FAKE_m1_forest_plot) = c()
+
+```
+
+
+#### FAKE_m2
+```{r}
+FAKE_m2_forest_plot = FAKE_m2_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("model_2", 4)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(FAKE_m2_forest_plot) = c()
+```
+
+
+#### FAKE_m2 in robustness analyses
+```{r}
+#R1
+FAKE_R1_FAKE_m2_forest_plot = FAKE_R1_FAKE_m2_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("FAKE_R1_model_2", 4)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(FAKE_R1_FAKE_m2_forest_plot) = c()
+
+
+#R2
+FAKE_R2_FAKE_m2_forest_plot = FAKE_R2_FAKE_m2_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("FAKE_R2_model_2", 4)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(FAKE_R2_FAKE_m2_forest_plot) = c()
+```
+
+
+
+
+#### FAKE_m3
+```{r}
+FAKE_m3_forest_plot = FAKE_m3_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("model_3", 12)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(FAKE_m3_forest_plot) = c()
+```
+
+#### FAKE_m3 in Robustnessanalyses
+```{r}
+#R1
+FAKE_R1_FAKE_m3_forest_plot = FAKE_R1_FAKE_m3_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("FAKE_R1_model_3", 12)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(FAKE_R1_FAKE_m3_forest_plot) = c()
+
+#R2
+FAKE_R2_FAKE_m3_forest_plot = FAKE_R2_FAKE_m3_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("FAKE_R2_model_3", 12)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(FAKE_R2_FAKE_m3_forest_plot) = c()
+
+```
+
+
+
+
+
+
+#### FAKE_m4
+```{r}
+FAKE_m4_forest_plot = FAKE_m4_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("model_4", 72)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(FAKE_m4_forest_plot) = c()
+```
+
+#### FAKE_m4 in Robustnessanalyses
+```{r}
+#R1
+FAKE_R1_FAKE_m4_forest_plot = FAKE_R1_FAKE_m4_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("FAKE_R1_model_4", 72)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(FAKE_R1_FAKE_m4_forest_plot) = c()
+
+#R2
+FAKE_R2_FAKE_m4_forest_plot = FAKE_R2_FAKE_m4_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("FAKE_R2_model_4", 72)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(FAKE_R2_FAKE_m4_forest_plot) = c()
+
+```
+
+
+
+###Forest plot without robustness analyses
+#### Dataframe for plot
+```{r}
+#without robustness analyses
+forest_plot_data = rbind(
+  FAKE_m1_forest_plot,
+  FAKE_m2_forest_plot,
+  FAKE_m3_forest_plot,
+  FAKE_m4_forest_plot
+)
+
+forest_plot_data$predictor = factor(forest_plot_data$predictor,
+                                    levels = c("Intercept",
+                                               "hcnon_hc",
+                                               "contra_satis",
+                                               "hcnon_hc:contra_satis",
+                                               "sexual_satisfaction","hcnon_hc:sexual_satisfaction",
+                                  
+                                               "sex_freq2M5times", "sex_freq6FAKE_m10times",
+                                               "sex_freq11ormoretimes", 
+                                                            "hcnon_hc:sex_freq2M5times",
+                                               "hcnon_hc:sex_freq6FAKE_m10times",
+                                               "hcnon_hc:sex_freq11ormoretimes"),
+                                    labels = c("(Intercept)",
+                                               "HC",
+                                               "Contraceptive Satisfaction",
+                                               "HC:Contraceptive Satisfaction",
+                                               "Sexual Satisfaction","HC:Sexual Satisfaction",    
+                                               "Sexual Frequency 2-5 times", "Sexual Frequency 6-10 times",
+                                               "Sexual Frequency 11 or more times",
+                                                                                          "HC:Sexual Frequency 2-5 times",
+                                               "HC:Sexual Frequency 6-10 times",
+                                               "HC:Sexual Frequency 11 or more times"))
+
+forest_plot_data$group = factor(
+  forest_plot_data$group,
+  levels = 
+    c(
+    "model_1",
+    "model_2",
+    "model_3",
+    "model_4"
+  ),
+  labels = 
+    c(
+    "model_1",
+    "model_2",
+    "model_3",
+    "model_4"
+  )
+)
+
+
+#give group for color:
+forest_plot_data <- forest_plot_data%>%
+  mutate(grouping = ifelse(group == "model_1" , "color_1",
+  ifelse(group == "model_2" , "color_2",
+        ifelse(group == "model_3", "color_3",
+                ifelse(group == "model_4" ,"color_4",NA))))) 
+```
+
+#### Plot
+```{r}
+#forest plot without robustness analyses
+
+#set colors
+group.color <- c("orchid3", "green", "blue", "red")
+
+#set names for facets
+grouping_names = c("Model 1", "Model 2", "Model 3", "Model 4")
+names(grouping_names) = c("color_1", "color_2", "color_3", "color_4")
+
+forest_ma <- ggplot(
+  data = forest_plot_data %>%
+    filter(predictor != "(Intercept)"),
+  aes(
+    x = predictor,
+    y = estimate,
+    group = forcats::fct_rev(grouping),
+    fill = forcats::fct_rev(grouping),
+    color = forcats::fct_rev(grouping),
+    shape = grouping
+  )
+) +
+  geom_point(position = position_dodge(width = 0.8)) +
+  geom_pointrange(aes(ymin = lower, ymax = upper),
+                  position = position_dodge(width = 0.8)) +
+  scale_x_discrete(limits = rev) +
+  geom_hline(yintercept = 0) +
+  coord_flip() +
+  scale_fill_manual(
+    name = "Models",
+    breaks = c("color_1", "color_2", "color_3", "color_4"),
+    labels = 
+      c(
+      "Model 1",
+      "Model 2",
+      "Model 3",
+      "Model 4"
+    ),
+    values = group.color
+  ) +
+  scale_colour_manual(
+    name = "Models",
+    breaks = c("color_1", "color_2", "color_3", "color_4"),
+    labels = c(
+      "Model 1",
+      "Model 2",
+      "Model 3",
+      "Model 4"
+    ),
+    values = group.color
+  ) +
+  scale_shape_manual(
+    name = "Models",
+    values = c(21,24,22,25),
+    labels = c(
+      "Model 1",
+      "Model 2",
+      "Model 3",
+      "Model 4"
+    )
+  ) +
+  labs(y = "Effect Size", x = "Predictor") +
+  apatheme
+
+forest_ma
+
+ggsave("forest_ma.pdf", forest_ma, width = 23, height = 12, units = "cm", dpi = 300)
+ggsave("forest_ma.png", forest_ma, width = 23, height = 12, units = "cm", dpi = 300)
+
+```
+
+
+
+### Forest plot with robustness analyses
+#### Dataframe for plot
+```{r}
+#for robustness analyses
+forest_plot_data2 = rbind(
+  FAKE_m1_forest_plot,
+  FAKE_R1_FAKE_m1_forest_plot,
+  FAKE_R2_FAKE_m1_forest_plot,
+  FAKE_m2_forest_plot,
+  FAKE_R1_FAKE_m2_forest_plot,
+  FAKE_R2_FAKE_m2_forest_plot,
+  FAKE_m3_forest_plot,
+  FAKE_R1_FAKE_m3_forest_plot,
+  FAKE_R2_FAKE_m3_forest_plot,
+  FAKE_m4_forest_plot,
+  FAKE_R1_FAKE_m4_forest_plot,
+  FAKE_R2_FAKE_m4_forest_plot
+)
+
+forest_plot_data2$predictor = factor(forest_plot_data2$predictor,
+                                    levels = c("Intercept",
+                                               "hcnon_hc",
+                                               "contra_satis",
+                                               "hcnon_hc:contra_satis",
+                                               "sexual_satisfaction","hcnon_hc:sexual_satisfaction",
+                                  
+                                               "sex_freq2M5times", "sex_freq6FAKE_m10times",
+                                               "sex_freq11ormoretimes", 
+                                                            "hcnon_hc:sex_freq2M5times",
+                                               "hcnon_hc:sex_freq6FAKE_m10times",
+                                               "hcnon_hc:sex_freq11ormoretimes"),
+                                    labels = c("(Intercept)",
+                                               "\nHC\n",
+                                               "Contraceptive Satisfaction",
+                                               "HC:Contraceptive Satisfaction",
+                                               "Sexual Satisfaction","HC:Sexual Satisfaction",    
+                                               "Sexual Frequency 2-5 times", "Sexual Frequency 6-10 times",
+                                               "Sexual Frequency 11 or more times",
+                                                                                          "HC:Sexual Frequency 2-5 times",
+                                               "HC:Sexual Frequency 6-10 times",
+                                               "HC:Sexual Frequency 11 or more times"))
+
+forest_plot_data2$group = factor(
+  forest_plot_data2$group,
+  levels = 
+    c(
+    "model_1",
+    "FAKE_R1_model_1",
+    "FAKE_R2_model_1",
+    "model_2",
+    "FAKE_R1_model_2",
+    "FAKE_R2_model_2",
+    "model_3",
+    "FAKE_R1_model_3",
+    "FAKE_R2_model_3",
+    "model_4",
+    "FAKE_R1_model_4",
+    "FAKE_R2_model_4"
+    ),
+  labels = 
+    c(
+    "model_1",
+    "FAKE_R1_model_1",
+    "FAKE_R2_model_1",
+    "model_2",
+    "FAKE_R1_model_2",
+    "FAKE_R2_model_2",
+    "model_3",
+    "FAKE_R1_model_3",
+    "FAKE_R2_model_3",
+    "model_4",
+    "FAKE_R1_model_4",
+    "FAKE_R2_model_4"
+  )
+)
+
+
+#give group for color:
+forest_plot_data2 <- forest_plot_data2 %>%
+  mutate(grouping = ifelse(group == "model_1" |group == "FAKE_R1_model_1" | group == "FAKE_R2_model_1", "color_1",
+  ifelse(group == "model_2" |group == "FAKE_R1_model_2" | group == "FAKE_R2_model_2", "color_2",
+         ifelse(group == "model_3" |group == "FAKE_R1_model_3" | group == "FAKE_R2_model_3", "color_3",
+                 ifelse(group == "model_4" |group == "FAKE_R1_model_4" | group == "FAKE_R2_model_4",
+                        "color_4", NA))))) 
+
+
+#give group for shape:
+forest_plot_data2 <- forest_plot_data2 %>%
+  mutate(shape = ifelse(group ==  "model_1"|
+  group == "model_2" |
+    group == "model_3"|
+    group == "model_4", "shape_1",
+  ifelse(group %contains% "R1", "shape_2",
+         ifelse(group %contains% "R2", "shape_3", NA))))
+
+```
+
+#### Plot
+```{r forest_ma_ra, fig.height = 30, fig.width = 60}
+#forest plot including robustness analyses
+
+#set colors
+group.color <- c("orchid3", "green", "blue")
+
+#set names for facets
+grouping_names = c("Model 1", "Model 2", "Model 3", "Model 4")
+names(grouping_names) = c("color_1", "color_2", "color_3", "color_4")
+
+forest_ma_ra <- ggplot(
+  data = forest_plot_data2 %>%
+    filter(predictor != "(Intercept)"),
+  aes(
+    x = predictor,
+    y = estimate,
+    group = forcats::fct_rev(shape),
+    fill = forcats::fct_rev(shape),
+    color = forcats::fct_rev(shape),
+    shape = shape
+  )
+) +
+  geom_point(position = position_dodge(width = 0.8)) +
+  geom_pointrange(aes(ymin = lower, ymax = upper),
+                  position = position_dodge(width = 0.8)) +
+  scale_x_discrete(limits = rev) +
+  geom_hline(yintercept = 0) +
+  coord_flip() +
+  scale_fill_manual(
+    name = "Analyses",
+    breaks = c("shape_1", "shape_2", "shape_3"),
+    labels = 
+      c(
+      "Main Analyses",
+      "Robustness Analyses 1",
+      "Robustness Analyses 2"
+    ),
+    values = group.color
+  ) +
+  scale_colour_manual(
+    name = "Analyses",
+    breaks = c("shape_1", "shape_2", "shape_3"),
+    labels = c(
+      "Main Analyses",
+      "Robustness Analyses 1",
+      "Robustness Analyses 2"
+    ),
+    values = group.color
+  ) +
+  scale_shape_manual(
+    name = "Analyses",
+    values = c(21,24,22),
+    labels = c(
+      "Main Analyses",
+      "Robustness Analyses 1",
+      "Robustness Analyses 2"
+    )
+  ) +
+  labs(y = "Effect Size", x = "Predictor") +
+  facet_wrap(~grouping,
+             labeller = labeller(grouping = grouping_names)) +
+  apatheme +
+  theme(
+    axis.text = element_text(size = 30),
+    axis.title = element_text(size = 30),
+    legend.text = element_text(size = 30),
+    legend.title = element_text(size = 30),
+    strip.text = element_text(size=30)
+  )
+
+forest_ma_ra
+
+ggsave("forest_ma_ra.pdf", forest_ma_ra, width = 60, height = 30, units = "cm", dpi = 300)
+ggsave("forest_ma_ra.png", forest_ma_ra, width = 60, height = 30, units = "cm", dpi = 300)
+
+```
+
+
+
+
+
+
+## 5. Forest Plot Sub Analyses
+
+### Model
+#### FAKE_m2
+```{r}
+sa_FAKE_m2 <- brm(file = "models/sa_FAKE_m2.Rds")
+
+sa_FAKE_m2_sum<- summary(sa_FAKE_m2, prob = .997)
+```
+
+#### FAKE_m2 in robustness analyses 
+```{r}
+FAKE_R1_sa_FAKE_m2 <- brm(file = "models/FAKE_R1_sa_FAKE_m2.Rds")
+
+FAKE_R1_sa_FAKE_m2_sum<- summary(FAKE_R1_sa_FAKE_m2, prob = .997)
+
+FAKE_R2_sa_FAKE_m2 <- brm(file = "models/FAKE_R2_sa_FAKE_m2.Rds")
+
+FAKE_R2_sa_FAKE_m2_sum<- summary(FAKE_R2_sa_FAKE_m2, prob = .997)
+
+```
+
+
+
+#### FAKE_m3
+```{r}
+sa_FAKE_m3 <- brm(file = "models/sa_FAKE_m3.Rds")
+
+sa_FAKE_m3_sum<- summary(sa_FAKE_m3, prob = .997)
+
+```
+
+
+#### FAKE_m3 in robustness analyses 
+```{r}
+FAKE_R1_sa_FAKE_m3 <- brm(file = "models/FAKE_R1_sa_FAKE_m3.Rds")
+
+FAKE_R1_sa_FAKE_m3_sum<- summary(FAKE_R1_sa_FAKE_m3, prob = .997)
+
+FAKE_R2_sa_FAKE_m3 <- brm(file = "models/FAKE_R2_sa_FAKE_m3.Rds")
+
+FAKE_R2_sa_FAKE_m3_sum<- summary(FAKE_R2_sa_FAKE_m3, prob = .997)
+```
+
+
+
+#### FAKE_m4
+```{r}
+sa_FAKE_m4 <- brm(file = "models/sa_FAKE_m4.Rds")
+
+sa_FAKE_m4_sum <- summary(sa_FAKE_m4, prob = .997)
+```
+
+#### FAKE_m4 in robustnessanalyses
+```{r}
+FAKE_R1_sa_FAKE_m4 <- brm(file = "models/FAKE_R1_sa_FAKE_m4.Rds")
+
+FAKE_R1_sa_FAKE_m4_sum<- summary(FAKE_R1_sa_FAKE_m4, prob = .997)
+
+FAKE_R2_sa_FAKE_m4 <- brm(file = "models/FAKE_R2_sa_FAKE_m4.Rds")
+
+FAKE_R2_sa_FAKE_m4_sum<- summary(FAKE_R2_sa_FAKE_m4, prob = .997)
+```
+
+
+
+### Effects and CIs
+
+#### FAKE_m2
+```{r}
+sa_FAKE_m2_forest_plot = sa_FAKE_m2_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("sa_model_2", 4)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(sa_FAKE_m2_forest_plot) = c()
+```
+
+
+#### FAKE_m2 in robustness analyses
+```{r}
+#R1
+FAKE_R1_sa_FAKE_m2_forest_plot = FAKE_R1_sa_FAKE_m2_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("FAKE_R1_sa_model_2", 4)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(FAKE_R1_sa_FAKE_m2_forest_plot) = c()
+
+
+#R2
+FAKE_R2_sa_FAKE_m2_forest_plot = FAKE_R2_sa_FAKE_m2_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("FAKE_R2_sa_model_2", 4)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(FAKE_R2_sa_FAKE_m2_forest_plot) = c()
+
+```
+
+
+
+
+#### FAKE_m3
+```{r}
+sa_FAKE_m3_forest_plot = sa_FAKE_m3_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("sa_model_3", 8)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(sa_FAKE_m3_forest_plot) = c()
+```
+
+#### FAKE_m3 in Robustnessanalyses
+```{r}
+#R1
+FAKE_R1_sa_FAKE_m3_forest_plot = FAKE_R1_sa_FAKE_m3_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("FAKE_R1_sa_model_3", 8)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(FAKE_R1_sa_FAKE_m3_forest_plot) = c()
+
+#R2
+FAKE_R2_sa_FAKE_m3_forest_plot = FAKE_R2_sa_FAKE_m3_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("FAKE_R2_sa_model_3", 8)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(FAKE_R2_sa_FAKE_m3_forest_plot) = c()
+
+```
+
+
+
+
+
+
+#### FAKE_m3
+```{r}
+sa_FAKE_m4_forest_plot = sa_FAKE_m4_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("sa_model_4", 37)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(sa_FAKE_m4_forest_plot) = c()
+```
+
+#### FAKE_m3 in Robustnessanalyses
+```{r}
+#R1
+FAKE_R1_sa_FAKE_m4_forest_plot = FAKE_R1_sa_FAKE_m4_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("FAKE_R1_sa_model_4", 37)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(FAKE_R1_sa_FAKE_m4_forest_plot) = c()
+
+#R2
+FAKE_R2_sa_FAKE_m4_forest_plot = FAKE_R2_sa_FAKE_m4_sum$fixed %>%
+  data.frame() %>%
+  mutate(predictor = rownames(.),
+         group = rep("FAKE_R2_sa_model_4", 37)) %>%
+  select(predictor,
+         estimate = Estimate,
+         lower = l.99.7..CI,
+         upper = u.99.7..CI,
+         group)
+
+rownames(FAKE_R2_sa_FAKE_m4_forest_plot) = c()
+
+```
+
+### Forest plot without robustness analyses
+
+
+#### Dataframe for plot
+```{r}
+#without robustness analyses
+sa_forest_plot_data = rbind(
+  sa_FAKE_m2_forest_plot,
+  sa_FAKE_m3_forest_plot,
+  sa_FAKE_m4_forest_plot
+)
+
+sa_forest_plot_data$predictor = factor(sa_forest_plot_data$predictor,
+                                    levels = c("Intercept",
+                                               "contra_satis",
+                                               "hc_dur",
+                                               "contra_satis:hc_dur",
+                                               "sexual_satisfaction",
+                                               "sex_freq2M5times", "sex_freq6FAKE_m10times",
+                                               "sex_freq11ormoretimes"),
+                                    labels = c("(Intercept)",
+                                               "Contraceptive Satisfaction",
+                                               "Duration",
+                                               "Contraceptive Satisfaction:Duration",
+                                               "Sexual Satisfaction",  
+                                               "Sexual Frequency 2-5 times", "Sexual Frequency 6-10 times",
+                                               "Sexual Frequency 11 or more times")) 
+
+sa_forest_plot_data$group = factor(
+  sa_forest_plot_data$group,
+  levels = 
+    c(
+    "sa_model_2",
+    "sa_model_3",
+    "sa_model_4"
+  ),
+  labels = 
+    c(
+    "sa_model_2",
+    "sa_model_3",
+    "sa_model_4"
+  )
+)
+
+
+#give group for color:
+sa_forest_plot_data <- sa_forest_plot_data %>%
+  mutate(grouping =   ifelse(group == "sa_model_2" , "color_2",
+         ifelse(group == "sa_model_3"  ,"color_3",
+                 ifelse(group == "sa_model_4" , "color_4",NA)))) 
+
+
+
+```
+
+#### Plot
+```{r}
+#forest plot without robustness analyses
+
+#set colors
+group.color <- c("green", "blue", "red")
+
+forest_sa <- ggplot(
+  data = sa_forest_plot_data %>%
+    filter(predictor != "(Intercept)"),
+  aes(
+    x = predictor,
+    y = estimate,
+    group = forcats::fct_rev(grouping),
+    fill = forcats::fct_rev(grouping),
+    color = forcats::fct_rev(grouping),
+    shape = grouping
+  )
+) +
+  geom_point(position = position_dodge(width = 0.9),
+             alpha = 0.08) +
+  geom_pointrange(aes(ymin = lower, ymax = upper),
+                  position = position_dodge(width = 0.9)) +
+  scale_x_discrete(limits = rev, expand = c(0.002, 0)) +
+  # scale_y_continuous(limits = c(-8,8),
+  #                    breaks = seq(-8,8,2)) +
+  geom_hline(yintercept = 0) +
+  coord_flip() +
+  scale_fill_manual(
+    name = "Models",
+    breaks = c("color_2", "color_3", "color_4"),
+    labels = 
+      c(
+      "Model 2",
+      "Model 3",
+      "Model 4"
+    ),
+    values = group.color
+  ) +
+  scale_colour_manual(
+    name = "Models",
+    breaks = c("color_2", "color_3", "color_4"),
+    labels = 
+      c(
+      "Model 2",
+      "Model 3",
+      "Model 4"
+    ),
+    values = group.color
+  ) +
+  scale_shape_manual(
+    name = "Models",
+    values = c(21,24,22),
+    labels = c(
+      "Model 2",
+      "Model 3",
+      "Model 4"
+    )
+  ) +
+  labs(y = "Effect Size", x = "Predictor") +
+  apatheme
+
+forest_sa
+
+ggsave("forest_sa.pdf", forest_sa, width = 23, height = 12, units = "cm", dpi = 300)
+ggsave("forest_sa.png", forest_sa, width = 23, height = 12, units = "cm", dpi = 300)
+
+```
+
+
+
+### Forest plot with robustness analyses
+#### Dataframe for plot
+```{r}
+#for robustness analyses
+sa_forest_plot_data2 = rbind(
+  sa_FAKE_m2_forest_plot,
+  FAKE_R1_sa_FAKE_m2_forest_plot,
+  FAKE_R2_sa_FAKE_m2_forest_plot,
+  sa_FAKE_m3_forest_plot,
+  FAKE_R1_sa_FAKE_m3_forest_plot,
+  FAKE_R2_sa_FAKE_m3_forest_plot,
+  sa_FAKE_m4_forest_plot,
+  FAKE_R1_sa_FAKE_m4_forest_plot,
+  FAKE_R2_sa_FAKE_m4_forest_plot
+)
+
+sa_forest_plot_data2$predictor = factor(sa_forest_plot_data2$predictor,
+                                    levels = c("Intercept",
+                                               "contra_satis",
+                                               "hc_dur",
+                                               "contra_satis:hc_dur",
+                                               "sexual_satisfaction",
+                                               "sex_freq2M5times", "sex_freq6FAKE_m10times",
+                                               "sex_freq11ormoretimes"),
+                                    labels = c("(Intercept)",
+                                               "Contraceptive Satisfaction",
+                                               "Duration",
+                                               "Contraceptive Satisfaction:Duration",
+                                               "Sexual Satisfaction",  
+                                               "Sexual Frequency 2-5 times", "Sexual Frequency 6-10 times",
+                                               "Sexual Frequency 11 or more times")) 
+
+sa_forest_plot_data2$group = factor(
+  sa_forest_plot_data2$group,
+  levels = 
+    c(
+    "sa_model_2",
+    "FAKE_R1_sa_model_2",
+    "FAKE_R2_sa_model_2",
+    "sa_model_3",
+    "FAKE_R1_sa_model_3",
+    "FAKE_R2_sa_model_3",
+    "sa_model_4",
+    "FAKE_R1_sa_model_4",
+    "FAKE_R2_sa_model_4"
+  ),
+  labels = 
+    c(
+    "sa_model_2",
+    "FAKE_R1_sa_model_2",
+    "FAKE_R2_sa_model_2",
+    "sa_model_3",
+    "FAKE_R1_sa_model_3",
+    "FAKE_R2_sa_model_3",
+    "sa_model_4",
+    "FAKE_R1_sa_model_4",
+    "FAKE_R2_sa_model_4"
+  )
+)
+
+
+#give group for color:
+sa_forest_plot_data2 <- sa_forest_plot_data2 %>%
+  mutate(grouping = ifelse(group == "sa_model_2" |group == "FAKE_R1_sa_model_2" | group == "FAKE_R2_sa_model_2",
+                           "color_2",
+         ifelse(group == "sa_model_3" |group == "FAKE_R1_sa_model_3" | group == "FAKE_R2_sa_model_3",
+                "color_3",
+                 ifelse(group == "sa_model_4" |group == "FAKE_R1_sa_model_4" | group == "FAKE_R2_sa_model_4",
+                        "color_4",NA)))) 
+
+
+#give group for shape:
+sa_forest_plot_data2 <- sa_forest_plot_data2 %>%
+  mutate(shape = ifelse(group == "sa_model_2" |
+    group == "sa_model_3"|
+    group == "sa_model_4", "shape_1",
+  ifelse(group %contains% "R1", "shape_2",
+         ifelse(group %contains% "R2", "shape_3", NA))))
+
+```
+
+#### Plot
+```{r forest_sa_ra, fig.height = 30, fig.width = 60}
+#forest plot including robustness analyses
+
+#set colors
+group.color <- c("orchid3", "green", "blue")
+
+#set names for facets
+grouping_names = c("Model 1", "Model 2", "Model 3", "Model 4")
+names(grouping_names) = c("color_1", "color_2", "color_3", "color_4")
+
+forest_sa_ra <- ggplot(
+  data = sa_forest_plot_data2 %>%
+    filter(predictor != "(Intercept)"),
+  aes(
+    x = predictor,
+    y = estimate,
+    group = forcats::fct_rev(shape),
+    fill = forcats::fct_rev(shape),
+    color = forcats::fct_rev(shape),
+    shape = shape
+  )
+) +
+  geom_point(position = position_dodge(width = 0.6)) +
+  geom_pointrange(aes(ymin = lower, ymax = upper),
+                  position = position_dodge(width = 0.6)) +
+  scale_x_discrete(limits = rev) +
+  scale_y_continuous(breaks = c(-1,0,1), limits = c(-1.5, 1.5)) +
+  geom_hline(yintercept = 0) +
+  coord_flip() +
+  scale_fill_manual(
+    name = "Analyses",
+    breaks = c("shape_1", "shape_2", "shape_3"),
+    labels = 
+      c(
+      "Sub Analyses",
+      "Robustness Sub Analyses 1",
+      "Robustness Sub Analyses 2"
+    ),
+    values = group.color
+  ) +
+  scale_colour_manual(
+    name = "Analyses",
+    breaks = c("shape_1", "shape_2", "shape_3"),
+    labels = c(
+      "Sub Analyses",
+      "Robustness Sub Analyses 1",
+      "Robustness Sub Analyses 2"
+    ),
+    values = group.color
+  ) +
+  scale_shape_manual(
+    name = "Analyses",
+    values = c(21,24,22),
+    labels = c(
+      "Sub Analyses",
+      "Robustness Sub Analyses 1",
+      "Robustness Sub Analyses 2"
+    )
+  ) +
+  labs(y = "Effect Size", x = "Predictor") +
+  facet_wrap(~grouping,
+             labeller = labeller(grouping = grouping_names)) +
+  apatheme +
+  theme(
+    axis.text = element_text(size = 24),
+    axis.title = element_text(size = 24),
+    legend.text = element_text(size = 24),
+    legend.title = element_text(size = 24),
+    strip.text = element_text(size=24)
+  )
+
+forest_sa_ra
+
+ggsave("forest_sa_ra.pdf", forest_sa_ra, width = 40, height = 20, units = "cm", dpi = 300)
+ggsave("forest_sa_ra.png", forest_sa_ra, width = 60, height = 30, units = "cm", dpi = 300)
+```
