@@ -244,16 +244,19 @@ table(comp_inex$exclude)
 ##hc use
 ```{r}
 table(comp_inex$hc)
+table(is.na(comp_inex$hc))
 
 comp_inex <- comp_inex %>%
-  mutate(hc = as.factor(ifelse(NOBARRIER == "(1) Yes" & hc == "non_hc",
+  mutate(hc = as.factor(ifelse(is.na(NOBARRIER), as.character(hc),
+                               ifelse(NOBARRIER == "(1) Yes" & hc == "non_hc",
                                 "no_contra",
-                                as.character(hc))))
+                                as.character(hc)))))
 
 cccu_excluded <- cccu_excluded %>%
-  mutate(hc = as.factor(ifelse(NOBARRIER == "(1) Yes" & hc == "non_hc",
+  mutate(hc = as.factor(ifelse(is.na(NOBARRIER), as.character(hc),
+                               ifelse(NOBARRIER == "(1) Yes" & hc == "non_hc",
                                 "no_contra",
-                                as.character(hc))))
+                                as.character(hc)))))
 table(comp_inex$hc)
 
 chisq.test(comp_inex$hc, comp_inex$exclude, correct=FALSE)
