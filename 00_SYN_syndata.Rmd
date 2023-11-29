@@ -2,45 +2,6 @@
 title: "00_syndata"
 output: html_document
 ---
-#Introduction for working code:
-
-0. Download the Code from Github. The new downloaded folder hc_switch_cccu-main contains the R project, Rmd Code, created data frames, knitted Html Code, Figures as .pdf and.jpg, Preregistered synthetic Code, and a folder to store the downloaded RData called RData.
-
-Name the folder appropriately (when downloading the code from GitHub the folder will be hc_switch_cccu-main).
-
-1. Download data from 
-https://www.icpsr.umich.edu/web/DSDR/studies/37067/datadocumentation
-
-Attention! The downloaded project from GitHub does not contain any data files!
-
---> Click on Download, then select R, then follow the login
---> store data in the folder specific to the R project in an extra sub-folder called RData (i.e., hc_switch_cccu-main - > RData). If you downloaded the code from GitHub, the RData folder will be already in the hc_switch_cccu-main projects folder.  
-
---> Within the RData folder store data for wave 1 in DS0001, for wave 2 in DS0002 and so on  (i.e., hc_switch_cccu-main - > RData -> DS0001 ). If you downloaded the code from GitHub, the relevant folders will be already there.
-
---> name the Rdata files according to the wave: 
-
-Wave 1: 37067-0001-Data (i.e., hc_switch_cccu-main - > RData -> DS0001 -> 37067-0001-Data.rda )
-
-Wave 2: 37067-0002-Data (i.e., hc_switch_cccu-main - > RData -> DS0002 -> 37067-0002-Data.rda )
-
-
-Wave 3: 37067-0003-Data (i.e., hc_switch_cccu-main - > RData -> DS0003 -> 37067-0003-Data.rda )
-
-
-Wave 4: 37067-0004-Data (i.e., hc_switch_cccu-main - > RData -> DS0004 -> 37067-0004-Data.rda )
-
-
---> attention to the .rda ending when loading the data into R!
-
-2. make sure to install all relevant packages before running the code!
-
-All relevant packages and versions can be seen in the section "Analyses"
-
-3. run the code according to the defined order beginning with 01_ (or 0 if you want to have a look at the synthetic data) and ending with 09_ so that all data frames are created appropriately
-
-4. Run  the Code :) 
-
 
 # Library
 ```{r}
@@ -52,86 +13,18 @@ set.seed(20122021)
 
 # Loading Data
 ```{r}
-load("RData/DS0001/37067-0001-Data.rda")
-cccu_wave1 = da37067.0001
-
-load("RData/DS0002/37067-0002-Data.rda")
-cccu_wave2 = da37067.0002
-
-load("RData/DS0003/37067-0003-Data.rda")
-cccu_wave3 = da37067.0003
-
-load("RData/DS0004/37067-0004-Data.rda")
-cccu_wave4 = da37067.0004
+load("cccu_complete1.RData")
 ```
 
 # Simulate
-## Wave 1
 ```{r}
-FAKE_cccu_wave1 = syn(data = cccu_wave1,
-                      method = "sample")
-
-# case id is not unique:
-FAKE_cccu_wave1$syn = FAKE_cccu_wave1$syn %>%
-  arrange(CASEID)
-FAKE_cccu_wave1$syn$CASEID = cccu_wave1$CASEID
-FAKE_cccu_wave1_df = FAKE_cccu_wave1$syn
+FAKE_cccu_complete1 = syn(data = cccu_complete1)
 ```
 
-## Wave 2
-```{r}
-FAKE_cccu_wave2 = syn(data = cccu_wave2,
-                      method = "sample")
-
-# case id is not unique:
-FAKE_cccu_wave2$syn = FAKE_cccu_wave2$syn %>%
-  arrange(CASEID)
-FAKE_cccu_wave2$syn$CASEID = cccu_wave2$CASEID
-FAKE_cccu_wave2_df = FAKE_cccu_wave2$syn
-```
-
-## Wave 3
-```{r}
-FAKE_cccu_wave3 = syn(data = cccu_wave3,
-                      method = "sample")
-
-# case id is not unique:
-FAKE_cccu_wave3$syn = FAKE_cccu_wave3$syn %>%
-  arrange(CASEID)
-FAKE_cccu_wave3$syn$CASEID = cccu_wave3$CASEID
-FAKE_cccu_wave3_df = FAKE_cccu_wave3$syn
-```
-
-## Wave 4
-```{r}
-FAKE_cccu_wave4 = syn(data = cccu_wave4,
-                      method = "sample")
-
-# case id is not unique:
-FAKE_cccu_wave4$syn = FAKE_cccu_wave4$syn %>%
-  arrange(CASEID)
-FAKE_cccu_wave4$syn$CASEID = cccu_wave4$CASEID
-FAKE_cccu_wave4_df = FAKE_cccu_wave4$syn
-```
-
-# Inspect data
-```{r}
-table(cccu_wave1$CPUSE)
-table(FAKE_cccu_wave1_df$CPUSE)
-
-cor.test(as.numeric(cccu_wave1$FEELPG),
-         as.numeric(cccu_wave1$AVOID))
-
-cor.test(as.numeric(FAKE_cccu_wave1_df$FEELPG),
-         as.numeric(FAKE_cccu_wave1_df$AVOID))
-```
 
 # Save sim data
 ```{r}
-save(FAKE_cccu_wave1_df, FAKE_cccu_wave2_df,
-     FAKE_cccu_wave3_df, FAKE_cccu_wave4_df,
-     file = "FAKE_cccu.RData")
-
-load("FAKE_cccu.RData")
+save(FAKE_cccu_complete1,
+     file = "FAKE_cccu_complete1.RData")
 ```
 
