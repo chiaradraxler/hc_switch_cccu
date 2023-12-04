@@ -93,6 +93,13 @@ ggsave("contra_satis.pdf", contra_satis)
 
 ggsave("contra_satis.png", contra_satis)
 
+jpeg(filename = "contra_satis.jpg",
+     width = 4200,
+     height = 3000,
+     res = 600)
+contra_satis
+dev.off()
+
 #contra satis on m2
 m2 <- brm(file = "models/m2.Rds")
 
@@ -160,6 +167,14 @@ ggsave("sexual_satis.pdf", sex_sat)
 
 ggsave("sexual_satis.png", sex_sat)
 
+
+jpeg(filename = "sexual_satis.jpg",
+     width = 4200,
+     height = 3000,
+     res = 600)
+sex_sat
+dev.off()
+
 ###sexual frequency
 
 sex_freq <- plot_model(m3, type = "pred", terms = c("sex_freq", "hc"), ci.lvl = 0.997)  +
@@ -191,6 +206,13 @@ ggsave("sexual_freq.pdf", sex_freq)
 
 ggsave("sexual_freq.png", sex_freq)
 
+jpeg(filename = "sexual_freq.jpg",
+     width = 4200,
+     height = 3000,
+     res = 600)
+sex_freq
+dev.off()
+
 #for hc dur  in sub analyses
 
 sa_m3 <- brm(file = "models/sa_m3.Rds")
@@ -219,6 +241,12 @@ ggsave("hc_dur.pdf", hc_dur)
 
 ggsave("hc_dur.png", hc_dur)
 
+jpeg(filename = "hc_dur.jpg",
+     width = 4200,
+     height = 3000,
+     res = 600)
+hc_dur
+dev.off()
 
 ```
 
@@ -632,6 +660,13 @@ forest_ma
 ggsave("forest_ma.pdf", forest_ma, width = 23, height = 12, units = "cm", dpi = 300)
 ggsave("forest_ma.png", forest_ma, width = 23, height = 12, units = "cm", dpi = 300)
 
+jpeg(filename = "forest_ma.jpg",
+     width = 2*2716,
+     height = 2*1417,
+     res = 600)
+forest_ma
+dev.off()
+
 ```
 
 
@@ -809,6 +844,12 @@ forest_ma_ra
 ggsave("forest_ma_ra.pdf", forest_ma_ra, width = 60, height = 30, units = "cm", dpi = 300)
 ggsave("forest_ma_ra.png", forest_ma_ra, width = 60, height = 30, units = "cm", dpi = 300)
 
+jpeg(filename = "forest_ma_ra.jpg",
+     width = 2*7086,
+     height = 2*3543,
+     res = 600)
+forest_ma_ra
+dev.off()
 ```
 
 
@@ -1312,4 +1353,12 @@ forest_sa_ra
 
 ggsave("forest_sa_ra.pdf", forest_sa_ra, width = 40, height = 20, units = "cm", dpi = 300)
 ggsave("forest_sa_ra.png", forest_sa_ra, width = 60, height = 30, units = "cm", dpi = 300)
+
+jpeg(filename = "forest_sa_ra.jpg",
+     width = 2*7086,
+     height = 2*3543,
+     res = 600)
+forest_sa_ra
+dev.off()
+
 ```
