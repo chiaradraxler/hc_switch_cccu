@@ -13,18 +13,28 @@ set.seed(20122021)
 
 # Loading Data
 ```{r}
-load("cccu_complete1.RData")
+load("cccu_MA.RData")
+
+load("cccu_R1.RData")
+
+load("cccu_R2.RData")
+
+load("cccu_SA.RData")
+
+load("cccu_R1_s.RData")
+
+load("cccu_R2_s.RData")
 ```
 
 # Simulate
 ```{r}
-FAKE_cccu_complete1 = syn(data = cccu_complete1)
+FAKE_cccu_MA = syn(data = cccu_MA)
 ```
 
 
 # Save sim data
 ```{r}
-save(FAKE_cccu_complete1,
-     file = "FAKE_cccu_complete1.RData")
+save(FAKE_cccu_MA,
+     file = "FAKE_cccu_MA.RData")
 ```
 
