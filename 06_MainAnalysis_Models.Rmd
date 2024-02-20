@@ -190,6 +190,44 @@ m4 <-
   )
 
 summary(m4, prob = .997)
+
+m4_sexual_satisfaction <-
+  brm(
+    switch ~ hc * sexual_satisfaction +
+      hc * AGE + hc * DEGREE_recode +
+      hc * POVRATE +
+      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
+      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
+      hc * had_baby_between_waves + hc * Avoid_r +
+      hc * FEELPG_recode +
+      hc * rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_MA,
+    prior = set_priors,
+    file = "models/m4_sexual_satisfaction.Rds"
+  )
+
+summary(m4_sexual_satisfaction, prob = .997)
+
+m4_sex_freq <-
+  brm(
+    switch ~ hc * sex_freq +
+      hc * AGE + hc * DEGREE_recode +
+      hc * POVRATE +
+      hc * HLTHPROB_recode + hc * MEDPROB_recode +  hc * GAPINS_recode +
+      hc * TYPEINS_recode + hc * NKIDS_t1 +  hc * pregnant_between_waves +
+      hc * had_baby_between_waves + hc * Avoid_r +
+      hc * FEELPG_recode +
+      hc * rel_dur_factor +
+      (1 | CASEID),
+    family = bernoulli(),
+    data = cccu_MA,
+    prior = set_priors,
+    file = "models/m4_sex_freq.Rds"
+  )
+
+summary(m4_sex_freq, prob = .997)
 ```
 
 ### hc only
