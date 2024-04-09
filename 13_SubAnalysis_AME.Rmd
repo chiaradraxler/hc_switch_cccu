@@ -4,7 +4,8 @@ output: html_document
 date: "2023-02-03"
 ---
 
-# 1. Load Packages
+# AMEs Subanalysis {.tabset}
+## 1. Load Packages
 ```{r}
 library(brms)
 library(marginaleffects)
@@ -20,7 +21,7 @@ set_priors <- c(prior(normal(0, 1), class = b),
                 prior(normal(0, 1), class = sd))
 ```
 
-# 2. Load Data
+## 2. Load Data
 ```{r}
 load("cccu_SA.RData")
 
@@ -30,35 +31,53 @@ cccu_SA <- cccu_SA %>%
 ```
 
 
-#3. Load models of main analysis
+## 3. Load models of main analysis
 ```{r}
 sa_m2 <- brm(file = "models/sa_m2.Rds")
 sa_m3 <- brm(file = "models/sa_m3.Rds")
 sa_m4 <- brm(file = "models/sa_m4.Rds")
+
+sa_m3_hc_dur <- brm(file = "models/sa_m3_hc_dur.Rds")
+sa_m4_hc_dur <- brm(file = "models/sa_m4_hc_dur.Rds")
 ```
 
-# Average marginal effects
+## Average marginal effects {.tabset}
 
-## m2
+### m2
 ```{r}
 #average marginal effect
-ame <- marginaleffects(sa_m2)
-summary(ame, conf_level = .997)
+avg_slopes(sa_m2,
+           conf_level = .997)
 ```
 
-## m3
+### m3
 ```{r}
 #average marginal effect
-ame <- marginaleffects(sa_m3)
-summary(ame, conf_level = .997)
+avg_slopes(sa_m3, 
+           conf_level = .997)
 ```
 
-## m4
+### m3_hcdur
 ```{r}
 #average marginal effect
-ame <- marginaleffects(sa_m4)
-ame_sum <- summary(ame, conf_level = .997)
-print(ame_sum, nrow = 100000)
+avg_slopes(sa_m3_hc_dur,
+           conf_level = .997)
 ```
 
 
+### m4
+```{r}
+#average marginal effect
+avg_slopes(sa_m4, 
+           conf_level = .997) %>%
+  print(., nrows = 1000)
+```
+
+
+### m4_hcdur
+```{r}
+#average marginal effect
+avg_slopes(sa_m4_hc_dur, 
+           conf_level = .997) %>%
+  print(., nrows = 1000)
+```

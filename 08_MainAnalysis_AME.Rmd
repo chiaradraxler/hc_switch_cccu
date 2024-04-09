@@ -57,58 +57,49 @@ m4_nonhc_only <- brm(file = "models/m4_nonhc_only.Rds")
 ## m1
 ```{r}
 #average marginal effect
-ame <- marginaleffects(m1)
-ame_sum <- summary(ame, conf_level = .997)
-print(ame_sum, nrow = 100)
+avg_slopes(m1,
+           conf_level = .997)
+
 ```
 
 ## m2
 ```{r}
 #average marginal effect
-ame <- marginaleffects(m2)
-summary(ame, conf_level = .997)
+avg_slopes(m2,
+           conf_level = .997)
 
-ame <- marginaleffects(m2_hc_only)
-summary(ame, conf_level = .997)
+avg_slopes(m2_hc_only,
+           conf_level = .997)
 
-ame <- marginaleffects(m2_nonhc_only)
-summary(ame, conf_level = .997)
+avg_slopes(m2_nonhc_only,
+           conf_level = .997)
 ```
 
 ## m3
 ```{r}
 #average marginal effect
-ame <- marginaleffects(m3)
-summary(ame, conf_level = .997)
+avg_slopes(m3,
+           conf_level = .997)
 
+avg_slopes(m3_hc_only,
+           conf_level = .997)
 
-ame <- marginaleffects(m3_hc_only)
-summary(ame, conf_level = .997)
-
-
-
-ame <- marginaleffects(m3_nonhc_only)
-summary(ame, conf_level = .997)
+avg_slopes(m3_nonhc_only,
+           conf_level = .997)
 ```
 
 ## m4
 ```{r}
-#model 4
-ame <- marginaleffects(m4)
-ame_sum <- summary(ame, conf_level = .997)
-print(ame_sum, nrow = 100000)
-```
+#average marginal effect
+avg_slopes(m4,
+           conf_level = .997) %>%
+  print(., nrows = 1000)
 
+avg_slopes(m4_hc_only,
+           conf_level = .997) %>%
+  print(., nrows = 1000)
 
-```{r}
-ame <- marginaleffects(m4_hc_only)
-ame_sum <- summary(ame, conf_level = .997)
-print(ame_sum, nrow = 100000)
-```
-
-
-```{r}
-ame <- marginaleffects(m4_nonhc_only)
-ame_sum <- summary(ame, conf_level = .997)
-print(ame_sum, nrow = 100000)
+avg_slopes(m4_nonhc_only,
+           conf_level = .997) %>%
+  print(., nrows = 1000)
 ```

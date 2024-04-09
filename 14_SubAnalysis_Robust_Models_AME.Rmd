@@ -59,16 +59,16 @@ R2_sa_m4 <- brm(file = "models/R2_sa_m4.Rds")
 ### R1
 ```{r}
 #average marginal effect
-ame <- marginaleffects(R1_sa_m2)
-summary(ame, conf_level = .997)
+avg_slopes(R1_sa_m2,
+           conf_level = .997)
 ```
 
 
 ### R2
 ```{r}
 #average marginal effect
-ame <- marginaleffects(R2_sa_m2)
-summary(ame, conf_level = .997)
+avg_slopes(R2_sa_m2,
+           conf_level = .997)
 ```
 
 
@@ -76,25 +76,25 @@ summary(ame, conf_level = .997)
 ### R1
 ```{r}
 #average marginal effect
-ame <- marginaleffects(R1_sa_m3)
-summary(ame, conf_level = .997)
+avg_slopes(R1_sa_m3,
+           conf_level = .997)
 ```
 
 
 ### R2
 ```{r}
 #average marginal effect
-ame <- marginaleffects(R2_sa_m3)
-summary(ame, conf_level = .997)
+avg_slopes(R2_sa_m3,
+           conf_level = .997)
 ```
 
 ## Model 4
 ### R1
 ```{r}
 #average marginal effect
-ame <- marginaleffects(R1_sa_m4)
-ame_sum <- summary(ame, conf_level = .997)
-print(ame_sum, nrow = 100000)
+avg_slopes(R1_sa_m4,
+           conf_level = .997) %>%
+  print(., nrows = 1000)
 
 ```
 
@@ -102,10 +102,9 @@ print(ame_sum, nrow = 100000)
 ### R2
 ```{r}
 #average marginal effect
-ame <- marginaleffects(R2_sa_m4)
-ame_sum <- summary(ame, conf_level = .997)
-print(ame_sum, nrow = 100000)
-
+avg_slopes(R2_sa_m4,
+           conf_level = .997) %>%
+  print(., nrows = 1000)
 ```
 
 
