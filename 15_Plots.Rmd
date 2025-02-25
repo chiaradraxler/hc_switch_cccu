@@ -82,7 +82,7 @@ contra_satis <- plot_model(m3, type = "pred",
       "Non-HC"
     )
   ) +
-  labs(y = "Probability to Switch", title = "") +
+  labs(y = "Probability of Switching", title = "") +
   scale_x_discrete("Contraceptive Satisfaction",
                    limits = c("1", "2", "3", "4")) +
   apatheme
@@ -124,7 +124,7 @@ contra_satis_m2 <- plot_model(m2, type = "pred",
       "Non-HC"
     )
   ) +
-  labs(y = "Probability to Switch", title = "") +
+  labs(y = "Probability of Switching", title = "") +
   scale_x_discrete("Contraceptive Satisfaction",
                    limits = c("1", "2", "3", "4")) +
   apatheme
@@ -157,7 +157,7 @@ sex_sat <- plot_model(m3, type = "pred", terms = c("sexual_satisfaction", "hc"),
       "Non-HC"
     )
   ) +
-  labs(y = "Probability to Switch", title = "") +
+  labs(y = "Probability of Switching", title = "") +
   scale_x_discrete("Sexual Satisfaction",
                    limits = c("1", "2", "3", "4", "5", "6")) +
   apatheme
@@ -196,7 +196,7 @@ sex_freq <- plot_model(m3, type = "pred", terms = c("sex_freq", "hc"), ci.lvl = 
       "Non-HC"
     )
   ) +
-  labs(y = "Probability to Switch", title = "") +
+  labs(y = "Probability of Switching", title = "") +
   scale_x_discrete("Sexual Frequency",
                    limits = c("No sex or once", "2-5 times","6-10 times", "11 or more times"), guide = guide_axis(n.dodge=2)) +
   apatheme
@@ -221,7 +221,7 @@ sa_m3 <- brm(file = "models/sa_m3.Rds")
 hc_dur<-
   plot_model(sa_m3, type = "pred",  show.legend = TRUE,
              terms = c("contra_satis","hc_dur[0, 12,24,36,48]"), ci.lvl = 0.997) +
-  labs(y = "Probability to Switch", title = "") +
+  labs(y = "Probability of Switching", title = "") +
   scale_x_discrete("Contraceptive Satisfaction",
                    limits = c("1", "2", "3", "4"))+
   scale_color_discrete(name = "Duration", labels = c("< 1 year",
