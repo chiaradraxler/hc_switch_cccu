@@ -598,7 +598,7 @@ forest_plot_data <- forest_plot_data%>%
 group.color <- c("orchid3", "green", "blue", "red")
 
 #set names for facets
-grouping_names = c("Model 1", "Model 2", "Model 3", "Model 4")
+grouping_names = c("M1", "M2", "M3", "M4")
 names(grouping_names) = c("color_1", "color_2", "color_3", "color_4")
 
 forest_ma <- ggplot(
@@ -624,10 +624,10 @@ forest_ma <- ggplot(
     breaks = c("color_1", "color_2", "color_3", "color_4"),
     labels = 
       c(
-      "Model 1",
-      "Model 2",
-      "Model 3",
-      "Model 4"
+      "M1",
+      "M2",
+      "M3",
+      "M4"
     ),
     values = group.color
   ) +
@@ -635,10 +635,10 @@ forest_ma <- ggplot(
     name = "Models",
     breaks = c("color_1", "color_2", "color_3", "color_4"),
     labels = c(
-      "Model 1",
-      "Model 2",
-      "Model 3",
-      "Model 4"
+      "M1",
+      "M2",
+      "M3",
+      "M4"
     ),
     values = group.color
   ) +
@@ -646,10 +646,10 @@ forest_ma <- ggplot(
     name = "Models",
     values = c(21,24,22,25),
     labels = c(
-      "Model 1",
-      "Model 2",
-      "Model 3",
-      "Model 4"
+      "M1",
+      "M2",
+      "M3",
+      "M4"
     )
   ) +
   labs(y = "Effect Size", x = "Predictor") +
@@ -776,7 +776,7 @@ forest_plot_data2 <- forest_plot_data2 %>%
 group.color <- c("orchid3", "green", "blue")
 
 #set names for facets
-grouping_names = c("Model 1", "Model 2", "Model 3", "Model 4")
+grouping_names = c("M1", "M2", "M3", "M4")
 names(grouping_names) = c("color_1", "color_2", "color_3", "color_4")
 
 forest_ma_ra <- ggplot(
@@ -1158,9 +1158,9 @@ forest_sa <- ggplot(
     breaks = c("color_2", "color_3", "color_4"),
     labels = 
       c(
-      "Model 2",
-      "Model 3",
-      "Model 4"
+      "SM2",
+      "SM3",
+      "SM4"
     ),
     values = group.color
   ) +
@@ -1169,9 +1169,9 @@ forest_sa <- ggplot(
     breaks = c("color_2", "color_3", "color_4"),
     labels = 
       c(
-      "Model 2",
-      "Model 3",
-      "Model 4"
+      "SM2",
+      "SM3",
+      "SM4"
     ),
     values = group.color
   ) +
@@ -1179,9 +1179,9 @@ forest_sa <- ggplot(
     name = "Models",
     values = c(21,24,22),
     labels = c(
-      "Model 2",
-      "Model 3",
-      "Model 4"
+      "SM2",
+      "SM3",
+      "SM4"
     )
   ) +
   labs(y = "Effect Size", x = "Predictor") +
@@ -1285,7 +1285,7 @@ sa_forest_plot_data2 <- sa_forest_plot_data2 %>%
 group.color <- c("orchid3", "green", "blue")
 
 #set names for facets
-grouping_names = c("Model 1", "Model 2", "Model 3", "Model 4")
+grouping_names = c("SM1", "SM2", "SM3", "SM4")
 names(grouping_names) = c("color_1", "color_2", "color_3", "color_4")
 
 forest_sa_ra <- ggplot(
